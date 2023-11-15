@@ -9,5 +9,5 @@
 [![Documentation Status](https://readthedocs.org/projects/specless/badge/?version=latest)](https://specless.readthedocs.io/en/latest/?badge=latest)
 
 - **Websites** https://watakandai.github.io/specless/ and https://specless.readthedocs.io/en/latest/
-- **Source code**: git@github.com:watakandai/specless.git
-
+- **Source code**: https://github.com/watakandai/specless.git
+-
