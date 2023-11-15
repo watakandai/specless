@@ -6,7 +6,7 @@
 Welcome to specless's documentation!
 ========================================
 
-**specless** (SPECification Learning and Strategy Synthesis) is a Python library for learningg specification and synthesizing strategies that satisfy the given specification.
+**specless** (SPECification Learning and Strategy Synthesis) is a Python library for learningg specification from demonstrations and synthesizing strategies that satisfy the given specification.
 It aims to offer a *simple* and *intuitive* API.
 To checkout the code, please visit our repo on `GitHub <https://github.com/watakandai/specless/>`_.
 
