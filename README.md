@@ -4,7 +4,7 @@
 </p>
 
 
-# SpecLeSS (SPECification Learning and Strategy Synthesis)
+# specless (SPECification LEarning and Strategy Synthesis)
 
 [![Documentation Status](https://readthedocs.org/projects/specless/badge/?version=latest)](https://specless.readthedocs.io/en/latest/?badge=latest)
 
