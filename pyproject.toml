@@ -1,16 +1,46 @@
+[project]
+name = "specless"
+version = "0.0.1"
+authors = [
+  {name = "Kandai Watanabe", email = "kandai.wata@gmail.com"}
+]
+readme = "README.md"
+description = "A package to learn specification and synthesize strategy from demonstrations"
+license = {file = "LICENSE"}
+requires-python = ">=3.7"
+dynamic = ["dependencies"]
+
+[project.urls]
+Repository = "https://github.com/watakandai/specless"
+Documentation = "https://specless.readthedocs.io/en/latest/"
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[build-system]
+requires = ["setuptools>=40.8.0", "wheel"]
+build-backend = "setuptools.build_meta:__legacy__"
+
 [tool.tox]
-envlist = "py37", "py38", "py39", "py310", "coverage"
+legacy_config = """
+[tox]
+envlist = py37,py38,py39,py310,coverage
 
 [testenv]
-commands = ["python -m coverage run -p -m pytest"]
+commands =
+    python -m coverage run -p -m pytest
 
-[testenv.coverage]
-basepython = "python3.10"
-commands = [
-  "python -m coverage combine",
-  "python -m coverage report -m --skip-covered",
-  "python -m coverage json"
-]
+[testenv:coverage]
+basepython = python3.10
+commands =
+    python -m coverage combine
+    python -m coverage report -m --skip-covered
+    python -m coverage json
 
-[tool.tox.gh-actions]
-python = { 3.7 = "py37", 3.8 = "py38", 3.9 = "py39", 3.10 = "py310" }
+[gh-actions]
+python =
+    3.7: py37
+    3.8: py38
+    3.9: py39
+    3.10: py310
+"""
