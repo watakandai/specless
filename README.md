@@ -16,3 +16,5 @@
 # Tox + Test + Coverage
 https://nedbatchelder.com/blog/202209/making_a_coverage_badge.html
 <script src="https://gist.github.com/watakandai/5f5c84f28e80b29f2f9ce92300859446.js"></script>
+
+https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/watakandai/5f5c84f28e80b29f2f9ce92300859446/raw/covbadge.json
