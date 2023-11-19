@@ -15,3 +15,9 @@
 - **Websites** https://watakandai.github.io/specless/ and https://specless.readthedocs.io/en/latest/
 - **Source code**: https://github.com/watakandai/specless.git
 - **PyPI**: https://pypi.org/project/specless/
+
+
+# Installation
+```bash
+pip install specless
+```
