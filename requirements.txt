@@ -1,0 +1,12 @@
+bidict
+scikit-learn
+numpy
+networkx
+matplotlib
+# uppaal-py
+pydot
+graphviz
+ipython
+cvxopt
+pygraphviz
+pm4py
