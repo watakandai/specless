@@ -7,6 +7,8 @@
 # specless (SPECification LEarning and Strategy Synthesis)
 
 [![Documentation Status](https://readthedocs.org/projects/specless/badge/?version=latest)](https://specless.readthedocs.io/en/latest/?badge=latest)
+[![Test Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/watakandai/5f5c84f28e80b29f2f9ce92300859446/raw/covbadge.json)](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/watakandai/5f5c84f28e80b29f2f9ce92300859446/raw/covbadge.json)
+
 
 - **Websites** https://watakandai.github.io/specless/ and https://specless.readthedocs.io/en/latest/
 - **Source code**: https://github.com/watakandai/specless.git
@@ -17,4 +19,3 @@
 https://nedbatchelder.com/blog/202209/making_a_coverage_badge.html
 <script src="https://gist.github.com/watakandai/5f5c84f28e80b29f2f9ce92300859446.js"></script>
 
-https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/watakandai/5f5c84f28e80b29f2f9ce92300859446/raw/covbadge.json
