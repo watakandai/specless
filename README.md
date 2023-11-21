@@ -44,13 +44,12 @@ pip install .
 You can use the `specless` package in two ways: as a library, and as a CLI tool.
 
 
-### As a Library
 
-To infer a specification from demonstrations,
+### To infer a specification from demonstrations,
 
-- Parse a demonstrations file:
+#### Parse a demonstrations file:
 ```python
-from specless.inference import TPOInference
+import specless as sl  # or load from specless.inference import TPOInference
 import pandas as pd
 
 # Manually prepare a list of demonstrations
@@ -63,26 +62,27 @@ demonstrations = [
 demonstrations = pd.read_csv(csv_filename)
 
 # Run the inference
-inference = TPOInference()
-specification = inference.infer(demonstraitons)     # returns a Specification
+inference = sl.TPOInference()
+specification = inference.infer(demonstrations)     # returns a Specification
 
 print(specification)                                # prints the specification
-specification.draw(filename)                        # exports the specification to a file
+sl.save_graph(specification, filenpath='spec')      # exports the specification to a file
+sl.draw_graph(specification, png_filepath='spec')   # drawws the specification to a file
 ```
 
-- Demonstrations can be obtained by simulating runs in an environment.
+#### Demonstrations can be obtained by simulating runs in an environment.
 The environment is based on the OpenAI Gym library (or more specifically, [PettingZoo](https://pettingzoo.farama.org/index.html))
 ```python
 import gym
 env = gym.make('MiniGrid-TSPBenchmarkEnv-v0')       # define an openai gym env
 
 def collect_demonstration(nsteps = 100):            # run simulation with random actions
-    state = env.reset()
+    state = env.reset()                             # state = Dict{'x': gym.spaces.Space(), 'label': gym.spaces.Text()}
     demonstration = []
     for i in range(nsteps):
         action = env.action_space.random()
         next_state, reward, terminated, truncated, info = env.step(action)
-        demonstration.append(state, action, next_state, reward, terminated, truncated, info)
+        demonstration.append((state, action, next_state, reward, terminated, truncated, info))
         if terminated or truncated:
             observation, info = env.reset()
         state = next_state
@@ -92,33 +92,39 @@ def collect_demonstration(nsteps = 100):            # run simulation with random
 demonstrations = [collect_demonstration() for i in range(10)]   # Collect Demonstrations
 ```
 
-- In case anyone wants to manually specify a specification, specify a LTL<sub>f</sub> formula:
+#### In case anyone wants to manually specify a specification, specify a LTL<sub>f</sub> formula:
 Internally, we use the LTL<sub>f</sub>2DFA package AND/OR `spot` package.
 ```python
-from specless.specbuilder import LTLfBuilder
-specification = LTLfBuilder.from_formula("G(a -> X b)")     # Translate a LTLf formula to specification class
+import specless as sl  # or laod from specless.specbuilder import LTLfBuilder
+specbuilder = sl.LTLfBuilder(engine='ltlf2dfa')         # Choose an engine
+specification = specbuilder.build("G(a -> X b)")        # Translate a LTLf formula to specification class
 ```
 
 
 - Once the specification is obtained, synthesize a strategy:
 ```python
 import gym
-from specless.specbuilder import LTLfBuilder
-from specless.synthesis import TSPSynthesis
+import specless as sl
+# or from specless.specbuilder import LTLfBuilder
+# or from specless.synthesis import TSPSynthesis
+
 env = gym.make('MiniGrid-TSPBenchmarkEnv-v0')               # Define an env
-specification = LTLfBuilder.from_formula("G(a -> X b)")     # Define a specification
-synthesizer = TSPSynthesis()                                # Set parameters at initialization
-strategy = synthesizer.syntheize(env, specification)        # Run the synthesis Algorithm
+specbuilder = sl.LTLfBuilder(engine='ltlf2dfa')             # Choose an engine
+specification = specbuilder.build("G(a -> X b)")            # Translate a LTLf formula to specification class
+synthesizer = sl.TSPSynthesis()                             # Set parameters at initialization
+strategy = synthesizer.synthesize(env, specification)       # Run the synthesis Algorithm
 
 print(strategy)
-strategy.draw()
+sl.save_graph(strategy, path='./strategy')
 ```
 
-You can use the strategy in an env like
+#### You can use the strategy in an env like
 ```python
 state = env.reset()
 while not (terminated or truncated):
-    action = strategy.action(state)
+    action = strategy.action(state)                         # Stategies in general should make decision based on an observed state
+                                                            # PlanStrategy class is a feedforward strategy (precomputed plan)
+                                                            # so it ignores whatever state it observes.
     env.step(action)
     next_state, reward, terminated, truncated, info = env.step(action)
     state = next_state
