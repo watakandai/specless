@@ -10,3 +10,4 @@ ipython
 cvxopt
 pygraphviz
 pm4py
+gymnasium

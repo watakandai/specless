@@ -47,19 +47,19 @@ You can use the `specless` package in two ways: as a library, and as a CLI tool.
 
 ### To infer a specification from demonstrations,
 
-#### Parse a demonstrations file:
+#### Parse a demonstration file:
 ```python
 import specless as sl  # or load from specless.inference import TPOInference
 import pandas as pd
 
 # Manually prepare a list of demonstrations
-demonstrations = [
-    [],
-    [],
-    [],
-]
+demonstrations = sl.TraceDataset([
+    [(symbol1, symbol2, ..., symboln)],             # trace 1
+    [(symbol1, symbol2, ..., symbolm)],             # trace 2
+    [(symbol1, symbol2, ..., symboll)],             # trace 3
+])
 # or load from a file
-demonstrations = pd.read_csv(csv_filename)
+demonstrations = sl.TraceDataset(pd.read_csv(csv_filename))
 
 # Run the inference
 inference = sl.TPOInference()
@@ -89,7 +89,8 @@ def collect_demonstration(nsteps = 100):            # run simulation with random
     env.close()
     return demonstration
 
-demonstrations = [collect_demonstration() for i in range(10)]   # Collect Demonstrations
+demonstrations = [collect_demonstration() for i in range(10)]
+demonstrations = sl.MDPDataset(demonstrations)      # Collect Demonstrations
 ```
 
 #### In case anyone wants to manually specify a specification, specify a LTL<sub>f</sub> formula:
@@ -112,7 +113,7 @@ env = gym.make('MiniGrid-TSPBenchmarkEnv-v0')               # Define an env
 specbuilder = sl.LTLfBuilder(engine='ltlf2dfa')             # Choose an engine
 specification = specbuilder.build("G(a -> X b)")            # Translate a LTLf formula to specification class
 synthesizer = sl.TSPSynthesis()                             # Set parameters at initialization
-strategy = synthesizer.synthesize(env, specification)       # Run the synthesis Algorithm
+strategy = synthesizer.synthesize(specification, env)       # Run the synthesis Algorithm
 
 print(strategy)
 sl.save_graph(strategy, path='./strategy')
@@ -139,7 +140,7 @@ demo2spec -f <path/to/file>
 ```
 
 ```python
-synthesize -d <path/to/demo> OR -s <LTLf formula> AND -e <Gym env> -p <path/to/param>
+synthesize -d <path/to/demo> OR -s <LTLf formula> AND -e <Gym env> AND -p <path/to/param>
 ```
 
 
