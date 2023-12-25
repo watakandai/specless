@@ -172,3 +172,7 @@ Apache 2.0 License
 
 Copyright 2023- KandaiWatanabe
 
+
+
+# WIP
+https://pypi.org/project/gradio-pannellum/
