@@ -13,7 +13,7 @@ import re
 import subprocess as sp
 import time
 from pathlib import Path
-from typing import Union
+from typing import Optional, Union
 
 import graphviz
 from IPython.display import Image, display
@@ -57,7 +57,7 @@ class AutomataInferenceAlgorithm(InferenceAlgorithm):
         self._learned_model_filepath: str
         self._initial_output_addon_name = "init_dfa"
         self._initial_model_filepath: str
-        self._output_base_filepath: str | None = None
+        self._output_base_filepath: Optional[str] = None
         self._output_directory: str = output_directory
         self._flexfringe_output_dir_popt_str: str = "o"
         Path(output_directory).mkdir(parents=True, exist_ok=True)

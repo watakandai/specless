@@ -237,7 +237,7 @@ class MiniGridSytemAndTSPAdapter:
         self.obs_to_nodes[obs].append(node_id)
 
 
-class MiniGridSytemAndTSPAdapter(MiniGridSytemAndTSPAdapter):
+class MiniGridSytemAndTSPAdapterWithTPO(MiniGridSytemAndTSPAdapter):
     """Converts Transition System To a TSP Problem"""
 
     def __call__(
