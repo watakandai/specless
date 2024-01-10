@@ -8,6 +8,10 @@ pydot
 graphviz
 ipython
 cvxopt
-pygraphviz
+# pygraphviz
 pm4py
 gymnasium
+torch
+ltlf2dfa
+minigrid
+click
