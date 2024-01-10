@@ -44,7 +44,7 @@ You can sort dataset in a batch
 """
 import os
 from abc import abstractmethod
-from typing import Any, Callable, List
+from typing import Any, Callable, List, Optional
 
 import numpy as np
 import pandas as pd
@@ -74,7 +74,7 @@ class BaseDataset(Dataset):
     def apply(self, func: Callable[..., Any]) -> None:
         list(map(func, self.data))
 
-    def tolist(self, key: str | None = None):
+    def tolist(self, key: Optional[str] = None):
         if key is None:
             return list(map(lambda d: d.values.tolist(), self.data))
         else:
@@ -91,7 +91,7 @@ class CSVDataset(BaseDataset):
 
     def __init__(
         self,
-        filedir: str | None = None,
+        filedir: Optional[str] = None,
         filepaths: List[str] | None = None,
     ) -> None:
         """
@@ -106,7 +106,7 @@ class CSVDataset(BaseDataset):
         >> dataset = CSVDataset(filedir, filepaths=filepaths)
 
         Args:
-            filedir (str | None, optional): _description_. Defaults to None.
+            filedir (str, optional): _description_. Defaults to None.
         """
         if filedir is None and filepaths is None:
             raise Exception("Provide either filedir or filepaths")

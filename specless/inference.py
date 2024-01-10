@@ -18,7 +18,7 @@ import time
 from abc import ABCMeta, abstractmethod
 from collections import defaultdict
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 import graphviz
 import networkx as nx
@@ -457,7 +457,7 @@ class AutomataInferenceAlgorithm(InferenceAlgorithm):
         self._learned_model_filepath: str
         self._initial_output_addon_name = "init_dfa"
         self._initial_model_filepath: str
-        self._output_base_filepath: str | None = None
+        self._output_base_filepath: Optional[str] = None
         self._output_directory: str = output_directory
         self._flexfringe_output_dir_popt_str: str = "o"
         Path(output_directory).mkdir(parents=True, exist_ok=True)
