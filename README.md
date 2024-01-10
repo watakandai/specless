@@ -1,10 +1,9 @@
 
 <p align="center">
-    <img src="https://github.com/watakandai/specless/assets/11141442/315fc857-aa58-46a3-89a9-bdbbf7c68fcf" width="200" height="200">
+    <img src="https://github.com/mattn/vim-gist/assets/11141442/22091c57-bef9-4b1c-9a40-df1b77d53613" width="200" height="200">
 </p>
 
-
-# specless (SPECification LEarning and Strategy Synthesis)
+# [WIP] specless (SPECification LEarning and Strategy Synthesis)
 
 [![Documentation Status](https://readthedocs.org/projects/specless/badge/?version=latest)](https://specless.readthedocs.io/en/latest/?badge=latest)
 [![Test Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/watakandai/5f5c84f28e80b29f2f9ce92300859446/raw/covbadge.json)](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/watakandai/5f5c84f28e80b29f2f9ce92300859446/raw/covbadge.json)
@@ -53,67 +52,55 @@ import specless as sl  # or load from specless.inference import TPOInference
 import pandas as pd
 
 # Manually prepare a list of demonstrations
-demonstrations = sl.TraceDataset([
-    [(symbol1, symbol2, ..., symboln)],             # trace 1
-    [(symbol1, symbol2, ..., symbolm)],             # trace 2
-    [(symbol1, symbol2, ..., symboll)],             # trace 3
-])
+demonstrations = [
+    ["e1", "e2", "e3", "e4", "e5"],             # trace 1
+    ["e1", "e4", "e2", "e3", "e5"],             # trace 2
+    ["e1", "e2", "e4", "e3", "e5"],             # trace 3
+]
+dataset = sl.ArrayDataset(demnstrations, columns=["symbol"])
 # or load from a file
-demonstrations = sl.TraceDataset(pd.read_csv(csv_filename))
+csv_filename = "./examples/readme/example.csv"
+dataset = sl.BaseDataset(pd.read_csv(csv_filename))
 
 # Run the inference
-inference = sl.TPOInference()
-specification = inference.infer(demonstrations)     # returns a Specification
+inference = sl.TPOInferenceAlgorithm()
+specification = inference.infer(dataset)            # returns a Specification
 
+# Note: Not yet supported
 print(specification)                                # prints the specification
-sl.save_graph(specification, filenpath='spec')      # exports the specification to a file
-sl.draw_graph(specification, png_filepath='spec')   # drawws the specification to a file
+sl.save_graph(specification, filenpath='spec')       # exports the specification to a file
+sl.draw_graph(specification, png_filepath='spec')    # drawws the specification to a file
 ```
 
 #### Demonstrations can be obtained by simulating runs in an environment.
 The environment is based on the OpenAI Gym library (or more specifically, [PettingZoo](https://pettingzoo.farama.org/index.html))
 ```python
-import gym
-env = gym.make('MiniGrid-TSPBenchmarkEnv-v0')       # define an openai gym env
+import gymnasium as gym
+import gym_minigrid # To load minigrid envs
+from specless.gym.utils import collect_demonstration
 
-def collect_demonstration(nsteps = 100):            # run simulation with random actions
-    state = env.reset()                             # state = Dict{'x': gym.spaces.Space(), 'label': gym.spaces.Text()}
-    demonstration = []
-    for i in range(nsteps):
-        action = env.action_space.random()
-        next_state, reward, terminated, truncated, info = env.step(action)
-        demonstration.append((state, action, next_state, reward, terminated, truncated, info))
-        if terminated or truncated:
-            observation, info = env.reset()
-        state = next_state
-    env.close()
-    return demonstration
-
-demonstrations = [collect_demonstration() for i in range(10)]
-demonstrations = sl.MDPDataset(demonstrations)      # Collect Demonstrations
+#
+env = gym.make("MiniGrid-Empty-5x5-v0")
+# Collect Demonstrations
+demonstrations = [collect_demonstration(env) for i in range(10)]
+# Convert them to a Dataset Class
+demonstrations = sl.ArrayDataset(demonstrations, columns=["s1", "s2", ...]) # state labels
 ```
-
-#### In case anyone wants to manually specify a specification, specify a LTL<sub>f</sub> formula:
-Internally, we use the LTL<sub>f</sub>2DFA package AND/OR `spot` package.
-```python
-import specless as sl  # or laod from specless.specbuilder import LTLfBuilder
-specbuilder = sl.LTLfBuilder(engine='ltlf2dfa')         # Choose an engine
-specification = specbuilder.build("G(a -> X b)")        # Translate a LTLf formula to specification class
-```
-
 
 - Once the specification is obtained, synthesize a strategy:
 ```python
-import gym
+import gymnasium as gym
+import gym_minigrid # To load minigrid envs (e.g., MiniGrid-Empty-5x5-v0)
 import specless as sl
-# or from specless.specbuilder import LTLfBuilder
+# or from specless.specparser import LTLfParser
 # or from specless.synthesis import TSPSynthesis
 
-env = gym.make('MiniGrid-TSPBenchmarkEnv-v0')               # Define an env
-specbuilder = sl.LTLfBuilder(engine='ltlf2dfa')             # Choose an engine
-specification = specbuilder.build("G(a -> X b)")            # Translate a LTLf formula to specification class
-synthesizer = sl.TSPSynthesis()                             # Set parameters at initialization
-strategy = synthesizer.synthesize(specification, env)       # Run the synthesis Algorithm
+env = gym.make("MiniGrid-Empty-5x5-v0")
+# TODO: LTLf must be installed. Need a little bit of work.
+specparser = sl.LTLfParser(engine='ltlf2dfa')             # Choose an engine
+specification = specparser.parse("G(a -> X b)")            # Translate a LTLf formula to specification class
+synthesizer = sl.TSPSynthesisAlgorithm()                  # Set parameters at initialization
+strategy = synthesizer.synthesize(specification, env)      # Run the synthesis Algorithm
 
 print(strategy)
 sl.save_graph(strategy, path='./strategy')
@@ -121,19 +108,24 @@ sl.save_graph(strategy, path='./strategy')
 
 #### You can use the strategy in an env like
 ```python
-state = env.reset()
+state, info = env.reset()
+terminated, truncated = False, False
 while not (terminated or truncated):
-    action = strategy.action(state)                         # Stategies in general should make decision based on an observed state
-                                                            # PlanStrategy class is a feedforward strategy (precomputed plan)
-                                                            # so it ignores whatever state it observes.
-    env.step(action)
-    next_state, reward, terminated, truncated, info = env.step(action)
+    action = strategy.action(state) # Stategies make a decision given an observed state
+
+    (next_state,
+     reward,
+     terminated,
+     truncated,
+     info) = env.step(action)       # PlanStrategy class is ******a** feedforward strategy.
+                                    # It precomputs a plan at each **step** and does not
+                                    # depend on the observed state.
     state = next_state
 env.close()
 ```
 
-### As a CLI Interface
-With the [click](https://click.palletsprojects.com/en/8.1.x/) package, we exposed some functions as a commandline tool.
+### [Not yet Supported] As a CLI Interface
+With the [click](https://click.palletsprojects.com/en/8.1.x/) package, we exposed some functions as a command line tool.
 
 ```python
 demo2spec -f <path/to/file>
@@ -149,7 +141,7 @@ synthesize -d <path/to/demo> OR -s <LTLf formula> AND -e <Gym env> AND -p <path/
 
 If you want to contribute, set up your development environment as follows:
 
-- Intall [Poetry](https://python-poetry.org)
+- Install [Poetry](https://python-poetry.org)
 - Clone the repository: `git clone https://github.com/watakandai/specless.git && cd specless`
 - Install the dependencies: `poetry shell && poetry install`
 
@@ -163,7 +155,7 @@ To run only the code tests: `tox`
 
 Locally, run `make html` inside the `docs` directory.
 
-Once you are ready, make a pull request and the documentations are build automatically with GitHub Actions.
+Once you are ready, make a pull request and the documentations are built automatically with GitHub Actions.
 See `.github/generate-documentation.yml`.
 
 ## License
@@ -176,3 +168,14 @@ Copyright 2023- KandaiWatanabe
 
 # WIP
 https://pypi.org/project/gradio-pannellum/
+
+
+# TODO:
+1. Create a wrapper (LabelMinigridWrapper) that labels an observed state. It must:
+    1. accept any labeling function given by the user
+    2. skip/ignore some states that are unnecessary (e.g., empty labels). This can be specified by the user by providing a list of labels that must be ignored or by providing a function that checks for unnecessary labels.
+2. Update the MiniGridTransitionSystemWrapper with LabelMiniGridWrapper so that the step function is updated to return observations with the augmented information (e.g. labels).
+3. Update the TransitionSystemBuilder with the new MiniGridTransitionSystemWrapper so that the transition system only includes desired labels!!!
+4. Collect a demonstration (trace) from the TransitionSystem
+5. Collect a timed trace from the TransitionSystem
+6. Update
