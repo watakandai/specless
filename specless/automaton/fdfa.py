@@ -3,7 +3,8 @@ import re
 from typing import Tuple
 
 import networkx as nx
-import pygraphviz
+
+# import pygraphviz
 from bidict import bidict
 from networkx.drawing import nx_agraph
 from networkx.drawing.nx_pydot import read_dot

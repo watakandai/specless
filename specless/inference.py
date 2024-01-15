@@ -157,8 +157,8 @@ class TPOInferenceAlgorithm(InferenceAlgorithm):
         po: PartialOrder,
         partial_order: Dict[str, List[str]],
         debug: bool = False,
-        decimals: int | None = None,
-        threshold: float | None = None,
+        decimals: Optional[int] = None,
+        threshold: Optional[float] = None,
     ) -> Tuple:
         """
         Infer Time Bounds on Nodes and Edges given Partial Order.
@@ -324,7 +324,7 @@ class TPOInferenceAlgorithm(InferenceAlgorithm):
 
     @staticmethod
     def get_event_bounds(
-        traces: TimedTraceList, partial_order: Dict[str, List[str]] | None = None
+        traces: TimedTraceList, partial_order: Optional[Dict[str, List[str]]] = None
     ) -> NodeBoundDict:
         """Compute min and max time boudn for each event"""
         if partial_order is None:
@@ -356,7 +356,7 @@ class TPOInferenceAlgorithm(InferenceAlgorithm):
 
     @staticmethod
     def get_event_pair_bounds(
-        traces: TimedTraceList, partial_order: Dict[str, List[str]] | None = None
+        traces: TimedTraceList, partial_order: Optional[Dict[str, List[str]]] = None
     ) -> EdgeBoundDict:
         """Compute min and max time boudn for each event"""
         if partial_order is None:

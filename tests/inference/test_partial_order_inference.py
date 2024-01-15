@@ -2,8 +2,6 @@
 import gym_minigrid  # noqa: F401
 import gymnasium as gym
 
-gym_minigrid.register_minigrid_envs()
-
 import specless as sl
 from specless.dataset import ArrayDataset
 from specless.inference.partial_order import POInferenceAlgorithm

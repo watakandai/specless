@@ -47,7 +47,7 @@ and a function to set edge labels
 >> tsbuilder.set_add_edge_func(add_edge_func)
 """
 from collections.abc import Iterable
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Union
 
 from gym_minigrid.minigrid import MiniGridEnv
 from gymnasium.core import ActType
@@ -124,7 +124,7 @@ class MiniGridTransitionSystemWrapper(TransitionSystemWrapper):
             zip(ACTION_STR_TO_ENUM.values(), ACTION_STR_TO_ENUM.keys())
         )
 
-    def actions(self) -> Iterable | ActionsEnum:
+    def actions(self) -> Union[Iterable, ActionsEnum]:
         return self.unwrapped.actions
 
     def _get_action_str(self, action: ActType) -> str:

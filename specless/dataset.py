@@ -44,7 +44,7 @@ You can sort dataset in a batch
 """
 import os
 from abc import abstractmethod
-from typing import Any, Callable, List, Optional
+from typing import Any, Callable, List, Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -82,7 +82,9 @@ class BaseDataset(Dataset):
 
 
 class ArrayDataset(BaseDataset):
-    def __init__(self, data: List[List[Any]] | np.ndarray, columns: List[str]) -> None:
+    def __init__(
+        self, data: Union[List[List[Any]], np.ndarray], columns: List[str]
+    ) -> None:
         super().__init__([Data(d, columns=columns) for d in data])
 
 
@@ -92,7 +94,7 @@ class CSVDataset(BaseDataset):
     def __init__(
         self,
         filedir: Optional[str] = None,
-        filepaths: List[str] | None = None,
+        filepaths: Optional[List[str]] = None,
     ) -> None:
         """
         Users can either provide a directory to the traces

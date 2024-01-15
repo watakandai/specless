@@ -6,8 +6,6 @@ import gym_minigrid  # noqa: F401
 import gymnasium as gym
 from specless.env.labelwrapper import LabelMiniGridWrapper
 
-gym_minigrid.register_minigrid_envs()
-
 env = gym.make("MiniGrid-BlockedUnlockPickup-v0")
 env = LabelMiniGridWrapper(env)
 state, info = env.reset()

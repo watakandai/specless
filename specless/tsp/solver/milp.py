@@ -22,7 +22,7 @@
 import itertools
 import sys
 from pathlib import Path
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 
 import gurobipy as gp
 from gurobipy import GRB
@@ -208,7 +208,7 @@ class MILPTSPWithTPOSolver(TSPWithTPOSolver):
         self,
         tsp,
         num_agent: int = 1,
-        init_nodes: List[Node] | None = None,
+        init_nodes: Optional[List[Node]] = None,
         come_back_home: bool = True,
     ) -> Tuple[List, float]:
         # Argument Priority: num_agent < init_nodes

@@ -7,8 +7,6 @@ import gymnasium as gym
 
 from specless.wrapper.minigridwrapper import MiniGridTransitionSystemWrapper
 
-gym_minigrid.register_minigrid_envs()
-
 
 def test_minigridwrapper():
     env = gym.make("MiniGrid-BlockedUnlockPickup-v0")

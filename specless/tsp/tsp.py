@@ -25,7 +25,7 @@ TSP
 import itertools
 import os
 from pathlib import Path
-from typing import Any, Dict, List, Tuple, Type
+from typing import Any, Dict, List, Optional, Tuple, Type
 
 from specless.specification.timed_partial_order import TimedPartialOrder
 
@@ -52,8 +52,8 @@ class GTSP:
         self,
         nodes: List[Node],
         costs: List[List[float]],
-        services: List[float] | None = None,
-        nodesets: List[List[Node]] | None = None,
+        services: Optional[List[float]] = None,
+        nodesets: Optional[List[List[Node]]] = None,
     ):
         if services is None:
             services = [0] * len(nodes)
@@ -77,7 +77,7 @@ class TSP(GTSP):
         self,
         nodes: List[Node],
         costs: List[List[float]],
-        services: List[float] | None = None,
+        services: Optional[List[float]] = None,
     ):
         super().__init__(nodes, costs, services)
 
@@ -90,7 +90,7 @@ class TSPTW(TSP):
         nodes: List[Node],
         costs: List[List[float]],
         time_windows: Dict[int, Tuple[int, int]],
-        services: List[float] | None = None,
+        services: Optional[List[float]] = None,
     ):
         super().__init__(nodes, costs, services)
         self.num_node = len(nodes)
@@ -161,7 +161,7 @@ class TSPWithTPO(TSP):
         nodes: List[Node],
         costs: List[List[float]],
         tpo: TimedPartialOrder,
-        services: List[float] | None = None,
+        services: Optional[List[float]] = None,
     ):
         super().__init__(nodes, costs, services)
         self.num_node: int = len(nodes)

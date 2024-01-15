@@ -50,12 +50,12 @@ import queue
 from abc import ABCMeta, abstractmethod
 from collections.abc import Iterable
 from enum import Enum
-from typing import Any, Dict, Tuple
+from typing import Any, Dict, Tuple, Union
 
 import gymnasium as gym
 from gymnasium.core import ActType, ObsType
 
-# EnvType = SpeclessEnv | SpeclessEnvWrapper
+# EnvType = Union[SpeclessEnv, SpeclessEnvWrapper]
 EnvType = gym.Env
 EnvObs = Dict
 CellObs = Tuple[int, int, int]
@@ -78,7 +78,7 @@ class TransitionSystemWrapper(gym.core.Wrapper, metaclass=ABCMeta):
         self.ignore_done = ignore_done
 
     @abstractmethod
-    def actions(self) -> Iterable | ActionsEnum:
+    def actions(self) -> Union[Iterable, ActionsEnum]:
         raise NotImplementedError()
 
     @abstractmethod

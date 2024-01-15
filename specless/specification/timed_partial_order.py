@@ -1,7 +1,7 @@
 import queue
 import random
 from collections import defaultdict
-from typing import Dict, Tuple, Type
+from typing import Dict, Optional, Tuple, Type
 
 import networkx as nx
 
@@ -60,7 +60,9 @@ class TimedPartialOrder(PartialOrder):
         g = nx.transitive_reduction(self)
         self.__dict__.update(g.__dict__)
 
-    def add_global_constraint(self, node, lb: float | None, ub: float | None) -> None:
+    def add_global_constraint(
+        self, node, lb: Optional[float], ub: Optional[float]
+    ) -> None:
         """Add a global Constraint to a dict AND as a node"""
         if not isinstance(lb, (int, float)) or lb < 0:
             lb = 0
@@ -73,7 +75,7 @@ class TimedPartialOrder(PartialOrder):
         super().add_node(node, lb=lb, ub=ub)
 
     def add_local_constraint(
-        self, src_node, tgt_node, lb: float | None, ub: float | None
+        self, src_node, tgt_node, lb: Optional[float], ub: Optional[float]
     ) -> None:
         """Add a local Constraint to a dict AND as a node"""
         if not isinstance(lb, (int, float)) or lb < 0:

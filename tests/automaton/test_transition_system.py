@@ -5,8 +5,6 @@ import gymnasium as gym
 from specless.automaton.transition_system import MinigridTransitionSystem, TSBuilder
 from specless.wrapper.minigridwrapper import MiniGridTransitionSystemWrapper
 
-gym_minigrid.register_minigrid_envs()
-
 
 def test_transition_system_builder():
     env = gym.make("MiniGrid-BlockedUnlockPickup-v0")

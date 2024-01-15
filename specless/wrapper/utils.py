@@ -1,6 +1,6 @@
 import time
 import warnings
-from typing import Callable, Dict, List, Tuple
+from typing import Callable, Dict, List, Optional, Tuple
 
 import gymnasium as gym
 from gymnasium.core import ObsType
@@ -10,7 +10,7 @@ def collect_demonstration(
     env: gym.Env,
     nsteps: int = 100,
     add_timestamp: bool = False,
-    add_timestamp_func: Callable | None = None,
+    add_timestamp_func: Optional[Callable] = None,
 ) -> Tuple[List, bool, bool]:  # run simulation with random actions
     if add_timestamp and add_timestamp_func is None:
 

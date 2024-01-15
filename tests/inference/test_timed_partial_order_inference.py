@@ -10,8 +10,6 @@ from specless.wrapper.labelwrapper import LabelMiniGridWrapper
 from specless.wrapper.selectstatewrapper import SelectStateDataWrapper
 from specless.wrapper.utils import collect_demonstrations
 
-gym_minigrid.register_minigrid_envs()
-
 
 def test_construction():
     TPOInferenceAlgorithm()
