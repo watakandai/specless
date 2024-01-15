@@ -26,7 +26,7 @@
 """
 import copy
 from collections import defaultdict
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 
 import networkx as nx
 from bidict import bidict
@@ -49,7 +49,7 @@ class MiniGridSytemAndTSPAdapter:
         - TSP nodes as "nodes" or "locations"
         """
 
-        self.T: MinigridTransitionSystem | None = None
+        self.T: Optional[MinigridTransitionSystem] = None
 
         """TS States to Observations"""
         self.state_to_obs: Dict[Tuple, str] = {}

@@ -7,7 +7,7 @@ from gymnasium.core import ActType
 
 from specless.automaton.transition_system import MinigridTransitionSystem, TSBuilder
 from specless.dataset import ArrayDataset
-from specless.factory.tspadapter import MiniGridSytemAndTSPAdapter
+from specless.factory.tspadapter import MiniGridSytemAndTSPAdapterWithTPO
 from specless.inference.timed_partial_order import TPOInferenceAlgorithm
 from specless.specification.base import Specification
 from specless.strategy import CombinedStrategy, PlanStrategy
@@ -18,8 +18,6 @@ from specless.wrapper.labelwrapper import LabelMiniGridWrapper
 from specless.wrapper.minigridwrapper import MiniGridTransitionSystemWrapper
 from specless.wrapper.selectstatewrapper import SelectStateDataWrapper
 from specless.wrapper.utils import collect_demonstrations
-
-gym_minigrid.register_minigrid_envs()
 
 
 def build_dataset_from_env(env_):
@@ -87,7 +85,7 @@ def test_tsp_synthesis():
     # transition_system.draw("MiniGrid-Empty-5x5-v0")
 
     # TPO & TransitionSystem -> TSP
-    adapter = MiniGridSytemAndTSPAdapter()
+    adapter = MiniGridSytemAndTSPAdapterWithTPO()
     tsp_with_tpo: TSPWithTPO = adapter(transition_system, tpo)
 
     # Solve TSP -> Tours

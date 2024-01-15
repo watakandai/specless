@@ -13,7 +13,7 @@ import queue
 import random
 from collections import defaultdict
 from functools import reduce
-from typing import Any, Callable, Dict, List, Tuple, Type, Union
+from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union
 
 import cvxopt as cvx
 import networkx as nx
@@ -102,8 +102,8 @@ class TPOInferenceAlgorithm(InferenceAlgorithm):
         po: PartialOrder,
         partial_order: Dict[str, List[str]],
         debug: bool = False,
-        decimals: int | None = None,
-        threshold: float | None = None,
+        decimals: Optional[int] = None,
+        threshold: Optional[float] = None,
     ) -> Tuple:
         """
         Infer Time Bounds on Nodes and Edges given Partial Order.
@@ -202,7 +202,7 @@ class TPOInferenceAlgorithm(InferenceAlgorithm):
         self,
         lp: Type["TimeConstraintsLP"],
         po: PartialOrder,
-        partial_order: Dict[str, list[str]],
+        partial_order: Dict[str, List[str]],
     ) -> Callable:
         """Select next_edge_iter function"""
 
@@ -273,7 +273,7 @@ class TPOInferenceAlgorithm(InferenceAlgorithm):
 
     @staticmethod
     def get_event_bounds(
-        traces: TimedTraceList, partial_order: Dict[str, List[str]] | None = None
+        traces: TimedTraceList, partial_order: Optional[Dict[str, List[str]]] = None
     ) -> NodeBoundDict:
         """Compute min and max time boudn for each event"""
         if partial_order is None:
@@ -305,7 +305,7 @@ class TPOInferenceAlgorithm(InferenceAlgorithm):
 
     @staticmethod
     def get_event_pair_bounds(
-        traces: TimedTraceList, partial_order: Dict[str, List[str]] | None = None
+        traces: TimedTraceList, partial_order: Optional[Dict[str, List[str]]] = None
     ) -> EdgeBoundDict:
         """Compute min and max time boudn for each event"""
         if partial_order is None:
@@ -451,10 +451,10 @@ class TimeConstraintsLP:
             ub = self.event_pair_to_bound[(source_event, target_event)][1]
             self.set_pair_bound(source_event, target_event, lb, ub)
 
-    def get_event_row_index(self, event: str, get_lb: bool) -> int | None:
+    def get_event_row_index(self, event: str, get_lb: bool) -> int:
         """Get an index for the given constraint (row index)"""
         if event not in self.event_to_indices:
-            return None
+            raise ValueError(f"{event} not found in {self.event_to_indices}")
 
         indices = self.event_to_indices[event]
 
@@ -464,11 +464,11 @@ class TimeConstraintsLP:
 
     def get_pair_row_index(
         self, source_event: str, target_event: str, get_lb: bool
-    ) -> int | None:
+    ) -> int:
         """Get Index of the constraint"""
         pair = (source_event, target_event)
         if pair not in self.pair_to_indices:
-            return None
+            raise ValueError(f"{pair} not found in {self.pair_to_indices}")
 
         indices = self.pair_to_indices[pair]
 
@@ -477,7 +477,7 @@ class TimeConstraintsLP:
         return indices[1]
 
     def set_event_bound(
-        self, event: str, lb: float | None = None, ub: float | None = None
+        self, event: str, lb: Optional[float] = None, ub: Optional[float] = None
     ) -> None:
         """Set Event Lower/Upper Bound"""
         col = self.get_column_index(event)
@@ -495,8 +495,8 @@ class TimeConstraintsLP:
         self,
         source_event: str,
         target_event: str,
-        lb: float | None = None,
-        ub: float | None = None,
+        lb: Optional[float] = None,
+        ub: Optional[float] = None,
     ) -> None:
         """Set Pair Lower/Upper Bound"""
         source_col = self.get_column_index(source_event)
@@ -638,9 +638,9 @@ class TimeConstraintsLP:
         source_event: str,
         target_event: str,
         lb: bool,
-        decimals: int | None = None,
-        threshold: float | None = None,
-        slack_threshold: float | None = None,
+        decimals: Optional[int] = None,
+        threshold: Optional[float] = None,
+        slack_threshold: Optional[float] = None,
         debug: bool = False,
     ) -> Dict:
         """
