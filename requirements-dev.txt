@@ -1,9 +1,0 @@
-ruff==0.1.5
-# ruff claims to include black, isort, linters (flake8), formatters (autoflake), and doc-linter (pydocstyle)
-# black
-# isort
-# pydocstyle
-mypy==1.7.0
-pyroma==4.2
-pytest==7.4.3
-pytest-cov
