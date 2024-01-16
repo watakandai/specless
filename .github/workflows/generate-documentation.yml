@@ -10,21 +10,21 @@ jobs:
         contents: write
     steps:
     - uses: actions/checkout@v4
-    # - uses: actions/setup-python@v4
-    #   with:
-    #     python-version: "3.10"
-    # - name: Install dependencies
-    #   run: |
-    #     python3 -m pip install -r requirements.txt
-    # - name: Sphinx build
-    #   run: |
-    #     python3 -m sphinx docs docs/build
-    # Standard drop-in approach that should work for most people.
-    - name: Build HTML
-      uses: ammaraskar/sphinx-action@master
+    - uses: actions/setup-python@v4
       with:
-        pre-build-command: "apt-get update && apt-get install -y git && python -m pip install --no-cache-dir -r requirements.txt && pip install 'sphinx==7.1.2' --force-reinstall"
-        docs-folder: "docs/"
+        python-version: "3.10"
+    - name: Install dependencies
+      run: |
+        python3 -m pip install -r requirements.txt && python3 -m pip install -r docs/requirements.txt
+    - name: Sphinx build
+      run: |
+        python3 -m sphinx docs docs/build
+    # Standard drop-in approach that should work for most people.
+    # - name: Build HTML
+    #   uses: ammaraskar/sphinx-action@master
+    #   with:
+    #     pre-build-command: "apt-get update && apt-get install -y git && python -m pip install --no-cache-dir -r requirements.txt && pip install 'sphinx==7.1.2' --force-reinstall"
+    #     docs-folder: "docs/"
 
     # Great extra actions to compose with:
     # Create an artifact of the html output.
