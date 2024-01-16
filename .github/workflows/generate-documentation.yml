@@ -30,7 +30,7 @@ jobs:
     #     github_token: ${{ secrets.GITHUB_TOKEN }}
     #     publish_dir: .
     - name: Commit documentation changes
-      if: github.event.pull_request.merged == true
+      # if: github.event.pull_request.merged == true
       run: |
         git clone https://github.com/watakandai/specless.git --branch gh-pages --single-branch gh-pages
         cp -r docs/build gh-pages/docs/
