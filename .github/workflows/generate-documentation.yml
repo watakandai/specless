@@ -15,7 +15,7 @@ jobs:
     #     python-version: "3.10"
     - name: Install dependencies
       run: |
-        python3 -m pip install sphinx==7.2.6
+        python3 -m pip install -r requirements.txt
     # - name: Sphinx build
     #   run: |
     #     python3 -m sphinx docs docs/build
