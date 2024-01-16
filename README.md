@@ -167,7 +167,8 @@ Copyright 2023- KandaiWatanabe
 
 
 # WIP
-https://pypi.org/project/gradio-pannellum/
+- https://pypi.org/project/gradio-pannellum/
+- CLI
 
 
 # TODO:
