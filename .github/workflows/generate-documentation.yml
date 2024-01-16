@@ -10,20 +10,20 @@ jobs:
         contents: write
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-python@v4
-      with:
-        python-version: "3.10"
+    # - uses: actions/setup-python@v4
+    #   with:
+    #     python-version: "3.10"
     - name: Install dependencies
       run: |
-        python3 -m pip install sphinx sphinx_rtd_theme
-    - name: Sphinx build
-      run: |
-        python3 -m sphinx docs docs/build
-    # # Standard drop-in approach that should work for most people.
-    # - name: Build HTML
-    #   uses: ammaraskar/sphinx-action@master
-    #   with:
-    #     docs-folder: "docs/"
+        python3 -m pip install sphinx==7.2.6
+    # - name: Sphinx build
+    #   run: |
+    #     python3 -m sphinx docs docs/build
+    # Standard drop-in approach that should work for most people.
+    - name: Build HTML
+      uses: ammaraskar/sphinx-action@master
+      with:
+        docs-folder: "docs/"
 
     # Great extra actions to compose with:
     # Create an artifact of the html output.
@@ -38,7 +38,7 @@ jobs:
       with:
         publish_branch: gh-pages
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: docs
+        publish_dir: docs/build/html
     # - name: Commit documentation changes
     #   run: |
     #     git clone https://github.com/watakandai/specless.git --branch gh-pages --single-branch gh-pages
