@@ -8,6 +8,15 @@ pydot
 graphviz
 ipython
 cvxopt
-pygraphviz
+# pygraphviz
 pm4py
 gymnasium
+torch
+ltlf2dfa
+minigrid
+click
+gym
+gym_minigrid @ git+https://github.com/mit-acl/gym-minigrid.git
+# gym_minigrid
+pyyaml
+gurobipy==10.0.3
