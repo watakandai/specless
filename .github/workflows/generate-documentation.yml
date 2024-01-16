@@ -23,7 +23,7 @@ jobs:
     - name: Build HTML
       uses: ammaraskar/sphinx-action@master
       with:
-        pre-build-command: "pip install 'sphinx==7.1.2' --force-reinstall"
+        pre-build-command: "pip install -r requirements.txt && pip install 'sphinx==7.1.2' --force-reinstall"
         docs-folder: "docs/"
 
     # Great extra actions to compose with:
