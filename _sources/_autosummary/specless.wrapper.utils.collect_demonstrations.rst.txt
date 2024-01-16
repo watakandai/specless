@@ -1,0 +1,6 @@
+specless.wrapper.utils.collect\_demonstrations
+==============================================
+
+.. currentmodule:: specless.wrapper.utils
+
+.. autofunction:: collect_demonstrations

@@ -1,0 +1,101 @@
+specless.automaton.dfa.DFA
+==========================
+
+.. currentmodule:: specless.automaton.dfa
+
+.. autoclass:: DFA
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DFA.add_edge
+      ~DFA.add_edges_from
+      ~DFA.add_node
+      ~DFA.add_nodes_from
+      ~DFA.add_weighted_edges_from
+      ~DFA.adjacency
+      ~DFA.clear
+      ~DFA.clear_edges
+      ~DFA.copy
+      ~DFA.disp_edges
+      ~DFA.disp_nodes
+      ~DFA.draw
+      ~DFA.edge_subgraph
+      ~DFA.generate_trace
+      ~DFA.generate_traces
+      ~DFA.get_edge_data
+      ~DFA.has_edge
+      ~DFA.has_node
+      ~DFA.has_predecessor
+      ~DFA.has_successor
+      ~DFA.is_directed
+      ~DFA.is_multigraph
+      ~DFA.most_probable_string
+      ~DFA.nbunch_iter
+      ~DFA.neighbors
+      ~DFA.new_edge_key
+      ~DFA.number_of_edges
+      ~DFA.number_of_nodes
+      ~DFA.observe
+      ~DFA.order
+      ~DFA.plot_node_trans_dist
+      ~DFA.predecessors
+      ~DFA.remove_edge
+      ~DFA.remove_edges_from
+      ~DFA.remove_node
+      ~DFA.remove_nodes_from
+      ~DFA.reverse
+      ~DFA.size
+      ~DFA.subgraph
+      ~DFA.successors
+      ~DFA.to_directed
+      ~DFA.to_directed_class
+      ~DFA.to_undirected
+      ~DFA.to_undirected_class
+      ~DFA.update
+      ~DFA.write_traces_to_file
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DFA.adj
+      ~DFA.automata_data_dir
+      ~DFA.automata_display_data_dir_name
+      ~DFA.degree
+      ~DFA.edges
+      ~DFA.in_degree
+      ~DFA.in_edges
+      ~DFA.name
+      ~DFA.nodes
+      ~DFA.out_degree
+      ~DFA.out_edges
+      ~DFA.pred
+      ~DFA.succ
+      ~DFA.alphabet_size
+      ~DFA.num_states
+      ~DFA.num_obs
+      ~DFA.final_transition_sym
+      ~DFA.empty_transition_sym
+      ~DFA.start_state
+      ~DFA.is_stochastic
+      ~DFA.is_sampleable
+      ~DFA.is_normalized
+      ~DFA.symbols
+      ~DFA.state_labels
+      ~DFA.observations
+      ~DFA.is_deterministic
+   
+   

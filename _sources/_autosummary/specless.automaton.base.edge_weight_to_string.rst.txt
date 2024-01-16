@@ -1,0 +1,6 @@
+specless.automaton.base.edge\_weight\_to\_string
+================================================
+
+.. currentmodule:: specless.automaton.base
+
+.. autofunction:: edge_weight_to_string

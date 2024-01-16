@@ -1,0 +1,47 @@
+specless.wrapper.tswrapper.TransitionSystemWrapper
+==================================================
+
+.. currentmodule:: specless.wrapper.tswrapper
+
+.. autoclass:: TransitionSystemWrapper
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~TransitionSystemWrapper.actions
+      ~TransitionSystemWrapper.class_name
+      ~TransitionSystemWrapper.close
+      ~TransitionSystemWrapper.extract_transition_system
+      ~TransitionSystemWrapper.get_wrapper_attr
+      ~TransitionSystemWrapper.make_transition
+      ~TransitionSystemWrapper.render
+      ~TransitionSystemWrapper.reset
+      ~TransitionSystemWrapper.step
+      ~TransitionSystemWrapper.wrapper_spec
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~TransitionSystemWrapper.action_space
+      ~TransitionSystemWrapper.metadata
+      ~TransitionSystemWrapper.np_random
+      ~TransitionSystemWrapper.observation_space
+      ~TransitionSystemWrapper.render_mode
+      ~TransitionSystemWrapper.reward_range
+      ~TransitionSystemWrapper.spec
+      ~TransitionSystemWrapper.unwrapped
+   
+   

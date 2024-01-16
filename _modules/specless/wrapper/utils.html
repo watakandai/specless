@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>specless.wrapper.utils &#8212; specless 0.0.2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=12dfc556" />
+    <script src="../../../_static/documentation_options.js?v=e3a6060d"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for specless.wrapper.utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<span class="kn">from</span> <span class="nn">gymnasium.core</span> <span class="kn">import</span> <span class="n">ObsType</span>
+
+
+<div class="viewcode-block" id="collect_demonstration">
+<a class="viewcode-back" href="../../../_autosummary/specless.wrapper.utils.collect_demonstration.html#specless.wrapper.utils.collect_demonstration">[docs]</a>
+<span class="k">def</span> <span class="nf">collect_demonstration</span><span class="p">(</span>
+    <span class="n">env</span><span class="p">:</span> <span class="n">gym</span><span class="o">.</span><span class="n">Env</span><span class="p">,</span>
+    <span class="n">nsteps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="n">add_timestamp</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">add_timestamp_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>  <span class="c1"># run simulation with random actions</span>
+    <span class="k">if</span> <span class="n">add_timestamp</span> <span class="ow">and</span> <span class="n">add_timestamp_func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="k">def</span> <span class="nf">add_timestamp_func</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">+</span> <span class="n">s</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="o">*</span><span class="n">s</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Please pass a proper add_timestamp_func to add a timestamp to observations&quot;</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="n">state</span><span class="p">:</span> <span class="n">ObsType</span>
+    <span class="n">next_state</span><span class="p">:</span> <span class="n">ObsType</span>
+    <span class="n">info</span><span class="p">:</span> <span class="n">Dict</span>
+    <span class="n">reward</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">terminated</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">truncated</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="p">(</span>
+        <span class="n">state</span><span class="p">,</span>
+        <span class="n">info</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>  <span class="c1"># state = Dict{&#39;x&#39;: gym.spaces.Space(), &#39;label&#39;: gym.spaces.Text()}</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">add_timestamp</span><span class="p">:</span>
+        <span class="n">demonstration</span> <span class="o">=</span> <span class="p">[</span><span class="n">add_timestamp_func</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">t</span><span class="p">)]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">demonstration</span> <span class="o">=</span> <span class="p">[</span><span class="n">state</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nsteps</span><span class="p">):</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+        <span class="n">next_state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+        <span class="n">t</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">add_timestamp</span><span class="p">:</span>
+            <span class="n">demonstration</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">add_timestamp_func</span><span class="p">(</span><span class="n">next_state</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">demonstration</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">next_state</span><span class="p">)</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">next_state</span>
+        <span class="c1"># Return only if succeeded/truncated</span>
+        <span class="k">if</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">demonstration</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">demonstration</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span></div>
+
+
+
+<div class="viewcode-block" id="collect_demonstrations">
+<a class="viewcode-back" href="../../../_autosummary/specless.wrapper.utils.collect_demonstrations.html#specless.wrapper.utils.collect_demonstrations">[docs]</a>
+<span class="k">def</span> <span class="nf">collect_demonstrations</span><span class="p">(</span>
+    <span class="n">env</span><span class="p">,</span>
+    <span class="n">num</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="n">only_success</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">only_failure</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">only_finished</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">only_unfinished</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">]:</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Pick either only_success, only_failure, only_finished, or only_finished. `finished` includes success and failure.&quot;</span>
+    <span class="k">assert</span> <span class="nb">sum</span><span class="p">([</span><span class="n">only_success</span><span class="p">,</span> <span class="n">only_failure</span><span class="p">,</span> <span class="n">only_finished</span><span class="p">,</span> <span class="n">only_unfinished</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">,</span> <span class="n">msg</span>
+
+    <span class="k">if</span> <span class="n">only_success</span><span class="p">:</span>
+        <span class="n">collect_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;success&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">only_failure</span><span class="p">:</span>
+        <span class="n">collect_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;failure&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">only_finished</span><span class="p">:</span>
+        <span class="n">collect_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;success&quot;</span><span class="p">,</span> <span class="s2">&quot;failure&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">only_unfinished</span><span class="p">:</span>
+        <span class="n">collect_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;unfinished&quot;</span><span class="p">]</span>
+
+    <span class="n">demonstrations</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">demonstrations</span><span class="p">)</span> <span class="o">!=</span> <span class="n">num</span><span class="p">:</span>
+        <span class="c1"># Collect a demonstration</span>
+        <span class="n">demo</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span> <span class="o">=</span> <span class="n">collect_demonstration</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># Decided whether to add the demonstration to the list</span>
+        <span class="k">if</span> <span class="s2">&quot;success&quot;</span> <span class="ow">in</span> <span class="n">collect_types</span> <span class="ow">and</span> <span class="n">terminated</span><span class="p">:</span>
+            <span class="n">demonstrations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">demo</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s2">&quot;failure&quot;</span> <span class="ow">in</span> <span class="n">collect_types</span> <span class="ow">and</span> <span class="n">truncated</span><span class="p">:</span>
+            <span class="n">demonstrations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">demo</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">demonstrations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">demo</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span> <span class="o">&gt;</span> <span class="n">timeout</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Timeout. collect_demonstrations exceeded </span><span class="si">{</span><span class="n">timeout</span><span class="si">}</span><span class="s2"> seconds.&quot;</span>
+            <span class="p">)</span>
+            <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">demonstrations</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">specless</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/specless.html">specless</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2023, Kandai Watanabe.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

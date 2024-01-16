@@ -1,0 +1,25 @@
+specless.strategy.HistoryDependentStrategy
+==========================================
+
+.. currentmodule:: specless.strategy
+
+.. autoclass:: HistoryDependentStrategy
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~HistoryDependentStrategy.action
+   
+   
+
+   
+   
+   

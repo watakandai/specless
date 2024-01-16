@@ -1,0 +1,78 @@
+specless.specification\_.Specification
+======================================
+
+.. currentmodule:: specless.specification_
+
+.. autoclass:: Specification
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~Specification.add_edge
+      ~Specification.add_edges_from
+      ~Specification.add_node
+      ~Specification.add_nodes_from
+      ~Specification.add_weighted_edges_from
+      ~Specification.adjacency
+      ~Specification.clear
+      ~Specification.clear_edges
+      ~Specification.copy
+      ~Specification.edge_subgraph
+      ~Specification.get_edge_data
+      ~Specification.has_edge
+      ~Specification.has_node
+      ~Specification.has_predecessor
+      ~Specification.has_successor
+      ~Specification.is_directed
+      ~Specification.is_multigraph
+      ~Specification.nbunch_iter
+      ~Specification.neighbors
+      ~Specification.new_edge_key
+      ~Specification.number_of_edges
+      ~Specification.number_of_nodes
+      ~Specification.order
+      ~Specification.predecessors
+      ~Specification.remove_edge
+      ~Specification.remove_edges_from
+      ~Specification.remove_node
+      ~Specification.remove_nodes_from
+      ~Specification.reverse
+      ~Specification.satisfy
+      ~Specification.size
+      ~Specification.subgraph
+      ~Specification.successors
+      ~Specification.to_directed
+      ~Specification.to_directed_class
+      ~Specification.to_undirected
+      ~Specification.to_undirected_class
+      ~Specification.update
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Specification.adj
+      ~Specification.degree
+      ~Specification.edges
+      ~Specification.in_degree
+      ~Specification.in_edges
+      ~Specification.name
+      ~Specification.nodes
+      ~Specification.out_degree
+      ~Specification.out_edges
+      ~Specification.pred
+      ~Specification.succ
+   
+   

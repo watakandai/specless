@@ -1,0 +1,103 @@
+specless.automaton.transition\_system.TransitionSystem
+======================================================
+
+.. currentmodule:: specless.automaton.transition_system
+
+.. autoclass:: TransitionSystem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~TransitionSystem.add_edge
+      ~TransitionSystem.add_edges_from
+      ~TransitionSystem.add_node
+      ~TransitionSystem.add_nodes_from
+      ~TransitionSystem.add_weighted_edges_from
+      ~TransitionSystem.adjacency
+      ~TransitionSystem.clear
+      ~TransitionSystem.clear_edges
+      ~TransitionSystem.copy
+      ~TransitionSystem.disp_edges
+      ~TransitionSystem.disp_nodes
+      ~TransitionSystem.draw
+      ~TransitionSystem.edge_subgraph
+      ~TransitionSystem.generate_trace
+      ~TransitionSystem.generate_traces
+      ~TransitionSystem.get_edge_data
+      ~TransitionSystem.has_edge
+      ~TransitionSystem.has_node
+      ~TransitionSystem.has_predecessor
+      ~TransitionSystem.has_successor
+      ~TransitionSystem.is_directed
+      ~TransitionSystem.is_multigraph
+      ~TransitionSystem.most_probable_string
+      ~TransitionSystem.nbunch_iter
+      ~TransitionSystem.neighbors
+      ~TransitionSystem.new_edge_key
+      ~TransitionSystem.number_of_edges
+      ~TransitionSystem.number_of_nodes
+      ~TransitionSystem.observe
+      ~TransitionSystem.order
+      ~TransitionSystem.plot_node_trans_dist
+      ~TransitionSystem.predecessors
+      ~TransitionSystem.remove_edge
+      ~TransitionSystem.remove_edges_from
+      ~TransitionSystem.remove_node
+      ~TransitionSystem.remove_nodes_from
+      ~TransitionSystem.reverse
+      ~TransitionSystem.run
+      ~TransitionSystem.size
+      ~TransitionSystem.subgraph
+      ~TransitionSystem.successors
+      ~TransitionSystem.to_directed
+      ~TransitionSystem.to_directed_class
+      ~TransitionSystem.to_undirected
+      ~TransitionSystem.to_undirected_class
+      ~TransitionSystem.transition
+      ~TransitionSystem.update
+      ~TransitionSystem.write_traces_to_file
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~TransitionSystem.adj
+      ~TransitionSystem.automata_data_dir
+      ~TransitionSystem.automata_display_data_dir_name
+      ~TransitionSystem.degree
+      ~TransitionSystem.edges
+      ~TransitionSystem.in_degree
+      ~TransitionSystem.in_edges
+      ~TransitionSystem.name
+      ~TransitionSystem.nodes
+      ~TransitionSystem.out_degree
+      ~TransitionSystem.out_edges
+      ~TransitionSystem.pred
+      ~TransitionSystem.succ
+      ~TransitionSystem.alphabet_size
+      ~TransitionSystem.num_states
+      ~TransitionSystem.num_obs
+      ~TransitionSystem.final_transition_sym
+      ~TransitionSystem.empty_transition_sym
+      ~TransitionSystem.start_state
+      ~TransitionSystem.is_stochastic
+      ~TransitionSystem.is_sampleable
+      ~TransitionSystem.is_normalized
+      ~TransitionSystem.symbols
+      ~TransitionSystem.state_labels
+      ~TransitionSystem.observations
+      ~TransitionSystem.is_deterministic
+   
+   

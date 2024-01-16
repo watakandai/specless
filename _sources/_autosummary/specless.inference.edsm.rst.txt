@@ -1,0 +1,32 @@
+specless.inference.edsm
+=======================
+
+.. automodule:: specless.inference.edsm
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      AutomataInferenceAlgorithm
+   
+   
+
+   
+   
+   
+
+
+

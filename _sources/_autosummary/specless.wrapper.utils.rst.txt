@@ -1,0 +1,32 @@
+specless.wrapper.utils
+======================
+
+.. automodule:: specless.wrapper.utils
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      collect_demonstration
+      collect_demonstrations
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

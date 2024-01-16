@@ -1,0 +1,77 @@
+specless.specification.pdfa.PDFA
+================================
+
+.. currentmodule:: specless.specification.pdfa
+
+.. autoclass:: PDFA
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~PDFA.add_edge
+      ~PDFA.add_edges_from
+      ~PDFA.add_node
+      ~PDFA.add_nodes_from
+      ~PDFA.add_weighted_edges_from
+      ~PDFA.adjacency
+      ~PDFA.clear
+      ~PDFA.clear_edges
+      ~PDFA.copy
+      ~PDFA.edge_subgraph
+      ~PDFA.get_edge_data
+      ~PDFA.has_edge
+      ~PDFA.has_node
+      ~PDFA.has_predecessor
+      ~PDFA.has_successor
+      ~PDFA.is_directed
+      ~PDFA.is_multigraph
+      ~PDFA.nbunch_iter
+      ~PDFA.neighbors
+      ~PDFA.number_of_edges
+      ~PDFA.number_of_nodes
+      ~PDFA.order
+      ~PDFA.predecessors
+      ~PDFA.remove_edge
+      ~PDFA.remove_edges_from
+      ~PDFA.remove_node
+      ~PDFA.remove_nodes_from
+      ~PDFA.reverse
+      ~PDFA.satisfy
+      ~PDFA.size
+      ~PDFA.subgraph
+      ~PDFA.successors
+      ~PDFA.to_directed
+      ~PDFA.to_directed_class
+      ~PDFA.to_undirected
+      ~PDFA.to_undirected_class
+      ~PDFA.update
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PDFA.adj
+      ~PDFA.degree
+      ~PDFA.edges
+      ~PDFA.in_degree
+      ~PDFA.in_edges
+      ~PDFA.name
+      ~PDFA.nodes
+      ~PDFA.out_degree
+      ~PDFA.out_edges
+      ~PDFA.pred
+      ~PDFA.succ
+   
+   

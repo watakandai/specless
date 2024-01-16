@@ -1,0 +1,32 @@
+specless.wrapper.actionwrapper.EightOmniDirectionActions
+========================================================
+
+.. currentmodule:: specless.wrapper.actionwrapper
+
+.. autoclass:: EightOmniDirectionActions
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~EightOmniDirectionActions.north
+      ~EightOmniDirectionActions.south
+      ~EightOmniDirectionActions.east
+      ~EightOmniDirectionActions.west
+      ~EightOmniDirectionActions.northeast
+      ~EightOmniDirectionActions.northwest
+      ~EightOmniDirectionActions.southeast
+      ~EightOmniDirectionActions.southwest
+      ~EightOmniDirectionActions.stay
+   
+   

@@ -1,0 +1,45 @@
+specless.automaton.utils
+========================
+
+.. automodule:: specless.automaton.utils
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      logx
+      xlogx
+      xlogy
+      ylogx
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      MaxHeap
+      MaxHeapObj
+      MinHeap
+   
+   
+
+   
+   
+   
+
+
+

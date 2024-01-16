@@ -1,0 +1,39 @@
+specless.factory.tspadapter.MiniGridSytemAndTSPAdapter
+======================================================
+
+.. currentmodule:: specless.factory.tspadapter
+
+.. autoclass:: MiniGridSytemAndTSPAdapter
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MiniGridSytemAndTSPAdapter.add_initial_state
+      ~MiniGridSytemAndTSPAdapter.build_mappings_from_ts
+      ~MiniGridSytemAndTSPAdapter.get_all_pair_shortest_paths
+      ~MiniGridSytemAndTSPAdapter.map_back_to_controls
+      ~MiniGridSytemAndTSPAdapter.node_list_to_edges
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MiniGridSytemAndTSPAdapter.T
+      ~MiniGridSytemAndTSPAdapter.state_to_obs
+      ~MiniGridSytemAndTSPAdapter.obs_to_states
+      ~MiniGridSytemAndTSPAdapter.obs_to_nodes
+      ~MiniGridSytemAndTSPAdapter.state_to_node
+   
+   

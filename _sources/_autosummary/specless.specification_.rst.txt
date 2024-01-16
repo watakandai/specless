@@ -1,0 +1,34 @@
+specless.specification\_
+========================
+
+.. automodule:: specless.specification_
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      AutomataSpecification
+      MultiSpecifications
+      Specification
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,78 @@
+specless.specification\_.AutomataSpecification
+==============================================
+
+.. currentmodule:: specless.specification_
+
+.. autoclass:: AutomataSpecification
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~AutomataSpecification.add_edge
+      ~AutomataSpecification.add_edges_from
+      ~AutomataSpecification.add_node
+      ~AutomataSpecification.add_nodes_from
+      ~AutomataSpecification.add_weighted_edges_from
+      ~AutomataSpecification.adjacency
+      ~AutomataSpecification.clear
+      ~AutomataSpecification.clear_edges
+      ~AutomataSpecification.copy
+      ~AutomataSpecification.edge_subgraph
+      ~AutomataSpecification.get_edge_data
+      ~AutomataSpecification.has_edge
+      ~AutomataSpecification.has_node
+      ~AutomataSpecification.has_predecessor
+      ~AutomataSpecification.has_successor
+      ~AutomataSpecification.is_directed
+      ~AutomataSpecification.is_multigraph
+      ~AutomataSpecification.nbunch_iter
+      ~AutomataSpecification.neighbors
+      ~AutomataSpecification.new_edge_key
+      ~AutomataSpecification.number_of_edges
+      ~AutomataSpecification.number_of_nodes
+      ~AutomataSpecification.order
+      ~AutomataSpecification.predecessors
+      ~AutomataSpecification.remove_edge
+      ~AutomataSpecification.remove_edges_from
+      ~AutomataSpecification.remove_node
+      ~AutomataSpecification.remove_nodes_from
+      ~AutomataSpecification.reverse
+      ~AutomataSpecification.satisfy
+      ~AutomataSpecification.size
+      ~AutomataSpecification.subgraph
+      ~AutomataSpecification.successors
+      ~AutomataSpecification.to_directed
+      ~AutomataSpecification.to_directed_class
+      ~AutomataSpecification.to_undirected
+      ~AutomataSpecification.to_undirected_class
+      ~AutomataSpecification.update
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~AutomataSpecification.adj
+      ~AutomataSpecification.degree
+      ~AutomataSpecification.edges
+      ~AutomataSpecification.in_degree
+      ~AutomataSpecification.in_edges
+      ~AutomataSpecification.name
+      ~AutomataSpecification.nodes
+      ~AutomataSpecification.out_degree
+      ~AutomataSpecification.out_edges
+      ~AutomataSpecification.pred
+      ~AutomataSpecification.succ
+   
+   

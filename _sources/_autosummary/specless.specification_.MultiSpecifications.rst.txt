@@ -1,0 +1,78 @@
+specless.specification\_.MultiSpecifications
+============================================
+
+.. currentmodule:: specless.specification_
+
+.. autoclass:: MultiSpecifications
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MultiSpecifications.add_edge
+      ~MultiSpecifications.add_edges_from
+      ~MultiSpecifications.add_node
+      ~MultiSpecifications.add_nodes_from
+      ~MultiSpecifications.add_weighted_edges_from
+      ~MultiSpecifications.adjacency
+      ~MultiSpecifications.clear
+      ~MultiSpecifications.clear_edges
+      ~MultiSpecifications.copy
+      ~MultiSpecifications.edge_subgraph
+      ~MultiSpecifications.get_edge_data
+      ~MultiSpecifications.has_edge
+      ~MultiSpecifications.has_node
+      ~MultiSpecifications.has_predecessor
+      ~MultiSpecifications.has_successor
+      ~MultiSpecifications.is_directed
+      ~MultiSpecifications.is_multigraph
+      ~MultiSpecifications.nbunch_iter
+      ~MultiSpecifications.neighbors
+      ~MultiSpecifications.new_edge_key
+      ~MultiSpecifications.number_of_edges
+      ~MultiSpecifications.number_of_nodes
+      ~MultiSpecifications.order
+      ~MultiSpecifications.predecessors
+      ~MultiSpecifications.remove_edge
+      ~MultiSpecifications.remove_edges_from
+      ~MultiSpecifications.remove_node
+      ~MultiSpecifications.remove_nodes_from
+      ~MultiSpecifications.reverse
+      ~MultiSpecifications.satisfy
+      ~MultiSpecifications.size
+      ~MultiSpecifications.subgraph
+      ~MultiSpecifications.successors
+      ~MultiSpecifications.to_directed
+      ~MultiSpecifications.to_directed_class
+      ~MultiSpecifications.to_undirected
+      ~MultiSpecifications.to_undirected_class
+      ~MultiSpecifications.update
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MultiSpecifications.adj
+      ~MultiSpecifications.degree
+      ~MultiSpecifications.edges
+      ~MultiSpecifications.in_degree
+      ~MultiSpecifications.in_edges
+      ~MultiSpecifications.name
+      ~MultiSpecifications.nodes
+      ~MultiSpecifications.out_degree
+      ~MultiSpecifications.out_edges
+      ~MultiSpecifications.pred
+      ~MultiSpecifications.succ
+   
+   

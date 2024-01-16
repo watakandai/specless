@@ -1,0 +1,35 @@
+specless.dataset
+================
+
+.. automodule:: specless.dataset
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      ArrayDataset
+      BaseDataset
+      CSVDataset
+      PathToFileDataset
+   
+   
+
+   
+   
+   
+
+
+

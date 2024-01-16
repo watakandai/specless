@@ -1,0 +1,33 @@
+specless.factory.tspadapter
+===========================
+
+.. automodule:: specless.factory.tspadapter
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      MiniGridSytemAndTSPAdapter
+      MiniGridSytemAndTSPAdapterWithTPO
+   
+   
+
+   
+   
+   
+
+
+

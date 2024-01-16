@@ -1,0 +1,27 @@
+specless.wrapper.actionwrapper.DiagOmniDirectionActions
+=======================================================
+
+.. currentmodule:: specless.wrapper.actionwrapper
+
+.. autoclass:: DiagOmniDirectionActions
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DiagOmniDirectionActions.northeast
+      ~DiagOmniDirectionActions.northwest
+      ~DiagOmniDirectionActions.southeast
+      ~DiagOmniDirectionActions.southwest
+   
+   

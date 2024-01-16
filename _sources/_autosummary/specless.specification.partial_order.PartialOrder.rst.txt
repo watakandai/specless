@@ -1,0 +1,79 @@
+specless.specification.partial\_order.PartialOrder
+==================================================
+
+.. currentmodule:: specless.specification.partial_order
+
+.. autoclass:: PartialOrder
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~PartialOrder.add_edge
+      ~PartialOrder.add_edges_from
+      ~PartialOrder.add_node
+      ~PartialOrder.add_nodes_from
+      ~PartialOrder.add_weighted_edges_from
+      ~PartialOrder.adjacency
+      ~PartialOrder.clear
+      ~PartialOrder.clear_edges
+      ~PartialOrder.copy
+      ~PartialOrder.edge_subgraph
+      ~PartialOrder.get_edge_data
+      ~PartialOrder.get_reverse_constraints
+      ~PartialOrder.has_edge
+      ~PartialOrder.has_node
+      ~PartialOrder.has_predecessor
+      ~PartialOrder.has_successor
+      ~PartialOrder.is_directed
+      ~PartialOrder.is_multigraph
+      ~PartialOrder.nbunch_iter
+      ~PartialOrder.neighbors
+      ~PartialOrder.number_of_edges
+      ~PartialOrder.number_of_nodes
+      ~PartialOrder.order
+      ~PartialOrder.predecessors
+      ~PartialOrder.remove_edge
+      ~PartialOrder.remove_edges_from
+      ~PartialOrder.remove_node
+      ~PartialOrder.remove_nodes_from
+      ~PartialOrder.reverse
+      ~PartialOrder.satisfy
+      ~PartialOrder.size
+      ~PartialOrder.subgraph
+      ~PartialOrder.successors
+      ~PartialOrder.to_directed
+      ~PartialOrder.to_directed_class
+      ~PartialOrder.to_undirected
+      ~PartialOrder.to_undirected_class
+      ~PartialOrder.update
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PartialOrder.adj
+      ~PartialOrder.degree
+      ~PartialOrder.edges
+      ~PartialOrder.in_degree
+      ~PartialOrder.in_edges
+      ~PartialOrder.name
+      ~PartialOrder.nodes
+      ~PartialOrder.out_degree
+      ~PartialOrder.out_edges
+      ~PartialOrder.partial_order
+      ~PartialOrder.pred
+      ~PartialOrder.succ
+   
+   
