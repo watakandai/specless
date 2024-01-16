@@ -3,9 +3,9 @@ SpeclessEnv
 ===========
 A standard gym.Env is accepted if the states and actions are finite
 (Discrete Obs and Action Space)
->> import gymnasium as gym
->> env = gym.make("CustomEnv-v0")
->> env.obs_space
+>>> import gymnasium as gym
+>>> env = gym.make("CustomEnv-v0")
+>>> env.obs_space
 Dict(Discrete(), Text())
 
 
@@ -15,36 +15,36 @@ A standard gym environment with other spaces (e.g., Dict)
 can be translated into a SpeclessEnv by providing the
 
 
->> from specless.gym.wrappers import SpeclessWwrapper
->> env = SpeclessWwrapper(env, states, actions)
+>>> from specless.gym.wrappers import SpeclessWwrapper
+>>> env = SpeclessWwrapper(env, states, actions)
 * Note, continuous space will be supported in the future
 (using Sampled-based planners to translate the env into a finite system.)
 
 If wanted, we can extend it to multiple agents
->> from specless.gym.wrappers import MultiAgentWrapper
->> initial_states = [(1, 1), (2, 2), (3, 3)]
->> env = MultiAgentWrapper(env, initial_states, concurrent=False) # Turn-based
+>>> from specless.gym.wrappers import MultiAgentWrapper
+>>> initial_states = [(1, 1), (2, 2), (3, 3)]
+>>> env = MultiAgentWrapper(env, initial_states, concurrent=False) # Turn-based
 
 Transition System Builder
 =========================
->> from specless.system import TSBuilder
->> env: SpeclessEnv = gym.make("CustomEnv-v0")
->> actions = env.action_space.start + np.arange(env.action_space.n)
->> tsbuilder = TSBuilder(actions)
->> ts = tsbuilder(env)
+>>> from specless.system import TSBuilder
+>>> env: SpeclessEnv = gym.make("CustomEnv-v0")
+>>> actions = env.action_space.start + np.arange(env.action_space.n)
+>>> tsbuilder = TSBuilder(actions)
+>>> ts = tsbuilder(env)
 
 For multiple agents
->> env: SpeclessEnv = gym.make("CustomEnv-v0")
->> initial_states = [(1, 1), (2, 2), (3, 3)]
->> env = MultiAgentWrapper(env, initial_states, concurrent=True)
->> tsbuilder = TSBuilder()
->> ts = tsbuilder(env)
+>>> env: SpeclessEnv = gym.make("CustomEnv-v0")
+>>> initial_states = [(1, 1), (2, 2), (3, 3)]
+>>> env = MultiAgentWrapper(env, initial_states, concurrent=True)
+>>> tsbuilder = TSBuilder()
+>>> ts = tsbuilder(env)
 
 Users can set a function to label nodes
->> tsbuilder.set_add_node_func(add_node_func)
+>>> tsbuilder.set_add_node_func(add_node_func)
 
 and a function to set edge labels
->> tsbuilder.set_add_edge_func(add_edge_func)
+>>> tsbuilder.set_add_edge_func(add_edge_func)
 """
 import queue
 from abc import ABCMeta, abstractmethod

@@ -3,24 +3,24 @@ TSP
 =====
 
 # Number of locations
->> n = 4
->> nodes: List[int] = [0, 1, 2, 3]
+>>> n = 4
+>>> nodes: List[int] = [0, 1, 2, 3]
 # Ready time
->> a: List[float] = [0, 5, 0, 8]
+>>> a: List[float] = [0, 5, 0, 8]
 # Due time
->> b: List[float] = [100, 16, 10, 14]
+>>> b: List[float] = [100, 16, 10, 14]
 # Travel time
->> costs: List[List[float]] = [
+>>> costs: List[List[float]] = [
     [0, 3, 4, 5],
     [3, 0, 5, 4],
     [4, 5, 0, 3],
     [5, 4, 3, 0],
 ]
 # 1. Just Test with the cost (TSP Solver)
->> tsp = TSP(nodes, costs)
+>>> tsp = TSP(nodes, costs)
 
->> service_times = [2, 2, 2, 2]
->> tsp = TSP(nodes, costs, service_times)
+>>> service_times = [2, 2, 2, 2]
+>>> tsp = TSP(nodes, costs, service_times)
 """
 import itertools
 import os

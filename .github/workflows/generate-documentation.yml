@@ -10,11 +10,15 @@ jobs:
         contents: write
     steps:
     - uses: actions/checkout@v4
-    # Standard drop-in approach that should work for most people.
-    - name: Build HTML
-      uses: ammaraskar/sphinx-action@master
+    - uses: actions/setup-python@v4
       with:
-        docs-folder: "docs/"
+        python-version: "3.10"
+    - name: Install dependencies
+      run: |
+        python3 -m pip install -r requirements.txt && python3 -m pip install -r docs/requirements.txt
+    - name: Sphinx build
+      run: |
+        python3 -m sphinx docs docs/build
 
     # Great extra actions to compose with:
     # Create an artifact of the html output.
@@ -23,27 +27,10 @@ jobs:
       with:
         name: html-docs
         path: docs/build/html/
-    # - name: Deploy
-    #   uses: peaceiris/actions-gh-pages@v3
-    #   # if: github.ref == 'refs/heads/main'
-    #   with:
-    #     github_token: ${{ secrets.GITHUB_TOKEN }}
-    #     publish_dir: .
-    - name: Commit documentation changes
-      # if: github.event.pull_request.merged == true
-      run: |
-        git clone https://github.com/watakandai/specless.git --branch gh-pages --single-branch gh-pages
-        cp -r docs/build gh-pages/docs/
-        cd gh-pages
-        git config --local user.email "kandai.wata@gmail.com"
-        git config --local user.name "Kandai Watanabe"
-        git add .
-        git commit -m "Update documentation" -a || true
-        # The above command will fail if no changes were present, so we ignore
-        # the return code.
-    - name: Push changes
-      uses: ad-m/github-push-action@master
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      # if: github.ref == 'refs/heads/main'
       with:
-        branch: gh-pages
-        directory: gh-pages
+        publish_branch: gh-pages
         github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: docs/build/

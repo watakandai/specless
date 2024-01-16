@@ -16,11 +16,13 @@ To checkout the code, please visit our repo on `GitHub <https://github.com/watak
 
 For installation, please check the :ref:`installation <installation>` guide.
 
-Contents
-=========
-.. toctree::
+.. autosummary::
+   :toctree: _autosummary
+   :template: custom-module-template.rst
+   :recursive:
 
-   reference
+   specless
+
 
 Indices and tables
 ==================
