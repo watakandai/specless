@@ -1,27 +1,27 @@
 """
->> from specless.system.tsbuilder import TSBuilder
->> from specless.system.tspbuilder import MiniGridSytemAndTSPAdapter
->> from specless.solver import MILPTSPSolver
->> import gym_minigrid # To load MiniGrid-BlockedUnlockPickup-v0
+>>> from specless.system.tsbuilder import TSBuilder
+>>> from specless.system.tspbuilder import MiniGridSytemAndTSPAdapter
+>>> from specless.solver import MILPTSPSolver
+>>> import gym_minigrid # To load MiniGrid-BlockedUnlockPickup-v0
 
->> env = gym.make("MiniGrid-BlockedUnlockPickup-v0")
->> tsbuilder = TSBuilder()
->> transition_system = tsbuilder(graph_data=env)
->> tsp = tspbuilder(transition_system)
->> tspsolver = MILPTSPSolver()
->> tours, costs = tspsolver(tsp)
->> tours
+>>> env = gym.make("MiniGrid-BlockedUnlockPickup-v0")
+>>> tsbuilder = TSBuilder()
+>>> transition_system = tsbuilder(graph_data=env)
+>>> tsp = tspbuilder(transition_system)
+>>> tspsolver = MILPTSPSolver()
+>>> tours, costs = tspsolver(tsp)
+>>> tours
 [[1,2,3,4,5]]
->> costs
+>>> costs
 [100]
 
->> env = MultiAgentWrapper(env, initial_states, concurrent=True)
->> tsbuilder = TSBuilder()
->> tspsolver = MILPTSPSolver()
->> tours, costs = tspsolver(tsp)
->> tours
+>>> env = MultiAgentWrapper(env, initial_states, concurrent=True)
+>>> tsbuilder = TSBuilder()
+>>> tspsolver = MILPTSPSolver()
+>>> tours, costs = tspsolver(tsp)
+>>> tours
 [[1,2,3,4,5], [6,7,8,9,10], ..., [96,97,98,99,100]]
->> costs
+>>> costs
 [100, 120, ..., 90]
 """
 import copy

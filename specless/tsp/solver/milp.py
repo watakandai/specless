@@ -1,23 +1,23 @@
 """
->> from specless.solver import MILPTSPSolver
+>>> from specless.solver import MILPTSPSolver
 
->> n = 4
->> nodes: List[int] = [0, 1, 2, 3]
+>>> n = 4
+>>> nodes: List[int] = [0, 1, 2, 3]
 # Ready time
->> a: List[float] = [0, 5, 0, 8]
+>>> a: List[float] = [0, 5, 0, 8]
 # Due time
->> b: List[float] = [100, 16, 10, 14]
+>>> b: List[float] = [100, 16, 10, 14]
 # Travel time
->> costs: List[List[float]] = [
+>>> costs: List[List[float]] = [
     [0, 3, 4, 5],
     [3, 0, 5, 4],
     [4, 5, 0, 3],
     [5, 4, 3, 0],
 ]
->> tsp = TSP(nodes, costs)
->> tspsolver = MILPTSPSolver()
->> tsp = tspbuilder(transition_system)
->> tours, costs = tspsolver(tsp)
+>>> tsp = TSP(nodes, costs)
+>>> tspsolver = MILPTSPSolver()
+>>> tsp = tspbuilder(transition_system)
+>>> tours, costs = tspsolver(tsp)
 """
 import itertools
 import sys

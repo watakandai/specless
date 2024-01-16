@@ -2,11 +2,11 @@
 Inference Algorithm
 ===================
 Inference algorithms then use such demonstrations to come up with a specification.
->> import specless as sl
->> traces = [[a,b,c], [a,b,b,c], [a,a,b,b,c]]
->> dataset = sl.ArrayDataset(traces)
->> inference = sl.TPOInference()
->> specification = inference.infer(demonstrations)
+>>> import specless as sl
+>>> traces = [[a,b,c], [a,b,b,c], [a,a,b,b,c]]
+>>> dataset = sl.ArrayDataset(traces)
+>>> inference = sl.TPOInference()
+>>> specification = inference.infer(demonstrations)
 """
 import os
 import re
@@ -20,7 +20,7 @@ from IPython.display import Image, display
 
 from specless.dataset import BaseDataset, PathToFileDataset
 from specless.inference.base import InferenceAlgorithm
-from specless.specification import Specification
+from specless.specification.base import Specification
 
 
 class AutomataInferenceAlgorithm(InferenceAlgorithm):

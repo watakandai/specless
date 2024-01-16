@@ -2,11 +2,11 @@
 Inference Algorithm
 ===================
 Inference algorithms then use such demonstrations to come up with a specification.
->> import specless as sl
->> traces = [[a,b,c], [a,b,b,c], [a,a,b,b,c]]
->> dataset = sl.ArrayDataset(traces)
->> inference = sl.TPOInference()
->> specification = inference.infer(demonstrations)
+>>> import specless as sl
+>>> traces = [[a,b,c], [a,b,b,c], [a,a,b,b,c]]
+>>> dataset = sl.ArrayDataset(traces)
+>>> inference = sl.TPOInference()
+>>> specification = inference.infer(demonstrations)
 """
 import copy
 import os
@@ -25,8 +25,10 @@ import networkx as nx
 from IPython.display import Image, display
 
 from specless.dataset import Dataset, PathToFileDataset
-from specless.specification import PartialOrder, Specification, TimedPartialOrder
-from specless.timeconstraintslp import TimeConstraintsLP
+from specless.inference.timed_partial_order import TimeConstraintsLP
+from specless.specification.base import Specification
+from specless.specification.partial_order import PartialOrder
+from specless.specification.timed_partial_order import TimedPartialOrder
 from specless.typing import EdgeBoundDict, NodeBoundDict, TimedTraceList
 
 

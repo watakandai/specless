@@ -1,45 +1,45 @@
 """
-Data object (It's a pandas.DataFrame!!! Just renamed it to Data object)
+Data object
 ==============
 
 It's basically a table. You can access its  size:
->> l = demonstration.size       # Return the number of elements in this object
+>>> l = demonstration.size       # Return the number of elements in this object
 
 
 If it were a TimedTraceData object, it has a trace and timestamp data.
->> symbols = demonstration["symbol"]            # or demonstration.symbol
+>>> symbols = demonstration["symbol"]            # or demonstration.symbol
                                                 # Returns a Series object
->> timestamps = demonstration"timestamp"]       # or demonstration.timestamp
+>>> timestamps = demonstration["timestamp"]       # or demonstration.timestamp
                                                 # Returns a Series object
 
 or turn it into a list of tuples
->> demo_list = demonstration.values.tolist()    # Returns a list of list
->> [[s1, t1], [s2, t2], ..., [sn, tn]]
+>>> demo_list = demonstration.values.tolist()    # Returns a list of list
+>>> [[s1, t1], [s2, t2], ..., [sn, tn]]
 
 You can sort the data
->> sorted_demonstration = demonstration.sort_values(by="timestamp")
->> demonstration.sort_values(by=["timestamp", "symbol"], inplace=True)
+>>> sorted_demonstration = demonstration.sort_values(by="timestamp")
+>>> demonstration.sort_values(by=["timestamp", "symbol"], inplace=True)
 
-Dataset object (Followed the PyTorch's Dataset class)
+Dataset object
 ==============
 A Data object can access a data (demonstration/trace) by:
->> demonstrations = [
+>>> demonstrations = [
     ["e1", "e2", "e3", "e4", "e5"],             # trace 1
     ["e1", "e4", "e2", "e3", "e5"],             # trace 2
     ["e1", "e2", "e4", "e3", "e5"],             # trace 3
 ]
->> demonstrations = sl.ArrayDataset(demnstrations, columns=["symbol"])
->> demonstration = demonstrations[i]
+>>> demonstrations = sl.ArrayDataset(demnstrations, columns=["symbol"])
+>>> demonstration = demonstrations[i]
 
 We can also return a list of data
->> timed_traces = demonstrations.tolist()
->> [[[s1, t1], [s2, t2], ..., [sn, tn]], ..., [[s1, t1], [s2, t2], ..., [sm, tm]]]
->> traces = demonstrations.tolist(key="symbol")
->> [[s1, s2, ..., sn], ..., [s1, s2, ..., sn]]
+>>> timed_traces = demonstrations.tolist()
+>>> [[[s1, t1], [s2, t2], ..., [sn, tn]], ..., [[s1, t1], [s2, t2], ..., [sm, tm]]]
+>>> traces = demonstrations.tolist(key="symbol")
+>>> [[s1, s2, ..., sn], ..., [s1, s2, ..., sn]]
 
 You can sort dataset in a batch
->> f = lambda data: data.sort_values(by=["timestamp", "symbol"], inplace=True)
->> demonstrations.apply(f)
+>>> f = lambda data: data.sort_values(by=["timestamp", "symbol"], inplace=True)
+>>> demonstrations.apply(f)
 
 """
 import os
@@ -99,13 +99,13 @@ class CSVDataset(BaseDataset):
         """
         Users can either provide a directory to the traces
         or a list of filepaths
-        >> filedir = /path/to/the/csv/directory/
-        >> dataset = CSVDataset(filedir)
+        >>> filedir = /path/to/the/csv/directory/
+        >>> dataset = CSVDataset(filedir)
 
         If the user strictly needs a sorted dataset, they can provide a list of paths
-        >> filedir = /path/to/the/csv/directory/
-        >> filepaths = [os.path.join(filedir, i) for i in range(100)]
-        >> dataset = CSVDataset(filedir, filepaths=filepaths)
+        >>> filedir = /path/to/the/csv/directory/
+        >>> filepaths = [os.path.join(filedir, i) for i in range(100)]
+        >>> dataset = CSVDataset(filedir, filepaths=filepaths)
 
         Args:
             filedir (str, optional): _description_. Defaults to None.
