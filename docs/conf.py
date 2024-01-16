@@ -15,6 +15,7 @@ import sys
 
 HOME_DIR = os.path.abspath("..")
 sys.path.insert(0, HOME_DIR)
+import specless  # NOQA
 
 # -- Project information -----------------------------------------------------
 
