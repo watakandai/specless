@@ -28,7 +28,7 @@ jobs:
     # Great extra actions to compose with:
     # Create an artifact of the html output.
     - name: Upload artifacts
-      uses: actions/upload-artifact@3
+      uses: actions/upload-artifact@v3
       with:
         name: html-docs
         path: docs/build/html/
