@@ -19,7 +19,6 @@ For installation, please check the :ref:`installation <installation>` guide.
 Contents
 =========
 .. toctree::
-   :maxdepth: 2
 
    reference
 
