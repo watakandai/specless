@@ -3,41 +3,50 @@ Data object
 ==============
 
 It's basically a table. You can access its  size:
+
 >>> l = demonstration.size       # Return the number of elements in this object
 
 
 If it were a TimedTraceData object, it has a trace and timestamp data.
+
 >>> symbols = demonstration["symbol"]            # or demonstration.symbol
                                                 # Returns a Series object
+
 >>> timestamps = demonstration["timestamp"]       # or demonstration.timestamp
                                                 # Returns a Series object
 
 or turn it into a list of tuples
+
 >>> demo_list = demonstration.values.tolist()    # Returns a list of list
 >>> [[s1, t1], [s2, t2], ..., [sn, tn]]
 
 You can sort the data
+
 >>> sorted_demonstration = demonstration.sort_values(by="timestamp")
 >>> demonstration.sort_values(by=["timestamp", "symbol"], inplace=True)
 
 Dataset object
 ==============
 A Data object can access a data (demonstration/trace) by:
+
 >>> demonstrations = [
     ["e1", "e2", "e3", "e4", "e5"],             # trace 1
     ["e1", "e4", "e2", "e3", "e5"],             # trace 2
     ["e1", "e2", "e4", "e3", "e5"],             # trace 3
 ]
+
 >>> demonstrations = sl.ArrayDataset(demnstrations, columns=["symbol"])
 >>> demonstration = demonstrations[i]
 
 We can also return a list of data
+
 >>> timed_traces = demonstrations.tolist()
 >>> [[[s1, t1], [s2, t2], ..., [sn, tn]], ..., [[s1, t1], [s2, t2], ..., [sm, tm]]]
 >>> traces = demonstrations.tolist(key="symbol")
 >>> [[s1, s2, ..., sn], ..., [s1, s2, ..., sn]]
 
 You can sort dataset in a batch
+
 >>> f = lambda data: data.sort_values(by=["timestamp", "symbol"], inplace=True)
 >>> demonstrations.apply(f)
 

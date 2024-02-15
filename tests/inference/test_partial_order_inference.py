@@ -7,7 +7,7 @@ from specless.dataset import ArrayDataset
 from specless.inference.partial_order import POInferenceAlgorithm
 from specless.specification.base import Specification
 from specless.specification.partial_order import PartialOrder
-from specless.wrapper.utils import collect_demonstrations
+from specless.utils.collect_demos import collect_demonstrations
 
 
 def test_construction():

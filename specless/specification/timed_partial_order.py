@@ -1,15 +1,18 @@
+import itertools
 import queue
 import random
 from collections import defaultdict
-from typing import Dict, Optional, Tuple, Type
+from typing import Callable, Dict, List, Optional, Tuple, Type, Union
 
 import networkx as nx
+import numpy as np
 
-from specless.specification.partial_order import (
+from specless.typing import TimedTrace
+
+from .partial_order import (
     PartialOrder,
     generate_random_partial_order,
 )
-from specless.typing import TimedTrace
 
 
 class TimedPartialOrder(PartialOrder):
@@ -327,10 +330,10 @@ class TimedPartialOrder(PartialOrder):
 
 def generate_random_timed_partial_order(
     num_nodes: int,
-    edge_probability=0.3,
-    global_clock_probability=0.3,
-    local_clock_probability=0.3,
-    fixed_time_window=30,
+    edge_probability: float = 0.3,
+    global_clock_probability: float = 0.3,
+    local_clock_probability: float = 0.3,
+    fixed_time_window: int = 30,
 ) -> TimedPartialOrder:
     # Generate a random PO
     po: PartialOrder = generate_random_partial_order(num_nodes, edge_probability)
@@ -420,3 +423,86 @@ def generate_random_timed_partial_order(
 
     assert len(tpo.nodes) == num_nodes, tpo.nodes
     return tpo
+
+
+def fixed_time_gap():
+    return 1
+
+
+def generate_random_constraints(
+    nodes: List[int],
+    initial_nodes: List[int],
+    edge_costs: List[List[float]],
+    num_constraint: Union[int, float],
+    node_costs: Optional[List[float]] = None,
+    time_gap_callback: Callable = fixed_time_gap,
+):
+    """Generate random constraints to generate a TPO
+    Assume nodes includes the "initial nodes (depot)" which starts from 0.
+    """
+    if node_costs is None:
+        node_costs = defaultdict(lambda: 0)
+
+    num_node = len(nodes)
+    num_total_constraint = int(num_node * (num_node - 1) / 2)
+    if isinstance(num_constraint, float):
+        num_constraint = int(num_constraint * num_total_constraint)
+    assert num_constraint <= num_total_constraint
+
+    timed_trace = generate_random_timed_trace(
+        nodes, initial_nodes, edge_costs, node_costs
+    )
+    # #Constraints is n + n*(n-1)/2.  Let n=|V|, Then,
+    # For each v\inV, lb <= t_u <= ub. |V| -> n
+    # For each u, v \in E, lb <= t_v - t_u <= lb. |E|-> n*(n-1)/2
+    timed_trace_dict = {n: t for n, t in timed_trace}
+    trace = list(zip(*timed_trace))[0]
+    edge_pairs = list(itertools.combinations(trace, 2))
+    edges = random.choices(edge_pairs, k=num_constraint)
+
+    tpo: TimedPartialOrder = TimedPartialOrder()
+    for u, v in edges:
+        u_time = timed_trace_dict[u]
+        v_time = timed_trace_dict[v]
+        diff = v_time - u_time
+        tpo.add_local_constraint(
+            u, v, diff - time_gap_callback(), diff + time_gap_callback()
+        )
+
+    return tpo
+
+
+def generate_random_timed_trace(
+    nodes,
+    initial_nodes: List[int],
+    edge_costs: List[List[float]],
+    node_costs: Optional[List[float]] = None,
+) -> List[Tuple[int, float]]:
+    """Generate a random timed trace.
+    Assume nodes includes the "initial nodes (depot)" which starts from 0.
+    """
+
+    if node_costs is None:
+        node_costs = defaultdict(lambda: 0)
+
+    num_agent = len(initial_nodes)
+    remaining_nodes = set(nodes) - set(initial_nodes)
+    curr_states = {i: (n, 0) for i, n in enumerate(initial_nodes)}
+    timed_trace = [(n, 0) for n in initial_nodes]
+    timed_traces = {i: [(n, 0)] for i, n in enumerate(initial_nodes)}
+
+    while len(remaining_nodes) != 0:
+        index = random.randint(1, num_agent) - 1
+        curr_node, curr_time = curr_states[index]
+
+        next_node = random.choice(list(remaining_nodes))
+        travel_distance = edge_costs[curr_node][next_node]
+        service_distance = node_costs[next_node]
+        next_time = curr_time + travel_distance + service_distance
+
+        curr_states[index] = (next_node, next_time)
+        remaining_nodes = remaining_nodes - set([next_node])
+        timed_trace.append((next_node, next_time))
+        timed_traces[index].append((next_node, next_time))
+
+    return sorted(timed_trace, key=lambda t: t[1])

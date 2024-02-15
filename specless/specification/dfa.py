@@ -1,5 +1,6 @@
-from specless.specification.base import AutomataSpecification
 from specless.typing import Trace
+
+from .base import AutomataSpecification
 
 
 class DFA(AutomataSpecification):

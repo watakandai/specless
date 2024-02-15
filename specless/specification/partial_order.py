@@ -1,8 +1,10 @@
 import queue
+import random
 from collections import defaultdict
 
-from specless.specification.base import Specification
 from specless.typing import Trace
+
+from .base import Specification
 
 
 class PartialOrder(Specification):

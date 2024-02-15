@@ -1,6 +1,6 @@
 from typing import List
 
-from specless.specification.base import Specification
+from .base import Specification
 
 
 class MultiSpecifications(Specification):

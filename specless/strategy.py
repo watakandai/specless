@@ -8,7 +8,11 @@ class Strategy(metaclass=ABCMeta):
     """Base class for all strategy classes"""
 
     def __init__(self) -> None:
-        pass
+        self.reset()
+
+    @abstractmethod
+    def reset(self) -> None:
+        raise Exception("Must reset")
 
     @abstractmethod
     def action(self, state: ObsType) -> ActType:
@@ -21,6 +25,9 @@ class FeedbackStrategy(Strategy):
     def __init__(self) -> None:
         super().__init__()
 
+    def reset(self) -> None:
+        raise NotImplementedError()
+
     def action(self, state: ObsType) -> ActType:
         raise NotImplementedError()
 
@@ -31,9 +38,14 @@ class FeedforwardStrategy(Strategy):
     def __init__(self, plan: List) -> None:
         super().__init__()
         self.plan: List = plan
+        self.reset()
+
+    def reset(self):
         self.step: int = 0
 
     def action(self, state: ObsType) -> ActType:
+        if len(self.plan) <= self.step:
+            return None
         action = self.plan[self.step]
         self.step += 1
         return action
@@ -86,8 +98,11 @@ class CombinedStrategy(Strategy):
     """
 
     def __init__(self, strategies: List[Strategy]) -> None:
-        super().__init__()
         self.strategies = strategies
+        super().__init__()
+
+    def reset(self) -> None:
+        map(lambda x: x.reset(), self.strategies)
 
     def action(self, state: ObsType) -> ActType:
         return [strategy.action(state) for strategy in self.strategies]

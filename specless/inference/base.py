@@ -2,6 +2,7 @@
 Inference Algorithm
 ===================
 Inference algorithms then use such demonstrations to come up with a specification.
+
 >>> import specless as sl
 >>> traces = [[a,b,c], [a,b,b,c], [a,a,b,b,c]]
 >>> dataset = sl.ArrayDataset(traces)

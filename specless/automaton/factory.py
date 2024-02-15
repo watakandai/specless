@@ -1,5 +1,5 @@
 # local packages
-from specless.factory.object_factory import ObjectFactory
+from specless.factory import ObjectFactory
 
 from .base import Automaton
 
