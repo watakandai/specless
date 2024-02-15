@@ -1,6 +1,0 @@
-specless.automaton.pdfa.check\_predict\_method
-==============================================
-
-.. currentmodule:: specless.automaton.pdfa
-
-.. autofunction:: check_predict_method

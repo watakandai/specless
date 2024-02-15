@@ -1,6 +1,0 @@
-specless.automaton.utils.xlogy
-==============================
-
-.. currentmodule:: specless.automaton.utils
-
-.. autofunction:: xlogy

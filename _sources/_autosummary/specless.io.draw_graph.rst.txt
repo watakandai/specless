@@ -1,6 +1,0 @@
-specless.io.draw\_graph
-=======================
-
-.. currentmodule:: specless.io
-
-.. autofunction:: draw_graph
