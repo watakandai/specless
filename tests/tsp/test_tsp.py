@@ -1,4 +1,3 @@
-import unittest
 from typing import List
 
 from specless.specification.base import Specification
@@ -19,9 +18,11 @@ def test_tsp():
     # 1. Just Test with the cost (TSP Solver)
     tsp = TSP(nodes, costs)
     assert isinstance(tsp, TSP)
-    unittest.TestCase.assertListEqual(tsp.nodes, nodes)
-    unittest.TestCase.assertListEqual(tsp.costs, costs)
-    unittest.TestCase.assertListEqual(tsp.services, [0, 0, 0, 0])
+    assert all([n1 == n2 for n1, n2 in zip(tsp.nodes, nodes)])
+    for cs1, cs2 in zip(tsp.costs, costs):
+        for c1, c2 in zip(cs1, cs2):
+            assert c1 == c2
+    assert all([s1 == s2 for s1, s2 in zip(tsp.services, [0, 0, 0, 0])])
 
 
 def test_tsp_with_tpo():
