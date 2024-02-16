@@ -4,7 +4,7 @@ from typing import Any, Dict, Tuple
 import gym
 import numpy as np
 
-from specless.wrapper.tswrapper import Done, Reward, StepData
+from specless.typing import Done, Reward, StepData
 
 
 class EightOmniDirectionActions(IntEnum):
@@ -125,14 +125,14 @@ class OmniDirectionActionWrapper(gym.core.Wrapper):
 
         base_env.step_count += 1
 
-        done, reward = self._step_function(action)
-
+        terminated, reward = self._step_function(action)
+        truncated = False
         if base_env.step_count >= base_env.max_steps:
-            done = True
+            truncated = True
 
         obs = base_env.gen_obs()
 
-        return obs, reward, done, {}
+        return obs, reward, terminated, truncated, {}
 
 
 class DirectionalActionWrapper(gym.core.Wrapper):

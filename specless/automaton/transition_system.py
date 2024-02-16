@@ -5,8 +5,8 @@ from typing import Tuple
 from bidict import bidict
 
 from specless.factory.builder import Builder
-from specless.typing import ActionsEnum, EnvAct, EnvActs
-from specless.wrapper.tswrapper import StepData, TransitionSystemWrapper
+from specless.typing import ActionsEnum, EnvAct, EnvActs, StepData
+from specless.wrapper.tswrapper import TransitionSystemWrapper
 
 from .base import (
     DEFAULT_EMPTY_TRANS_SYMBOL,

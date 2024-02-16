@@ -69,6 +69,18 @@ class GTSP:
             n: i for i, nodeset in enumerate(nodesets) for n in nodeset
         }
 
+    def __str__(self):
+        s = ""
+        s += "Nodes: \t"
+        s += ", ".join([str(n) for n in self.nodes])
+        s += "\n"
+        s += "Edges: \t"
+        s += ", ".join([f"{src}->{tgt}" for src, tgt in self.edges])
+        s += "\n"
+        s += "Costs: \n"
+        s += str(self.costs)
+        return s
+
 
 class TSP(GTSP):
     """Traveling Salesman Problem"""

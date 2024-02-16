@@ -98,3 +98,30 @@ def collect_demonstrations(
             break
 
     return demonstrations
+
+
+# TODO: Optional Specification Argument
+# TODO: feedforward:
+def simulate(env, strategy) -> Tuple:
+    """_summary_
+
+    Args:
+        env (_type_): _description_
+        strategy (_type_): _description_
+    """
+    states = []
+    actions = []
+
+    state, info = env.reset()
+    terminated, truncated = False, False
+    strategy.reset()
+    while not (terminated or truncated):
+        action = strategy.action(state)
+        next_state, reward, terminated, truncated, info = env.step(action)
+        states.append(state)
+        actions.append(action)
+        state = next_state
+
+    env.close()
+
+    return states, actions

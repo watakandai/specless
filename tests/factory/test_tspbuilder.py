@@ -3,7 +3,7 @@ import gym_minigrid  # noqa: F401
 import gymnasium as gym
 
 from specless.automaton.transition_system import TSBuilder
-from specless.factory.tspadapter import MiniGridSytemAndTSPAdapter
+from specless.factory.tspbuilder import TSPBuilder
 from specless.wrapper.minigridwrapper import MiniGridTransitionSystemWrapper
 
 
@@ -14,9 +14,9 @@ def test_tspbuilder():
     tsbuilder = TSBuilder()
     transition_system = tsbuilder(env, "minigrid")
 
-    tspadapter = MiniGridSytemAndTSPAdapter()
+    tsptspbuilder = TSPBuilder()
     # TODO:
     # specification = Specification()
-    # tsp = tspadapter(transition_system, specification)
+    # tsp = tsptspbuilder(transition_system, specification)
 
     # assert isinstance(tsp, TSP)

@@ -1,6 +1,6 @@
 """
 >>> from specless.system.tsbuilder import TSBuilder
->>> from specless.system.tspbuilder import MiniGridSytemAndTSPAdapter
+>>> from specless.system.tspbuilder import TSPBuilder
 >>> from specless.solver import MILPTSPSolver
 >>> import gym_minigrid # To load MiniGrid-BlockedUnlockPickup-v0
 
@@ -33,12 +33,13 @@ from bidict import bidict
 from gymnasium.core import ActType
 
 from specless.automaton.transition_system import MinigridTransitionSystem
+from specless.factory.builder import Builder
 from specless.specification.base import Specification
 from specless.specification.timed_partial_order import TimedPartialOrder
 from specless.tsp.tsp import GTSP, TSP, TSPWithTPO
 
 
-class MiniGridSytemAndTSPAdapter:
+class TSPBuilder(Builder):
     """Converts Transition System To a TSP Problem"""
 
     def __init__(self) -> None:
@@ -72,9 +73,10 @@ class MiniGridSytemAndTSPAdapter:
     def __call__(
         self,
         T: MinigridTransitionSystem,
-        specification: Specification,
+        specification: Optional[Specification] = None,
         initial_states=None,
         ignoring_obs_keys: List[str] = [],
+        uniquelabel: bool = True,
     ) -> TSP:
         """_summary_
 
@@ -92,10 +94,13 @@ class MiniGridSytemAndTSPAdapter:
 
         self.all_pair_shortest_paths = self.get_all_pair_shortest_paths()
 
-        must_visit_observations = list(specification.nodes())
-        all_obs_exist = all(
-            [obs in self.obs_to_nodes for obs in must_visit_observations]
-        )
+        if specification is None:
+            all_obs_exist = True
+        else:
+            must_visit_observations = list(specification.nodes())
+            all_obs_exist = all(
+                [obs in self.obs_to_nodes for obs in must_visit_observations]
+            )
 
         if not all_obs_exist:
             env_name = T.env.unwrapped.spec.id
@@ -106,7 +111,7 @@ class MiniGridSytemAndTSPAdapter:
         nodes = list(self.state_to_node.values())
         costs: List[List[float]] = []
         for src_node in nodes:
-            cost_ = []
+            cost_: List[float] = []
             for tgt_node in nodes:
                 shortest_path = self.all_pair_shortest_paths[src_node][tgt_node]
                 if src_node == tgt_node:
@@ -116,7 +121,9 @@ class MiniGridSytemAndTSPAdapter:
                 cost_.append(cost)
             costs.append(cost_)
 
-        return GTSP(nodes, costs, nodesets=list(self.obs_to_nodes.values()))
+        if uniquelabel:
+            return GTSP(nodes, costs, nodesets=list(self.obs_to_nodes.values()))
+        return GTSP(nodes, costs)
 
     def get_all_pair_shortest_paths(self, weight_key: str = "weight"):
         G = copy.deepcopy(self.T)
@@ -170,10 +177,19 @@ class MiniGridSytemAndTSPAdapter:
 
         return all_pair_shortest_paths
 
+    # TODO: Find the most highest (recent) layer wrapper's action space.
     def map_back_to_controls(self, node_tour: List[int]) -> List[ActType]:
+        # TODO: Find the most highest (recent) layer wrapper's action space.
+        actions = self.T.env.unwrapped.actions
+        env = self.T.env
+        while hasattr(env, "env"):
+            if hasattr(env, "actions"):
+                actions = env.actions
+                break
+            env = env.env
+
         ACTION_STR_TO_ENUM = {
-            self.T.env.unwrapped.actions._member_names_[action]: action
-            for action in self.T.env.unwrapped.actions
+            actions._member_names_[action]: action for action in actions
         }
         ACTION_ENUM_TO_STR = dict(
             zip(ACTION_STR_TO_ENUM.values(), ACTION_STR_TO_ENUM.keys())
@@ -181,11 +197,11 @@ class MiniGridSytemAndTSPAdapter:
 
         controls = []
 
-        node_edges = MiniGridSytemAndTSPAdapter.node_list_to_edges(node_tour)
+        node_edges = TSPBuilder.node_list_to_edges(node_tour)
         for src_node, tgt_node in node_edges:
             shortest_path = self.all_pair_shortest_paths[src_node][tgt_node]
 
-            state_edges = MiniGridSytemAndTSPAdapter.node_list_to_edges(shortest_path)
+            state_edges = TSPBuilder.node_list_to_edges(shortest_path)
 
             for src_state, tgt_state in state_edges:
                 edge_data = self.T._get_edge_data(src_state, tgt_state)
@@ -203,7 +219,10 @@ class MiniGridSytemAndTSPAdapter:
 
         return edges
 
-    def build_mappings_from_ts(self, ignoring_obs_keys: List[str]) -> None:
+    def build_mappings_from_ts(
+        self,
+        ignoring_obs_keys: List[str],
+    ) -> None:
         for state in self.T.nodes:
             obs = self.T.observe(state)
             if any([o in obs for o in ignoring_obs_keys]):
@@ -237,7 +256,7 @@ class MiniGridSytemAndTSPAdapter:
         self.obs_to_nodes[obs].append(node_id)
 
 
-class MiniGridSytemAndTSPAdapterWithTPO(MiniGridSytemAndTSPAdapter):
+class TSPWithTPOBuilder(TSPBuilder):
     """Converts Transition System To a TSP Problem"""
 
     def __call__(

@@ -11,7 +11,7 @@ from specless.wrapper.minigridwrapper import MiniGridTransitionSystemWrapper
 def test_minigridwrapper():
     env = gym.make("MiniGrid-BlockedUnlockPickup-v0")
     env = MiniGridTransitionSystemWrapper(env)
-    actions = env.actions()
+    actions = env.get_wrapped_actions()
     assert isinstance(actions, Iterable)
 
 
@@ -24,7 +24,7 @@ def test_extract_transition_system():
 
     assert isinstance(node, Tuple)
 
-    action = list(env.actions())[0]
+    action = list(env.get_wrapped_actions())[0]
 
     (
         dest_state,

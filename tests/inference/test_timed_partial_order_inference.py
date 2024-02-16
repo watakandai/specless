@@ -8,7 +8,7 @@ from specless.specification.base import Specification
 from specless.specification.timed_partial_order import TimedPartialOrder
 from specless.wrapper.labelwrapper import LabelMiniGridWrapper
 from specless.wrapper.selectstatewrapper import SelectStateDataWrapper
-from specless.wrapper.utils import collect_demonstrations
+from specless.utils.collect_demos import collect_demonstrations
 
 
 def test_construction():

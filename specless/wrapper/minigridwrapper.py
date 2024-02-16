@@ -46,8 +46,7 @@ Users can set a function to label nodes
 and a function to set edge labels
 >>> tsbuilder.set_add_edge_func(add_edge_func)
 """
-from collections.abc import Iterable
-from typing import Dict, List, Tuple, Union
+from typing import Dict, List, Tuple
 
 from gym_minigrid.minigrid import MiniGridEnv
 from gymnasium.core import ActType
@@ -55,8 +54,13 @@ from gymnasium.core import ActType
 from specless.const import (
     IDX_TO_COLOR,
     MINIGRID_TO_GRAPHVIZ_COLOR,
+    OBJECT_TO_IDX,
 )
-from specless.typing import ActionsEnum
+from specless.wrapper.actionwrapper import (
+    FOUR_ACTION_TO_POS_DELTA,
+    FourOmniDirectionActions,
+    OmniDirectionActionWrapper,
+)
 from specless.wrapper.labelwrapper import (
     AddPosDirToMiniGridWrapper,
     LabelMiniGridWrapper,
@@ -96,15 +100,8 @@ class MiniGridTransitionSystemWrapper(TransitionSystemWrapper):
         env: MiniGridEnv,
         skip_observations: List[str] = ["unseen", "wall", "empty"],
         ignore_done: bool = True,
+        ignore_direction: bool = True,
     ):
-        # Label each state using LabelMiniGridWrapper
-        env = LabelMiniGridWrapper(
-            env,
-            labelkey=self.LABELKEY,
-            skiplist=skip_observations,
-        )
-        env = AddPosDirToMiniGridWrapper(env)
-        super().__init__(env, ignore_done=ignore_done)
         """_summary_
 
         MiniGridEnv
@@ -114,18 +111,30 @@ class MiniGridTransitionSystemWrapper(TransitionSystemWrapper):
         # Actions are discrete integer values
         self.action_space: gym.spaces.Discrete = spaces.Discrete(len(self.actions))
         """
+        self.ignore_direction = ignore_direction
+
+        if ignore_direction:
+            env = OmniDirectionActionWrapper(
+                env, FourOmniDirectionActions, FOUR_ACTION_TO_POS_DELTA
+            )
+        # Label each state using LabelMiniGridWrapper
+        env = LabelMiniGridWrapper(
+            env,
+            labelkey=self.LABELKEY,
+            skiplist=skip_observations,
+        )
+        env = AddPosDirToMiniGridWrapper(env)
+        super().__init__(env, ignore_done=ignore_done)
+
+        actions = self.get_wrapped_actions()
 
         # building some more constant DICTS dynamically from the env data
         ACTION_STR_TO_ENUM = {
-            self.unwrapped.actions._member_names_[action]: action
-            for action in self.actions()
+            actions._member_names_[action]: action for action in actions
         }
         self.ACTION_ENUM_TO_STR = dict(
             zip(ACTION_STR_TO_ENUM.values(), ACTION_STR_TO_ENUM.keys())
         )
-
-    def actions(self) -> Union[Iterable, ActionsEnum]:
-        return self.unwrapped.actions
 
     def _get_action_str(self, action: ActType) -> str:
         return self.ACTION_ENUM_TO_STR[action]
@@ -142,6 +151,8 @@ class MiniGridTransitionSystemWrapper(TransitionSystemWrapper):
         """
         # Copied from gym_minigrid.minigrid.MiniGridEnv.__str__
         AGENT_DIR_TO_STR: dict[int, str] = {0: ">", 1: "V", 2: "<", 3: "^"}
+        if self.ignore_direction:
+            return state["pos"]
         return state["pos"], AGENT_DIR_TO_STR[state["dir"]]
 
     def _get_state(self, obs) -> Dict:
@@ -173,11 +184,13 @@ class MiniGridTransitionSystemWrapper(TransitionSystemWrapper):
 
     def _add_state_data(self, state_data: Dict, state: Dict):
         base_env = self.env.unwrapped
-        pos = base_env.agent_pos
-        col_idx, row_idx = pos
+        cell = base_env.grid.get(*base_env.agent_pos)
 
-        img = state["image"]
-        obs = img[col_idx, row_idx]
+        if cell is None:
+            obj_type = OBJECT_TO_IDX["empty"]
+            obs = (obj_type, 0, 0)
+        else:
+            obs = cell.encode()
 
         _, obj_color, _ = obs
         color = IDX_TO_COLOR[obj_color]

@@ -5,7 +5,7 @@ import gymnasium as gym
 from gymnasium.core import ActType
 
 from specless.automaton.transition_system import MinigridTransitionSystem, TSBuilder
-from specless.factory.tspadapter import MiniGridSytemAndTSPAdapterWithTPO
+from specless.factory.tspbuilder import TSPWithTPOBuilder
 from specless.specification.base import Specification
 from specless.specification.timed_partial_order import TimedPartialOrder
 from specless.strategy import (
@@ -95,8 +95,8 @@ class TSPSynthesisAlgorithm(SynthesisAlgorithm):
         # transition_system.draw("MiniGrid-Empty-5x5-v0")
 
         # TPO & TransitionSystem -> TSP
-        adapter = MiniGridSytemAndTSPAdapterWithTPO()
-        tsp_with_tpo: TSPWithTPO = adapter(transition_system, specification)
+        tspbuilder = TSPWithTPOBuilder()
+        tsp_with_tpo: TSPWithTPO = tspbuilder(transition_system, specification)
 
         # Solve TSP -> Tours
         tspsolver = MILPTSPWithTPOSolver()
@@ -104,7 +104,9 @@ class TSPSynthesisAlgorithm(SynthesisAlgorithm):
         tours, cost = tspsolver.solve(tsp_with_tpo)
 
         # TODO: Convert tours to a sequence of actions...
-        actions: List[ActType] = [adapter.map_back_to_controls(tour) for tour in tours]
+        actions: List[ActType] = [
+            tspbuilder.map_back_to_controls(tour) for tour in tours
+        ]
 
         if len(actions) == 0:
             assert False

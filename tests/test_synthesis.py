@@ -7,17 +7,17 @@ from gymnasium.core import ActType
 
 from specless.automaton.transition_system import MinigridTransitionSystem, TSBuilder
 from specless.dataset import ArrayDataset
-from specless.factory.tspadapter import MiniGridSytemAndTSPAdapterWithTPO
+from specless.factory.tspbuilder import TSPWithTPOBuilder
 from specless.inference.timed_partial_order import TPOInferenceAlgorithm
 from specless.specification.base import Specification
 from specless.strategy import CombinedStrategy, PlanStrategy
 from specless.synthesis import TSPSynthesisAlgorithm
 from specless.tsp.solver.milp import MILPTSPWithTPOSolver
 from specless.tsp.tsp import TSPWithTPO
+from specless.utils.collect_demos import collect_demonstrations, simulate
 from specless.wrapper.labelwrapper import LabelMiniGridWrapper
 from specless.wrapper.minigridwrapper import MiniGridTransitionSystemWrapper
 from specless.wrapper.selectstatewrapper import SelectStateDataWrapper
-from specless.wrapper.utils import collect_demonstrations
 
 
 def build_dataset_from_env(env_):
@@ -35,22 +35,6 @@ def build_dataset_from_env(env_):
     assert len(demonstrations) == 10
     dataset = ArrayDataset(demonstrations, columns=["timestamp", "symbol"])
     return dataset
-
-
-def simulate(env, strategy) -> None:
-    """_summary_
-
-    Args:
-        env (_type_): _description_
-        strategy (_type_): _description_
-    """
-    state, info = env.reset()
-    terminated, truncated = False, False
-    while not (terminated or truncated):
-        action = strategy.action(state)
-        next_state, reward, terminated, truncated, info = env.step(action)
-        state = next_state
-    env.close()
 
 
 def test_tsp_synthesis():
@@ -85,16 +69,15 @@ def test_tsp_synthesis():
     # transition_system.draw("MiniGrid-Empty-5x5-v0")
 
     # TPO & TransitionSystem -> TSP
-    adapter = MiniGridSytemAndTSPAdapterWithTPO()
-    tsp_with_tpo: TSPWithTPO = adapter(transition_system, tpo)
+    tspbuilder = TSPWithTPOBuilder()
+    tsp_with_tpo: TSPWithTPO = tspbuilder(transition_system, tpo)
 
     # Solve TSP -> Tours
     tspsolver = MILPTSPWithTPOSolver()
-    # TODO: tsp argument should be passed to the solve() function
     tours, cost = tspsolver.solve(tsp_with_tpo)
 
-    # TODO: Convert tours to a sequence of actions...
-    actions: List[ActType] = [adapter.map_back_to_controls(tour) for tour in tours]
+    # Convert tours to a sequence of actions...
+    actions: List[ActType] = [tspbuilder.map_back_to_controls(tour) for tour in tours]
 
     if len(actions) == 0:
         assert False

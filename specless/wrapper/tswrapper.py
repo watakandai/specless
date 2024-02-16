@@ -48,21 +48,12 @@ and a function to set edge labels
 """
 import queue
 from abc import ABCMeta, abstractmethod
-from collections.abc import Iterable
-from enum import Enum
-from typing import Any, Dict, Tuple, Union
+from typing import Any, Dict, Tuple
 
 import gymnasium as gym
 from gymnasium.core import ActType, ObsType
 
-# EnvType = Union[SpeclessEnv, SpeclessEnvWrapper]
-EnvType = gym.Env
-EnvObs = Dict
-CellObs = Tuple[int, int, int]
-ActionsEnum = Enum
-Reward = float
-Done = bool
-StepData = Tuple[EnvObs, Reward, Done, dict]
+from specless.typing import EnvType
 
 
 class TransitionSystemWrapper(gym.core.Wrapper, metaclass=ABCMeta):
@@ -76,10 +67,6 @@ class TransitionSystemWrapper(gym.core.Wrapper, metaclass=ABCMeta):
         super().__init__(env)
         self.reset()
         self.ignore_done = ignore_done
-
-    @abstractmethod
-    def actions(self) -> Union[Iterable, ActionsEnum]:
-        raise NotImplementedError()
 
     @abstractmethod
     def _get_node_from_state(self, state: Dict) -> Tuple:
@@ -218,6 +205,17 @@ class TransitionSystemWrapper(gym.core.Wrapper, metaclass=ABCMeta):
 
         return dest_state, reward, terminated, truncated, info
 
+    def get_wrapped_actions(self):
+        # Get actions
+        actions = self.unwrapped.actions
+        env = self
+        while hasattr(env, "env"):
+            if hasattr(env, "actions"):
+                actions = env.actions
+                break
+            env = env.env
+        return actions
+
     def extract_transition_system(self) -> dict:
         """
         Extracts all data needed to build a transition system representation of
@@ -239,12 +237,14 @@ class TransitionSystemWrapper(gym.core.Wrapper, metaclass=ABCMeta):
         # Cannot add an unhashable type: 'list'. So store a node (Tuple)
         done_states = set()
 
+        actions = self.get_wrapped_actions()
+
         while not q.empty():
             src_state: Dict = q.get()
             src_node: Tuple = self._get_node_from_state(src_state)
             visited.add(src_node)
 
-            for action in self.actions():
+            for action in actions:
                 if src_node not in done_states:
                     (
                         dest_state,

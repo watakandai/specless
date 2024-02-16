@@ -1,10 +1,18 @@
 from enum import IntEnum
 from typing import Dict, Iterable, List, Set, Tuple, Union
 
+import gymnasium as gym
 from gymnasium.core import ActType, ObsType
 from pandas import DataFrame
 
+EnvType = gym.Env
+EnvObs = Dict
+CellObs = Tuple[int, int, int]
 ActionsEnum = IntEnum
+Reward = float
+Done = bool
+StepData = Tuple[EnvObs, Reward, Done, Done, dict]
+
 EnvAct = ActionsEnum
 EnvActs = Iterable[ActionsEnum]
 
