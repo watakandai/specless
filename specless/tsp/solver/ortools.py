@@ -94,6 +94,14 @@ class ORTSPSolver(TSPSolver):
         # Solve the problem.
         solution = routing.SolveWithParameters(search_parameters)
 
+        status = routing.status()
+        print("STATUS: ", status, SOLUTION_STATUS[status])
+
+        # TODO: If status == ROUTING_PARTIAL_SUCCESS_LOCAL_OPTIMUM_NOT_REACHED:
+        # Then rerun with solution limit of 100?
+
+        if status not in [1, 2]:
+            return [], float("inf")
         tours, cost = self.get_tours_and_cost(data, manager, routing, solution)
         return tours, cost
 
@@ -193,16 +201,24 @@ class ORTSPWithTPOSolver(TSPWithTPOSolver):
 
         # Add Time Windows constraint.
         time = "Time"
+        maximum_waiting_time = max([ub - lb for lb, ub in data["time_windows"]])
+        for src, d in data["local_time_windows"].items():
+            for tgt, bound in d.items():
+                lb, ub = bound
+                maximum_waiting_time = max(maximum_waiting_time, ub - lb)
         # MaxCost * #Nodes
         maximum_time_per_vehicle: int = int(np.max(tsp.costs) * len(tsp.costs))
         routing.AddDimension(
             transit_callback_index,
-            50,  # allow waiting time           # Max(ub-lb for all (lb,ub))
+            # maximum_waiting_time,  # allow waiting time
+            20,
             maximum_time_per_vehicle,  # maximum time per vehicle
             False,  # Don't force start cumul to zero.
             time,
         )
         time_dimension = routing.GetDimensionOrDie(time)
+        time_dimension.SetGlobalSpanCostCoefficient(100)
+
         # Add time window constraints for each location except depot.
         for location_idx, time_window in enumerate(data["time_windows"]):
             if location_idx in data["depot"]:
@@ -216,16 +232,26 @@ class ORTSPWithTPOSolver(TSPWithTPOSolver):
                 src_index = manager.NodeToIndex(src)
                 tgt_index = manager.NodeToIndex(tgt)
                 lb, ub = bound
-                routing.solver().Add(
-                    time_dimension.CumulVar(tgt_index)
-                    - time_dimension.CumulVar(src_index)
-                    >= lb
+
+                routing.solver().AddConstraint(
+                    routing.solver().BetweenCt(
+                        time_dimension.CumulVar(tgt_index)
+                        - time_dimension.CumulVar(src_index),
+                        lb,
+                        ub,
+                    )
                 )
-                routing.solver().Add(
-                    time_dimension.CumulVar(tgt_index)
-                    - time_dimension.CumulVar(src_index)
-                    <= ub
-                )
+
+                # routing.solver().Add(
+                #     time_dimension.CumulVar(tgt_index)
+                #     - time_dimension.CumulVar(src_index)
+                #     >= lb
+                # )
+                # routing.solver().Add(
+                #     time_dimension.CumulVar(tgt_index)
+                #     - time_dimension.CumulVar(src_index)
+                #     <= ub
+                # )
 
         # Add time window constraints for each vehicle start node.
         for depot_idx in data["depot"]:
@@ -269,14 +295,6 @@ class ORTSPWithTPOSolver(TSPWithTPOSolver):
 
         status = routing.status()
         print("STATUS: ", status, SOLUTION_STATUS[status])
-        # print("STATUS: ", s, pywrapcp.RoutingModel.Status(s))
-
-        # print("First Solution Strategy: ", search_parameters.first_solution_strategy)
-        # print("Local Search Heuristic: ", search_parameters.local_search_metaheuristic)
-        # print(
-        #     "Selected First Solution Strategy: ",
-        #     routing.GetAutomaticFirstSolutionStrategy(),
-        # )
 
         # TODO: If status == ROUTING_PARTIAL_SUCCESS_LOCAL_OPTIMUM_NOT_REACHED:
         # Then rerun with solution limit of 100?
