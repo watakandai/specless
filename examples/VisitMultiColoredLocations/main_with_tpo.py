@@ -17,7 +17,6 @@ from typing import Any, Callable, Dict, List, Tuple
 
 import gym_minigrid  # noqa: F401
 import gymnasium as gym
-from gymnasium.core import ActType
 from ortools.constraint_solver import routing_enums_pb2
 
 import specless as sl

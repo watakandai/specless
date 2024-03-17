@@ -1,0 +1,81 @@
+# num_robot: 1
+# depots: No need to specify
+locations:
+  - "A"
+  - "B"
+  - "C"
+  - "D"
+  - "E"
+  - "F"
+# Asymmetric, Negative->blockage
+travel_times:
+  - [0, 9, 5, 1, 1, 9]
+  - [9, 0, 7, 8, -1, 4]
+  - [4, 8, 0, 5, 8, 7]
+  - [5, 3, 1, 0, 1, 6]
+  - [7, 8, -1, 9, 0, 7]
+  - [6, 3, 9, 4, 5, 0]
+robots:
+  robot1:
+    ### No need to specify start and end
+    # - start: "A"
+    # - end: "B"
+    - name: "Human"
+    - assignments: ["task1"]
+  robot2:
+    - name: "Track"
+    - depot: "A"
+  robot3:
+    - name: "Drone"
+    - start: "B"
+    - end: "D"
+    - assignments: ["task2", "task3"]
+tasks:
+  task1:
+    - start: "A"
+    - end: "A"
+    - service_time: 10
+    - standalone: true
+    - time_window: [10, 20]
+  task2:
+    - start: "B"
+    - end: "C"
+    - service_time: 8
+    - time_window: [5, 15]
+  task3:
+    - start: "E"
+    - end: "F"
+    - service_time: 12
+    - standalone: false
+  task4: # bring vehicle -> Pickup and Delivery
+    - start: "A"
+    - end: "E"
+    - service_time: 10
+    - standalone: true
+    - pickupAndDelivery: true
+repeats:
+  - ["task1", "task2"]
+global_time_constraints:
+  task1: [10, 20]
+  task2: [5, 15]
+  task3: [0, 25]
+local_time_constraints:
+  task1:
+    task2: []
+    task3: []
+  task2:
+    task4: []
+precedences:
+  - ["task1", "task2"]
+robot_capacity:
+  # Name of the capacity
+  battery:
+    -
+  # Name of the capacity
+  load:
+    -
+location_capacity:
+  # Name of the capacity
+  num_robot:
+    A: 2
+    B: 1
