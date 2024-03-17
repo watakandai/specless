@@ -1,1 +1,1 @@
-from .core import NoDirectionAgentGrid  # NOQA
+# from .core import NoDirectionAgentGrid  # NOQA

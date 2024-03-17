@@ -204,7 +204,7 @@ class MILPTSPWithTPOSolver(TSPWithTPOSolver):
         # Create continuous time variables [1, n]
         t = m.addVars(tsp.nodes, lb=0.0, vtype=GRB.CONTINUOUS, name="times")
         # Create continuous time variables for the TERMINAL nodes
-        init_nodes = [(i, n) for i, n in enumerate(self.init_nodes)]
+        init_nodes: list[tuple[int, Node]] = [(i, n) for i, n in enumerate(self.init_nodes)]
         tT = m.addVars(init_nodes, lb=0.0, vtype=GRB.CONTINUOUS, name="timesTerminal")
         tf = m.addVar(lb=0.0, vtype=GRB.CONTINUOUS, name="tFinal")
 
@@ -237,9 +237,24 @@ class MILPTSPWithTPOSolver(TSPWithTPOSolver):
                 tour.append(init_node)
                 tours.append(tour)
 
+        # TODO:
         if self.come_back_home:
             return tours
         return tours
+
+    def get_timestamps(self, m, variables, tour):
+        if len(tour) < 2:
+            pass
+
+        timestamps = [0]
+        edges = m.getAttr("X", variables["x"])
+        times = m.getAttr("X", variables["t"])
+        finaltime = variables["tf"].getAttr("x")
+        for n in tour[1:-1]:
+            timestamps.append(times[n])
+
+        timestamps.append(finaltime)
+        return timestamps
 
     def get_cost(self, m):
         return float(m.objVal)
@@ -252,6 +267,8 @@ class MILPTSPWithTPOSolver(TSPWithTPOSolver):
         come_back_home: bool = True,
     ) -> Tuple[List, float]:
         tsp = copy.deepcopy(tsp)
+        if len(tsp.nodes) < num_agent:
+            num_agent = len(tsp.nodes)-1
 
         # Argument Priority: num_agent < init_nodes
         # If both are provided, init_nodes is prioritized
@@ -259,6 +276,7 @@ class MILPTSPWithTPOSolver(TSPWithTPOSolver):
             init_nodes = [tsp.nodes[0]] * num_agent
         else:
             num_agent = len(init_nodes)
+
         self.agents = list(range(num_agent))
         self.init_nodes = init_nodes
         self.come_back_home: bool = come_back_home
@@ -356,7 +374,7 @@ class MILPTSPWithTPOSolver(TSPWithTPOSolver):
 
         if m.status != GRB.OPTIMAL:
             print("Tour: [], Cost: n/a")
-            return [], -1
+            return [], -1, []
 
         for var in m.getVars():
             if abs(var.x) > 1e-6:
@@ -364,8 +382,10 @@ class MILPTSPWithTPOSolver(TSPWithTPOSolver):
         print("Total matching score: {0}".format(m.objVal))
 
         tours = self.get_tours(m, variables)
+        timestamps = [self.get_timestamps(m, variables, tour) for tour in tours]
         cost = self.get_cost(m)
-        return tours, cost
+
+        return tours, cost, timestamps
 
 
 if __name__ == "__main__":

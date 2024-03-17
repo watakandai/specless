@@ -81,7 +81,7 @@ def test_ortools_on_random_tsp_with_tpo(
     else:
         solver = ORTSPWithTPOSolver(
             first_solution_strategy=routing_enums_pb2.FirstSolutionStrategy.LOCAL_CHEAPEST_ARC,
-            timeout=60 * 10,
+            # timeout=60 * 60,
             solution_limit=1,
         )
     tours, cost = solver.solve(tsp_with_tpo, num_agent=num_agent)
@@ -93,11 +93,11 @@ def test_ortools_on_random_tsp_with_tpo(
 if __name__ == "__main__":
     experiment_func: Callable[[Any], Tuple] = test_ortools_on_random_tsp_with_tpo
     arg_dict: Dict[str, List] = {
-        "Node": [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+        "Node": [100, 150, 200, 250],
         "ConstraintRatio": [0.5],
         "MaxTimeGap": [10, 40],
         "Agent": [1, 4],
-        "Solver": ["milp"],
+        "Solver": ["ortools", "milp"],
         "Iteration": [1],
     }
     return_key_strs: List[str] = ["Tours", "Cost", "Time[s]"]

@@ -29,17 +29,17 @@ ENV_ID = "MiniGrid-TSPBenchmarkEnv-v0"
 ARGS_TO_TSP: Dict[Tuple, EnvType] = {}
 
 
-def mainfunc(num_locations, num_constraint_ratio, max_time_gap, solver_name, iteration):
-    args = (num_locations, iteration)
+def mainfunc(num_locations, num_agent, num_constraint_ratio, max_time_gap, solver_name, iteration):
+    args = (num_locations, num_constraint_ratio, max_time_gap, iteration)
 
     if args in ARGS_TO_TSP:
         env, tsp_with_tpo, tspbuilder = ARGS_TO_TSP[args]
     else:
         env = gym.make(
             ENV_ID,
-            num_locations=5,
-            width=20,
-            height=20,
+            num_locations=num_locations,
+            width=30,
+            height=30,
             agent_start_pos=(1, 5),
         )
 
@@ -75,14 +75,25 @@ def mainfunc(num_locations, num_constraint_ratio, max_time_gap, solver_name, ite
     start_time: float = time.time()
     if solver_name == "milp":
         solver = sl.MILPTSPWithTPOSolver()
+        tours, cost, timestamps = solver.solve(tsp_with_tpo, num_agent=num_agent)
     else:
         solver = sl.ORTSPWithTPOSolver(
             first_solution_strategy=routing_enums_pb2.FirstSolutionStrategy.LOCAL_CHEAPEST_ARC,
             timeout=60 * 10,
         )
-    tours, cost = solver.solve(tsp_with_tpo)
+        tours, cost = solver.solve(tsp_with_tpo, num_agent=num_agent)
+
     timetook = time.time() - start_time
 
+    n = len(tours)
+    for i in range(n):
+        print(f"Tour{i}={tours[i]}, \tTimestamps={timestamps[i]}")
+
+    analyzer = sl.RobustAnalysis()
+    bound, times, finaltime = analyzer.analyze(tsp_with_tpo, tsp_with_tpo.tpo, tours)
+
+    return tours, cost, timetook, bound
+    """
     ##### Map the tours back onto the OpenAI Gym Environment to obtain a controller(s) (a sequence of actions)
     # TODO: Inlucd the actions -> strategy conversions into the tspbuilder
     actions: List[ActType] = [tspbuilder.map_back_to_controls(tour) for tour in tours]
@@ -112,18 +123,23 @@ def mainfunc(num_locations, num_constraint_ratio, max_time_gap, solver_name, ite
         states, actions = sl.simulate(env, strategy)
 
     return tours, cost, timetook
+    """
 
 
 if __name__ == "__main__":
     experiment_func: Callable[[Any], Tuple] = mainfunc
     arg_dict: Dict[str, List] = {
-        "Node": [5, 10, 20],
-        "ConstraintRatio": [0.2, 0.8],
-        "MaxTimeGap": [20, 40],
-        "Solver": ["milp", "ortools"],
-        "Iteration": [1, 2, 3, 4, 5],
+        "Node": [5, 10, 20, 40, 60, 80],
+        # "Node": [100, 120, 140, 160],
+        # "Agent": [1, 10, 20, 30, 40],
+        "Agent": [2, 10, 20, 30, 40],
+        "ConstraintRatio": [1.0, 0.75, 0.5, 0.25],
+        "MaxTimeGap": [10, 30, 50],
+        # "Solver": ["milp", "ortools"],
+        "Solver": ["milp"],
+        "Iteration": [1],
     }
-    return_key_strs: List[str] = ["Tours", "Cost", "Time[s]"]
+    return_key_strs: List[str] = ["Tours", "Cost", "Time[s]", "Bound"]
     csvfilepath: str = str(Path(__file__).with_suffix("").with_suffix(".csv"))
     logger = sl.BenchmarkLogger()
     logger.start(experiment_func, arg_dict, return_key_strs, csvfilepath)

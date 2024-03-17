@@ -5,126 +5,133 @@ from typing import Tuple
 import gymnasium as gym
 import numpy as np
 from gym_minigrid.minigrid import Grid, MiniGridEnv
-from gym_minigrid.rendering import (
-    downsample,
-    fill_coords,
-    highlight_img,
-    point_in_circle,
-    point_in_rect,
-)
+# from gym_minigrid.rendering import (
+#     downsample,
+#     fill_coords,
+#     highlight_img,
+#     point_in_circle,
+#     point_in_rect,
+# )
 
 from specless.typing import ActionsEnum, Done, EnvType, Reward, StepData
 
 TILE_PIXELS = 128
 
 
-class NoDirectionAgentGrid(Grid):
-    """
-    This class overrides the drawing of direction-less agents
-    """
+# class NoDirectionAgentGrid(Grid):
+#     """
+#     This class overrides the drawing of direction-less agents
+#     """
 
-    tile_cache = {}
+#     from gym_minigrid.rendering import (
+#         downsample,
+#         fill_coords,
+#         highlight_img,
+#         point_in_circle,
+#         point_in_rect,
+#     )
 
-    def __init__(self, width: int, height: int):
-        super().__init__(width, height)
+#     tile_cache = {}
+#     def __init__(self, width: int, height: int):
+#         super().__init__(width, height)
 
-    def render(self, tile_size, agent_pos=None, agent_dir=None, highlight_mask=None):
-        """
-        Render this grid at a given scale
+#     def render(self, tile_size, agent_pos=None, agent_dir=None, highlight_mask=None):
+#         """
+#         Render this grid at a given scale
 
-        NOTE: overridden here to change the tile rendering to be the class' own
+#         NOTE: overridden here to change the tile rendering to be the class' own
 
-        :param r: target renderer object
-        :param tile_size: tile size in pixels
-        """
+#         :param r: target renderer object
+#         :param tile_size: tile size in pixels
+#         """
 
-        if highlight_mask is None:
-            highlight_mask = np.zeros(shape=(self.width, self.height), dtype=np.bool)
+#         if highlight_mask is None:
+#             highlight_mask = np.zeros(shape=(self.width, self.height), dtype=np.bool)
 
-        # Compute the total grid size
-        width_px = self.width * tile_size
-        height_px = self.height * tile_size
+#         # Compute the total grid size
+#         width_px = self.width * tile_size
+#         height_px = self.height * tile_size
 
-        img = np.zeros(shape=(height_px, width_px, 3), dtype=np.uint8)
+#         img = np.zeros(shape=(height_px, width_px, 3), dtype=np.uint8)
 
-        # Render the grid
-        for j in range(0, self.height):
-            for i in range(0, self.width):
-                cell = self.get(i, j)
+#         # Render the grid
+#         for j in range(0, self.height):
+#             for i in range(0, self.width):
+#                 cell = self.get(i, j)
 
-                agent_here = np.array_equal(agent_pos, (i, j))
+#                 agent_here = np.array_equal(agent_pos, (i, j))
 
-                # CHANGED: Grid.render_tile(...) to self.render_tile(...)
-                tile_img = self.render_tile(
-                    cell,
-                    agent_dir=agent_dir if agent_here else None,
-                    highlight=highlight_mask[i, j],
-                    tile_size=tile_size,
-                )
+#                 # CHANGED: Grid.render_tile(...) to self.render_tile(...)
+#                 tile_img = self.render_tile(
+#                     cell,
+#                     agent_dir=agent_dir if agent_here else None,
+#                     highlight=highlight_mask[i, j],
+#                     tile_size=tile_size,
+#                 )
 
-                ymin = j * tile_size
-                ymax = (j + 1) * tile_size
-                xmin = i * tile_size
-                xmax = (i + 1) * tile_size
-                img[ymin:ymax, xmin:xmax, :] = tile_img
+#                 ymin = j * tile_size
+#                 ymax = (j + 1) * tile_size
+#                 xmin = i * tile_size
+#                 xmax = (i + 1) * tile_size
+#                 img[ymin:ymax, xmin:xmax, :] = tile_img
 
-        return img
+#         return img
 
-    @classmethod
-    def render_tile(
-        cls,
-        obj,
-        agent_dir=None,
-        highlight=False,
-        tile_size=TILE_PIXELS,
-        subdivs=3,
-        white_background=True,
-    ):
-        """
-        Render a tile and cache the result
-        """
+#     @classmethod
+#     def render_tile(
+#         cls,
+#         obj,
+#         agent_dir=None,
+#         highlight=False,
+#         tile_size=TILE_PIXELS,
+#         subdivs=3,
+#         white_background=True,
+#     ):
+#         """
+#         Render a tile and cache the result
+#         """
 
-        # Hash map lookup key for the cache
-        key = (agent_dir, highlight, tile_size)
-        key = obj.encode() + key if obj else key
+#         # Hash map lookup key for the cache
+#         key = (agent_dir, highlight, tile_size)
+#         key = obj.encode() + key if obj else key
 
-        if key in cls.tile_cache:
-            return cls.tile_cache[key]
+#         if key in cls.tile_cache:
+#             return cls.tile_cache[key]
 
-        if white_background:
-            img = np.full(
-                shape=(tile_size * subdivs, tile_size * subdivs, 3),
-                fill_value=WHITE,
-                dtype=np.uint8,
-            )
-        else:
-            img = np.zeros(
-                shape=(tile_size * subdivs, tile_size * subdivs, 3), dtype=np.uint8
-            )
+#         if white_background:
+#             img = np.full(
+#                 shape=(tile_size * subdivs, tile_size * subdivs, 3),
+#                 fill_value=WHITE,
+#                 dtype=np.uint8,
+#             )
+#         else:
+#             img = np.zeros(
+#                 shape=(tile_size * subdivs, tile_size * subdivs, 3), dtype=np.uint8
+#             )
 
-        # Draw the grid lines (top and left edges)
-        fill_coords(img, point_in_rect(0, 0.031, 0, 1), (100, 100, 100))
-        fill_coords(img, point_in_rect(0, 1, 0, 0.031), (100, 100, 100))
+#         # Draw the grid lines (top and left edges)
+#         fill_coords(img, point_in_rect(0, 0.031, 0, 1), (100, 100, 100))
+#         fill_coords(img, point_in_rect(0, 1, 0, 0.031), (100, 100, 100))
 
-        if obj is not None:
-            obj.render(img)
+#         if obj is not None:
+#             obj.render(img)
 
-        # Overlay the agent on top
-        if agent_dir is not None:
-            cir_fn = point_in_circle(cx=0.5, cy=0.5, r=0.3)
-            fill_coords(img, cir_fn, (255, 0, 0))
+#         # Overlay the agent on top
+#         if agent_dir is not None:
+#             cir_fn = point_in_circle(cx=0.5, cy=0.5, r=0.3)
+#             fill_coords(img, cir_fn, (255, 0, 0))
 
-        # Highlight the cell if needed
-        if highlight:
-            highlight_img(img)
+#         # Highlight the cell if needed
+#         if highlight:
+#             highlight_img(img)
 
-        # Downsample the image to perform supersampling/anti-aliasing
-        img = downsample(img, subdivs)
+#         # Downsample the image to perform supersampling/anti-aliasing
+#         img = downsample(img, subdivs)
 
-        # Cache the rendered tile
-        cls.tile_cache[key] = img
+#         # Cache the rendered tile
+#         cls.tile_cache[key] = img
 
-        return img
+#         return img
 
 
 # Enumeration of possible actions

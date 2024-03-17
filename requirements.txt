@@ -13,11 +13,8 @@ pm4py
 gymnasium
 torch
 ltlf2dfa
-minigrid
 click
-gym
-gym_minigrid @ git+https://github.com/mit-acl/gym-minigrid.git
-# gym_minigrid # This won't work since it relies on the "gym" package
+gym_minigrid # Must edit all "import gym" to "import gymnasium as gym" AND "from gym." to "from gymnasium."
 pyyaml
 gurobipy==10.0.3
 ortools

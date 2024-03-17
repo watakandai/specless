@@ -1,7 +1,7 @@
 from enum import IntEnum
 from typing import Any, Dict, Tuple
 
-import gym
+import gymnasium as gym
 import numpy as np
 
 from specless.typing import Done, Reward, StepData

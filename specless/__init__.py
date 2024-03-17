@@ -79,6 +79,7 @@ from .utils import (
     collect_demonstration,  # NOQA
     collect_demonstrations,  # NOQA
     simulate,  # NOQA
+    RobustAnalysis,  # NOQA
 )
 from .wrapper import (
     AddPosDirToMiniGridWrapper,  # NOQA

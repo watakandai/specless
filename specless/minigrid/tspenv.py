@@ -4,7 +4,7 @@ import distinctipy
 import gymnasium as gym
 from gym_minigrid.minigrid import Floor, Grid, Lava, MiniGridEnv, MissionSpace
 
-from .core import NoDirectionAgentGrid
+# from .core import NoDirectionAgentGrid
 
 MINIGRID_TO_GRAPHVIZ_COLOR = {}
 
@@ -32,10 +32,10 @@ class TSPEnv(MiniGridEnv):
         )
 
     def _gen_grid(self, width, height):
-        if self.directionless_agent:
-            self.grid = NoDirectionAgentGrid(width, height)
-        else:
-            self.grid = Grid(width, height)
+        # if self.directionless_agent:
+        #     self.grid = NoDirectionAgentGrid(width, height)
+        # else:
+        self.grid = Grid(width, height)
 
         # Generate the surrounding walls
         self.grid.wall_rect(0, 0, width, height)
@@ -137,10 +137,10 @@ class TSPBenchmarkEnv(MiniGridEnv):
         return list(coordinates)
 
     def _gen_grid(self, width, height):
-        if self.directionless_agent:
-            self.grid = NoDirectionAgentGrid(width, height)
-        else:
-            self.grid = Grid(width, height)
+        # if self.directionless_agent:
+        #     self.grid = NoDirectionAgentGrid(width, height)
+        # else:
+        self.grid = Grid(width, height)
 
         # Generate the surrounding walls
         self.grid.wall_rect(0, 0, width, height)
