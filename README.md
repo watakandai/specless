@@ -1,7 +1,9 @@
 
 <p align="center">
-    <img src="https://github.com/mattn/vim-gist/assets/11141442/22091c57-bef9-4b1c-9a40-df1b77d53613" width="200" height="200">
+    <img src="https://github.com/watakandai/specless/assets/11141442/2f9bc401-08f6-4f85-b8da-6b3135341979" width="200" height="200">
 </p>
+
+
 
 # [WIP] specless (SPECification LEarning and Strategy Synthesis)
 
