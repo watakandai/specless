@@ -1,8 +1,7 @@
 
 <p align="center">
-    <img src="https://github.com/watakandai/specless/assets/11141442/2f9bc401-08f6-4f85-b8da-6b3135341979" width="200" height="200">
+    <img src="https://github.com/watakandai/specless/assets/11141442/ae4d1291-f959-4b46-b9f0-0fe55287467d" width="200" height="200">
 </p>
-
 
 
 # [WIP] specless (SPECification LEarning and Strategy Synthesis)
