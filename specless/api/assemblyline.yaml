@@ -1,0 +1,62 @@
+NodeCapacities: ["payload"]
+nodes:
+  "A":
+    payload: 4
+  "B":
+    payload: 6
+  "C":
+    payload: 8
+  "D":
+    payload: -3
+  "E":
+    payload: -7
+  "F":
+    payload: 5
+
+# Must be Symmetric. You can later define blockages
+distance:
+  - [0, 9, 5, 1, 1, 9]
+  - [9, 0, 7, 8, -1, 4]
+  - [4, 8, 0, 5, 8, 7]
+  - [5, 3, 1, 0, 1, 6]
+  - [7, 8, -1, 9, 0, 7]
+  - [6, 3, 9, 4, 5, 0]
+
+Robots:
+  Chopin:
+    ### No need to specify start and end
+    - velocity: 1
+    - payload: 10
+    - start: "A"
+    - end: "B"
+  Morzart:
+    - velocity: 0.5
+    - payload: 20
+    - depot: "C"
+  Bach:
+    - velocity: 2
+    - payload: 5
+
+tasks:
+  task1:
+    - start: "A"
+    - end: "A"
+    - service_time: 10
+    - standalone: true
+    - time_window: [10, 20]
+  task2:
+    - start: "B"
+    - end: "C"
+    - service_time: 8
+    - time_window: [5, 15]
+  task3:
+    - start: "E"
+    - end: "F"
+    - service_time: 12
+    - standalone: false
+  task4: # bring vehicle -> Pickup and Delivery
+    - start: "A"
+    - end: "E"
+    - service_time: 10
+    - standalone: true
+    - pickupAndDelivery: true

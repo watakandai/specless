@@ -1,3 +1,13 @@
+"""
+
+Type Definitions
+================
+
+This module contains type definitions for the various data structures used in the
+specless package.
+
+"""
+
 from enum import IntEnum
 from typing import Dict, Iterable, List, Set, Tuple, Union
 

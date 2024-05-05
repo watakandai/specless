@@ -280,9 +280,9 @@ class PDFA(Automaton):
         Then, as a PDFA is a stationary ergodic stochastic process model, we
         can calculate the cross-entropy as (eq. 3.49 from SLP ch3):
 
-            trace ~ target
-            H(target, model) = lim {(- 1 / n) * log(P_{model}(trace))}
-                             n -> inf
+        .. math::
+            trace \sim target
+            H(target, model) = lim_{n \rightarrow \infty} {(- 1 / n) * log(P_{model}(trace))}
 
         where:
 

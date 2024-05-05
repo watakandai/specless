@@ -12,7 +12,7 @@ def test_tspbuilder():
     env = MiniGridTransitionSystemWrapper(env)
 
     tsbuilder = TSBuilder()
-    transition_system = tsbuilder(env, "minigrid")
+    transition_system = tsbuilder(env)
 
     tsptspbuilder = TSPBuilder()
     # TODO:

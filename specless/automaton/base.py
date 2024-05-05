@@ -982,7 +982,7 @@ class Automaton(nx.MultiDiGraph, metaclass=ABCMeta):
         if self.is_sampleable:
             # stored in numpy array, so we just want the float probability
             # value
-            symbol_probability = np.asscalar(probabilities[symbol_idx])
+            symbol_probability = np.ndarray.item(probabilities[symbol_idx])
         else:
             symbol_probability = probabilities[symbol_idx[0]]
 

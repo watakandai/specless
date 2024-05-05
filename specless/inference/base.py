@@ -1,14 +1,21 @@
 """
+===================
 Inference Algorithm
 ===================
+
 Inference algorithms then use such demonstrations to come up with a specification.
+
+Examples
+--------
 
 >>> import specless as sl
 >>> traces = [[a,b,c], [a,b,b,c], [a,a,b,b,c]]
 >>> dataset = sl.ArrayDataset(traces)
 >>> inference = sl.TPOInference()
 >>> specification = inference.infer(demonstrations)
+
 """
+
 from abc import ABCMeta, abstractmethod
 from typing import Any, Union
 

@@ -1,9 +1,14 @@
+import copy
+import os
 import time
 import warnings
 from typing import Callable, Dict, List, Optional, Tuple
 
 import gymnasium as gym
 from gymnasium.core import ObsType
+from gymnasium.wrappers.record_video import RecordVideo
+
+import specless as sl
 
 
 def collect_demonstration(
@@ -86,9 +91,11 @@ def collect_demonstrations(
         # Decided whether to add the demonstration to the list
         if "success" in collect_types and terminated:
             demonstrations.append(demo)
-        elif "failure" in collect_types and truncated:
+
+        if "failure" in collect_types and truncated:
             demonstrations.append(demo)
-        else:
+
+        if "unfinished" in collect_types and not terminated and not truncated:
             demonstrations.append(demo)
 
         if time.time() - start_time > timeout:
@@ -102,26 +109,64 @@ def collect_demonstrations(
 
 # TODO: Optional Specification Argument
 # TODO: feedforward:
-def simulate(env, strategy) -> Tuple:
+def simulate(
+    env,
+    strategy,
+    record_video: bool = False,
+    video_folder: str = os.getcwd(),
+    add_timestamp: bool = False,
+    add_timestamp_func: Optional[Callable] = None,
+) -> Tuple:
     """_summary_
 
     Args:
         env (_type_): _description_
         strategy (_type_): _description_
     """
-    states = []
-    actions = []
+
+    if isinstance(strategy, list):
+        strategy = sl.PlanStrategy(strategy)
+
+    if add_timestamp and add_timestamp_func is None:
+
+        def add_timestamp_func(s, t):
+            if isinstance(s, list):
+                return [t] + s
+            elif isinstance(s, tuple):
+                return (t, *s)
+            else:
+                msg = "Please pass a proper add_timestamp_func to add a timestamp to observations"
+                raise Exception(msg)
+
+    if record_video:
+        env = copy.deepcopy(env)
+        env = RecordVideo(env, video_folder, step_trigger=lambda i: i == 0)
+        env.start_video_recorder()
 
     state, info = env.reset()
+    t = 0
+    if add_timestamp:
+        states = [add_timestamp_func(state, t)]
+    else:
+        states = [state]
+    actions = []
+
     terminated, truncated = False, False
     strategy.reset()
     while not (terminated or truncated):
         action = strategy.action(state)
+        if action is None:
+            break
         next_state, reward, terminated, truncated, info = env.step(action)
-        states.append(state)
+        t += 1
+        if add_timestamp:
+            states.append(add_timestamp_func(next_state, t))
+        else:
+            states.append(next_state)
         actions.append(action)
         state = next_state
 
     env.close()
+    video_path = env.video_recorder.path if record_video else None
 
-    return states, actions
+    return states, actions, video_path

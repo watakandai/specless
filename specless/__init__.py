@@ -1,3 +1,11 @@
+"""
+specless
+========
+
+specless is a Python package for the inferring specifications from demonstrations
+and synthesizing strategies for robots.
+"""
+
 from .automaton import (
     FDFA,  # NOQA
     PDFA,  # NOQA
@@ -12,6 +20,7 @@ from .automaton import (
     TransitionSystem,  # NOQA
     TSBuilder,  # NOQA
     active_automata,  # NOQA
+    build_transition_system,  # NOQA
 )
 from .dataset import (
     ArrayDataset,  # NOQA
@@ -35,9 +44,10 @@ from .io import (
     save_graph,  # NOQA
     save_strategy,  # NOQA
 )
-from .parser import LTLfParser  # NOQA
+
+# from .parser import LTLfParser  # NOQA
 from .specification import (
-    DFA,  # NOQA
+    # DFA,  # NOQA
     AutomataSpecification,  # NOQA
     MultiSpecifications,  # NOQA
     PartialOrder,  # NOQA
@@ -76,10 +86,10 @@ from .tsp import (
 )
 from .utils import (
     BenchmarkLogger,  # NOQA
+    RobustAnalysis,  # NOQA
     collect_demonstration,  # NOQA
     collect_demonstrations,  # NOQA
     simulate,  # NOQA
-    RobustAnalysis,  # NOQA
 )
 from .wrapper import (
     AddPosDirToMiniGridWrapper,  # NOQA

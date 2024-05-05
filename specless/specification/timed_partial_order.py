@@ -327,6 +327,20 @@ class TimedPartialOrder(PartialOrder):
                 lub = bound["ub"]
                 print(f"\t{llb} <= n{n}(t={t}) - n{src}(t={ts}) <= {lub}")
 
+    def __str__(self):
+        string = ""
+        for n, d in self.global_constraints.items():
+            lb = d["lb"]
+            ub = d["ub"]
+            string += f"\t{lb} <= t_{n} <= {ub}\n"
+
+        for src, dd in self.local_constraints.items():
+            for tgt, d in dd.items():
+                lb = d["lb"]
+                ub = d["ub"]
+                string += f"\t{lb} <= t_{tgt} - t_{src} <= {ub}\n"
+        return string
+
 
 def generate_random_timed_partial_order(
     num_nodes: int,

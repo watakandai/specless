@@ -413,7 +413,7 @@ def SWDFA_MPS(
 
     :param      states:          The states of the automaton
     :param      start_state:     The start state of the SWDFA
-    :param      F:               a (|states| x 1) vector containing the final
+    :param      F:               a (\|states\| x 1) vector containing the final
                                  state probabilities
     :param      empty_symbol:    The empty symbol
     :param      node_index_map:  a mapping from node label to it's index in the

@@ -1,0 +1,65 @@
+# num_robot: 1
+# depots: If provided as a global variable, this is prioritized.
+
+EdgeCapacities: ["battery"]
+NodeCapacities: ["payload"]
+nodes:
+  "A":
+    payload: 5
+  "B":
+    payload: 10
+  "C":
+    payload: 7
+  "D":
+    payload: 4
+  "E":
+    payload: 6
+  "F":
+    payload: 1
+
+# Must be Symmetric. You can later define blockages
+distance:
+  - [0, 9, 5, 1, 1, 9]
+  - [9, 0, 7, 8, -1, 4]
+  - [4, 8, 0, 5, 8, 7]
+  - [5, 3, 1, 0, 1, 6]
+  - [7, 8, -1, 9, 0, 7]
+  - [6, 3, 9, 4, 5, 0]
+battery:
+  - [0, 9, 5, 1, 1, 9]
+  - [9, 0, 7, 8, -1, 4]
+  - [4, 8, 0, 5, 8, 7]
+  - [5, 3, 1, 0, 1, 6]
+  - [7, 8, -1, 9, 0, 7]
+  - [6, 3, 9, 4, 5, 0]
+
+Robots:
+  Fixed-Wing Drone:
+    ### No need to specify start and end
+    depot: "A"    # depot == start&end
+    velocity: 10
+    battery: 10
+    assignments: ["A", "B", "C", "D"]
+  Drone:
+    depot: "B"
+    velocity: 8
+    battery:  2
+    assignments: ["A", "B", "C", "D"]
+  Spot:
+    depot: "C"
+    velocity: 2
+    battery: 10
+    assignments: ["E", "F"]
+
+
+global_time_constraints:
+  A: [10, 20]
+  B: [5, 15]
+  C: [0, 25]
+
+local_time_constraints:
+  A:
+    B: [0, 10]
+    C: [10 ,30]
+  B:
+    D: [0, 20]

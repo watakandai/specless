@@ -1,3 +1,7 @@
+"""
+Keeps all the constants used in this library
+"""
+
 from bidict import bidict
 
 # Map of object type to integers

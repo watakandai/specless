@@ -1,0 +1,108 @@
+# number of symbols in pdfa alphabet
+alphabet_size: 4
+
+# number of states in pdfa state space
+num_states: 4
+
+# symbol to use as the transition to a final state
+final_transition_sym: '$'
+
+# symbol to use as the empty (a.k.a. lambda) symbol
+empty_transition_sym: 'lambda'
+
+# unique start state string label of pdfa
+start_state: 's0'
+
+# whether or not to smooth the input sym. transition distributions
+smooth_transitions: False
+
+# whether an edge is expressed as a boolean formula or a set of atomic propositions
+# boolean_formula: True
+
+# define a list of node labels, where each label is a string identifier label
+# for a unique node, and the metadata properties for each node
+nodes:
+
+  's0':
+    final_probability: 0.00
+    trans_distribution: null
+    is_accepting: False
+
+  's1':
+    final_probability: 0.00
+    trans_distribution: null
+    is_accepting: False
+
+  's2':
+    final_probability: 0.00
+    trans_distribution: null
+    is_accepting: False
+
+  's3':
+    final_probability: 0.00
+    trans_distribution: null
+    is_accepting: False
+
+  's4':
+    final_probability: 1.00
+    trans_distribution: null
+    is_accepting: True
+
+
+# define the edges of the graph
+edges:
+
+  's0':
+    's0':
+      symbols:
+        - 'empty_red'
+      probabilities:
+        - 0.9
+    's1':
+      symbols:
+        - 'floor_yellow'
+      probabilities:
+        - 0.1
+
+  's1':
+    's1':
+      symbols:
+        - 'empty_red'
+      probabilities:
+        - 0.8
+    's2':
+      symbols:
+        - 'floor_red'
+      probabilities:
+        - 0.1
+    's3':
+      symbols:
+        - 'floor_green'
+      probabilities:
+        - 0.1
+
+  's2':
+    's2':
+      symbols:
+        - 'empty_red'
+      probabilities:
+        - 0.9
+    's4':
+      symbols:
+        - 'floor_green'
+      probabilities:
+        - 0.1
+
+  's3':
+    's3':
+      symbols:
+        - 'empty_red'
+      probabilities:
+        - 0.9
+    's4':
+      symbols:
+        - 'floor_red'
+      probabilities:
+        - 0.1
+
+  's4':

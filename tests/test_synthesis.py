@@ -63,9 +63,7 @@ def test_tsp_synthesis():
     # Env -> TransitionSystem
     env = MiniGridTransitionSystemWrapper(env)
     tsbuilder = TSBuilder()
-    transition_system: MinigridTransitionSystem = tsbuilder(
-        env, graph_data_format="minigrid"
-    )
+    transition_system: MinigridTransitionSystem = tsbuilder(env)
     # transition_system.draw("MiniGrid-Empty-5x5-v0")
 
     # TPO & TransitionSystem -> TSP
@@ -74,7 +72,7 @@ def test_tsp_synthesis():
 
     # Solve TSP -> Tours
     tspsolver = MILPTSPWithTPOSolver()
-    tours, cost = tspsolver.solve(tsp_with_tpo)
+    tours, cost, timestamps = tspsolver.solve(tsp_with_tpo)
 
     # Convert tours to a sequence of actions...
     actions: List[ActType] = [tspbuilder.map_back_to_controls(tour) for tour in tours]
@@ -94,7 +92,7 @@ def test_tsp_synthesis():
     assert True
 
 
-def test_wrapped():
+def test_wrapped() -> None:
     env = gym.make("MiniGrid-Empty-5x5-v0")
     env = LabelMiniGridWrapper(
         env, labelkey="label", skiplist=["unseen", "wall", "empty"]
@@ -120,4 +118,5 @@ def test_wrapped():
 
     # Synthesize
     algorithm = TSPSynthesisAlgorithm()
-    strategy = algorithm.synthesize(tpo, env)
+    env = MiniGridTransitionSystemWrapper(env, ignore_direction=True)
+    strategy = algorithm.synthesize(env, tpo)

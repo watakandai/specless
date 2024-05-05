@@ -11,7 +11,7 @@ def test_transition_system_builder():
     env = MiniGridTransitionSystemWrapper(env)
 
     tsbuilder = TSBuilder()
-    transition_system = tsbuilder(env, "minigrid")
+    transition_system = tsbuilder(env)
     assert isinstance(transition_system, MinigridTransitionSystem)
 
 

@@ -1,5 +1,45 @@
+"""
+This module contains functions to save and draw graphs and strategies.
+
+Examples
+--------
+Draw a graph:
+>>> import networkx as nx
+>>> from specless.io import draw_graph
+>>> G = nx.DiGraph()
+>>> G.add_node("A")
+>>> G.add_node("B")
+>>> G.add_edge("A", "B")
+>>> draw_graph(G, "graph.png")
+
+Draw a strategy:
+>>> from specless.strategy import PlanStrategy
+>>> from specless.io import save_strategy
+>>> plan = ["A", "B"]
+>>> strategy = PlanStrategy(plan)
+>>> save_strategy(strategy, "strategy.png")
+
+Save a graph:
+>>> from specless.io import save_graph
+>>> save_graph(G, "graph.png")
+
+Save a strategy:
+>>> save_strategy(strategy, "strategy.png")
+
+Notes
+-----
+This module is a work in progress.
+
+See Also
+--------
+specless.strategy
+specless.dataset
+specless.api.ortools_interface
+
+"""
+
 import copy
-from typing import Callable, Dict, List
+from typing import Callable, Dict, List, Optional
 
 import graphviz as gv
 import networkx as nx
@@ -9,11 +49,15 @@ from pydot import Dot
 
 
 def save_graph(graph: nx.MultiDiGraph, filepath: str) -> None:
-    """Save a class that is derived from a networkx MultiDiGraph
+    """
+    Save a class that is derived from a networkx MultiDiGraph to a file.
 
-    Args:
-        graph (nx.MultiDiGraph): _description_
-        filepath (str): _description_
+    Parameters
+    ----------
+    graph : nx.MultiDiGraph
+        The graph to save.
+    filepath : str
+        The path to the file where the graph will be saved.
     """
     pass
 
@@ -21,10 +65,28 @@ def save_graph(graph: nx.MultiDiGraph, filepath: str) -> None:
 def node_label_function(
     n: str,
     data: Dict,
-    selected_keys: List[str] = None,
+    selected_keys: Optional[List[str]] = None,
     ignore_keys: List[str] = ["obj"],
 ) -> str:
-    """Node Label Function"""
+    """
+    Generate a label for a node based on its data.
+
+    Parameters
+    ----------
+    n : str
+        The name of the node.
+    data : Dict
+        The data associated with the node.
+    selected_keys : List[str], optional
+        The keys in the data to include in the label. If None, all keys are included.
+    ignore_keys : List[str], optional
+        The keys in the data to exclude from the label.
+
+    Returns
+    -------
+    str
+        The label for the node.
+    """
     strings = []
     if selected_keys is None:
         selected_keys = list(data.keys())
@@ -45,9 +107,30 @@ def edge_label_function(
     u: str,
     v: str,
     data: Dict,
-    selected_keys: List[str] = None,
+    selected_keys: Optional[List[str]] = None,
     ignore_keys: List[str] = ["obj"],
 ) -> str:
+    """
+    Generate a label for an edge based on its data.
+
+    Parameters
+    ----------
+    u : str
+        The source node of the edge.
+    v : str
+        The target node of the edge.
+    data : Dict
+        The data associated with the edge.
+    selected_keys : List[str], optional
+        The keys in the data to include in the label. If None, all keys are included.
+    ignore_keys : List[str], optional
+        The keys in the data to exclude from the label.
+
+    Returns
+    -------
+    str
+        The label for the edge.
+    """
     strings = []
     if selected_keys is None:
         selected_keys = list(data.keys())
@@ -69,7 +152,18 @@ def add_labels(
     node_label_func: Callable = node_label_function,
     edge_label_func: Callable = edge_label_function,
 ) -> None:
-    """Add Labels to the original graph"""
+    """
+    Add labels to the nodes and edges of a graph.
+
+    Parameters
+    ----------
+    graph : nx.MultiDiGraph
+        The graph to add labels to.
+    node_label_func : Callable, optional
+        The function to generate node labels. If None, no node labels are added.
+    edge_label_func : Callable, optional
+        The function to generate edge labels. If None, no edge labels are added.
+    """
     if node_label_func is not None:
         for n, nodedata in graph.nodes(data=True):
             label = node_label_func(n, nodedata)
@@ -94,13 +188,21 @@ def draw_graph(
     img_format: str = "png",
     cleanup: bool = True,
 ) -> None:
-    """Draw a class that is derived from a networkx DiGraph
+    """
+    Draw a class that is derived from a networkx DiGraph and save it to a file.
 
-    Args:
-        graph (nx.DiGraph): _description_
-        filepath (str): _description_
-        should_display (bool):  Display
-        img_format (str): Image Format
+    Parameters
+    ----------
+    graph : nx.DiGraph
+        The graph to draw.
+    filepath : str
+        The path to the file where the graph will be saved.
+    should_display : bool, optional
+        Whether to display the graph. Default is True.
+    img_format : str, optional
+        The format of the image file. Default is 'png'.
+    cleanup : bool, optional
+        Whether to clean up temporary files. Default is True.
     """
     graph_ = copy.deepcopy(graph)
     for node in graph_.nodes():
@@ -132,9 +234,17 @@ def draw_graph(
 
 def _get_pydot_representation(graph: nx.MultiDiGraph) -> Dot:
     """
-    converts the networkx graph to pydot and sets graphviz graph attributes
-    :returns:   The pydot Dot data structure representation.
-    :rtype:     pydot.Dot
+    Convert a networkx graph to a pydot graph and set graphviz graph attributes.
+
+    Parameters
+    ----------
+    graph : nx.MultiDiGraph
+        The graph to convert.
+
+    Returns
+    -------
+    pydot.Dot
+        The pydot representation of the graph.
     """
     graph = _check_and_modify_colon_quotes(graph)
     graph = to_pydot(graph)
@@ -147,6 +257,19 @@ def _get_pydot_representation(graph: nx.MultiDiGraph) -> Dot:
 
 
 def _check_and_modify_colon_quotes(graph: nx.MultiDiGraph):
+    """
+    Check and modify colon quotes in a graph.
+
+    Parameters
+    ----------
+    graph : nx.MultiDiGraph
+        The graph to check and modify.
+
+    Returns
+    -------
+    nx.MultiDiGraph
+        The modified graph.
+    """
     for n, nodedata in graph.nodes(data=True):
         for attr, value in nodedata.items():
             if isinstance(value, int):
@@ -182,10 +305,14 @@ def _check_and_modify_colon_quotes(graph: nx.MultiDiGraph):
 
 
 def save_strategy(strategy, filepath: str) -> None:
-    """Draw a strategy class
+    """
+    Save a strategy class to a file.
 
-    Args:
-        strategy (): _description_
-        filepath (str): _description_
+    Parameters
+    ----------
+    strategy : _type_
+        The strategy to save.
+    filepath : str
+        The path to the file where the strategy will be saved.
     """
     pass
