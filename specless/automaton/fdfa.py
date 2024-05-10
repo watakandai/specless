@@ -106,8 +106,7 @@ class FDFA(Automaton):
                     of pdfa from networkx.add_nodes_from() and
                     networkx.add_edges_from()
         :rtype:     list of tuples: (node label, node, attribute dict),
-                    list of tuples: (src node label, dest node label,
-                                     edge attribute dict)
+                    list of tuples: (src node label, dest node label, edge attribute dict)
         """
 
         fdfa_nodes = self.nodes(data=True)
@@ -480,7 +479,7 @@ class FDFABuilder(Builder):
                                            that already has this information.
         :param      graph_data_format:     The graph data file format.
                                            {'dot_file', 'dot_string',
-                                            'learning_interface'}
+                                           'learning_interface'}
 
         :returns:   instance of an initialized FDFA object
 

@@ -8,6 +8,8 @@ from specless.inference.partial_order import POInferenceAlgorithm
 from specless.specification.base import Specification
 from specless.specification.partial_order import PartialOrder
 from specless.utils.collect_demos import collect_demonstrations
+from specless.wrapper.labelwrapper import LabelMiniGridWrapper
+from specless.wrapper.selectstatewrapper import SelectStateDataWrapper
 
 
 def test_construction():
@@ -28,17 +30,23 @@ def test_inference():
 
 
 def test_inference_on_gym_env():
-    env = gym.make("MiniGrid-BlockedUnlockPickup-v0")
-
-    # TODO: Define a function that maps a demo to a trace
+    # TODO: Create a wrapper that only return the symbol and timestamp
+    env = gym.make("MiniGrid-Empty-5x5-v0")
+    env = LabelMiniGridWrapper(env, labelkey="label")
+    env = SelectStateDataWrapper(env, columns=["label"])
 
     # Collect Demonstrations
-    demonstrations = collect_demonstrations(env, num=10, only_success=True)
+    demonstrations = collect_demonstrations(
+        env,
+        only_success=True,
+        add_timestamp=True,
+        num=10,
+        timeout=1000,
+    )
 
     # Convert them to a Dataset Class
-    demonstrations = sl.ArrayDataset(demonstrations, columns=["symbol"])  # state labels
+    demonstrations = sl.ArrayDataset(demonstrations, columns=["timestamp", "symbol"])
 
     inference = POInferenceAlgorithm()
     specification: Specification = inference.infer(demonstrations)
-
     assert isinstance(specification, PartialOrder)

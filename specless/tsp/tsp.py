@@ -11,17 +11,19 @@ TSP
 >>> b: List[float] = [100, 16, 10, 14]
 # Travel time
 >>> costs: List[List[float]] = [
-    [0, 3, 4, 5],
-    [3, 0, 5, 4],
-    [4, 5, 0, 3],
-    [5, 4, 3, 0],
-]
+...     [0, 3, 4, 5],
+...     [3, 0, 5, 4],
+...     [4, 5, 0, 3],
+...     [5, 4, 3, 0],
+... ]
+
 # 1. Just Test with the cost (TSP Solver)
 >>> tsp = TSP(nodes, costs)
 
 >>> service_times = [2, 2, 2, 2]
 >>> tsp = TSP(nodes, costs, service_times)
 """
+
 import itertools
 import os
 from pathlib import Path

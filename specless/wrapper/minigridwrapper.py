@@ -46,6 +46,7 @@ Users can set a function to label nodes
 and a function to set edge labels
 >>> tsbuilder.set_add_edge_func(add_edge_func)
 """
+
 from typing import Dict, List, Tuple
 
 from gym_minigrid.minigrid import MiniGridEnv
@@ -72,11 +73,12 @@ class MiniGridTransitionSystemWrapper(TransitionSystemWrapper):
     """_summary_
 
     MiniGridEnv returns a state of type Dict
-    state: Dict = {
-        'image': image,
-        'direction': self.agent_dir,
-        'mission': self.mission
-    }
+
+    >>> state: Dict = {
+    >>>     'image': image,
+    >>>     'direction': self.agent_dir,
+    >>>     'mission': self.mission
+    >>> }
 
     Args:
         TransitionSystemWrapper (_type_): _description_
@@ -102,7 +104,7 @@ class MiniGridTransitionSystemWrapper(TransitionSystemWrapper):
         ignore_done: bool = True,
         ignore_direction: bool = True,
     ):
-        """_summary_
+        """
 
         MiniGridEnv
         =============

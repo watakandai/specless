@@ -24,6 +24,7 @@
 >>> costs
 [100, 120, ..., 90]
 """
+
 import copy
 from collections import defaultdict
 from typing import Dict, List, Optional, Tuple
@@ -36,6 +37,7 @@ from specless.automaton.transition_system import MinigridTransitionSystem
 from specless.factory.builder import Builder
 from specless.specification.base import Specification
 from specless.specification.timed_partial_order import TimedPartialOrder
+from specless.strategy import CombinedStrategy, PlanStrategy, Strategy
 from specless.tsp.tsp import GTSP, TSP, TSPWithTPO
 
 
@@ -210,6 +212,19 @@ class TSPBuilder(Builder):
 
         return controls
 
+    def synthesize_strategy(self, tours) -> Strategy:
+        actions: List[ActType] = [self.map_back_to_controls(tour) for tour in tours]
+
+        if len(actions) == 0:
+            assert False
+
+        # Tours -> Strategy
+        if len(actions) == 1:
+            strategy = PlanStrategy(actions[0])
+        else:
+            strategy = CombinedStrategy([PlanStrategy(action) for action in actions])
+        return strategy
+
     @staticmethod
     def node_list_to_edges(nodes: List[int]) -> List[Tuple[int, int]]:
         edges = []
@@ -285,12 +300,12 @@ class TSPWithTPOBuilder(TSPBuilder):
             TimedPartialOrder: _description_
         """
 
-        global_constraints: Dict[
-            int, Tuple[float, float]
-        ] = self.convert_global_constraints(tpo)
-        local_constraints: Dict[
-            Tuple[int, int], Tuple[float, float]
-        ] = self.convert_local_constraints(tpo)
+        global_constraints: Dict[int, Tuple[float, float]] = (
+            self.convert_global_constraints(tpo)
+        )
+        local_constraints: Dict[Tuple[int, int], Tuple[float, float]] = (
+            self.convert_local_constraints(tpo)
+        )
         tpo = TimedPartialOrder.from_constraints(global_constraints, local_constraints)
         return tpo
 

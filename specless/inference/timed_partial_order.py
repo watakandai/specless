@@ -1,13 +1,21 @@
 """
+===================
 Inference Algorithm
 ===================
+
 Inference algorithms then use such demonstrations to come up with a specification.
+
+Examples
+--------
+
 >>> import specless as sl
 >>> traces = [[a,b,c], [a,b,b,c], [a,a,b,b,c]]
 >>> dataset = sl.ArrayDataset(traces)
 >>> inference = sl.TPOInference()
 >>> specification = inference.infer(demonstrations)
+
 """
+
 import copy
 import queue
 import random
@@ -64,19 +72,19 @@ class TPOInferenceAlgorithm(InferenceAlgorithm):
             2. If there is a hard constraint in the order,
             there should NEVER be a same symbol in
             forward constraints and backwards constraints.
-            Thus,
-                linear constraints = forward_constraints - backward_constraints.
+            Thus, linear constraints = forward_constraints - backward_constraints.
 
             3. We construct a graph based on the linear constraints.
 
-        Args:
-            dataset (Dataset):        Timed Trace Data
+        Parameters
+        ----------
+        dataset : Dataset
+            Timed Trace Data
 
-        Raises:
-            NotImplementedError: _description_
-
-        Returns:
-            Specification:                  Timed Partial Order
+        Returns
+        ------
+        Specification:
+            Timed Partial Order
         """
         sorted_dataset: BaseDataset = copy.deepcopy(dataset)
         sorted_dataset.apply(
@@ -105,12 +113,15 @@ class TPOInferenceAlgorithm(InferenceAlgorithm):
         decimals: Optional[int] = None,
         threshold: Optional[float] = None,
     ) -> Tuple:
-        """
-        Infer Time Bounds on Nodes and Edges given Partial Order.
+        """Infer Time Bounds on Nodes and Edges given Partial Order.
 
+        Notes
+        -----
         Optimization Problem:
-            min         c x
-            s.t.
+
+        .. math::
+            min         c x\\
+            s.t.\\
                 A x <= b
 
             variables:
@@ -119,13 +130,14 @@ class TPOInferenceAlgorithm(InferenceAlgorithm):
                 t_ei:       Time at Event i from data
                 T_ei:       Times at Event i for all traces, i.e., T_ei = [t_ei, ...]
 
-            min:        \sum (u_eij - l_eij) + \sum (u_ei - l_eij)
-            s.t.
-                tau_e1 >= max(0, min(T_e1))                 => -tau_e1 <= -min
-                tau_e1 <= max(T_e1)
-                    ...
-                tau_e2 - tau_e1 >= max(0, min(T_e2-T_e1))   => -(tau_e2 - tau_e1) <= -min
-                tau_e2 - tau_e1 <= max(T_e2-T_e1)
+        .. math::
+            min:        \sum (u_eij - l_eij) + \sum (u_ei - l_eij)\\
+            s.t.)\\
+                tau_e1 >= max(0, min(T_e1))                 => -tau_e1 <= -min)\\
+                tau_e1 <= max(T_e1))\\
+                    ...)\\
+                tau_e2 - tau_e1 >= max(0, min(T_e2-T_e1))   => -(tau_e2 - tau_e1) <= -min)\\
+                tau_e2 - tau_e1 <= max(T_e2-T_e1))\\
                     ...
 
         Thus,
@@ -370,6 +382,27 @@ class TPOInferenceAlgorithm(InferenceAlgorithm):
                     Q.put(next_node)
                     order.append(next_node)
         return order
+
+    @staticmethod
+    def format_timed_trace(
+        timed_trace: List[Tuple[float, str]],
+    ) -> List[Tuple[float, str]]:
+        new_timed_trace = []
+        prev_s = ""
+        for t, s in timed_trace:
+            if s != "" and s != prev_s:
+                new_timed_trace.append((t, s))
+            prev_s = s
+        return new_timed_trace
+
+    @staticmethod
+    def format_timed_traces(
+        timed_traces: List[List[Tuple[float, str]]],
+    ) -> List[List[Tuple[float, str]]]:
+        return [
+            TPOInferenceAlgorithm.format_timed_trace(timed_trace)
+            for timed_trace in timed_traces
+        ]
 
 
 class TimeConstraintsLP:

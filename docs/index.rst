@@ -13,8 +13,72 @@ To checkout the code, please visit our repo on `GitHub <https://github.com/watak
 .. note::
    This project is under active development.
 
+Installation
+----------------
+from `PyPI`
 
-For installation, please check the :ref:`installation <installation>` guide.
+.. code-block:: console
+
+   $ pip install specless
+
+from source
+
+.. code-block:: console
+
+   $ pip install git@github.com:watakandai/specless.git
+
+or clone from github and install the library
+
+.. code-block:: console
+
+   $ git clone https://github.com/watakandai/specless.git
+   $ cd specless
+   $ pip install .
+
+
+Development
+----------------
+If you want to contribute, set up your development environment as follows:
+
+- Install `Poetry <https://python-poetry.org>_`
+
+- Clone the repository:
+
+.. code-block:: console
+
+   $ git clone https://github.com/watakandai/specless.git && cd specless
+
+- Install the dependencies:
+
+.. code-block:: console
+
+   $ poetry shell && poetry install
+
+Tests
+----------------
+
+To run tests: `tox`
+
+To run only the code tests: `tox`
+
+
+Docs
+----------------
+
+Locally, run `make html` inside the `docs` directory.
+
+Once you are ready, make a pull request and the documentations are built automatically with GitHub Actions.
+See `.github/generate-documentation.yml`.
+
+
+License
+----------------
+
+Apache 2.0 License
+
+Copyright 2023- KandaiWatanabe
+
+
 
 .. autosummary::
    :toctree: _autosummary

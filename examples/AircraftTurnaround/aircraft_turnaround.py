@@ -15,7 +15,7 @@ from gym_minigrid.minigrid import (
     fill_coords,
     point_in_rect,
 )
-from gym_minigrid.register import register
+from gymnasium import register
 from wombats.systems.minigrid import (
     MINIGRID_TO_GRAPHVIZ_COLOR,
     Agent,

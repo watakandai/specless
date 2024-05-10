@@ -2,7 +2,9 @@ import collections
 import os
 from typing import Tuple
 
+import gymnasium as gym
 from bidict import bidict
+from gymnasium.wrappers.record_video import RecordVideo
 
 from specless.factory.builder import Builder
 from specless.typing import ActionsEnum, EnvAct, EnvActs, StepData
@@ -139,7 +141,7 @@ class TransitionSystem(Automaton):
         """
 
         # need to do type-checking / polymorphism handling here
-        if isinstance(word, str) or not isinstance(word, collections.Iterable):
+        if isinstance(word, str) or not isinstance(word, collections.abc.Iterable):
             word = [word]
 
         curr_state = self.start_state
@@ -282,19 +284,37 @@ class MinigridTransitionSystem(TransitionSystem):
         return super().transition(curr_state, input_symbol, **get_next_state_kwargs)
 
     def run(
-        self, word: {EnvAct, EnvActs, Symbol, Symbols}, **get_next_state_kwargs: dict
+        self,
+        word: {EnvAct, EnvActs, Symbol, Symbols},
+        record_video: bool = False,
+        video_folder: str = "",
+        **get_next_state_kwargs: dict,
     ) -> Tuple[Symbols, Nodes]:
         """processes a input word and produces a output word & state sequence"""
+
+        temp_env = self.env
+
+        if record_video:
+            self.env = RecordVideo(
+                self.env, video_folder, step_trigger=lambda i: i == 0
+            )
+            self.env.start_video_recorder()
 
         self.reset()
 
         # need to do type-checking / polymorphism handling here
-        if isinstance(word, str) or not isinstance(word, collections.Iterable):
+        if isinstance(word, str) or not isinstance(word, collections.abc.Iterable):
             word = [word]
 
         output_word, state_sequence = super().run(word, **get_next_state_kwargs)
 
-        return output_word, state_sequence
+        video_path = None
+        if record_video:
+            self.env.close()
+            video_path = self.env.video_recorder.path
+            self.env = temp_env
+
+        return output_word, state_sequence, video_path
 
     def _get_next_state(
         self, curr_state: Node, symbol: {Symbol, EnvAct}
@@ -345,7 +365,7 @@ class MinigridTransitionSystem(TransitionSystem):
             terminated,
             truncated,
             _,
-        ) = self.make_transition(curr_state, action)
+        ) = self.env.make_transition(curr_state, action)
         # dest_node = self._get_node_from_state(dest_state)
 
         self.current_state = dest_state
@@ -388,7 +408,6 @@ class TSBuilder(Builder):
     def __call__(
         self,
         graph_data: {str, TransitionSystemWrapper},
-        graph_data_format: str = "yaml",
     ) -> TransitionSystem:
         """
         Returns an initialized TransitionSystem instance given the graph_data
@@ -407,10 +426,10 @@ class TSBuilder(Builder):
                                         data loader
         """
 
-        if graph_data_format == "yaml":
+        if isinstance(graph_data, str):
             config_data = self._from_yaml(graph_data)
             TS_Type = TransitionSystem
-        elif graph_data_format == "minigrid":
+        elif isinstance(graph_data, gym.Env):
             config_data: TransitionSystem = self._from_minigrid(graph_data)
             TS_Type = MinigridTransitionSystem
         else:
@@ -477,3 +496,8 @@ class TSBuilder(Builder):
             raise ValueError(msg.format(graph_data, allowed_exts))
 
         return config_data
+
+
+def build_transition_system(env):
+    tsbuillder = TSBuilder()
+    return tsbuillder(env)

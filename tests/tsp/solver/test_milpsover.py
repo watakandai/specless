@@ -35,7 +35,7 @@ def test_milpsolver():
 
     # Solve TSP -> Tours
     tspsolver = MILPTSPWithTPOSolver()
-    tours, cost = tspsolver.solve(tsp_with_tpo)
+    tours, cost, timestamps = tspsolver.solve(tsp_with_tpo)
 
     assert tours[0][0] == 0
     assert tours[0][1] == 1

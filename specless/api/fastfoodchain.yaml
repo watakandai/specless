@@ -1,0 +1,80 @@
+NodeCapacities: ["payload"]
+NodeOccupancies: ["numRobot"] # Usually not needed UNLESS a node must be visited multiple times
+# EdgeOccupancies: [""]
+nodes:
+  "A":
+    # At each node, there can only be 1 robot
+    numRobot: 1
+  "B":
+    numRobot: 1
+  "C":
+    numRobot: 1
+  "D":
+    numRobot: 1
+  "E":
+    numRobot: 1
+  "F":
+    numRobot: 1
+
+# Must be Symmetric. You can later define blockages
+distance:
+  - [0, 9, 5, 1, 1, 9]
+  - [9, 0, 7, 8, -1, 4]
+  - [4, 8, 0, 5, 8, 7]
+  - [5, 3, 1, 0, 1, 6]
+  - [7, 8, -1, 9, 0, 7]
+  - [6, 3, 9, 4, 5, 0]
+
+Robots:
+  Chopin:
+    service_velocity: 1   # service_time = service_cost / service_velocity
+    payload: 2    # Maximum payload
+  Morzart:
+    service_velocity: 2   # service_time = service_cost / service_velocity
+    payload: 2    # Maximum payload
+  Bach:
+    service_velocity: 3   # service_time = service_cost / service_velocity
+    payload: 2    # Maximum payload
+
+tasks:
+  FrenchFriesTask:
+    must: ["A"]
+    service_time: 10    # Independent of the robot's speed. It's fixed time.
+    standalone: true    # Can be initiated, let it do its thing, but must come back to pick it up
+    time_window: [10, 20]
+  BurgersTask:
+    must: ["B", "C", "D"]
+    end: "D"
+    standalone: false   # must attend
+    service_cost: 20   # service_time = service_cost / service_velocity
+    time_window: [5, 15]
+  DrinksTask:
+    must: ["E"]
+    service_cost: 5   # service_time = service_cost / service_velocity
+    standalone: false   # must attend
+  BringFrenchFriesTask:
+    start: "A"
+    end: "F"
+    service_cost: 10   # service_time = service_cost / service_velocity
+    pickupAndDelivery: true
+    payload: 1
+  BringBurgersTask:
+    start: "D"
+    end: "F"
+    service_cost: 10   # service_time = service_cost / service_velocity
+    pickupAndDelivery: true
+    payload: 1
+  BringDrinksTask:
+    start: "E"
+    end: "F"
+    service_cost: 10   # service_time = service_cost / service_velocity
+    pickupAndDelivery: true
+    payload: 1
+
+repeats:
+  - ["FrenchFriesTask", "BurgersTask", "DrinksTask", "BringFrenchFriesTask", "BringBurgersTask", "BringDrinksTask"]
+
+precedences:
+  - ["FrenchFriesTask", "BringFrenchFriesTask"]
+  - ["BurgersTask", "BringBurgersTask"]
+  - ["DrinksTask", "BringDrinksTask"]

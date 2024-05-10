@@ -1,8 +1,25 @@
+"""
+=========================================
+Linear Temporal Logic (LTL) Parser Module
+=========================================
+
+This module provides a parser for Linear Temporal Logic (LTL) formulas.
+
+Examples
+--------
+Parse an LTL formula:
+>>> from specless.parser import LTLfParser
+>>> parser = LTLfParser()
+>>> formula = "G(a -> F b)"
+>>> dfa = parser.parse(formula)
+>>> print(dfa)
+"""
+
 import networkx as nx
 import pydot
 from ltlf2dfa.parser.ltlf import LTLfParser as OriginalLTLfParser
 
-from specless.specification.dfa import DFA
+# from specless.specification.dfa import DFA
 
 
 # NOTE: DEPRECATED
@@ -14,7 +31,7 @@ class LTLfParser:
     def __init__(self, engine: str = "ltlf2dfa") -> None:
         self.engine: str = engine
 
-    def parse(self, formula_str: str) -> DFA:
+    def parse(self, formula_str: str) -> "DFA":
         """Parse a fomula and translate it into a DFA
 
         Args:
@@ -41,9 +58,13 @@ class LTLfParser:
             for e in g.edges(data=True):
                 print(e)
 
-            return DFA(g)
+            # TODO: Must return a DFA
+            return g
+
         elif self.engine == "spot":
             parser = lambda x: x
-            return DFA()
+            # TODO: Must return a DFA
+            return parser(formula_str)
+
         else:
             raise Exception(f"No such engine called {self.engine}")
