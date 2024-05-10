@@ -40,7 +40,10 @@ from .inference import (
     TPOInferenceAlgorithm,  # NOQA
 )
 from .io import (
+    add_labels,  # NOQA
     draw_graph,  # NOQA
+    edge_label_function,  # NOQA
+    node_label_function,  # NOQA
     save_graph,  # NOQA
     save_strategy,  # NOQA
 )
@@ -92,6 +95,9 @@ from .utils import (
     simulate,  # NOQA
 )
 from .wrapper import (
+    DIAG_ACTION_TO_POS_DELTA,  # NOQA
+    EIGHT_ACTION_TO_POS_DELTA,  # NOQA
+    FOUR_ACTION_TO_POS_DELTA,  # NOQA
     AddPosDirToMiniGridWrapper,  # NOQA
     DiagOmniDirectionActions,  # NOQA
     DirectionalActionWrapper,  # NOQA
