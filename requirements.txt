@@ -14,7 +14,8 @@ gymnasium
 torch
 ltlf2dfa
 click
-gym_minigrid # Must edit all "import gym" to "import gymnasium as gym" AND "from gym." to "from gymnasium."
+# This is a legacy gym_minigrid package (v1.2.2) with the replacement of "gym" with "gymnasium"
+gym_minigrid @ git+https://github.com/watakandai/gym-minigrid@gym-minigrid-legacy
 pyyaml
 gurobipy==10.0.3
 ortools
