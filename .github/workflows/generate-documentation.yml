@@ -18,15 +18,18 @@ jobs:
         python3 -m pip install -r requirements.txt && python3 -m pip install -r docs/requirements.txt
     - name: Sphinx build
       run: |
-        python3 -m sphinx docs docs/html
-    # - name: Upload artifacts
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: html-docs
-    #     path: docs/html
+        python3 -m sphinx docs docs/build
+    # Great extra actions to compose with:
+    # Create an artifact of the html output.
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: html-docs
+        path: docs/build
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v4
       # if: github.ref == 'refs/heads/main'
       with:
         publish_branch: gh-pages
         github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: docs/build
