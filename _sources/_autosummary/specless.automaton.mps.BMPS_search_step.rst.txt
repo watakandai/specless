@@ -1,0 +1,6 @@
+specless.automaton.mps.BMPS\_search\_step
+=========================================
+
+.. currentmodule:: specless.automaton.mps
+
+.. autofunction:: BMPS_search_step

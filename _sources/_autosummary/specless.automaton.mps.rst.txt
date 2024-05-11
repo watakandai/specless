@@ -1,0 +1,35 @@
+specless.automaton.mps
+======================
+
+.. automodule:: specless.automaton.mps
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      BMPS_exact
+      BMPS_search_step
+      SWDFA_MPS
+      postprocess_MPS
+      should_use_BMPS_exact
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

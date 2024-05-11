@@ -1,0 +1,27 @@
+specless.tsp.solver.ortools.ORTSPWithTPOSolver
+==============================================
+
+.. currentmodule:: specless.tsp.solver.ortools
+
+.. autoclass:: ORTSPWithTPOSolver
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~ORTSPWithTPOSolver.create_data_model
+      ~ORTSPWithTPOSolver.get_tours_and_cost
+      ~ORTSPWithTPOSolver.solve
+   
+   
+
+   
+   
+   

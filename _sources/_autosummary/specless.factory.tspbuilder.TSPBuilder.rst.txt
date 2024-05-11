@@ -1,0 +1,41 @@
+specless.factory.tspbuilder.TSPBuilder
+======================================
+
+.. currentmodule:: specless.factory.tspbuilder
+
+.. autoclass:: TSPBuilder
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~TSPBuilder.add_initial_state
+      ~TSPBuilder.build_mappings_from_ts
+      ~TSPBuilder.get_all_pair_shortest_paths
+      ~TSPBuilder.load_YAML_config_data
+      ~TSPBuilder.map_back_to_controls
+      ~TSPBuilder.node_list_to_edges
+      ~TSPBuilder.synthesize_strategy
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~TSPBuilder.T
+      ~TSPBuilder.state_to_obs
+      ~TSPBuilder.obs_to_states
+      ~TSPBuilder.obs_to_nodes
+      ~TSPBuilder.state_to_node
+   
+   

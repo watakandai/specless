@@ -1,0 +1,6 @@
+specless.io.save\_strategy
+==========================
+
+.. currentmodule:: specless.io
+
+.. autofunction:: save_strategy

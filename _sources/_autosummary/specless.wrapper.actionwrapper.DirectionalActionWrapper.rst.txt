@@ -1,0 +1,44 @@
+specless.wrapper.actionwrapper.DirectionalActionWrapper
+=======================================================
+
+.. currentmodule:: specless.wrapper.actionwrapper
+
+.. autoclass:: DirectionalActionWrapper
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DirectionalActionWrapper.class_name
+      ~DirectionalActionWrapper.close
+      ~DirectionalActionWrapper.get_wrapper_attr
+      ~DirectionalActionWrapper.render
+      ~DirectionalActionWrapper.reset
+      ~DirectionalActionWrapper.step
+      ~DirectionalActionWrapper.wrapper_spec
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DirectionalActionWrapper.action_space
+      ~DirectionalActionWrapper.metadata
+      ~DirectionalActionWrapper.np_random
+      ~DirectionalActionWrapper.observation_space
+      ~DirectionalActionWrapper.render_mode
+      ~DirectionalActionWrapper.reward_range
+      ~DirectionalActionWrapper.spec
+      ~DirectionalActionWrapper.unwrapped
+   
+   

@@ -1,0 +1,32 @@
+specless.dataset.PathToFileDataset
+==================================
+
+.. currentmodule:: specless.dataset
+
+.. autoclass:: PathToFileDataset
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~PathToFileDataset.apply
+      ~PathToFileDataset.tolist
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PathToFileDataset.length
+   
+   

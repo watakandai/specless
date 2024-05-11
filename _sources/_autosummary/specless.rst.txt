@@ -1,0 +1,46 @@
+﻿specless
+========
+
+.. automodule:: specless
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   specless.api
+   specless.automaton
+   specless.cli
+   specless.const
+   specless.dataset
+   specless.factory
+   specless.inference
+   specless.io
+   specless.minigrid
+   specless.parser
+   specless.specification
+   specless.strategy
+   specless.synthesis
+   specless.tsp
+   specless.typing
+   specless.utils
+   specless.wrapper
+

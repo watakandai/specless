@@ -1,0 +1,41 @@
+specless.automaton.base
+=======================
+
+.. automodule:: specless.automaton.base
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      edge_weight_to_string
+      node_obs_to_str
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      Automaton
+   
+   
+
+   
+   
+   
+
+
+

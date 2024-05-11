@@ -1,0 +1,44 @@
+specless.wrapper.multiagentwrapper.MultiAgentWrapper
+====================================================
+
+.. currentmodule:: specless.wrapper.multiagentwrapper
+
+.. autoclass:: MultiAgentWrapper
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MultiAgentWrapper.class_name
+      ~MultiAgentWrapper.close
+      ~MultiAgentWrapper.get_wrapper_attr
+      ~MultiAgentWrapper.render
+      ~MultiAgentWrapper.reset
+      ~MultiAgentWrapper.step
+      ~MultiAgentWrapper.wrapper_spec
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MultiAgentWrapper.action_space
+      ~MultiAgentWrapper.metadata
+      ~MultiAgentWrapper.np_random
+      ~MultiAgentWrapper.observation_space
+      ~MultiAgentWrapper.render_mode
+      ~MultiAgentWrapper.reward_range
+      ~MultiAgentWrapper.spec
+      ~MultiAgentWrapper.unwrapped
+   
+   

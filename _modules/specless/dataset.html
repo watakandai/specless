@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>specless.dataset &mdash; specless 0.0.2 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=e3a6060d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            specless
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_autosummary/specless.html">specless</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">specless</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">specless.dataset</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for specless.dataset</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">========================</span>
+<span class="sd">Data and Dataset classes</span>
+<span class="sd">========================</span>
+
+<span class="sd">Data Class</span>
+<span class="sd">==========</span>
+
+<span class="sd">It&#39;s basically a table. You can access its  size:</span>
+
+<span class="sd">&gt;&gt;&gt; l = demonstration.size       # Return the number of elements in this object</span>
+
+
+<span class="sd">If it were a TimedTraceData object, it has a trace and timestamp data.</span>
+
+<span class="sd">&gt;&gt;&gt; symbols = demonstration[&quot;symbol&quot;]            # or demonstration.symbol</span>
+<span class="sd">                                                # Returns a Series object</span>
+
+<span class="sd">&gt;&gt;&gt; timestamps = demonstration[&quot;timestamp&quot;]       # or demonstration.timestamp</span>
+<span class="sd">                                                  # Returns a Series object</span>
+
+<span class="sd">or turn it into a list of tuples</span>
+
+<span class="sd">&gt;&gt;&gt; demo_list = demonstration.values.tolist()    # Returns a list of list</span>
+<span class="sd">[[s1, t1], [s2, t2], ..., [sn, tn]]</span>
+
+<span class="sd">You can sort the data</span>
+
+<span class="sd">&gt;&gt;&gt; sorted_demonstration = demonstration.sort_values(by=&quot;timestamp&quot;)</span>
+<span class="sd">&gt;&gt;&gt; demonstration.sort_values(by=[&quot;timestamp&quot;, &quot;symbol&quot;], inplace=True)</span>
+
+<span class="sd">Dataset Class</span>
+<span class="sd">==============</span>
+<span class="sd">A Data object can access a data (demonstration/trace) by:</span>
+
+<span class="sd">&gt;&gt;&gt; demonstrations = [</span>
+<span class="sd">...     [&quot;e1&quot;, &quot;e2&quot;, &quot;e3&quot;, &quot;e4&quot;, &quot;e5&quot;],             # trace 1</span>
+<span class="sd">...     [&quot;e1&quot;, &quot;e4&quot;, &quot;e2&quot;, &quot;e3&quot;, &quot;e5&quot;],             # trace 2</span>
+<span class="sd">...     [&quot;e1&quot;, &quot;e2&quot;, &quot;e4&quot;, &quot;e3&quot;, &quot;e5&quot;],             # trace 3</span>
+<span class="sd">...]</span>
+
+<span class="sd">&gt;&gt;&gt; demonstrations = sl.ArrayDataset(demnstrations, columns=[&quot;symbol&quot;])</span>
+<span class="sd">&gt;&gt;&gt; demonstration = demonstrations[i]</span>
+
+<span class="sd">We can also return a list of data</span>
+
+<span class="sd">&gt;&gt;&gt; timed_traces = demonstrations.tolist()</span>
+<span class="sd">[[[s1, t1], [s2, t2], ..., [sn, tn]], ..., [[s1, t1], [s2, t2], ..., [sm, tm]]]</span>
+<span class="sd">&gt;&gt;&gt; traces = demonstrations.tolist(key=&quot;symbol&quot;)</span>
+<span class="sd">[[s1, s2, ..., sn], ..., [s1, s2, ..., sn]]</span>
+
+<span class="sd">You can sort dataset in a batch</span>
+
+<span class="sd">&gt;&gt;&gt; f = lambda data: data.sort_values(by=[&quot;timestamp&quot;, &quot;symbol&quot;], inplace=True)</span>
+<span class="sd">&gt;&gt;&gt; demonstrations.apply(f)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">Dataset</span>
+
+<span class="kn">from</span> <span class="nn">specless.typing</span> <span class="kn">import</span> <span class="n">Data</span>
+
+
+<div class="viewcode-block" id="BaseDataset">
+<a class="viewcode-back" href="../../_autosummary/specless.dataset.BaseDataset.html#specless.dataset.BaseDataset">[docs]</a>
+<span class="k">class</span> <span class="nc">BaseDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base Dataset Class</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Data</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the BaseDataset with a list of data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : List[Data]</span>
+<span class="sd">            A list of data to be stored in the dataset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()),</span> <span class="n">data</span><span class="p">)))</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Data</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">length</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the length of the data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">            The length of the data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the length of the data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">            The length of the data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the item at the specified index.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        idx : int</span>
+<span class="sd">            The index of the item to get.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Any</span>
+<span class="sd">            The item at the specified index.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+<div class="viewcode-block" id="BaseDataset.apply">
+<a class="viewcode-back" href="../../_autosummary/specless.dataset.BaseDataset.html#specless.dataset.BaseDataset.apply">[docs]</a>
+    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply a function to each item in the data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        func : Callable[..., Any]</span>
+<span class="sd">            The function to apply to each item.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="BaseDataset.tolist">
+<a class="viewcode-back" href="../../_autosummary/specless.dataset.BaseDataset.html#specless.dataset.BaseDataset.tolist">[docs]</a>
+    <span class="k">def</span> <span class="nf">tolist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the data to a list.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        key : Optional[str], default=None</span>
+<span class="sd">            The key to use to convert the data to a list. If None, all data is converted.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            The data converted to a list.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">))</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ArrayDataset">
+<a class="viewcode-back" href="../../_autosummary/specless.dataset.ArrayDataset.html#specless.dataset.ArrayDataset">[docs]</a>
+<span class="k">class</span> <span class="nc">ArrayDataset</span><span class="p">(</span><span class="n">BaseDataset</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dataset class that contains a list of data.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="n">columns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the ArrayDataset with a list of data and column names.</span>
+
+<span class="sd">        The data is converted into a list of Data objects, each with the specified columns.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : Union[List[List[Any]], np.ndarray]</span>
+<span class="sd">            The data to be stored in the dataset. Can be a list of lists or a numpy array.</span>
+<span class="sd">        columns : List[str]</span>
+<span class="sd">            The names of the columns in the data.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; data = [[1, 2, 3], [4, 5, 6]]</span>
+<span class="sd">        &gt;&gt;&gt; columns = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; dataset = ArrayDataset(data, columns)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">([</span><span class="n">Data</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">])</span></div>
+
+
+
+<div class="viewcode-block" id="CSVDataset">
+<a class="viewcode-back" href="../../_autosummary/specless.dataset.CSVDataset.html#specless.dataset.CSVDataset">[docs]</a>
+<span class="k">class</span> <span class="nc">CSVDataset</span><span class="p">(</span><span class="n">BaseDataset</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reads a list of csv files and turns them into a dataset.</span>
+
+<span class="sd">    Users can either provide a directory to the traces or a list of filepaths.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Provide a directory to the traces:</span>
+
+<span class="sd">    &gt;&gt;&gt; filedir = &#39;/path/to/the/csv/directory/&#39;</span>
+<span class="sd">    &gt;&gt;&gt; dataset = CSVDataset(filedir)</span>
+
+<span class="sd">    If the user strictly needs a sorted dataset, they can provide a list of paths:</span>
+
+<span class="sd">    &gt;&gt;&gt; filedir = &#39;/path/to/the/csv/directory/&#39;</span>
+<span class="sd">    &gt;&gt;&gt; filepaths = [os.path.join(filedir, str(i)) for i in range(100)]</span>
+<span class="sd">    &gt;&gt;&gt; dataset = CSVDataset(filedir, filepaths=filepaths)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">filedir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">filepaths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the CSVDataset with a directory or a list of filepaths.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filedir : Optional[str], default=None</span>
+<span class="sd">            The directory containing the csv files to be included in the dataset.</span>
+<span class="sd">        filepaths : Optional[List[str]], default=None</span>
+<span class="sd">            A list of filepaths to the csv files to be included in the dataset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">filepaths</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">filepaths</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filedir</span><span class="p">,</span> <span class="s2">&quot;*.csv&quot;</span><span class="p">)))</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">([</span><span class="n">Data</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">fp</span><span class="p">))</span> <span class="k">for</span> <span class="n">fp</span> <span class="ow">in</span> <span class="n">filepaths</span><span class="p">])</span></div>
+
+
+
+<div class="viewcode-block" id="PathToFileDataset">
+<a class="viewcode-back" href="../../_autosummary/specless.dataset.PathToFileDataset.html#specless.dataset.PathToFileDataset">[docs]</a>
+<span class="k">class</span> <span class="nc">PathToFileDataset</span><span class="p">(</span><span class="n">BaseDataset</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dataset class that contains a path to a file</span>
+
+<span class="sd">    A dataset that contains a path to a file, but not the data itself.</span>
+
+<span class="sd">    This can be useful for algorithms that require only the filename, not the data.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; filepath = &#39;/path/to/the/file&#39;</span>
+<span class="sd">    &gt;&gt;&gt; dataset = PathToFileDataset(filepath)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the PathToFileDataset with a filepath.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filepath : str</span>
+<span class="sd">            The path to the file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">[])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">filepath</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Kandai Watanabe.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

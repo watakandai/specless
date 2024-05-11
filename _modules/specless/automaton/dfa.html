@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>specless.automaton.dfa &mdash; specless 0.0.2 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=e3a6060d"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            specless
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/specless.html">specless</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">specless</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">specless.automaton.dfa</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for specless.automaton.dfa</h1><div class="highlight"><pre>
+<span></span><span class="c1"># 3rd-party packages</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">queue</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+<span class="kn">from</span> <span class="nn">bidict</span> <span class="kn">import</span> <span class="n">bidict</span>
+
+<span class="c1"># local packages</span>
+<span class="kn">from</span> <span class="nn">specless.factory.builder</span> <span class="kn">import</span> <span class="n">Builder</span>
+
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">SMOOTHING_AMOUNT</span><span class="p">,</span> <span class="n">Automaton</span>
+<span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="n">Node</span><span class="p">,</span> <span class="n">NXEdgeList</span><span class="p">,</span> <span class="n">NXNodeList</span><span class="p">,</span> <span class="n">Symbol</span>
+
+
+<div class="viewcode-block" id="DFA">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.dfa.DFA.html#specless.automaton.dfa.DFA">[docs]</a>
+<span class="k">class</span> <span class="nc">DFA</span><span class="p">(</span><span class="n">Automaton</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class describes a deterministic finite automaton (DFA).</span>
+
+<span class="sd">    built on networkx, so inherits node and edge data structure definitions</span>
+
+<span class="sd">    inherits some of its api from the NLTK LM API</span>
+
+<span class="sd">    Node Attributes</span>
+<span class="sd">    -----------------</span>
+<span class="sd">        - is_accepting: a boolean flag determining whether the pdfa considers</span>
+<span class="sd">          the node accepting</span>
+
+<span class="sd">    Edge Properties</span>
+<span class="sd">    -----------------</span>
+<span class="sd">        - symbol: the symbol value emitted when the edge is traversed</span>
+
+<span class="sd">    :param      nodes:                 node list as expected by</span>
+<span class="sd">                                       networkx.add_nodes_from() list of</span>
+<span class="sd">                                       tuples: (node label, node, attribute</span>
+<span class="sd">                                       dict)</span>
+<span class="sd">    :param      edges:                 edge list as expected by</span>
+<span class="sd">                                       networkx.add_edges_from() list of</span>
+<span class="sd">                                       tuples: (src node label, dest node</span>
+<span class="sd">                                       label, edge attribute dict)</span>
+<span class="sd">    :param      symbol_display_map:    bidirectional mapping of hashable</span>
+<span class="sd">                                       symbols, to a unique integer index</span>
+<span class="sd">                                       in the symbol map. Needed to</span>
+<span class="sd">                                       translate between the indices in the</span>
+<span class="sd">                                       transition distribution and the</span>
+<span class="sd">                                       hashable representation which is</span>
+<span class="sd">                                       meaningful to the user</span>
+<span class="sd">    :param      alphabet_size:         number of symbols in pdfa alphabet</span>
+<span class="sd">    :param      num_states:            number of states in automaton state</span>
+<span class="sd">                                       space</span>
+<span class="sd">    :param      start_state:           unique start state string label of</span>
+<span class="sd">                                       pdfa</span>
+<span class="sd">    :param      smooth_transitions:    whether to smooth the symbol</span>
+<span class="sd">                                       transitions distributions</span>
+<span class="sd">    :param      smoothing_amount:      probability mass to re-assign to</span>
+<span class="sd">                                       unseen symbols at each node</span>
+<span class="sd">    :param      final_transition_sym:  representation of the termination</span>
+<span class="sd">                                       symbol. If not given, will default</span>
+<span class="sd">                                       to base class default.</span>
+<span class="sd">    :param      empty_transition_sym:  representation of the empty symbol</span>
+<span class="sd">                                       (a.k.a. lambda). If not given, will</span>
+<span class="sd">                                       default to base class default.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">nodes</span><span class="p">:</span> <span class="n">NXNodeList</span><span class="p">,</span>
+        <span class="n">edges</span><span class="p">:</span> <span class="n">NXEdgeList</span><span class="p">,</span>
+        <span class="n">symbol_display_map</span><span class="p">:</span> <span class="n">bidict</span><span class="p">,</span>
+        <span class="n">alphabet_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">num_states</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">start_state</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+        <span class="n">smooth_transitions</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">graph_data_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">smoothing_amount</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">SMOOTHING_AMOUNT</span><span class="p">,</span>
+        <span class="n">final_transition_sym</span><span class="p">:</span> <span class="p">{</span><span class="n">Symbol</span><span class="p">,</span> <span class="kc">None</span><span class="p">}</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">empty_transition_sym</span><span class="p">:</span> <span class="p">{</span><span class="n">Symbol</span><span class="p">,</span> <span class="kc">None</span><span class="p">}</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;DFA&quot;</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph_data_file</span> <span class="o">=</span> <span class="n">graph_data_file</span>
+
+        <span class="c1"># need to start with a fully initialized automaton</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">nodes</span><span class="p">,</span>
+            <span class="n">edges</span><span class="p">,</span>
+            <span class="n">symbol_display_map</span><span class="p">,</span>
+            <span class="n">alphabet_size</span><span class="p">,</span>
+            <span class="n">num_states</span><span class="p">,</span>
+            <span class="n">start_state</span><span class="p">,</span>
+            <span class="n">smooth_transitions</span><span class="o">=</span><span class="n">smooth_transitions</span><span class="p">,</span>
+            <span class="n">is_stochastic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">is_sampleable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">final_transition_sym</span><span class="o">=</span><span class="n">final_transition_sym</span><span class="p">,</span>
+            <span class="n">empty_transition_sym</span><span class="o">=</span><span class="n">empty_transition_sym</span><span class="p">,</span>
+            <span class="n">smoothing_amount</span><span class="o">=</span><span class="n">smoothing_amount</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_set_state_acceptance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curr_state</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the state acceptance property for the given state.</span>
+
+<span class="sd">        If curr_state has is_accepting, then the state accepts</span>
+
+<span class="sd">        :param      curr_state:  The current state&#39;s node label</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">is_accepting</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_node_data</span><span class="p">(</span><span class="n">curr_state</span><span class="p">,</span> <span class="s2">&quot;is_accepting&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_node_data</span><span class="p">(</span><span class="n">curr_state</span><span class="p">,</span> <span class="s2">&quot;is_accepting&quot;</span><span class="p">,</span> <span class="n">is_accepting</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="SafetyDFA">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.dfa.SafetyDFA.html#specless.automaton.dfa.SafetyDFA">[docs]</a>
+<span class="k">class</span> <span class="nc">SafetyDFA</span><span class="p">(</span><span class="n">DFA</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class describes a Safety DFA.</span>
+
+<span class="sd">    It only allows transitions that do not &#39;violate&#39; the Safety DFA.</span>
+
+<span class="sd">    In this DFA, edges are replaced with formulas instead of symbols</span>
+
+<span class="sd">    to check whether a given symbol does not violate any formula</span>
+
+<span class="sd">    labeled on each edge.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SafetyDFA.is_safe">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.dfa.SafetyDFA.html#specless.automaton.dfa.SafetyDFA.is_safe">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_safe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">specification</span><span class="p">:</span> <span class="n">Automaton</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if a given pdfa does not &#39;violate&#39; any safety</span>
+<span class="sd">        specification</span>
+
+<span class="sd">        :param      pdfa:               A PDFA</span>
+
+<span class="sd">        :returns:   True if safe else False</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># naming to follow written algorithm</span>
+        <span class="n">C</span> <span class="o">=</span> <span class="n">specification</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="bp">self</span>
+
+        <span class="n">symbols</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="c1"># Visit all nodes and edges to find all symbols</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">S</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">dest_state</span><span class="p">,</span> <span class="n">edges</span> <span class="ow">in</span> <span class="n">S</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">edge_key</span><span class="p">,</span> <span class="n">edge_data</span> <span class="ow">in</span> <span class="n">edges</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">partial_symbols</span> <span class="o">=</span> <span class="n">SafetyDFA</span><span class="o">.</span><span class="n">_extract_symbols_from_formula</span><span class="p">(</span>
+                        <span class="n">edge_data</span><span class="p">[</span><span class="s2">&quot;symbol&quot;</span><span class="p">]</span>
+                    <span class="p">)</span>
+                    <span class="n">symbols</span> <span class="o">|=</span> <span class="n">partial_symbols</span>
+
+        <span class="c1"># Initial State</span>
+        <span class="n">qc_init</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">start_state</span>
+        <span class="n">qs_init</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">start_state</span>
+        <span class="n">init_prod_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_product_state_label</span><span class="p">(</span><span class="n">qc_init</span><span class="p">,</span> <span class="n">qs_init</span><span class="p">)</span>
+
+        <span class="c1"># Prepare dicts to store graph info</span>
+        <span class="n">nodes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># Start Search from the initial state</span>
+        <span class="n">search_queue</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">()</span>
+        <span class="n">search_queue</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">qc_init</span><span class="p">,</span> <span class="n">qs_init</span><span class="p">))</span>
+        <span class="n">visited</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">qc_init</span><span class="p">,</span> <span class="n">qs_init</span><span class="p">))</span>
+
+        <span class="n">nodes_to_delete</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">inverted_edges</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">search_queue</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
+            <span class="c1"># pop a node</span>
+            <span class="n">qc</span><span class="p">,</span> <span class="n">qs</span> <span class="o">=</span> <span class="n">search_queue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+            <span class="c1"># Search each edge in Cosafety PDFA</span>
+            <span class="n">cosafe_sigmas</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">cosafe_edges</span> <span class="ow">in</span> <span class="n">C</span><span class="p">[</span><span class="n">qc</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">cosafe_edge</span> <span class="ow">in</span> <span class="n">cosafe_edges</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                    <span class="n">cosafe_sigmas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cosafe_edge</span><span class="p">[</span><span class="s2">&quot;symbol&quot;</span><span class="p">])</span>
+
+            <span class="n">formulas</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">safe_edges</span> <span class="ow">in</span> <span class="n">S</span><span class="p">[</span><span class="n">qs</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">safe_edge</span> <span class="ow">in</span> <span class="n">safe_edges</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                    <span class="n">formulas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">safe_edge</span><span class="p">[</span><span class="s2">&quot;symbol&quot;</span><span class="p">])</span>
+
+            <span class="c1"># Check if each edge in Cosafety PDFA satisfies</span>
+            <span class="c1"># Safety Specification</span>
+            <span class="k">for</span> <span class="n">cosafe_sigma</span> <span class="ow">in</span> <span class="n">cosafe_sigmas</span><span class="p">:</span>
+                <span class="n">valids</span> <span class="o">=</span> <span class="p">[]</span>
+
+                <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">formulas</span><span class="p">:</span>
+                    <span class="c1"># Check if the &quot;sigma&quot; satisfies the &quot;formula&quot;</span>
+                    <span class="n">valid</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">satisfy_formula</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">cosafe_sigma</span><span class="p">,</span> <span class="n">symbols</span><span class="p">)</span>
+                    <span class="n">valids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">valid</span><span class="p">)</span>
+
+                    <span class="c1"># No need for searching for invalid transition</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">valid</span><span class="p">:</span>
+                        <span class="k">continue</span>
+
+                    <span class="c1"># Next state</span>
+                    <span class="n">qs_prime</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">_get_next_state</span><span class="p">(</span><span class="n">qs</span><span class="p">,</span> <span class="n">formula</span><span class="p">)</span>
+                    <span class="n">qc_prime</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">_get_next_state</span><span class="p">(</span><span class="n">qc</span><span class="p">,</span> <span class="n">cosafe_sigma</span><span class="p">)</span>
+
+                    <span class="n">prod_dest_state</span> <span class="o">=</span> <span class="p">(</span><span class="n">qc_prime</span><span class="p">,</span> <span class="n">qs_prime</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">prod_dest_state</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span>
+                        <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">prod_dest_state</span><span class="p">)</span>
+                        <span class="n">search_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">prod_dest_state</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">valids</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="SafetyDFA.satisfy_formula">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.dfa.SafetyDFA.html#specless.automaton.dfa.SafetyDFA.satisfy_formula">[docs]</a>
+    <span class="k">def</span> <span class="nf">satisfy_formula</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">formula</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sigma</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">symbols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert a boolean formula string to a boolean formula</span>
+<span class="sd">        and evaluate if sigma satisfies the given formula</span>
+
+<span class="sd">        For example,</span>
+<span class="sd">            &quot;!water &amp; carpet&quot; -&gt; &quot;not water and carpet&quot;</span>
+
+<span class="sd">        :param  formula:            A LTL formula</span>
+<span class="sd">        :param  sigma:              A transitioning symbol to be evaluated</span>
+<span class="sd">        :param  symbols:            A list of all possible symbols</span>
+
+<span class="sd">        :returns:   True if safe else False</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Assign all symbols to False</span>
+        <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">symbols</span><span class="p">:</span>
+            <span class="n">exec</span><span class="p">(</span><span class="n">symbol</span> <span class="o">+</span> <span class="s2">&quot; = False&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Assign the transitioning symbol to True</span>
+        <span class="n">exec</span><span class="p">(</span><span class="n">sigma</span> <span class="o">+</span> <span class="s2">&quot; = True&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Convert to a executable form</span>
+        <span class="n">boolean_formula</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">formula</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;!&quot;</span><span class="p">,</span> <span class="s2">&quot;not &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&amp;&quot;</span><span class="p">,</span> <span class="s2">&quot;and&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">,</span> <span class="s2">&quot;or&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Evaluate the boolean formula</span>
+        <span class="k">return</span> <span class="nb">eval</span><span class="p">(</span><span class="n">boolean_formula</span><span class="p">)</span></div>
+
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_extract_symbols_from_formula</span><span class="p">(</span><span class="n">formula</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        From a single string of formula,</span>
+<span class="sd">        extract symbols by removing boolean operators</span>
+<span class="sd">        and splitting into a list of symbols</span>
+
+<span class="sd">        :param  formula:        A LTL formula</span>
+
+<span class="sd">        :return:                A list of symbols</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">symbols</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">formula</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;!&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &amp;&quot;</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">symbols</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_product_state_label</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">dynamical_system_state</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">specification_state</span><span class="p">:</span> <span class="n">Node</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Node</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the combined product state label</span>
+
+<span class="sd">        :param      dynamical_system_state:  The dynamical system state label</span>
+<span class="sd">        :param      specification_state:     The specification state label</span>
+
+<span class="sd">        :returns:   The product state label.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">dynamical_system_state</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="n">dynamical_system_state</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">dynamical_system_state</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">specification_state</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="n">specification_state</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">specification_state</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">dynamical_system_state</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="n">specification_state</span></div>
+
+
+
+<div class="viewcode-block" id="SafetyDFABuilder">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.dfa.SafetyDFABuilder.html#specless.automaton.dfa.SafetyDFABuilder">[docs]</a>
+<span class="k">class</span> <span class="nc">SafetyDFABuilder</span><span class="p">(</span><span class="n">Builder</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Implements the generic automaton builder class for SafetyDFA objects</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SafetyDFABuilder&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructs a new instance of the SafetyDFABuilder</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># need to call the super class constructor to gain its properties</span>
+        <span class="n">Builder</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="c1"># keep these properties so we don&#39;t re-initialize unless underlying</span>
+        <span class="c1"># data changes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edges</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="SafetyDFABuilder.__call__">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.dfa.SafetyDFABuilder.html#specless.automaton.dfa.SafetyDFABuilder.__call__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">graph_data</span><span class="p">:</span> <span class="p">{</span><span class="nb">str</span><span class="p">},</span> <span class="n">graph_data_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;yaml&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DFA</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns an initialized SafetyDFA instance given the graph_data</span>
+
+<span class="sd">        graph_data and graph_data_format must match</span>
+
+<span class="sd">        :param      graph_data:         The variable specifying graph data</span>
+<span class="sd">        :param      graph_data_format:  The graph data file format.</span>
+<span class="sd">                                        {&#39;yaml&#39;}</span>
+<span class="sd">        :param      kwargs:             The keywords arguments to the specific</span>
+<span class="sd">                                        constructors</span>
+
+<span class="sd">        :returns:   instance of an initialized SafetyDFA object</span>
+
+<span class="sd">        :raises     ValueError:         checks if graph_data and</span>
+<span class="sd">                                        graph_data_format have a compatible</span>
+<span class="sd">                                        data loader</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">graph_data_format</span> <span class="o">==</span> <span class="s2">&quot;yaml&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_from_yaml</span><span class="p">(</span><span class="n">graph_data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;graph_data_format (</span><span class="si">{}</span><span class="s1">) must be one of: &quot;yaml&quot;, &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">graph_data_format</span>
+            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_from_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph_data_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SafetyDFA</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns an instance of a SafetyDFA from the .yaml graph_data_file</span>
+
+<span class="sd">        Only reads the config data once, otherwise just returns the built</span>
+<span class="sd">        object</span>
+
+<span class="sd">        :param      graph_data_file:  The graph configuration file name</span>
+
+<span class="sd">        :returns:   instance of an initialized DFA object</span>
+
+<span class="sd">        :raises     ValueError:       checks if graph_data_file&#39;s ext is YAML</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">_</span><span class="p">,</span> <span class="n">file_extension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">graph_data_file</span><span class="p">)</span>
+
+        <span class="n">allowed_exts</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;.yml&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">file_extension</span> <span class="ow">in</span> <span class="n">allowed_exts</span><span class="p">:</span>
+            <span class="n">config_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_YAML_config_data</span><span class="p">(</span><span class="n">graph_data_file</span><span class="p">)</span>
+            <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;graph_data_file&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">graph_data_file</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;graph_data_file (</span><span class="si">{}</span><span class="s2">) is not a (</span><span class="si">{}</span><span class="s2">) file&quot;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">graph_data_file</span><span class="p">,</span> <span class="n">allowed_exts</span><span class="p">))</span>
+
+        <span class="n">nodes_have_changed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">!=</span> <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;nodes&quot;</span><span class="p">]</span>
+        <span class="n">edges_have_changed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span> <span class="o">!=</span> <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;edges&quot;</span><span class="p">]</span>
+        <span class="n">no_instance_loaded_yet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span> <span class="ow">is</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">no_instance_loaded_yet</span> <span class="ow">or</span> <span class="n">nodes_have_changed</span> <span class="ow">or</span> <span class="n">edges_have_changed</span><span class="p">:</span>
+            <span class="c1"># nodes and edges must be in the format needed by:</span>
+            <span class="c1">#   - networkx.add_nodes_from()</span>
+            <span class="c1">#   - networkx.add_edges_from()</span>
+            <span class="n">final_transition_sym</span> <span class="o">=</span> <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;final_transition_sym&quot;</span><span class="p">]</span>
+            <span class="n">empty_transition_sym</span> <span class="o">=</span> <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;empty_transition_sym&quot;</span><span class="p">]</span>
+            <span class="p">(</span><span class="n">symbol_display_map</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="n">edges</span><span class="p">)</span> <span class="o">=</span> <span class="n">Automaton</span><span class="o">.</span><span class="n">_convert_states_edges</span><span class="p">(</span>
+                <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;nodes&quot;</span><span class="p">],</span>
+                <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;edges&quot;</span><span class="p">],</span>
+                <span class="n">final_transition_sym</span><span class="p">,</span>
+                <span class="n">empty_transition_sym</span><span class="p">,</span>
+                <span class="n">is_stochastic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;symbol_display_map&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">symbol_display_map</span>
+            <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;nodes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">states</span>
+            <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;edges&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">edges</span>
+
+            <span class="c1"># saving these so we can just return initialized instances if the</span>
+            <span class="c1"># underlying data has not changed</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="n">states</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">edges</span> <span class="o">=</span> <span class="n">edges</span>
+
+            <span class="n">instance</span> <span class="o">=</span> <span class="n">SafetyDFA</span><span class="p">(</span><span class="o">**</span><span class="n">config_data</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">instance</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Kandai Watanabe.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+specless.io.edge\_label\_function
+=================================
+
+.. currentmodule:: specless.io
+
+.. autofunction:: edge_label_function

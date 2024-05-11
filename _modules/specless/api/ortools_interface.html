@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>specless.api.ortools_interface &mdash; specless 0.0.2 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=e3a6060d"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            specless
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/specless.html">specless</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">specless</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">specless.api.ortools_interface</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for specless.api.ortools_interface</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">=================</span>
+<span class="sd">Ortools Interface</span>
+<span class="sd">=================</span>
+
+<span class="sd">The Environment Setting Must be Structured and Programmable.</span>
+<span class="sd">For now, the properties are mainly used during solving tsp. Not for RL purposes.</span>
+<span class="sd"># TODO:</span>
+<span class="sd">Node Capacity,</span>
+<span class="sd">Edge Capacity,</span>
+<span class="sd">Node Occupancy,</span>
+<span class="sd">Edge Occupancy,</span>
+
+<span class="sd"># Env Global Properties</span>
+
+<span class="sd">&gt;&gt;&gt; envbuilder = EnvBuilder() # Should have default params</span>
+<span class="sd">&gt;&gt;&gt; envbuilder.set_height(30)</span>
+<span class="sd">&gt;&gt;&gt; envbuilder.set_width(30)</span>
+<span class="sd">&gt;&gt;&gt; envbuilder.set_actions(num_direction=8, directionless=true)</span>
+
+<span class="sd"># Objects</span>
+
+<span class="sd">&gt;&gt;&gt; envbuilder.add_object(10, 2, Floor(&quot;red&quot;), &quot;redfloor&quot;, maxRobot=3)</span>
+
+<span class="sd"># or</span>
+
+<span class="sd">&gt;&gt;&gt; envbuilder.add_goal(10, 2, &quot;A&quot;, maxRobot=1)</span>
+<span class="sd">&gt;&gt;&gt; envbuilder.add_goal(2, 25, &quot;B&quot;, maxRobot=1)</span>
+<span class="sd">&gt;&gt;&gt; envbuilder.add_goal(25, 5, &quot;C&quot;, maxRobot=1)</span>
+<span class="sd">&gt;&gt;&gt; envbuilder.add_goal(5, 25, &quot;D&quot;, maxRobot=1)</span>
+<span class="sd">&gt;&gt;&gt; envbuilder.add_goal(2, 2, &quot;E&quot;, maxRobot=1)</span>
+<span class="sd">&gt;&gt;&gt; envbuilder.add_goal(5, 2, &quot;F&quot;, maxRobot=1)</span>
+<span class="sd">&gt;&gt;&gt; envbuilder.add_goal(1, 1, &quot;G&quot;, maxRobot=1)</span>
+
+<span class="sd"># Agents</span>
+
+<span class="sd">&gt;&gt;&gt; envbuilder.add_agent(&quot;Chapin&quot;, start=(1, 1), end=None,</span>
+<span class="sd">...                     velocity=1, service_velocity=1,</span>
+<span class="sd">...                     init_payload=0, max_payload=15,</span>
+<span class="sd">...                     init_battery=100, min_battery=10,</span>
+<span class="sd">...                     battery_speed=-2)</span>
+
+<span class="sd">&gt;&gt;&gt; envbuilder.add_agent(&quot;Mozart&quot;, start=None, end=(20, 2),</span>
+<span class="sd">...                     velocity=5, service_velocity=1,</span>
+<span class="sd">...                     init_payload=0, max_payload=10,</span>
+<span class="sd">...                     init_battery=100, min_battery=10,</span>
+<span class="sd">...                     battery_speed=-4)</span>
+
+<span class="sd">&gt;&gt;&gt; envbuilder.add_agent(&quot;Bach&quot;, start=(5, 25), end=(5, 25),</span>
+<span class="sd">...                     velocity=10, service_velocity=1,</span>
+<span class="sd">...                     init_payload=0, max_payload=5,</span>
+<span class="sd">...                     init_battery=100, min_battery=10,</span>
+<span class="sd">...                     battery_speed=-8)</span>
+
+<span class="sd"># If start is uncertain, you can also provide a list.</span>
+
+<span class="sd">&gt;&gt;&gt; envbuilder.add_agent(&quot;&quot;, start=[(1, 1), (5, 10), (10, 5)], ...)</span>
+<span class="sd">&gt;&gt;&gt; envbuilder.add_agent(&quot;&quot;, end=[(1, 1), (5, 10), (10, 5)], ...)</span>
+<span class="sd">&gt;&gt;&gt; env = envbuilder.build()</span>
+
+<span class="sd">&gt;&gt;&gt; specbuilder = SpecificationBuilder()</span>
+
+<span class="sd"># Tasks</span>
+
+<span class="sd">&gt;&gt;&gt; specbuilder.add_task(&quot;Visit A&quot;, location=&quot;A&quot;, assignments=[&quot;Bach&quot;], payload=1)</span>
+<span class="sd">&gt;&gt;&gt; specbuilder.add_task(&quot;Task at B&quot;, location=&quot;B&quot;, standalone=False, service_cost=10)</span>
+<span class="sd">&gt;&gt;&gt; specbuilder.add_pickAndDelivery(&quot;Deliver from C to D&quot;, pickup=&quot;C&quot;, delivery=&quot;D&quot;)</span>
+<span class="sd">&gt;&gt;&gt; specbuilder.add_task(&quot;Visit E&quot;, location=&quot;E&quot;, payload=8)</span>
+<span class="sd">&gt;&gt;&gt; specbuilder.add_task(&quot;Visit D&quot;, location=&quot;D&quot;, payload=2)</span>
+<span class="sd">&gt;&gt;&gt; specbuilder.add_task(&quot;Visit F&quot;, location=&quot;F&quot;, payload=4)</span>
+<span class="sd">&gt;&gt;&gt; specbuilder.add_task(&quot;Machinery G&quot;, start=&quot;G&quot;, end=&quot;G&quot;, standalone=True, service_time=8)</span>
+<span class="sd">&gt;&gt;&gt; specbuilder.add_pickAndDelivery(&quot;Deliver from G to A&quot;, pickup=&quot;G&quot;, delivery=&quot;A&quot;)</span>
+<span class="sd">&gt;&gt;&gt; specbuilder.add_repeats([&quot;Visit A&quot;, &quot;Task at B&quot;], 4)</span>
+
+<span class="sd"># Order &amp; Timing Constraints (You can impose time between tasks OR locations)</span>
+
+<span class="sd">&gt;&gt;&gt; specbuilder.add_local_time_constraint(&quot;Task A&quot;, &quot;Task B&quot;, 0, 20)</span>
+<span class="sd">&gt;&gt;&gt; specbuilder.add_local_time_constraint(&quot;C&quot;, &quot;D&quot;, 0, 30)</span>
+<span class="sd">&gt;&gt;&gt; specbuilder.add_global_time_constraint(&quot;Task F&quot;, 15, 100)</span>
+<span class="sd">&gt;&gt;&gt; specbuilder.add_precedent_constraint(&quot;Task B&quot;, &quot;D&quot;)</span>
+<span class="sd">&gt;&gt;&gt; specbuilder.add_precedent_constraint(&quot;Machinery G&quot;, &quot;Deliver from G to A&quot;)</span>
+
+<span class="sd"># Capacity Constraint (These must be called)</span>
+
+<span class="sd">&gt;&gt;&gt; specbuilder.add_capacity_constraint(&quot;payload&quot;, &quot;max&quot;)</span>
+<span class="sd">&gt;&gt;&gt; specbuilder.add_capacity_constraint(&quot;battery&quot;, &quot;min&quot;)</span>
+<span class="sd">&gt;&gt;&gt; specbuilder.add_occupancy_constraint(&quot;numRobot&quot;, &quot;max&quot;)</span>
+<span class="sd">&gt;&gt;&gt; specification = specbuilder.build()</span>
+
+
+<span class="sd">&gt;&gt;&gt; strategy = sl.TSPSynthesisAlgorithm().synthesize(env, specification)</span>
+
+<span class="sd">&gt;&gt;&gt; states, actions, video_path = sl.simulate(</span>
+<span class="sd">...      env,</span>
+<span class="sd">...      straetgy,</span>
+<span class="sd">...      record_video=True,</span>
+<span class="sd">...      video_folder=os.path.join(os.getcwd(), &quot;videos&quot;),</span>
+<span class="sd">... )</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+
+
+<div class="viewcode-block" id="OrtoolsInterface">
+<a class="viewcode-back" href="../../../_autosummary/specless.api.ortools_interface.OrtoolsInterface.html#specless.api.ortools_interface.OrtoolsInterface">[docs]</a>
+<span class="k">class</span> <span class="nc">OrtoolsInterface</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ortools Interface for Robotics Task Allocation and Scheduling</span>
+
+<span class="sd">    This class is a wrapper around the ortools library for solving robotics task allocation and scheduling problems.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    weights : List[List[int]]</span>
+<span class="sd">        A list of lists of integers representing the weights of the edges in the graph.</span>
+<span class="sd">    num_robot : int, optional</span>
+<span class="sd">        The number of robots in the system. Defaults to 1.</span>
+<span class="sd">    starts : List[int], optional</span>
+<span class="sd">        A list of integers representing the starting nodes for each robot. Defaults to None.</span>
+<span class="sd">    ends : List[int], optional</span>
+<span class="sd">        A list of integers representing the ending nodes for each robot. Defaults to None.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; weights = [[1, 2, 3], [4, 5, 6]]</span>
+<span class="sd">    &gt;&gt;&gt; model = OrtoolsInterface(weights)</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The weights must be a list of lists of integers.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">weights</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]],</span>
+        <span class="n">num_robot</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">starts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ends</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Default to 1 robot and no starts or ends.</span>
+<span class="sd">        Only int weights are supported</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            weights (List[List[int]]): _description_</span>
+<span class="sd">            num_robot (int, optional): _description_. Defaults to 1.</span>
+<span class="sd">            start (int, optional): _description_. Defaults to None.</span>
+<span class="sd">            end (int, optional): _description_. Defaults to None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">starts</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Create a dummy node with 0 edge weights to all nodes</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">starts</span><span class="p">)</span> <span class="o">==</span> <span class="n">num_robot</span>
+
+        <span class="k">if</span> <span class="n">ends</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Create a dummy node with 0 edge weights to all nodes</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">ends</span><span class="p">)</span> <span class="o">==</span> <span class="n">num_robot</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+    <span class="c1"># TODO: Think if this is necessary:</span>
+    <span class="k">def</span> <span class="nf">__addEdge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">tgt</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">weight</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">set_node_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">weight</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">set_edge_capacity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">tgt</span><span class="p">,</span> <span class="n">capacity</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">set_node_capacity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">capacity</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="RoboticsTaskModel">
+<a class="viewcode-back" href="../../../_autosummary/specless.api.ortools_interface.RoboticsTaskModel.html#specless.api.ortools_interface.RoboticsTaskModel">[docs]</a>
+<span class="k">class</span> <span class="nc">RoboticsTaskModel</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_jsonfile</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="c1"># Load the json file</span>
+
+        <span class="c1"># parse it</span>
+        <span class="c1"># kwargs = {}</span>
+        <span class="c1"># return cls(**kwargs)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">add_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">add_travel_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_location</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tgt_location</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">travel_time</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">add_service_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">service_time</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">add_blockage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_location</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tgt_location</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+    <span class="c1"># TODO: Come up with what types of tasks there are</span>
+    <span class="k">def</span> <span class="nf">add_task</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+    <span class="c1"># TODO:</span>
+    <span class="k">def</span> <span class="nf">add_stationary_task</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">add_capacity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">add_looping_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">num_loops</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Kandai Watanabe.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

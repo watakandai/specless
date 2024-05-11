@@ -1,0 +1,42 @@
+specless.inference.timed\_partial\_order.TimeConstraintsLP
+==========================================================
+
+.. currentmodule:: specless.inference.timed_partial_order
+
+.. autoclass:: TimeConstraintsLP
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~TimeConstraintsLP.construct_lp_constraints
+      ~TimeConstraintsLP.get_column_index
+      ~TimeConstraintsLP.get_constraint_string
+      ~TimeConstraintsLP.get_constraints_without
+      ~TimeConstraintsLP.get_event_from_row_index
+      ~TimeConstraintsLP.get_event_row_index
+      ~TimeConstraintsLP.get_events
+      ~TimeConstraintsLP.get_events_string
+      ~TimeConstraintsLP.get_pair_bound
+      ~TimeConstraintsLP.get_pair_from_row_index
+      ~TimeConstraintsLP.get_pair_row_index
+      ~TimeConstraintsLP.get_row
+      ~TimeConstraintsLP.get_signs
+      ~TimeConstraintsLP.is_redundant
+      ~TimeConstraintsLP.remove_constraint
+      ~TimeConstraintsLP.set_event_bound
+      ~TimeConstraintsLP.set_pair_bound
+      ~TimeConstraintsLP.solvefor
+   
+   
+
+   
+   
+   

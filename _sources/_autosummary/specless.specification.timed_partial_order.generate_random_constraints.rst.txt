@@ -1,0 +1,6 @@
+specless.specification.timed\_partial\_order.generate\_random\_constraints
+==========================================================================
+
+.. currentmodule:: specless.specification.timed_partial_order
+
+.. autofunction:: generate_random_constraints

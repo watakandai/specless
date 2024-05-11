@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>specless.automaton.fdfa &mdash; specless 0.0.2 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=e3a6060d"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            specless
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/specless.html">specless</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">specless</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">specless.automaton.fdfa</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for specless.automaton.fdfa</h1><div class="highlight"><pre>
+<span></span><span class="c1"># 3rd-party packages</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
+
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+
+<span class="c1"># import pygraphviz</span>
+<span class="kn">from</span> <span class="nn">bidict</span> <span class="kn">import</span> <span class="n">bidict</span>
+<span class="kn">from</span> <span class="nn">networkx.drawing</span> <span class="kn">import</span> <span class="n">nx_agraph</span>
+<span class="kn">from</span> <span class="nn">networkx.drawing.nx_pydot</span> <span class="kn">import</span> <span class="n">read_dot</span>
+
+<span class="c1"># local packages</span>
+<span class="kn">from</span> <span class="nn">specless.factory.builder</span> <span class="kn">import</span> <span class="n">Builder</span>
+
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">DEFAULT_EMPTY_TRANS_SYMBOL</span><span class="p">,</span> <span class="n">DEFAULT_FINAL_TRANS_SYMBOL</span><span class="p">,</span> <span class="n">Automaton</span>
+<span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="n">Node</span><span class="p">,</span> <span class="n">NXEdgeList</span><span class="p">,</span> <span class="n">NXNodeList</span><span class="p">,</span> <span class="n">Symbol</span>
+
+
+<div class="viewcode-block" id="FDFA">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.fdfa.FDFA.html#specless.automaton.fdfa.FDFA">[docs]</a>
+<span class="k">class</span> <span class="nc">FDFA</span><span class="p">(</span><span class="n">Automaton</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class describes a frequency deterministic finite automaton (fdfa).</span>
+
+<span class="sd">    built on networkx, so inherits node and edge data structure definitions</span>
+
+<span class="sd">    Node Attributes</span>
+<span class="sd">    -----------------</span>
+<span class="sd">        - final_frequency: final state frequency for each node.</span>
+<span class="sd">                           Number of times that a trace ended in that state.</span>
+<span class="sd">        - in_frequency:    in &quot;flow&quot; of state frequency for each node</span>
+<span class="sd">                           total times that state was visited with incoming</span>
+<span class="sd">                           transitions.</span>
+<span class="sd">        - out_frequency:   out &quot;flow&quot; of state frequency for each node</span>
+<span class="sd">                           total times that state was visited with outgoing</span>
+<span class="sd">                           transitions.</span>
+<span class="sd">        - trans_distribution: None, just there for consistency with PDFA</span>
+<span class="sd">        - is_accepting: None, just there for consistency with PDFA</span>
+
+<span class="sd">    Edge Properties</span>
+<span class="sd">    -----------------</span>
+<span class="sd">        - symbol: the symbol value emitted when the edge is traversed</span>
+<span class="sd">        - frequency: the number of times the edge was traversed</span>
+
+<span class="sd">    :param      nodes:                 node list as expected by</span>
+<span class="sd">                                       networkx.add_nodes_from() list of</span>
+<span class="sd">                                       tuples: (node label, node, attribute</span>
+<span class="sd">                                       dict)</span>
+<span class="sd">    :param      edges:                 edge list as expected by</span>
+<span class="sd">                                       networkx.add_edges_from() list of</span>
+<span class="sd">                                       tuples: (src node label, dest node</span>
+<span class="sd">                                       label, edge attribute dict)</span>
+<span class="sd">    :param      symbol_display_map:    bidirectional mapping of hashable</span>
+<span class="sd">                                       symbols, to a unique integer index</span>
+<span class="sd">                                       in the symbol map. Needed to</span>
+<span class="sd">                                       translate between the indices in the</span>
+<span class="sd">                                       transition distribution and the</span>
+<span class="sd">                                       hashable representation which is</span>
+<span class="sd">                                       meaningful to the user</span>
+<span class="sd">    :param      alphabet_size:         number of symbols in fdfa alphabet</span>
+<span class="sd">    :param      num_states:            number of states in automaton state</span>
+<span class="sd">                                       space</span>
+<span class="sd">    :param      start_state:           unique start state string label of</span>
+<span class="sd">                                       fdfa</span>
+<span class="sd">    :param      final_transition_sym:  representation of the termination</span>
+<span class="sd">                                       symbol. If not given, will default</span>
+<span class="sd">                                       to base class default.</span>
+<span class="sd">    :param      empty_transition_sym:  representation of the empty symbol</span>
+<span class="sd">                                       (a.k.a. lambda). If not given, will</span>
+<span class="sd">                                       default to base class default.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">nodes</span><span class="p">:</span> <span class="n">NXNodeList</span><span class="p">,</span>
+        <span class="n">edges</span><span class="p">:</span> <span class="n">NXEdgeList</span><span class="p">,</span>
+        <span class="n">symbol_display_map</span><span class="p">:</span> <span class="n">bidict</span><span class="p">,</span>
+        <span class="n">alphabet_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">num_states</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">start_state</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+        <span class="n">final_transition_sym</span><span class="p">:</span> <span class="p">{</span><span class="n">Symbol</span><span class="p">,</span> <span class="kc">None</span><span class="p">}</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">empty_transition_sym</span><span class="p">:</span> <span class="p">{</span><span class="n">Symbol</span><span class="p">,</span> <span class="kc">None</span><span class="p">}</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;FDFA&quot;</span><span class="p">:</span>
+        <span class="c1"># need to start with a fully initialized automaton</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">nodes</span><span class="p">,</span>
+            <span class="n">edges</span><span class="p">,</span>
+            <span class="n">symbol_display_map</span><span class="p">,</span>
+            <span class="n">alphabet_size</span><span class="p">,</span>
+            <span class="n">num_states</span><span class="p">,</span>
+            <span class="n">start_state</span><span class="p">,</span>
+            <span class="n">smooth_transitions</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">is_stochastic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">is_sampleable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">num_obs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">final_transition_sym</span><span class="o">=</span><span class="n">final_transition_sym</span><span class="p">,</span>
+            <span class="n">initial_weight_key</span><span class="o">=</span><span class="s2">&quot;initial_frequency&quot;</span><span class="p">,</span>
+            <span class="n">final_weight_key</span><span class="o">=</span><span class="s2">&quot;final_frequency&quot;</span><span class="p">,</span>
+            <span class="n">can_have_accepting_nodes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">edge_weight_key</span><span class="o">=</span><span class="s2">&quot;frequency&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="FDFA.to_pdfa_data">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.fdfa.FDFA.html#specless.automaton.fdfa.FDFA.to_pdfa_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_pdfa_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">NXNodeList</span><span class="p">,</span> <span class="n">NXEdgeList</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        convert self nodes and edges to pdfa nodes and edges</span>
+
+<span class="sd">        :returns:   nodes, edges lists with all data initialized for creation</span>
+<span class="sd">                    of pdfa from networkx.add_nodes_from() and</span>
+<span class="sd">                    networkx.add_edges_from()</span>
+<span class="sd">        :rtype:     list of tuples: (node label, node, attribute dict),</span>
+<span class="sd">                    list of tuples: (src node label, dest node label, edge attribute dict)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">fdfa_nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">pdfa_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">pdfa_edges</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># converting final state frequencies to final state probabilities</span>
+        <span class="k">for</span> <span class="n">curr_node</span><span class="p">,</span> <span class="n">curr_node_data</span> <span class="ow">in</span> <span class="n">fdfa_nodes</span><span class="p">:</span>
+            <span class="c1"># the final probability is just how often the execution ends at the</span>
+            <span class="c1"># curr_node divided by the all of sum of frequencies over all</span>
+            <span class="c1"># possible transitions from that node</span>
+            <span class="n">final_freq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_node_data</span><span class="p">(</span><span class="n">curr_node</span><span class="p">,</span> <span class="s2">&quot;final_frequency&quot;</span><span class="p">)</span>
+            <span class="n">out_freq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_node_data</span><span class="p">(</span><span class="n">curr_node</span><span class="p">,</span> <span class="s2">&quot;out_frequency&quot;</span><span class="p">)</span>
+            <span class="n">number_of_choices</span> <span class="o">=</span> <span class="n">final_freq</span> <span class="o">+</span> <span class="n">out_freq</span>
+            <span class="n">new_final_probability</span> <span class="o">=</span> <span class="n">final_freq</span> <span class="o">/</span> <span class="n">number_of_choices</span>
+
+            <span class="n">new_node_data</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;final_probability&quot;</span><span class="p">:</span> <span class="n">new_final_probability</span><span class="p">,</span>
+                <span class="s2">&quot;trans_distribution&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s2">&quot;is_accepting&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="n">pdfa_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">curr_node</span><span class="p">,</span> <span class="n">new_node_data</span><span class="p">))</span>
+
+            <span class="c1"># converting transition frequencies to transition probabilities</span>
+            <span class="c1">#</span>
+            <span class="c1"># the edge transition probability is the edge&#39;s frequency divided</span>
+            <span class="c1"># by the the number of time you either ended or transitioned out</span>
+            <span class="c1"># of the that node</span>
+            <span class="k">for</span> <span class="n">node_post</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">successors</span><span class="p">(</span><span class="n">curr_node</span><span class="p">):</span>
+                <span class="n">curr_edges_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_edge_data</span><span class="p">(</span><span class="n">curr_node</span><span class="p">,</span> <span class="n">node_post</span><span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">curr_out_edge_data</span> <span class="ow">in</span> <span class="n">curr_edges_out</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">edge_freq</span> <span class="o">=</span> <span class="n">curr_out_edge_data</span><span class="p">[</span><span class="s2">&quot;frequency&quot;</span><span class="p">]</span>
+                    <span class="n">symbol</span> <span class="o">=</span> <span class="n">curr_out_edge_data</span><span class="p">[</span><span class="s2">&quot;symbol&quot;</span><span class="p">]</span>
+                    <span class="n">trans_probability</span> <span class="o">=</span> <span class="n">edge_freq</span> <span class="o">/</span> <span class="n">number_of_choices</span>
+                    <span class="n">new_edge_data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;symbol&quot;</span><span class="p">:</span> <span class="n">symbol</span><span class="p">,</span> <span class="s2">&quot;probability&quot;</span><span class="p">:</span> <span class="n">trans_probability</span><span class="p">}</span>
+
+                    <span class="n">new_edge</span> <span class="o">=</span> <span class="p">(</span><span class="n">curr_node</span><span class="p">,</span> <span class="n">node_post</span><span class="p">,</span> <span class="n">new_edge_data</span><span class="p">)</span>
+
+                    <span class="n">pdfa_edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_edge</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">pdfa_nodes</span><span class="p">,</span> <span class="n">pdfa_edges</span></div>
+
+
+<div class="viewcode-block" id="FDFA.load_flexfringe_data">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.fdfa.FDFA.html#specless.automaton.fdfa.FDFA.load_flexfringe_data">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load_flexfringe_data</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">:</span> <span class="s2">&quot;FDFA&quot;</span><span class="p">,</span>
+        <span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">MultiDiGraph</span><span class="p">,</span>
+        <span class="n">number_input_symbols</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">final_transition_sym</span><span class="p">:</span> <span class="n">Symbol</span><span class="p">,</span>
+        <span class="n">empty_transition_sym</span><span class="p">:</span> <span class="n">Symbol</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        reads in graph configuration data from a flexfringe dot file</span>
+
+<span class="sd">        :param      cls:                   The &quot;class instance&quot; this method</span>
+<span class="sd">                                           belongs to (not object instance)</span>
+<span class="sd">        :param      graph:                 The nx graph with the flexfringe</span>
+<span class="sd">                                           fdfa model loaded in</span>
+<span class="sd">        :param      number_input_symbols:  The number of input symbols to the</span>
+<span class="sd">                                           FDFA needed to compute the correct</span>
+<span class="sd">                                           frequency flows in the case of</span>
+<span class="sd">                                           cycles.</span>
+<span class="sd">        :param      final_transition_sym:  representation of the empty string /</span>
+<span class="sd">                                           symbol (a.k.a. lambda)</span>
+<span class="sd">        :param      empty_transition_sym:  The empty transition symbol</span>
+
+<span class="sd">        :returns:   configuration data dictionary for the fdfa</span>
+<span class="sd">        :rtype:     dictionary</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># flexfringe always labels the root as 0</span>
+        <span class="n">root_node_label</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
+
+        <span class="n">ff_nodes</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">ff_edges</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">node_ID_to_node_label</span><span class="p">)</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">convert_flexfringe_nodes</span><span class="p">(</span>
+            <span class="n">ff_nodes</span><span class="p">,</span> <span class="n">number_input_symbols</span><span class="p">,</span> <span class="n">root_node_label</span>
+        <span class="p">)</span>
+        <span class="p">(</span><span class="n">symbol_display_map</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">symbols</span><span class="p">)</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">convert_flexfringe_edges</span><span class="p">(</span>
+            <span class="n">ff_edges</span><span class="p">,</span> <span class="n">final_transition_sym</span><span class="p">,</span> <span class="n">empty_transition_sym</span><span class="p">,</span> <span class="n">node_ID_to_node_label</span>
+        <span class="p">)</span>
+        <span class="n">config_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;nodes&quot;</span><span class="p">:</span> <span class="n">nodes</span><span class="p">,</span>
+            <span class="s2">&quot;edges&quot;</span><span class="p">:</span> <span class="n">edges</span><span class="p">,</span>
+            <span class="s2">&quot;symbol_display_map&quot;</span><span class="p">:</span> <span class="n">symbol_display_map</span><span class="p">,</span>
+            <span class="s2">&quot;alphabet_size&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">symbols</span><span class="p">),</span>
+            <span class="s2">&quot;num_states&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">nodes</span><span class="p">),</span>
+            <span class="s2">&quot;start_state&quot;</span><span class="p">:</span> <span class="n">node_ID_to_node_label</span><span class="p">[</span><span class="n">root_node_label</span><span class="p">],</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">config_data</span></div>
+
+
+<div class="viewcode-block" id="FDFA.convert_flexfringe_nodes">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.fdfa.FDFA.html#specless.automaton.fdfa.FDFA.convert_flexfringe_nodes">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">convert_flexfringe_nodes</span><span class="p">(</span>
+        <span class="n">flexfringe_nodes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">number_input_symbols</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">root_node_label</span><span class="p">:</span> <span class="n">Node</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">NXNodeList</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        converts node data from a flexfringe (FF) dot file into the internal</span>
+<span class="sd">        node format needed by networkx.add_nodes_from()</span>
+
+<span class="sd">        :param      flexfringe_nodes:      The flexfringe node list mapping</span>
+<span class="sd">                                           node labels to node attributes</span>
+<span class="sd">        :param      number_input_symbols:  The number of input symbols to the</span>
+<span class="sd">                                           FDFA needed to compute the correct</span>
+<span class="sd">                                           frequency flows in the case of</span>
+<span class="sd">                                           cycles.</span>
+<span class="sd">        :param      root_node_label:       The root node&#39;s label</span>
+
+<span class="sd">        :returns:   node list as expected by networkx.add_nodes_from(), a dict</span>
+<span class="sd">                    mapping FF node IDs to FF state labels</span>
+
+<span class="sd">        :raises     ValueError:            can&#39;t read in &quot;blue&quot; flexfringe</span>
+<span class="sd">                                           nodes, as they are theoretically</span>
+<span class="sd">                                           undefined for this class right now</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">nodes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">node_ID_to_node_label</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">node_ID</span><span class="p">,</span> <span class="n">node_data</span> <span class="ow">in</span> <span class="n">flexfringe_nodes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;label&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">node_data</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">state_label</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\d+&quot;</span><span class="p">,</span> <span class="n">node_data</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">])</span>
+
+            <span class="c1"># we can&#39;t add blue nodes to our graph</span>
+            <span class="k">if</span> <span class="s2">&quot;style&quot;</span> <span class="ow">in</span> <span class="n">node_data</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot;dotted&quot;</span> <span class="ow">in</span> <span class="n">node_data</span><span class="p">[</span><span class="s2">&quot;style&quot;</span><span class="p">]:</span>
+                    <span class="n">err</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="s2">&quot;node = </span><span class="si">{}</span><span class="s2"> from flexfringe is blue,&quot;</span>
+                        <span class="s2">&quot; reading in blue states is not&quot;</span>
+                        <span class="s2">&quot; currently supported&quot;</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">node_data</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+
+            <span class="c1"># until we read in all of the nodes, have to wait to find the</span>
+            <span class="c1"># initial state</span>
+            <span class="n">initial_frequency</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="n">new_node_label</span> <span class="o">=</span> <span class="s2">&quot;q&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">node_ID</span><span class="p">)</span>
+            <span class="n">new_node_data</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;final_frequency&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;initial_frequency&quot;</span><span class="p">:</span> <span class="n">initial_frequency</span><span class="p">,</span>
+                <span class="s2">&quot;trans_distribution&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s2">&quot;isAccepting&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="p">}</span>
+
+            <span class="n">nodes</span><span class="p">[</span><span class="n">new_node_label</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_node_data</span>
+            <span class="n">node_ID_to_node_label</span><span class="p">[</span><span class="n">node_ID</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_node_label</span>
+
+        <span class="c1"># need to give all of the frequency flow to the start node</span>
+        <span class="n">start_state</span> <span class="o">=</span> <span class="n">node_ID_to_node_label</span><span class="p">[</span><span class="n">root_node_label</span><span class="p">]</span>
+        <span class="n">nodes</span><span class="p">[</span><span class="n">start_state</span><span class="p">][</span><span class="s2">&quot;initial_frequency&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">number_input_symbols</span>
+
+        <span class="c1"># best convention is to convert dict_items to a list, even though both</span>
+        <span class="c1"># are iterable</span>
+        <span class="n">converted_nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nodes</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="n">converted_nodes</span><span class="p">,</span> <span class="n">node_ID_to_node_label</span></div>
+
+
+<div class="viewcode-block" id="FDFA.convert_flexfringe_edges">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.fdfa.FDFA.html#specless.automaton.fdfa.FDFA.convert_flexfringe_edges">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">convert_flexfringe_edges</span><span class="p">(</span>
+        <span class="n">flexfringeEdges</span><span class="p">:</span> <span class="n">NXEdgeList</span><span class="p">,</span>
+        <span class="n">final_transition_sym</span><span class="p">:</span> <span class="n">Symbol</span><span class="p">,</span>
+        <span class="n">empty_transition_sym</span><span class="p">:</span> <span class="n">Symbol</span><span class="p">,</span>
+        <span class="n">node_ID_to_node_label</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">bidict</span><span class="p">,</span> <span class="n">NXEdgeList</span><span class="p">,</span> <span class="nb">set</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        converts edges read in from flexfringe (FF) dot files into the internal</span>
+<span class="sd">        edge format needed by networkx.add_edges_from()</span>
+
+<span class="sd">        :param      flexfringeEdges:        The flexfringe edge list mapping</span>
+<span class="sd">                                            edges labels to edge attributes</span>
+<span class="sd">        :param      final_transition_sym:   representation of the termination</span>
+<span class="sd">                                            symbol</span>
+<span class="sd">        :param      empty_transition_sym:   representation of the empty symbol</span>
+<span class="sd">                                            (a.k.a. lambda).</span>
+<span class="sd">        :param      node_ID_to_node_label:  mapping from FF node ID to FF node</span>
+<span class="sd">                                            label</span>
+
+<span class="sd">        :returns:   symbol_display_map - bidirectional mapping of hashable</span>
+<span class="sd">                    symbols, to a unique integer index in the symbol map,</span>
+<span class="sd">                    edge list as expected by networkx.add_edges_from(),</span>
+<span class="sd">                    set of observed symbols</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">edges</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">seen_symbols</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># add these symbols first, so we can then later ensure they have the</span>
+        <span class="c1"># last two indices</span>
+        <span class="n">seen_symbols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">empty_transition_sym</span><span class="p">)</span>
+        <span class="n">seen_symbols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">final_transition_sym</span><span class="p">)</span>
+        <span class="n">symbol_display_map</span> <span class="o">=</span> <span class="n">bidict</span><span class="p">({})</span>
+
+        <span class="k">for</span> <span class="n">src_FF_node_ID</span><span class="p">,</span> <span class="n">dest_FF_node_ID</span><span class="p">,</span> <span class="n">edge_data</span> <span class="ow">in</span> <span class="n">flexfringeEdges</span><span class="p">:</span>
+            <span class="n">new_edge_data</span> <span class="o">=</span> <span class="p">{}</span>
+
+            <span class="k">if</span> <span class="s2">&quot;label&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">edge_data</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">transitionData</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;([\w]*):(\d+)&quot;</span><span class="p">,</span> <span class="n">edge_data</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">])</span>
+            <span class="n">symbols</span><span class="p">,</span> <span class="n">frequencies</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">transitionData</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">frequency</span> <span class="ow">in</span> <span class="n">transitionData</span><span class="p">:</span>
+                <span class="c1"># need to store new symbols in a map for display</span>
+                <span class="k">if</span> <span class="n">symbol</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen_symbols</span><span class="p">:</span>
+                    <span class="n">seen_symbols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span>
+
+                <span class="n">new_edge_data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;symbol&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">symbol</span><span class="p">),</span> <span class="s2">&quot;frequency&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">frequency</span><span class="p">)}</span>
+
+                <span class="n">src_FF_node_label</span> <span class="o">=</span> <span class="n">node_ID_to_node_label</span><span class="p">[</span><span class="n">src_FF_node_ID</span><span class="p">]</span>
+                <span class="n">dest_FF_node_label</span> <span class="o">=</span> <span class="n">node_ID_to_node_label</span><span class="p">[</span><span class="n">dest_FF_node_ID</span><span class="p">]</span>
+                <span class="n">new_edge</span> <span class="o">=</span> <span class="p">(</span><span class="n">src_FF_node_label</span><span class="p">,</span> <span class="n">dest_FF_node_label</span><span class="p">,</span> <span class="n">new_edge_data</span><span class="p">)</span>
+
+                <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_edge</span><span class="p">)</span>
+
+        <span class="c1"># ensure that the empty and final symbols always have the last indices</span>
+        <span class="c1"># in the display map for use in computations excluding those symbols</span>
+        <span class="n">symbol_display_map</span> <span class="o">=</span> <span class="n">bidict</span><span class="p">({})</span>
+        <span class="k">for</span> <span class="n">new_sym_idx</span><span class="p">,</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">seen_symbols</span><span class="p">)):</span>
+            <span class="n">symbol_display_map</span><span class="p">[</span><span class="n">symbol</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_sym_idx</span>
+
+        <span class="k">return</span> <span class="n">symbol_display_map</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="nb">set</span><span class="p">(</span><span class="n">seen_symbols</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_set_state_acceptance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curr_state</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the state acceptance property for the given state.</span>
+
+<span class="sd">        FDFA doesn&#39;t accept anything, so this just passes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">_compute_node_data_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curr_node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="o">**</span><span class="n">node_data_args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets all state frequencies for each node in an initialized FDFA</span>
+
+<span class="sd">        requires self.nodes and self.edges to be properly loaded into nx data</span>
+<span class="sd">        structures</span>
+
+<span class="sd">        :warning this overrides the base _compute_node_data_properties method</span>
+<span class="sd">                 in the Automaton</span>
+
+<span class="sd">        :param      curr_node:   The node to set properties for</span>
+
+<span class="sd">        :returns:   None</span>
+
+<span class="sd">        :raises     ValueError:  checks if the final frequency is less than 0,</span>
+<span class="sd">                                 indicating something wrong with the edge</span>
+<span class="sd">                                 frequency data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">number_trans_in</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_node_flow</span><span class="p">(</span><span class="n">curr_node</span><span class="p">,</span> <span class="n">flow_type</span><span class="o">=</span><span class="s2">&quot;in&quot;</span><span class="p">)</span>
+        <span class="n">number_trans_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_node_flow</span><span class="p">(</span><span class="n">curr_node</span><span class="p">,</span> <span class="n">flow_type</span><span class="o">=</span><span class="s2">&quot;out&quot;</span><span class="p">)</span>
+
+        <span class="n">init_trans</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_node_data</span><span class="p">(</span><span class="n">curr_node</span><span class="p">,</span> <span class="s2">&quot;initial_frequency&quot;</span><span class="p">)</span>
+
+        <span class="c1"># the final frequency is simply the number of times that you</span>
+        <span class="c1"># transitioned into a state and then did not leave it.</span>
+        <span class="c1">#</span>
+        <span class="c1"># inflow and outflow must not include self transitions, as it self</span>
+        <span class="c1"># transitions are not true flow</span>
+        <span class="n">curr_node_final_freq</span> <span class="o">=</span> <span class="n">init_trans</span> <span class="o">+</span> <span class="n">number_trans_in</span> <span class="o">-</span> <span class="n">number_trans_out</span>
+
+        <span class="c1"># no node is allowed to &quot;create&quot; transitions</span>
+        <span class="k">if</span> <span class="n">curr_node_final_freq</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">err</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">&quot;current node (</span><span class="si">{}</span><span class="s2">) final frequency (</span><span class="si">{}</span><span class="s2">) should &quot;</span>
+                <span class="o">+</span> <span class="s2">&quot;not be less than 0. This means there were more &quot;</span>
+                <span class="o">+</span> <span class="s2">&quot;outgoing transitions (</span><span class="si">{}</span><span class="s2">) than incoming &quot;</span>
+                <span class="o">+</span> <span class="s2">&quot;transitions (</span><span class="si">{}</span><span class="s2">).&quot;</span>
+            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="n">err</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">curr_node</span><span class="p">,</span> <span class="n">curr_node_final_freq</span><span class="p">,</span> <span class="n">number_trans_out</span><span class="p">,</span> <span class="n">number_trans_in</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_node_data</span><span class="p">(</span><span class="n">curr_node</span><span class="p">,</span> <span class="s2">&quot;final_frequency&quot;</span><span class="p">,</span> <span class="n">curr_node_final_freq</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_node_data</span><span class="p">(</span><span class="n">curr_node</span><span class="p">,</span> <span class="s2">&quot;in_frequency&quot;</span><span class="p">,</span> <span class="n">number_trans_in</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_node_data</span><span class="p">(</span><span class="n">curr_node</span><span class="p">,</span> <span class="s2">&quot;out_frequency&quot;</span><span class="p">,</span> <span class="n">number_trans_out</span><span class="p">)</span>
+
+        <span class="c1"># need to compute the transition map</span>
+        <span class="n">edge_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">([</span><span class="n">curr_node</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">edge_dests</span> <span class="o">=</span> <span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edge_data</span><span class="p">]</span>
+
+        <span class="n">original_edge_symbols</span> <span class="o">=</span> <span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s2">&quot;symbol&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edge_data</span><span class="p">]</span>
+        <span class="n">edge_symbols</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_symbol_display_map</span><span class="p">[</span><span class="n">symbol</span><span class="p">]</span> <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">original_edge_symbols</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_trans_map</span><span class="p">(</span><span class="n">curr_node</span><span class="p">,</span> <span class="n">edge_symbols</span><span class="p">,</span> <span class="n">edge_dests</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_compute_node_flow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curr_node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">flow_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates frequency (in/out)flow at the current node</span>
+
+<span class="sd">        :param      curr_node:   The node to compute the flow at</span>
+<span class="sd">        :param      flow_type:   The flow type {&#39;in&#39;, &#39;out&#39;}</span>
+
+<span class="sd">        :returns:   The node&#39;s (in/out)flow, the node&#39;s self-transition flow</span>
+
+<span class="sd">        :raises     ValueError:  checks if flow_type is an supported setting</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">allowed_flow_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;in&quot;</span><span class="p">,</span> <span class="s2">&quot;out&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">flow_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowed_flow_types</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">&quot;selected flow_type (</span><span class="si">{}</span><span class="s2">) not one of &quot;</span> <span class="s2">&quot;allowed flow_types: </span><span class="si">{}</span><span class="s2">&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">flow_type</span><span class="p">,</span> <span class="n">allowed_flow_types</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">flow_type</span> <span class="o">==</span> <span class="s2">&quot;in&quot;</span><span class="p">:</span>
+            <span class="n">nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predecessors</span><span class="p">(</span><span class="n">curr_node</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">flow_type</span> <span class="o">==</span> <span class="s2">&quot;out&quot;</span><span class="p">:</span>
+            <span class="n">nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">successors</span><span class="p">(</span><span class="n">curr_node</span><span class="p">)</span>
+
+        <span class="n">number_trans</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">flow_type</span> <span class="o">==</span> <span class="s2">&quot;in&quot;</span><span class="p">:</span>
+                <span class="n">curr_edges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_edge_data</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">curr_node</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">flow_type</span> <span class="o">==</span> <span class="s2">&quot;out&quot;</span><span class="p">:</span>
+                <span class="n">curr_edges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_edge_data</span><span class="p">(</span><span class="n">curr_node</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">curr_out_edge_data</span> <span class="ow">in</span> <span class="n">curr_edges</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">frequency</span> <span class="o">=</span> <span class="n">curr_out_edge_data</span><span class="p">[</span><span class="s2">&quot;frequency&quot;</span><span class="p">]</span>
+                <span class="n">number_trans</span> <span class="o">+=</span> <span class="n">frequency</span>
+
+        <span class="k">return</span> <span class="n">number_trans</span></div>
+
+
+
+<div class="viewcode-block" id="FDFABuilder">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.fdfa.FDFABuilder.html#specless.automaton.fdfa.FDFABuilder">[docs]</a>
+<span class="k">class</span> <span class="nc">FDFABuilder</span><span class="p">(</span><span class="n">Builder</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Implements the generic automaton builder class for FDFA objects</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;FDFABuilder&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructs a new instance of the FDFABuilder</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># need to call the super class constructor to gain its properties</span>
+        <span class="n">Builder</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="c1"># keep these properties so we don&#39;t re-initialize unless underlying</span>
+        <span class="c1"># data changes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edges</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="FDFABuilder.__call__">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.fdfa.FDFABuilder.html#specless.automaton.fdfa.FDFABuilder.__call__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">graph_data</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">number_input_symbols</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">graph_data_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;dot_string&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FDFA</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns an initialized FDFA instance given the graph_data</span>
+
+<span class="sd">        graph_data and graph_data_format must match</span>
+
+<span class="sd">        :param      graph_data:            The string containing graph data.</span>
+<span class="sd">                                           Could be a filename or just the raw</span>
+<span class="sd">                                           data</span>
+<span class="sd">        :param      number_input_symbols:  The number of input symbols to the</span>
+<span class="sd">                                           FDFA needed to compute the correct</span>
+<span class="sd">                                           frequency flows in the case of</span>
+<span class="sd">                                           cycles.</span>
+<span class="sd">                                           Only really optional when using a</span>
+<span class="sd">                                           graph_data_format</span>
+<span class="sd">                                           that already has this information.</span>
+<span class="sd">        :param      graph_data_format:     The graph data file format.</span>
+<span class="sd">                                           {&#39;dot_file&#39;, &#39;dot_string&#39;,</span>
+<span class="sd">                                           &#39;learning_interface&#39;}</span>
+
+<span class="sd">        :returns:   instance of an initialized FDFA object</span>
+
+<span class="sd">        :raises     ValueError:            checks if graph_data and</span>
+<span class="sd">                                           graph_data_format have a compatible</span>
+<span class="sd">                                           data loader.</span>
+<span class="sd">        :raises     ValueError:            checks, based on graph_data_format,</span>
+<span class="sd">                                           whether it is legal to not specify</span>
+<span class="sd">                                           the number_input_symbols.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">has_number_input_symbols</span> <span class="o">=</span> <span class="n">number_input_symbols</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">graph_data_format</span> <span class="o">==</span> <span class="s2">&quot;dot_string&quot;</span><span class="p">:</span>
+            <span class="n">graph</span> <span class="o">=</span> <span class="n">nx_agraph</span><span class="o">.</span><span class="n">from_agraph</span><span class="p">(</span><span class="n">pygraphviz</span><span class="o">.</span><span class="n">AGraph</span><span class="p">(</span><span class="n">string</span><span class="o">=</span><span class="n">graph_data</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">graph_data_format</span> <span class="o">==</span> <span class="s2">&quot;dot_file&quot;</span><span class="p">:</span>
+            <span class="n">graph</span> <span class="o">=</span> <span class="n">read_dot</span><span class="p">(</span><span class="n">graph_data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">graph_data_format</span> <span class="o">==</span> <span class="s2">&quot;learning_interface&quot;</span><span class="p">:</span>
+            <span class="n">learning_interface</span> <span class="o">=</span> <span class="n">graph_data</span>
+            <span class="n">graph</span> <span class="o">=</span> <span class="n">read_dot</span><span class="p">(</span><span class="n">learning_interface</span><span class="o">.</span><span class="n">learned_model_filepath</span><span class="p">)</span>
+            <span class="n">number_input_symbols</span> <span class="o">=</span> <span class="n">learning_interface</span><span class="o">.</span><span class="n">num_training_examples</span>
+            <span class="n">has_number_input_symbols</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s1">&#39;graph_data_format (</span><span class="si">{}</span><span class="s1">) must be one of: &quot;dot_file&quot;, &#39;</span>
+                <span class="o">+</span> <span class="s1">&#39;&quot;dot_string&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">()</span>
+            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">has_number_input_symbols</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;must provide the number_input_symbols to load a FDFA&quot;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c1"># these are not things that are a part of flexfringe&#39;s automaton</span>
+        <span class="c1"># data model, so give them default values</span>
+        <span class="n">final_transition_sym</span> <span class="o">=</span> <span class="n">DEFAULT_FINAL_TRANS_SYMBOL</span>
+        <span class="n">empty_transition_sym</span> <span class="o">=</span> <span class="n">DEFAULT_EMPTY_TRANS_SYMBOL</span>
+        <span class="n">config_data</span> <span class="o">=</span> <span class="n">FDFA</span><span class="o">.</span><span class="n">load_flexfringe_data</span><span class="p">(</span>
+            <span class="n">graph</span><span class="p">,</span> <span class="n">number_input_symbols</span><span class="p">,</span> <span class="n">final_transition_sym</span><span class="p">,</span> <span class="n">empty_transition_sym</span>
+        <span class="p">)</span>
+        <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;final_transition_sym&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">final_transition_sym</span>
+        <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;empty_transition_sym&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">empty_transition_sym</span>
+
+        <span class="n">nodes_have_changed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">!=</span> <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;nodes&quot;</span><span class="p">]</span>
+        <span class="n">edges_have_changed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span> <span class="o">!=</span> <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;edges&quot;</span><span class="p">]</span>
+        <span class="n">no_instance_loaded_yet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span> <span class="ow">is</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">no_instance_loaded_yet</span> <span class="ow">or</span> <span class="n">nodes_have_changed</span> <span class="ow">or</span> <span class="n">edges_have_changed</span><span class="p">:</span>
+            <span class="c1"># saving these so we can just return initialized instances if the</span>
+            <span class="c1"># underlying data has not changed</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;nodes&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">edges</span> <span class="o">=</span> <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;edges&quot;</span><span class="p">]</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="n">FDFA</span><span class="p">(</span><span class="o">**</span><span class="n">config_data</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Kandai Watanabe.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

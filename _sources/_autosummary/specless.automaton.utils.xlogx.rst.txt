@@ -1,0 +1,6 @@
+specless.automaton.utils.xlogx
+==============================
+
+.. currentmodule:: specless.automaton.utils
+
+.. autofunction:: xlogx

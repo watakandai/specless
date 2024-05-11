@@ -1,0 +1,117 @@
+specless.automaton.pdfa.PDFA
+============================
+
+.. currentmodule:: specless.automaton.pdfa
+
+.. autoclass:: PDFA
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~PDFA.add_edge
+      ~PDFA.add_edges_from
+      ~PDFA.add_node
+      ~PDFA.add_nodes_from
+      ~PDFA.add_weighted_edges_from
+      ~PDFA.adjacency
+      ~PDFA.average_norm
+      ~PDFA.clear
+      ~PDFA.clear_edges
+      ~PDFA.copy
+      ~PDFA.cross_entropy
+      ~PDFA.cross_entropy_approx
+      ~PDFA.disp_edges
+      ~PDFA.disp_nodes
+      ~PDFA.draw
+      ~PDFA.edge_subgraph
+      ~PDFA.generate_trace
+      ~PDFA.generate_traces
+      ~PDFA.get_edge_data
+      ~PDFA.has_edge
+      ~PDFA.has_node
+      ~PDFA.has_predecessor
+      ~PDFA.has_successor
+      ~PDFA.is_directed
+      ~PDFA.is_multigraph
+      ~PDFA.kldivergence
+      ~PDFA.logscore
+      ~PDFA.logscores
+      ~PDFA.mdi_score
+      ~PDFA.most_probable_string
+      ~PDFA.nbunch_iter
+      ~PDFA.neighbors
+      ~PDFA.new_edge_key
+      ~PDFA.norm
+      ~PDFA.number_of_edges
+      ~PDFA.number_of_nodes
+      ~PDFA.observe
+      ~PDFA.order
+      ~PDFA.perplexity
+      ~PDFA.perplexity_approx
+      ~PDFA.plot_node_trans_dist
+      ~PDFA.predecessors
+      ~PDFA.predict
+      ~PDFA.predictive_accuracy
+      ~PDFA.refit_prob_dist
+      ~PDFA.remove_edge
+      ~PDFA.remove_edges_from
+      ~PDFA.remove_node
+      ~PDFA.remove_nodes_from
+      ~PDFA.reverse
+      ~PDFA.reverse_kldivergence
+      ~PDFA.score
+      ~PDFA.scores
+      ~PDFA.size
+      ~PDFA.subgraph
+      ~PDFA.successors
+      ~PDFA.to_directed
+      ~PDFA.to_directed_class
+      ~PDFA.to_undirected
+      ~PDFA.to_undirected_class
+      ~PDFA.update
+      ~PDFA.write_traces_to_file
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PDFA.adj
+      ~PDFA.automata_data_dir
+      ~PDFA.automata_display_data_dir_name
+      ~PDFA.degree
+      ~PDFA.edges
+      ~PDFA.in_degree
+      ~PDFA.in_edges
+      ~PDFA.name
+      ~PDFA.nodes
+      ~PDFA.out_degree
+      ~PDFA.out_edges
+      ~PDFA.pred
+      ~PDFA.succ
+      ~PDFA.alphabet_size
+      ~PDFA.num_states
+      ~PDFA.num_obs
+      ~PDFA.final_transition_sym
+      ~PDFA.empty_transition_sym
+      ~PDFA.start_state
+      ~PDFA.is_stochastic
+      ~PDFA.is_sampleable
+      ~PDFA.is_normalized
+      ~PDFA.symbols
+      ~PDFA.state_labels
+      ~PDFA.observations
+      ~PDFA.is_deterministic
+   
+   

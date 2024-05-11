@@ -1,0 +1,88 @@
+specless.specification.timed\_partial\_order.TimedPartialOrder
+==============================================================
+
+.. currentmodule:: specless.specification.timed_partial_order
+
+.. autoclass:: TimedPartialOrder
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~TimedPartialOrder.add_edge
+      ~TimedPartialOrder.add_edges_from
+      ~TimedPartialOrder.add_global_constraint
+      ~TimedPartialOrder.add_local_constraint
+      ~TimedPartialOrder.add_node
+      ~TimedPartialOrder.add_nodes_from
+      ~TimedPartialOrder.add_weighted_edges_from
+      ~TimedPartialOrder.adjacency
+      ~TimedPartialOrder.clear
+      ~TimedPartialOrder.clear_edges
+      ~TimedPartialOrder.copy
+      ~TimedPartialOrder.edge_subgraph
+      ~TimedPartialOrder.from_constraints
+      ~TimedPartialOrder.get_edge_data
+      ~TimedPartialOrder.get_reverse_constraints
+      ~TimedPartialOrder.has_edge
+      ~TimedPartialOrder.has_node
+      ~TimedPartialOrder.has_predecessor
+      ~TimedPartialOrder.has_successor
+      ~TimedPartialOrder.is_directed
+      ~TimedPartialOrder.is_multigraph
+      ~TimedPartialOrder.makespan
+      ~TimedPartialOrder.makespan2
+      ~TimedPartialOrder.modify_cost
+      ~TimedPartialOrder.nbunch_iter
+      ~TimedPartialOrder.neighbors
+      ~TimedPartialOrder.number_of_edges
+      ~TimedPartialOrder.number_of_nodes
+      ~TimedPartialOrder.order
+      ~TimedPartialOrder.penalize
+      ~TimedPartialOrder.predecessors
+      ~TimedPartialOrder.print
+      ~TimedPartialOrder.remove_edge
+      ~TimedPartialOrder.remove_edges_from
+      ~TimedPartialOrder.remove_node
+      ~TimedPartialOrder.remove_nodes_from
+      ~TimedPartialOrder.reverse
+      ~TimedPartialOrder.satisfy
+      ~TimedPartialOrder.size
+      ~TimedPartialOrder.subgraph
+      ~TimedPartialOrder.successors
+      ~TimedPartialOrder.to_directed
+      ~TimedPartialOrder.to_directed_class
+      ~TimedPartialOrder.to_undirected
+      ~TimedPartialOrder.to_undirected_class
+      ~TimedPartialOrder.transitive_reduction
+      ~TimedPartialOrder.update
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~TimedPartialOrder.adj
+      ~TimedPartialOrder.degree
+      ~TimedPartialOrder.edges
+      ~TimedPartialOrder.in_degree
+      ~TimedPartialOrder.in_edges
+      ~TimedPartialOrder.name
+      ~TimedPartialOrder.nodes
+      ~TimedPartialOrder.out_degree
+      ~TimedPartialOrder.out_edges
+      ~TimedPartialOrder.partial_order
+      ~TimedPartialOrder.pred
+      ~TimedPartialOrder.succ
+   
+   

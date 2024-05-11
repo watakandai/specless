@@ -1,0 +1,33 @@
+specless.tsp.solver.base
+========================
+
+.. automodule:: specless.tsp.solver.base
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      TSPSolver
+      TSPWithTPOSolver
+   
+   
+
+   
+   
+   
+
+
+

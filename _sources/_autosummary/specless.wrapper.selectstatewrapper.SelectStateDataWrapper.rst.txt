@@ -1,0 +1,44 @@
+specless.wrapper.selectstatewrapper.SelectStateDataWrapper
+==========================================================
+
+.. currentmodule:: specless.wrapper.selectstatewrapper
+
+.. autoclass:: SelectStateDataWrapper
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~SelectStateDataWrapper.class_name
+      ~SelectStateDataWrapper.close
+      ~SelectStateDataWrapper.get_wrapper_attr
+      ~SelectStateDataWrapper.render
+      ~SelectStateDataWrapper.reset
+      ~SelectStateDataWrapper.step
+      ~SelectStateDataWrapper.wrapper_spec
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~SelectStateDataWrapper.action_space
+      ~SelectStateDataWrapper.metadata
+      ~SelectStateDataWrapper.np_random
+      ~SelectStateDataWrapper.observation_space
+      ~SelectStateDataWrapper.render_mode
+      ~SelectStateDataWrapper.reward_range
+      ~SelectStateDataWrapper.spec
+      ~SelectStateDataWrapper.unwrapped
+   
+   

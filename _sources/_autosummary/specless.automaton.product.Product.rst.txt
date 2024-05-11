@@ -1,0 +1,102 @@
+specless.automaton.product.Product
+==================================
+
+.. currentmodule:: specless.automaton.product
+
+.. autoclass:: Product
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~Product.add_edge
+      ~Product.add_edges_from
+      ~Product.add_node
+      ~Product.add_nodes_from
+      ~Product.add_weighted_edges_from
+      ~Product.adjacency
+      ~Product.clear
+      ~Product.clear_edges
+      ~Product.compute_strategy
+      ~Product.copy
+      ~Product.disp_edges
+      ~Product.disp_nodes
+      ~Product.draw
+      ~Product.edge_subgraph
+      ~Product.generate_trace
+      ~Product.generate_traces
+      ~Product.get_edge_data
+      ~Product.has_edge
+      ~Product.has_node
+      ~Product.has_predecessor
+      ~Product.has_successor
+      ~Product.is_directed
+      ~Product.is_multigraph
+      ~Product.most_probable_string
+      ~Product.nbunch_iter
+      ~Product.neighbors
+      ~Product.new_edge_key
+      ~Product.number_of_edges
+      ~Product.number_of_nodes
+      ~Product.observe
+      ~Product.order
+      ~Product.plot_node_trans_dist
+      ~Product.predecessors
+      ~Product.remove_edge
+      ~Product.remove_edges_from
+      ~Product.remove_node
+      ~Product.remove_nodes_from
+      ~Product.reverse
+      ~Product.size
+      ~Product.subgraph
+      ~Product.successors
+      ~Product.to_directed
+      ~Product.to_directed_class
+      ~Product.to_undirected
+      ~Product.to_undirected_class
+      ~Product.update
+      ~Product.write_traces_to_file
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Product.adj
+      ~Product.automata_data_dir
+      ~Product.automata_display_data_dir_name
+      ~Product.degree
+      ~Product.edges
+      ~Product.in_degree
+      ~Product.in_edges
+      ~Product.name
+      ~Product.nodes
+      ~Product.out_degree
+      ~Product.out_edges
+      ~Product.pred
+      ~Product.succ
+      ~Product.alphabet_size
+      ~Product.num_states
+      ~Product.num_obs
+      ~Product.final_transition_sym
+      ~Product.empty_transition_sym
+      ~Product.start_state
+      ~Product.is_stochastic
+      ~Product.is_sampleable
+      ~Product.is_normalized
+      ~Product.symbols
+      ~Product.state_labels
+      ~Product.observations
+      ~Product.is_deterministic
+   
+   

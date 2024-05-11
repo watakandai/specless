@@ -1,0 +1,25 @@
+specless.tsp.solver.lk.LinKernighanTSPWithTPOSolver
+===================================================
+
+.. currentmodule:: specless.tsp.solver.lk
+
+.. autoclass:: LinKernighanTSPWithTPOSolver
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~LinKernighanTSPWithTPOSolver.solve
+   
+   
+
+   
+   
+   

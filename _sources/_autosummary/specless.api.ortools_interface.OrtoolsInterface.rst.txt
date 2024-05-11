@@ -1,0 +1,28 @@
+specless.api.ortools\_interface.OrtoolsInterface
+================================================
+
+.. currentmodule:: specless.api.ortools_interface
+
+.. autoclass:: OrtoolsInterface
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~OrtoolsInterface.set_edge_capacity
+      ~OrtoolsInterface.set_node_capacity
+      ~OrtoolsInterface.set_node_weight
+      ~OrtoolsInterface.solve
+   
+   
+
+   
+   
+   

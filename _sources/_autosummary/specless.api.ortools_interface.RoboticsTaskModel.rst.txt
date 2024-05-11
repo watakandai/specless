@@ -1,0 +1,33 @@
+specless.api.ortools\_interface.RoboticsTaskModel
+=================================================
+
+.. currentmodule:: specless.api.ortools_interface
+
+.. autoclass:: RoboticsTaskModel
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~RoboticsTaskModel.add_blockage
+      ~RoboticsTaskModel.add_capacity
+      ~RoboticsTaskModel.add_location
+      ~RoboticsTaskModel.add_looping_task
+      ~RoboticsTaskModel.add_service_time
+      ~RoboticsTaskModel.add_stationary_task
+      ~RoboticsTaskModel.add_task
+      ~RoboticsTaskModel.add_travel_time
+      ~RoboticsTaskModel.from_jsonfile
+   
+   
+
+   
+   
+   

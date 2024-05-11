@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>specless.inference.edsm.AutomataInferenceAlgorithm &mdash; specless 0.0.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=e3a6060d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="specless.inference.partial_order" href="specless.inference.partial_order.html" />
+    <link rel="prev" title="specless.inference.edsm" href="specless.inference.edsm.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            specless
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="specless.html">specless</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="specless.html#id1">specless</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.api.html">specless.api</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.automaton.html">specless.automaton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.cli.html">specless.cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.const.html">specless.const</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.dataset.html">specless.dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.factory.html">specless.factory</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="specless.inference.html">specless.inference</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="specless.inference.base.html">specless.inference.base</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="specless.inference.edsm.html">specless.inference.edsm</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="specless.inference.edsm.html#inference-algorithm">Inference Algorithm</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">specless.inference.edsm.AutomataInferenceAlgorithm</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="specless.inference.partial_order.html">specless.inference.partial_order</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specless.inference.timed_partial_order.html">specless.inference.timed_partial_order</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="specless.io.html">specless.io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.minigrid.html">specless.minigrid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.parser.html">specless.parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.specification.html">specless.specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.strategy.html">specless.strategy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.synthesis.html">specless.synthesis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.tsp.html">specless.tsp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.typing.html">specless.typing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.utils.html">specless.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.wrapper.html">specless.wrapper</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">specless</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="specless.html">specless</a></li>
+          <li class="breadcrumb-item"><a href="specless.inference.html">specless.inference</a></li>
+          <li class="breadcrumb-item"><a href="specless.inference.edsm.html">specless.inference.edsm</a></li>
+      <li class="breadcrumb-item active">specless.inference.edsm.AutomataInferenceAlgorithm</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_autosummary/specless.inference.edsm.AutomataInferenceAlgorithm.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="specless-inference-edsm-automatainferencealgorithm">
+<h1>specless.inference.edsm.AutomataInferenceAlgorithm<a class="headerlink" href="#specless-inference-edsm-automatainferencealgorithm" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="specless.inference.edsm.AutomataInferenceAlgorithm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">specless.inference.edsm.</span></span><span class="sig-name descname"><span class="pre">AutomataInferenceAlgorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">binary_location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'dfasat/flexfringe'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'./'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specless/inference/edsm.html#AutomataInferenceAlgorithm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.inference.edsm.AutomataInferenceAlgorithm" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="specless.inference.base.InferenceAlgorithm.html#specless.inference.base.InferenceAlgorithm" title="specless.inference.base.InferenceAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">InferenceAlgorithm</span></code></a></p>
+<p>The inference algorithm for inferring an automaton from a list of Traces,
+where trace is defined as a sequence of symbols, i.e. a set of strings.
+For example, ${a, b, c}$</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>InferenceAlgorithm</strong> (<em>_type_</em>) – _description_</p>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.inference.edsm.AutomataInferenceAlgorithm.draw_IPython" title="specless.inference.edsm.AutomataInferenceAlgorithm.draw_IPython"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_IPython</span></code></a></p></td>
+<td><p>Draws the dot file data in a way compatible with a jupyter / IPython notebook</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.inference.edsm.AutomataInferenceAlgorithm.draw_initial_model" title="specless.inference.edsm.AutomataInferenceAlgorithm.draw_initial_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_initial_model</span></code></a></p></td>
+<td><p>Draws the initial (prefix-tree) model</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.inference.edsm.AutomataInferenceAlgorithm.draw_learned_model" title="specless.inference.edsm.AutomataInferenceAlgorithm.draw_learned_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_learned_model</span></code></a></p></td>
+<td><p>Draws the final, learned model</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.inference.edsm.AutomataInferenceAlgorithm.infer" title="specless.inference.edsm.AutomataInferenceAlgorithm.infer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">infer</span></code></a></p></td>
+<td><p>calls the flexfringe binary given the data in the training file</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.inference.edsm.AutomataInferenceAlgorithm.initial_model_filepath" title="specless.inference.edsm.AutomataInferenceAlgorithm.initial_model_filepath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">initial_model_filepath</span></code></a></p></td>
+<td><p>the output filename for the unlearned, initial model, as this is a different from the inputted &quot;output-dir&quot;.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.inference.edsm.AutomataInferenceAlgorithm.learned_model_filepath" title="specless.inference.edsm.AutomataInferenceAlgorithm.learned_model_filepath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">learned_model_filepath</span></code></a></p></td>
+<td><p>the output filename for the fully learned model, as this is a different from the inputted &quot;output-dir&quot;</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.inference.edsm.AutomataInferenceAlgorithm.output_filepath" title="specless.inference.edsm.AutomataInferenceAlgorithm.output_filepath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">output_filepath</span></code></a></p></td>
+<td><p>The output filepath for the results of learning the model</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.inference.edsm.AutomataInferenceAlgorithm.draw_IPython">
+<span class="sig-name descname"><span class="pre">draw_IPython</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/specless/inference/edsm.html#AutomataInferenceAlgorithm.draw_IPython"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.inference.edsm.AutomataInferenceAlgorithm.draw_IPython" title="Link to this definition"></a></dt>
+<dd><p>Draws the dot file data in a way compatible with a jupyter / IPython
+notebook</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – The learned model dot file data</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.inference.edsm.AutomataInferenceAlgorithm.draw_initial_model">
+<span class="sig-name descname"><span class="pre">draw_initial_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/specless/inference/edsm.html#AutomataInferenceAlgorithm.draw_initial_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.inference.edsm.AutomataInferenceAlgorithm.draw_initial_model" title="Link to this definition"></a></dt>
+<dd><p>Draws the initial (prefix-tree) model</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.inference.edsm.AutomataInferenceAlgorithm.draw_learned_model">
+<span class="sig-name descname"><span class="pre">draw_learned_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/specless/inference/edsm.html#AutomataInferenceAlgorithm.draw_learned_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.inference.edsm.AutomataInferenceAlgorithm.draw_learned_model" title="Link to this definition"></a></dt>
+<dd><p>Draws the final, learned model</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.inference.edsm.AutomataInferenceAlgorithm.infer">
+<span class="sig-name descname"><span class="pre">infer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="specless.dataset.BaseDataset.html#specless.dataset.BaseDataset" title="specless.dataset.BaseDataset"><span class="pre">BaseDataset</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_help</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">record_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">go_fast</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="specless.specification.base.Specification.html#specless.specification.base.Specification" title="specless.specification.base.Specification"><span class="pre">Specification</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Exception</span></span></span><a class="reference internal" href="../_modules/specless/inference/edsm.html#AutomataInferenceAlgorithm.infer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.inference.edsm.AutomataInferenceAlgorithm.infer" title="Link to this definition"></a></dt>
+<dd><p>calls the flexfringe binary given the data in the training file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset</strong> (<em>Dataset</em>) – dataset that contains the path to the training data</p></li>
+<li><p><strong>get_help</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to print the flexfringe
+usage help memu. Defaults to False.</p></li>
+<li><p><strong>record_time</strong> (<em>bool</em><em>, </em><em>optional</em>) – _description_. Defaults to True.</p></li>
+<li><p><strong>go_fast</strong> (<em>bool</em><em>, </em><em>optional</em>) – optimizes this call to make it as fast
+as possible, at the expensive of usability.
+use for benchmarking / Hyperparam
+optimization. Defaults to False.</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – controlling the learning process</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – _description_</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Union[<a class="reference internal" href="specless.specification.base.Specification.html#specless.specification.base.Specification" title="specless.specification.base.Specification">Specification</a>, Exception]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="specless.inference.edsm.AutomataInferenceAlgorithm.initial_model_filepath">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">initial_model_filepath</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#specless.inference.edsm.AutomataInferenceAlgorithm.initial_model_filepath" title="Link to this definition"></a></dt>
+<dd><p>the output filename for the unlearned, initial model, as this is a
+different from the inputted “output-dir”.
+In this case, it will be a prefix tree from the given learning data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The initial model filepath.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="specless.inference.edsm.AutomataInferenceAlgorithm.learned_model_filepath">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">learned_model_filepath</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#specless.inference.edsm.AutomataInferenceAlgorithm.learned_model_filepath" title="Link to this definition"></a></dt>
+<dd><p>the output filename for the fully learned model, as this is a
+different from the inputted “output-dir”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The learned model filepath.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="specless.inference.edsm.AutomataInferenceAlgorithm.output_filepath">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_filepath</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#specless.inference.edsm.AutomataInferenceAlgorithm.output_filepath" title="Link to this definition"></a></dt>
+<dd><p>The output filepath for the results of learning the model</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="specless.inference.edsm.html" class="btn btn-neutral float-left" title="specless.inference.edsm" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="specless.inference.partial_order.html" class="btn btn-neutral float-right" title="specless.inference.partial_order" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Kandai Watanabe.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

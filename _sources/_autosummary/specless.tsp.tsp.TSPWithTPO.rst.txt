@@ -1,0 +1,38 @@
+specless.tsp.tsp.TSPWithTPO
+===========================
+
+.. currentmodule:: specless.tsp.tsp
+
+.. autoclass:: TSPWithTPO
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~TSPWithTPO.from_tsp
+      ~TSPWithTPO.satisfy
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~TSPWithTPO.nodes
+      ~TSPWithTPO.edges
+      ~TSPWithTPO.costs
+      ~TSPWithTPO.services
+      ~TSPWithTPO.come_back_home
+      ~TSPWithTPO.nodesets
+      ~TSPWithTPO.node_set_mapping
+   
+   
