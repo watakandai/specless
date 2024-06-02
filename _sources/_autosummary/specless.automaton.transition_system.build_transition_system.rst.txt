@@ -1,6 +1,0 @@
-specless.automaton.transition\_system.build\_transition\_system
-===============================================================
-
-.. currentmodule:: specless.automaton.transition_system
-
-.. autofunction:: build_transition_system

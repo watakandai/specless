@@ -1,6 +1,0 @@
-specless.automaton.mps.should\_use\_BMPS\_exact
-===============================================
-
-.. currentmodule:: specless.automaton.mps
-
-.. autofunction:: should_use_BMPS_exact

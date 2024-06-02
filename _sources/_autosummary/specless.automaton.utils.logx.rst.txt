@@ -1,6 +1,0 @@
-specless.automaton.utils.logx
-=============================
-
-.. currentmodule:: specless.automaton.utils
-
-.. autofunction:: logx

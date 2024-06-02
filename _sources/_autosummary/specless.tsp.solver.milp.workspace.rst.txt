@@ -1,6 +1,0 @@
-specless.tsp.solver.milp.workspace
-==================================
-
-.. currentmodule:: specless.tsp.solver.milp
-
-.. autodata:: workspace

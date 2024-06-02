@@ -1,6 +1,0 @@
-specless.automaton.mps.SWDFA\_MPS
-=================================
-
-.. currentmodule:: specless.automaton.mps
-
-.. autofunction:: SWDFA_MPS

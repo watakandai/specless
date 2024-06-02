@@ -1,6 +1,0 @@
-specless.automaton.base.node\_obs\_to\_str
-==========================================
-
-.. currentmodule:: specless.automaton.base
-
-.. autofunction:: node_obs_to_str

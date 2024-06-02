@@ -1,6 +1,0 @@
-specless.utils.collect\_demos.collect\_demonstration
-====================================================
-
-.. currentmodule:: specless.utils.collect_demos
-
-.. autofunction:: collect_demonstration
