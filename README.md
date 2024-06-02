@@ -14,7 +14,7 @@
 
 
 
-- **Websites** https://watakandai.github.io/specless/ and https://specless.readthedocs.io/en/latest/
+- **Websites** https://watakandai.github.io/specless/
 - **Source code**: https://github.com/watakandai/specless.git
 - **PyPI**: https://pypi.org/project/specless/
 
