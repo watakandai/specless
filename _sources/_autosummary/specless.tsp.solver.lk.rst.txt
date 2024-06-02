@@ -1,0 +1,33 @@
+specless.tsp.solver.lk
+======================
+
+.. automodule:: specless.tsp.solver.lk
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      LinKernighanTSPSolver
+      LinKernighanTSPWithTPOSolver
+   
+   
+
+   
+   
+   
+
+
+

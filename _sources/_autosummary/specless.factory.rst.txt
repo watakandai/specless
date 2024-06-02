@@ -1,0 +1,32 @@
+specless.factory
+================
+
+.. automodule:: specless.factory
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   specless.factory.builder
+   specless.factory.object_factory
+   specless.factory.tspbuilder
+

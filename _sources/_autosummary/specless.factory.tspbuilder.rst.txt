@@ -1,0 +1,33 @@
+specless.factory.tspbuilder
+===========================
+
+.. automodule:: specless.factory.tspbuilder
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      TSPBuilder
+      TSPWithTPOBuilder
+   
+   
+
+   
+   
+   
+
+
+

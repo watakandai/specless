@@ -1,0 +1,36 @@
+specless.wrapper.actionwrapper
+==============================
+
+.. automodule:: specless.wrapper.actionwrapper
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      DiagOmniDirectionActions
+      DirectionalActionWrapper
+      EightOmniDirectionActions
+      FourOmniDirectionActions
+      OmniDirectionActionWrapper
+   
+   
+
+   
+   
+   
+
+
+

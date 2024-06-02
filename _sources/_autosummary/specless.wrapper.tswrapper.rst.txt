@@ -1,0 +1,32 @@
+specless.wrapper.tswrapper
+==========================
+
+.. automodule:: specless.wrapper.tswrapper
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      TransitionSystemWrapper
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,39 @@
+specless.strategy
+=================
+
+.. automodule:: specless.strategy
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      CombinedStrategy
+      FeedbackStrategy
+      FeedforwardStrategy
+      HistoryDependentStrategy
+      MemorylessStrategy
+      PlanStrategy
+      PolicyStrategy
+      Strategy
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>specless.tsp.solver.milp &mdash; specless 0.0.2 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=e3a6060d"></script>
+        <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            specless
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/specless.html">specless</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">specless</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">specless.tsp.solver.milp</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for specless.tsp.solver.milp</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">&gt;&gt;&gt; from specless.solver import MILPTSPSolver</span>
+
+<span class="sd">&gt;&gt;&gt; n = 4</span>
+<span class="sd">&gt;&gt;&gt; nodes: List[int] = [0, 1, 2, 3]</span>
+
+<span class="sd"># Ready time</span>
+
+<span class="sd">&gt;&gt;&gt; a: List[float] = [0, 5, 0, 8]</span>
+
+<span class="sd"># Due time</span>
+
+<span class="sd">&gt;&gt;&gt; b: List[float] = [100, 16, 10, 14]</span>
+
+<span class="sd"># Travel time</span>
+
+<span class="sd">&gt;&gt;&gt; costs: List[List[float]] = [</span>
+<span class="sd">    [0, 3, 4, 5],</span>
+<span class="sd">    [3, 0, 5, 4],</span>
+<span class="sd">    [4, 5, 0, 3],</span>
+<span class="sd">    [5, 4, 3, 0],</span>
+<span class="sd">]</span>
+<span class="sd">&gt;&gt;&gt; tsp = TSP(nodes, costs)</span>
+<span class="sd">&gt;&gt;&gt; tspsolver = MILPTSPSolver()</span>
+<span class="sd">&gt;&gt;&gt; tsp = tspbuilder(transition_system)</span>
+<span class="sd">&gt;&gt;&gt; tours, costs = tspsolver(tsp)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">import</span> <span class="nn">gurobipy</span> <span class="k">as</span> <span class="nn">gp</span>
+<span class="kn">from</span> <span class="nn">gurobipy</span> <span class="kn">import</span> <span class="n">GRB</span>
+
+<span class="kn">from</span> <span class="nn">specless.tsp.tsp</span> <span class="kn">import</span> <span class="n">TSP</span><span class="p">,</span> <span class="n">Node</span>
+
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">TSPSolver</span><span class="p">,</span> <span class="n">TSPWithTPOSolver</span>
+
+<span class="n">workspace</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span>
+
+
+<span class="sd">&quot;&quot;&quot;Extend it to Multi-Agents &amp; Set&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="MILPTSPSolver">
+<a class="viewcode-back" href="../../../../_autosummary/specless.tsp.solver.milp.MILPTSPSolver.html#specless.tsp.solver.milp.MILPTSPSolver">[docs]</a>
+<span class="k">class</span> <span class="nc">MILPTSPSolver</span><span class="p">(</span><span class="n">TSPSolver</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="MILPTSPSolver.initialize_problem">
+<a class="viewcode-back" href="../../../../_autosummary/specless.tsp.solver.milp.MILPTSPSolver.html#specless.tsp.solver.milp.MILPTSPSolver.initialize_problem">[docs]</a>
+    <span class="k">def</span> <span class="nf">initialize_problem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tsp</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the problem&quot;&quot;&quot;</span>
+        <span class="n">env</span> <span class="o">=</span> <span class="n">gp</span><span class="o">.</span><span class="n">Env</span><span class="p">()</span>
+        <span class="c1"># env.setParam(&quot;TimeLimit&quot;, 30 * 60)</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">setParam</span><span class="p">(</span><span class="s2">&quot;OutputFlag&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Declare and initialize model</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">gp</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">)</span>
+        <span class="c1"># Create decision variables for choosing edges</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">addVars</span><span class="p">(</span><span class="n">tsp</span><span class="o">.</span><span class="n">edges</span><span class="p">,</span> <span class="n">vtype</span><span class="o">=</span><span class="n">GRB</span><span class="o">.</span><span class="n">BINARY</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;edges&quot;</span><span class="p">)</span>
+        <span class="c1"># Create continuous time variables [1, n]</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">addVars</span><span class="p">(</span><span class="n">tsp</span><span class="o">.</span><span class="n">nodes</span><span class="p">,</span> <span class="n">lb</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">vtype</span><span class="o">=</span><span class="n">GRB</span><span class="o">.</span><span class="n">CONTINUOUS</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;times&quot;</span><span class="p">)</span>
+        <span class="c1"># Create continuous time variables for the TERMINAL nodes</span>
+        <span class="n">init_nodes</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">init_nodes</span><span class="p">)]</span>
+        <span class="n">tT</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">addVars</span><span class="p">(</span><span class="n">init_nodes</span><span class="p">,</span> <span class="n">lb</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">vtype</span><span class="o">=</span><span class="n">GRB</span><span class="o">.</span><span class="n">CONTINUOUS</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;timesTerminal&quot;</span><span class="p">)</span>
+        <span class="n">tf</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">addVar</span><span class="p">(</span><span class="n">lb</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">vtype</span><span class="o">=</span><span class="n">GRB</span><span class="o">.</span><span class="n">CONTINUOUS</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;tFinal&quot;</span><span class="p">)</span>
+
+        <span class="n">variables</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;t&quot;</span><span class="p">:</span> <span class="n">t</span><span class="p">,</span> <span class="s2">&quot;tT&quot;</span><span class="p">:</span> <span class="n">tT</span><span class="p">,</span> <span class="s2">&quot;tf&quot;</span><span class="p">:</span> <span class="n">tf</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">m</span><span class="p">,</span> <span class="n">variables</span></div>
+
+
+<div class="viewcode-block" id="MILPTSPSolver.optimize">
+<a class="viewcode-back" href="../../../../_autosummary/specless.tsp.solver.milp.MILPTSPSolver.html#specless.tsp.solver.milp.MILPTSPSolver.optimize">[docs]</a>
+    <span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">variables</span><span class="p">,</span> <span class="n">objective</span><span class="p">:</span> <span class="n">gp</span><span class="o">.</span><span class="n">LinExpr</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Optimize the defined model&quot;&quot;&quot;</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">setObjective</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="n">GRB</span><span class="o">.</span><span class="n">MINIMIZE</span><span class="p">)</span>
+        <span class="c1"># save model for inspection</span>
+        <span class="n">class_name</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">class_name</span><span class="si">}</span><span class="s2">.lp&quot;</span><span class="p">)</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span></div>
+
+
+    <span class="k">def</span> <span class="nf">get_tours</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">variables</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">getAttr</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="n">gp</span><span class="o">.</span><span class="n">tuplelist</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">vals</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">vals</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">tours</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">init_node</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">init_nodes</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">edges</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">init_node</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span><span class="p">):</span>
+                <span class="n">current</span> <span class="o">=</span> <span class="n">j</span>
+                <span class="n">tour</span> <span class="o">=</span> <span class="p">[</span><span class="n">init_node</span><span class="p">]</span>
+                <span class="k">while</span> <span class="n">current</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_nodes</span><span class="p">:</span>
+                    <span class="n">tour</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current</span><span class="p">)</span>
+                    <span class="nb">next</span> <span class="o">=</span> <span class="p">[</span><span class="n">j</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">edges</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">current</span> <span class="o">=</span> <span class="nb">next</span>
+                <span class="n">tour</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">init_node</span><span class="p">)</span>
+                <span class="n">tours</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tour</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">come_back_home</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">tours</span>
+        <span class="k">return</span> <span class="n">tours</span>
+
+    <span class="k">def</span> <span class="nf">get_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">objVal</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">tsp</span><span class="p">:</span> <span class="n">TSP</span><span class="p">,</span>
+        <span class="n">num_agent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">init_nodes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">come_back_home</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="n">tsp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">tsp</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">init_nodes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">init_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">tsp</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">*</span> <span class="n">num_agent</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">num_agent</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">init_nodes</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">agents</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">num_agent</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_nodes</span> <span class="o">=</span> <span class="n">init_nodes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">come_back_home</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">come_back_home</span>
+
+        <span class="c1"># If we are not coming back homes, we ignore the last traveling cost.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">come_back_home</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">init_node</span> <span class="ow">in</span> <span class="n">init_nodes</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">tsp</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">([</span><span class="n">init_node</span><span class="p">]):</span>
+                    <span class="n">tsp</span><span class="o">.</span><span class="n">costs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">init_node</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># Initialize the Problem</span>
+        <span class="c1"># Users can add variables m.addVars() and append to variables.update({}) if wanted.</span>
+        <span class="n">m</span><span class="p">,</span> <span class="n">variables</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialize_problem</span><span class="p">(</span><span class="n">tsp</span><span class="p">)</span>
+
+        <span class="c1"># Users can add their own function to add more constraints</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;t&quot;</span><span class="p">]</span>
+        <span class="n">tT</span> <span class="o">=</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;tT&quot;</span><span class="p">]</span>
+        <span class="n">tf</span> <span class="o">=</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;tf&quot;</span><span class="p">]</span>
+        <span class="n">non_init_nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">tsp</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">init_nodes</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">nodes</span> <span class="ow">in</span> <span class="n">tsp</span><span class="o">.</span><span class="n">nodesets</span><span class="p">:</span>
+            <span class="n">K</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">init_node</span> <span class="ow">in</span> <span class="n">nodes</span> <span class="k">for</span> <span class="n">init_node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_nodes</span><span class="p">)</span>
+            <span class="c1"># If the node set includes more initial nodes,</span>
+            <span class="c1"># then set the #incoming/outgoing edge to the #init_nodes in that set (K)</span>
+            <span class="c1"># If not exist, just set #in/outgoing edges to 1</span>
+            <span class="k">if</span> <span class="n">K</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">K</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="c1"># Incoming and Outgoing FLow must be equal at these edges</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">addConstr</span><span class="p">(</span><span class="n">gp</span><span class="o">.</span><span class="n">quicksum</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">)</span> <span class="o">==</span> <span class="n">K</span><span class="p">,</span> <span class="s2">&quot;incoming&quot;</span><span class="p">)</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">addConstr</span><span class="p">(</span><span class="n">gp</span><span class="o">.</span><span class="n">quicksum</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">)</span> <span class="o">==</span> <span class="n">K</span><span class="p">,</span> <span class="s2">&quot;outgoing&quot;</span><span class="p">)</span>
+
+        <span class="c1"># The flow conservation must be enforced to aaaaalllll nodes.</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">addConstrs</span><span class="p">((</span><span class="n">x</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">==</span> <span class="n">x</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">tsp</span><span class="o">.</span><span class="n">nodes</span><span class="p">),</span> <span class="s2">&quot;flow&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Time Delays by taking an edge i,j</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">addConstrs</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="p">(</span><span class="n">x</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">tsp</span><span class="o">.</span><span class="n">costs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])</span>
+                <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="ow">in</span> <span class="n">tsp</span><span class="o">.</span><span class="n">edges</span>
+                <span class="k">if</span> <span class="n">j</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_nodes</span>
+            <span class="p">),</span>
+            <span class="s2">&quot;delay&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">I</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">init_nodes</span><span class="p">):</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">addConstrs</span><span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="p">(</span><span class="n">x</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">I</span><span class="p">)]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">tT</span><span class="p">[(</span><span class="n">ii</span><span class="p">,</span> <span class="n">I</span><span class="p">)]</span> <span class="o">-</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">tsp</span><span class="o">.</span><span class="n">costs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">I</span><span class="p">])</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">non_init_nodes</span>
+                <span class="p">),</span>
+                <span class="s2">&quot;delayTerm&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Users can add a new objective by replacing get_edge_cost_objective</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">addGenConstrMax</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="n">tT</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">variables</span><span class="p">,</span> <span class="n">tf</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">status</span> <span class="o">!=</span> <span class="n">GRB</span><span class="o">.</span><span class="n">OPTIMAL</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tour: [], Cost: n/a&quot;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">getVars</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">var</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1e-6</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">: </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var</span><span class="o">.</span><span class="n">varName</span><span class="p">,</span> <span class="n">var</span><span class="o">.</span><span class="n">x</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Total matching score: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">objVal</span><span class="p">))</span>
+
+        <span class="n">tours</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tours</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">variables</span><span class="p">)</span>
+        <span class="n">cost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cost</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tours</span><span class="p">,</span> <span class="n">cost</span></div>
+
+
+
+<div class="viewcode-block" id="MILPTSPWithTPOSolver">
+<a class="viewcode-back" href="../../../../_autosummary/specless.tsp.solver.milp.MILPTSPWithTPOSolver.html#specless.tsp.solver.milp.MILPTSPWithTPOSolver">[docs]</a>
+<span class="k">class</span> <span class="nc">MILPTSPWithTPOSolver</span><span class="p">(</span><span class="n">TSPWithTPOSolver</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="MILPTSPWithTPOSolver.initialize_problem">
+<a class="viewcode-back" href="../../../../_autosummary/specless.tsp.solver.milp.MILPTSPWithTPOSolver.html#specless.tsp.solver.milp.MILPTSPWithTPOSolver.initialize_problem">[docs]</a>
+    <span class="k">def</span> <span class="nf">initialize_problem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tsp</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the problem&quot;&quot;&quot;</span>
+        <span class="c1"># Declare and initialize model</span>
+        <span class="n">env</span> <span class="o">=</span> <span class="n">gp</span><span class="o">.</span><span class="n">Env</span><span class="p">()</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">setParam</span><span class="p">(</span><span class="s2">&quot;TimeLimit&quot;</span><span class="p">,</span> <span class="mi">30</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">setParam</span><span class="p">(</span><span class="s2">&quot;OutputFlag&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">m</span> <span class="o">=</span> <span class="n">gp</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">)</span>
+        <span class="c1"># Create decision variables for choosing edges</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">addVars</span><span class="p">(</span><span class="n">tsp</span><span class="o">.</span><span class="n">edges</span><span class="p">,</span> <span class="n">vtype</span><span class="o">=</span><span class="n">GRB</span><span class="o">.</span><span class="n">BINARY</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;edges&quot;</span><span class="p">)</span>
+        <span class="c1"># Create continuous time variables [1, n]</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">addVars</span><span class="p">(</span><span class="n">tsp</span><span class="o">.</span><span class="n">nodes</span><span class="p">,</span> <span class="n">lb</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">vtype</span><span class="o">=</span><span class="n">GRB</span><span class="o">.</span><span class="n">CONTINUOUS</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;times&quot;</span><span class="p">)</span>
+        <span class="c1"># Create continuous time variables for the TERMINAL nodes</span>
+        <span class="n">init_nodes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Node</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">init_nodes</span><span class="p">)]</span>
+        <span class="n">tT</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">addVars</span><span class="p">(</span><span class="n">init_nodes</span><span class="p">,</span> <span class="n">lb</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">vtype</span><span class="o">=</span><span class="n">GRB</span><span class="o">.</span><span class="n">CONTINUOUS</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;timesTerminal&quot;</span><span class="p">)</span>
+        <span class="n">tf</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">addVar</span><span class="p">(</span><span class="n">lb</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">vtype</span><span class="o">=</span><span class="n">GRB</span><span class="o">.</span><span class="n">CONTINUOUS</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;tFinal&quot;</span><span class="p">)</span>
+
+        <span class="n">variables</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;t&quot;</span><span class="p">:</span> <span class="n">t</span><span class="p">,</span> <span class="s2">&quot;tT&quot;</span><span class="p">:</span> <span class="n">tT</span><span class="p">,</span> <span class="s2">&quot;tf&quot;</span><span class="p">:</span> <span class="n">tf</span><span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">m</span><span class="p">,</span> <span class="n">variables</span></div>
+
+
+<div class="viewcode-block" id="MILPTSPWithTPOSolver.optimize">
+<a class="viewcode-back" href="../../../../_autosummary/specless.tsp.solver.milp.MILPTSPWithTPOSolver.html#specless.tsp.solver.milp.MILPTSPWithTPOSolver.optimize">[docs]</a>
+    <span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">variables</span><span class="p">,</span> <span class="n">objective</span><span class="p">:</span> <span class="n">gp</span><span class="o">.</span><span class="n">LinExpr</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Optimize the defined model&quot;&quot;&quot;</span>
+        <span class="c1"># print(&quot;Objective Type: &quot;, type(objective))</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">setObjective</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="n">GRB</span><span class="o">.</span><span class="n">MINIMIZE</span><span class="p">)</span>
+        <span class="c1"># save model for inspection</span>
+        <span class="n">class_name</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">class_name</span><span class="si">}</span><span class="s2">.lp&quot;</span><span class="p">)</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span></div>
+
+
+    <span class="k">def</span> <span class="nf">get_tours</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">variables</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">getAttr</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="n">gp</span><span class="o">.</span><span class="n">tuplelist</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">vals</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">vals</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">tours</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">init_node</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">init_nodes</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">edges</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">init_node</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span><span class="p">):</span>
+                <span class="n">current</span> <span class="o">=</span> <span class="n">j</span>
+                <span class="n">tour</span> <span class="o">=</span> <span class="p">[</span><span class="n">init_node</span><span class="p">]</span>
+                <span class="k">while</span> <span class="n">current</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_nodes</span><span class="p">:</span>
+                    <span class="n">tour</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current</span><span class="p">)</span>
+                    <span class="nb">next</span> <span class="o">=</span> <span class="p">[</span><span class="n">j</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">edges</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">current</span> <span class="o">=</span> <span class="nb">next</span>
+                <span class="n">tour</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">init_node</span><span class="p">)</span>
+                <span class="n">tours</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tour</span><span class="p">)</span>
+
+        <span class="c1"># TODO:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">come_back_home</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">tours</span>
+        <span class="k">return</span> <span class="n">tours</span>
+
+    <span class="k">def</span> <span class="nf">get_timestamps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">variables</span><span class="p">,</span> <span class="n">tour</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tour</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="n">timestamps</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">getAttr</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">])</span>
+        <span class="n">times</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">getAttr</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;t&quot;</span><span class="p">])</span>
+        <span class="n">finaltime</span> <span class="o">=</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;tf&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">getAttr</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">tour</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">timestamps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
+
+        <span class="n">timestamps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">finaltime</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">timestamps</span>
+
+    <span class="k">def</span> <span class="nf">get_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">objVal</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">tsp</span><span class="p">,</span>
+        <span class="n">num_agent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">init_nodes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">come_back_home</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="n">tsp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">tsp</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tsp</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">num_agent</span><span class="p">:</span>
+            <span class="n">num_agent</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tsp</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
+
+        <span class="c1"># Argument Priority: num_agent &lt; init_nodes</span>
+        <span class="c1"># If both are provided, init_nodes is prioritized</span>
+        <span class="k">if</span> <span class="n">init_nodes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">init_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">tsp</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">*</span> <span class="n">num_agent</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">num_agent</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">init_nodes</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">agents</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">num_agent</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_nodes</span> <span class="o">=</span> <span class="n">init_nodes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">come_back_home</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">come_back_home</span>
+
+        <span class="c1"># If we are not coming back homes, we ignore the last traveling cost.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">come_back_home</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">init_node</span> <span class="ow">in</span> <span class="n">init_nodes</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">tsp</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">([</span><span class="n">init_node</span><span class="p">]):</span>
+                    <span class="n">tsp</span><span class="o">.</span><span class="n">costs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">init_node</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># Initialize the Problem</span>
+        <span class="c1"># Users can add variables m.addVars() and append to variables.update({}) if wanted.</span>
+        <span class="n">m</span><span class="p">,</span> <span class="n">variables</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialize_problem</span><span class="p">(</span><span class="n">tsp</span><span class="p">)</span>
+
+        <span class="c1"># Users can add their own function to add more constraints</span>
+        <span class="c1"># Get the variable</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;t&quot;</span><span class="p">]</span>
+        <span class="n">tT</span> <span class="o">=</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;tT&quot;</span><span class="p">]</span>
+        <span class="n">tf</span> <span class="o">=</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;tf&quot;</span><span class="p">]</span>
+        <span class="n">non_init_nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">tsp</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">init_nodes</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">nodes</span> <span class="ow">in</span> <span class="n">tsp</span><span class="o">.</span><span class="n">nodesets</span><span class="p">:</span>
+            <span class="n">K</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">init_node</span> <span class="ow">in</span> <span class="n">nodes</span> <span class="k">for</span> <span class="n">init_node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_nodes</span><span class="p">)</span>
+            <span class="c1"># If the node set includes more initial nodes,</span>
+            <span class="c1"># then set the #incoming/outgoing edge to the #init_nodes in that set (K)</span>
+            <span class="c1"># If not exist, just set #in/outgoing edges to 1</span>
+            <span class="k">if</span> <span class="n">K</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">K</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="c1"># Incoming and Outgoing FLow must be equal at these edges</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">addConstr</span><span class="p">(</span><span class="n">gp</span><span class="o">.</span><span class="n">quicksum</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">)</span> <span class="o">==</span> <span class="n">K</span><span class="p">,</span> <span class="s2">&quot;incoming&quot;</span><span class="p">)</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">addConstr</span><span class="p">(</span><span class="n">gp</span><span class="o">.</span><span class="n">quicksum</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">)</span> <span class="o">==</span> <span class="n">K</span><span class="p">,</span> <span class="s2">&quot;outgoing&quot;</span><span class="p">)</span>
+
+        <span class="c1"># The flow conservation must be enforced to aaaaalllll nodes.</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">addConstrs</span><span class="p">((</span><span class="n">x</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">==</span> <span class="n">x</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">tsp</span><span class="o">.</span><span class="n">nodes</span><span class="p">),</span> <span class="s2">&quot;flow&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Time Window Constraints</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">addConstrs</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="n">t</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">tsp</span><span class="o">.</span><span class="n">tpo</span><span class="o">.</span><span class="n">global_constraints</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="s2">&quot;lb&quot;</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">tsp</span><span class="o">.</span><span class="n">tpo</span><span class="o">.</span><span class="n">global_constraints</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="p">),</span>
+            <span class="s2">&quot;nodeLB&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">addConstrs</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="n">t</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">tsp</span><span class="o">.</span><span class="n">tpo</span><span class="o">.</span><span class="n">global_constraints</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="s2">&quot;ub&quot;</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">tsp</span><span class="o">.</span><span class="n">tpo</span><span class="o">.</span><span class="n">global_constraints</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="p">),</span>
+            <span class="s2">&quot;nodeUB&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># Precedent Constraints</span>
+        <span class="n">local_const_edges</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">tgt</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">src</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">tsp</span><span class="o">.</span><span class="n">tpo</span><span class="o">.</span><span class="n">local_constraints</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">tgt</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">]</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">addConstrs</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="n">t</span><span class="p">[</span><span class="n">tgt</span><span class="p">]</span> <span class="o">-</span> <span class="n">t</span><span class="p">[</span><span class="n">src</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">tsp</span><span class="o">.</span><span class="n">tpo</span><span class="o">.</span><span class="n">local_constraints</span><span class="p">[</span><span class="n">src</span><span class="p">][</span><span class="n">tgt</span><span class="p">][</span><span class="s2">&quot;lb&quot;</span><span class="p">]</span>
+                <span class="k">for</span> <span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">tgt</span><span class="p">)</span> <span class="ow">in</span> <span class="n">local_const_edges</span>
+            <span class="p">),</span>
+            <span class="s2">&quot;edgeLB&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">addConstrs</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="n">t</span><span class="p">[</span><span class="n">tgt</span><span class="p">]</span> <span class="o">-</span> <span class="n">t</span><span class="p">[</span><span class="n">src</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">tsp</span><span class="o">.</span><span class="n">tpo</span><span class="o">.</span><span class="n">local_constraints</span><span class="p">[</span><span class="n">src</span><span class="p">][</span><span class="n">tgt</span><span class="p">][</span><span class="s2">&quot;ub&quot;</span><span class="p">]</span>
+                <span class="k">for</span> <span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">tgt</span><span class="p">)</span> <span class="ow">in</span> <span class="n">local_const_edges</span>
+            <span class="p">),</span>
+            <span class="s2">&quot;edgeUB&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># Time Delays by taking an edge i,j</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">addConstrs</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="p">(</span><span class="n">x</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">tsp</span><span class="o">.</span><span class="n">costs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])</span>
+                <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="ow">in</span> <span class="n">tsp</span><span class="o">.</span><span class="n">edges</span>
+                <span class="k">if</span> <span class="n">j</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_nodes</span>
+            <span class="p">),</span>
+            <span class="s2">&quot;delay&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">I</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">init_nodes</span><span class="p">):</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">addConstrs</span><span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="p">(</span><span class="n">x</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">I</span><span class="p">)]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">tT</span><span class="p">[(</span><span class="n">ii</span><span class="p">,</span> <span class="n">I</span><span class="p">)]</span> <span class="o">-</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">tsp</span><span class="o">.</span><span class="n">costs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">I</span><span class="p">])</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">non_init_nodes</span>
+                <span class="p">),</span>
+                <span class="s2">&quot;delayTerm&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Users can add a new objective by replacing get_edge_cost_objective</span>
+        <span class="c1"># tf = max([tT1, tT2, ..., tT_|init_nodes|])</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">addGenConstrMax</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="n">tT</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">variables</span><span class="p">,</span> <span class="n">tf</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">status</span> <span class="o">!=</span> <span class="n">GRB</span><span class="o">.</span><span class="n">OPTIMAL</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tour: [], Cost: n/a&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[],</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">getVars</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">var</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1e-6</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">: </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var</span><span class="o">.</span><span class="n">varName</span><span class="p">,</span> <span class="n">var</span><span class="o">.</span><span class="n">x</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Total matching score: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">objVal</span><span class="p">))</span>
+
+        <span class="n">tours</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tours</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">variables</span><span class="p">)</span>
+        <span class="n">timestamps</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_timestamps</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">variables</span><span class="p">,</span> <span class="n">tour</span><span class="p">)</span> <span class="k">for</span> <span class="n">tour</span> <span class="ow">in</span> <span class="n">tours</span><span class="p">]</span>
+        <span class="n">cost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cost</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">tours</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">timestamps</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="c1"># Number of locations</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+    <span class="c1"># Ready time</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+    <span class="c1"># Due time</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">14</span><span class="p">]</span>
+    <span class="c1"># Travel time</span>
+    <span class="n">costs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">]</span>
+    <span class="c1"># 1. Just Test with the cost (TSP Solver)</span>
+    <span class="n">tsp</span> <span class="o">=</span> <span class="n">TSP</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">costs</span><span class="p">)</span>
+    <span class="n">solver</span> <span class="o">=</span> <span class="n">MILPTSPSolver</span><span class="p">()</span>
+    <span class="n">tour</span><span class="p">,</span> <span class="n">cost</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">tsp</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">tour</span><span class="p">,</span> <span class="n">cost</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Kandai Watanabe.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

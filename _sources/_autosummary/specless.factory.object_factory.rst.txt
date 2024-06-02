@@ -1,0 +1,32 @@
+specless.factory.object\_factory
+================================
+
+.. automodule:: specless.factory.object_factory
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      ObjectFactory
+   
+   
+
+   
+   
+   
+
+
+

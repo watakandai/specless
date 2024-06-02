@@ -1,0 +1,33 @@
+specless.tsp.solver.ortools
+===========================
+
+.. automodule:: specless.tsp.solver.ortools
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      ORTSPSolver
+      ORTSPWithTPOSolver
+   
+   
+
+   
+   
+   
+
+
+

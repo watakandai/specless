@@ -1,0 +1,33 @@
+specless.api.ortools\_interface
+===============================
+
+.. automodule:: specless.api.ortools_interface
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      OrtoolsInterface
+      RoboticsTaskModel
+   
+   
+
+   
+   
+   
+
+
+

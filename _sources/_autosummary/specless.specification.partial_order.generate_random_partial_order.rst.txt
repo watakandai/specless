@@ -1,0 +1,6 @@
+specless.specification.partial\_order.generate\_random\_partial\_order
+======================================================================
+
+.. currentmodule:: specless.specification.partial_order
+
+.. autofunction:: generate_random_partial_order

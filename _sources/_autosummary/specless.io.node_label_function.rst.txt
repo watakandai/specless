@@ -1,0 +1,6 @@
+specless.io.node\_label\_function
+=================================
+
+.. currentmodule:: specless.io
+
+.. autofunction:: node_label_function

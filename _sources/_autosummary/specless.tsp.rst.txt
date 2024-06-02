@@ -1,0 +1,31 @@
+specless.tsp
+============
+
+.. automodule:: specless.tsp
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   specless.tsp.solver
+   specless.tsp.tsp
+

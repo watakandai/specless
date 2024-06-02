@@ -1,0 +1,6 @@
+specless.automaton.mps.postprocess\_MPS
+=======================================
+
+.. currentmodule:: specless.automaton.mps
+
+.. autofunction:: postprocess_MPS

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>specless.automaton &mdash; specless 0.0.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=e3a6060d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="specless.automaton.base" href="specless.automaton.base.html" />
+    <link rel="prev" title="specless.api.ortools_interface.RoboticsTaskModel" href="specless.api.ortools_interface.RoboticsTaskModel.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            specless
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="specless.html">specless</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="specless.html#id1">specless</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.api.html">specless.api</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">specless.automaton</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="specless.automaton.base.html">specless.automaton.base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specless.automaton.dfa.html">specless.automaton.dfa</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specless.automaton.factory.html">specless.automaton.factory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specless.automaton.fdfa.html">specless.automaton.fdfa</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specless.automaton.mps.html">specless.automaton.mps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specless.automaton.pdfa.html">specless.automaton.pdfa</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specless.automaton.product.html">specless.automaton.product</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specless.automaton.transition_system.html">specless.automaton.transition_system</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specless.automaton.types.html">specless.automaton.types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specless.automaton.utils.html">specless.automaton.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="specless.cli.html">specless.cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.const.html">specless.const</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.dataset.html">specless.dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.factory.html">specless.factory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.inference.html">specless.inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.io.html">specless.io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.minigrid.html">specless.minigrid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.parser.html">specless.parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.specification.html">specless.specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.strategy.html">specless.strategy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.synthesis.html">specless.synthesis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.tsp.html">specless.tsp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.typing.html">specless.typing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.utils.html">specless.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.wrapper.html">specless.wrapper</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">specless</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="specless.html">specless</a></li>
+      <li class="breadcrumb-item active">specless.automaton</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_autosummary/specless.automaton.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-specless.automaton">
+<span id="specless-automaton"></span><h1>specless.automaton<a class="headerlink" href="#module-specless.automaton" title="Link to this heading"></a></h1>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="specless.automaton.base.html#module-specless.automaton.base" title="specless.automaton.base"><code class="xref py py-obj docutils literal notranslate"><span class="pre">specless.automaton.base</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="specless.automaton.dfa.html#module-specless.automaton.dfa" title="specless.automaton.dfa"><code class="xref py py-obj docutils literal notranslate"><span class="pre">specless.automaton.dfa</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="specless.automaton.factory.html#module-specless.automaton.factory" title="specless.automaton.factory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">specless.automaton.factory</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="specless.automaton.fdfa.html#module-specless.automaton.fdfa" title="specless.automaton.fdfa"><code class="xref py py-obj docutils literal notranslate"><span class="pre">specless.automaton.fdfa</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="specless.automaton.mps.html#module-specless.automaton.mps" title="specless.automaton.mps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">specless.automaton.mps</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="specless.automaton.pdfa.html#module-specless.automaton.pdfa" title="specless.automaton.pdfa"><code class="xref py py-obj docutils literal notranslate"><span class="pre">specless.automaton.pdfa</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="specless.automaton.product.html#module-specless.automaton.product" title="specless.automaton.product"><code class="xref py py-obj docutils literal notranslate"><span class="pre">specless.automaton.product</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="specless.automaton.transition_system.html#module-specless.automaton.transition_system" title="specless.automaton.transition_system"><code class="xref py py-obj docutils literal notranslate"><span class="pre">specless.automaton.transition_system</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="specless.automaton.types.html#module-specless.automaton.types" title="specless.automaton.types"><code class="xref py py-obj docutils literal notranslate"><span class="pre">specless.automaton.types</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="specless.automaton.utils.html#module-specless.automaton.utils" title="specless.automaton.utils"><code class="xref py py-obj docutils literal notranslate"><span class="pre">specless.automaton.utils</span></code></a></p></td>
+<td><p>Utils</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="specless.api.ortools_interface.RoboticsTaskModel.html" class="btn btn-neutral float-left" title="specless.api.ortools_interface.RoboticsTaskModel" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="specless.automaton.base.html" class="btn btn-neutral float-right" title="specless.automaton.base" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Kandai Watanabe.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

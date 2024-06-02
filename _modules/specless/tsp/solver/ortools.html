@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>specless.tsp.solver.ortools &mdash; specless 0.0.2 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=e3a6060d"></script>
+        <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            specless
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/specless.html">specless</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">specless</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">specless.tsp.solver.ortools</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for specless.tsp.solver.ortools</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">ortools.constraint_solver</span> <span class="kn">import</span> <span class="n">pywrapcp</span>
+
+<span class="kn">from</span> <span class="nn">specless.tsp.tsp</span> <span class="kn">import</span> <span class="n">TSP</span><span class="p">,</span> <span class="n">Node</span>
+
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">TSPSolver</span><span class="p">,</span> <span class="n">TSPWithTPOSolver</span>
+
+<span class="sd">&quot;&quot;&quot;Extend it to Multi-Agents &amp; Set&quot;&quot;&quot;</span>
+
+<span class="n">SOLUTION_STATUS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;ROUTING_NOT_SOLVED&quot;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;ROUTING_SUCCESS&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;ROUTING_PARTIAL_SUCCESS_LOCAL_OPTIMUM_NOT_REACHED&quot;</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;ROUTING_FAIL&quot;</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;ROUTING_FAIL_TIMEOUT&quot;</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="s2">&quot;ROUTING_INVALID&quot;</span><span class="p">,</span>
+    <span class="mi">6</span><span class="p">:</span> <span class="s2">&quot;ROUTING_INFEASIBLE&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="ORTSPSolver">
+<a class="viewcode-back" href="../../../../_autosummary/specless.tsp.solver.ortools.ORTSPSolver.html#specless.tsp.solver.ortools.ORTSPSolver">[docs]</a>
+<span class="k">class</span> <span class="nc">ORTSPSolver</span><span class="p">(</span><span class="n">TSPSolver</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">first_solution_strategy</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">metaheuristic</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">solution_limit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">first_solution_strategy</span> <span class="o">=</span> <span class="n">first_solution_strategy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metaheuristic</span> <span class="o">=</span> <span class="n">metaheuristic</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solution_limit</span> <span class="o">=</span> <span class="n">solution_limit</span>
+
+<div class="viewcode-block" id="ORTSPSolver.create_data_model">
+<a class="viewcode-back" href="../../../../_autosummary/specless.tsp.solver.ortools.ORTSPSolver.html#specless.tsp.solver.ortools.ORTSPSolver.create_data_model">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_data_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tsp</span><span class="p">,</span> <span class="n">num_agent</span><span class="p">,</span> <span class="n">init_nodes</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Stores the data for the problem.&quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;time_matrix&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tsp</span><span class="o">.</span><span class="n">costs</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;num_vehicles&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">num_agent</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;depot&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">init_nodes</span>
+        <span class="k">return</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="ORTSPSolver.solve">
+<a class="viewcode-back" href="../../../../_autosummary/specless.tsp.solver.ortools.ORTSPSolver.html#specless.tsp.solver.ortools.ORTSPSolver.solve">[docs]</a>
+    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">tsp</span><span class="p">,</span>
+        <span class="n">num_agent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">init_nodes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">come_back_home</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Solve the VRP with time windows.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">init_nodes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">init_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">tsp</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">*</span> <span class="n">num_agent</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">num_agent</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">init_nodes</span><span class="p">)</span>
+        <span class="c1"># Instantiate the data problem.</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_data_model</span><span class="p">(</span><span class="n">tsp</span><span class="p">,</span> <span class="n">num_agent</span><span class="p">,</span> <span class="n">init_nodes</span><span class="p">)</span>
+
+        <span class="c1"># Create the routing index manager.</span>
+        <span class="n">manager</span> <span class="o">=</span> <span class="n">pywrapcp</span><span class="o">.</span><span class="n">RoutingIndexManager</span><span class="p">(</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;time_matrix&quot;</span><span class="p">]),</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;num_vehicles&quot;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;depot&quot;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;depot&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Create Routing Model.</span>
+        <span class="n">routing</span> <span class="o">=</span> <span class="n">pywrapcp</span><span class="o">.</span><span class="n">RoutingModel</span><span class="p">(</span><span class="n">manager</span><span class="p">)</span>
+
+        <span class="c1"># Create and register a transit callback.</span>
+        <span class="k">def</span> <span class="nf">time_callback</span><span class="p">(</span><span class="n">from_index</span><span class="p">,</span> <span class="n">to_index</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Returns the travel time between the two nodes.&quot;&quot;&quot;</span>
+            <span class="c1"># Convert from routing variable Index to time matrix NodeIndex.</span>
+            <span class="n">from_node</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">IndexToNode</span><span class="p">(</span><span class="n">from_index</span><span class="p">)</span>
+            <span class="n">to_node</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">IndexToNode</span><span class="p">(</span><span class="n">to_index</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;time_matrix&quot;</span><span class="p">][</span><span class="n">from_node</span><span class="p">][</span><span class="n">to_node</span><span class="p">]</span>
+
+        <span class="n">transit_callback_index</span> <span class="o">=</span> <span class="n">routing</span><span class="o">.</span><span class="n">RegisterTransitCallback</span><span class="p">(</span><span class="n">time_callback</span><span class="p">)</span>
+
+        <span class="c1"># Define cost of each arc.</span>
+        <span class="n">routing</span><span class="o">.</span><span class="n">SetArcCostEvaluatorOfAllVehicles</span><span class="p">(</span><span class="n">transit_callback_index</span><span class="p">)</span>
+
+        <span class="c1"># Setting first solution heuristic.</span>
+        <span class="n">search_parameters</span> <span class="o">=</span> <span class="n">pywrapcp</span><span class="o">.</span><span class="n">DefaultRoutingSearchParameters</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_solution_strategy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">search_parameters</span><span class="o">.</span><span class="n">first_solution_strategy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_solution_strategy</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">metaheuristic</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">search_parameters</span><span class="o">.</span><span class="n">local_search_metaheuristic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metaheuristic</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">search_parameters</span><span class="o">.</span><span class="n">time_limit</span><span class="o">.</span><span class="n">seconds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">solution_limit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">search_parameters</span><span class="o">.</span><span class="n">solution_limit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solution_limit</span>
+
+        <span class="c1"># Solve the problem.</span>
+        <span class="n">solution</span> <span class="o">=</span> <span class="n">routing</span><span class="o">.</span><span class="n">SolveWithParameters</span><span class="p">(</span><span class="n">search_parameters</span><span class="p">)</span>
+
+        <span class="n">status</span> <span class="o">=</span> <span class="n">routing</span><span class="o">.</span><span class="n">status</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;STATUS: &quot;</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">SOLUTION_STATUS</span><span class="p">[</span><span class="n">status</span><span class="p">])</span>
+
+        <span class="c1"># TODO: If status == ROUTING_PARTIAL_SUCCESS_LOCAL_OPTIMUM_NOT_REACHED:</span>
+        <span class="c1"># Then rerun with solution limit of 100?</span>
+
+        <span class="k">if</span> <span class="n">status</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="p">[],</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
+        <span class="n">tours</span><span class="p">,</span> <span class="n">cost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tours_and_cost</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">manager</span><span class="p">,</span> <span class="n">routing</span><span class="p">,</span> <span class="n">solution</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tours</span><span class="p">,</span> <span class="n">cost</span></div>
+
+
+<div class="viewcode-block" id="ORTSPSolver.get_tours_and_cost">
+<a class="viewcode-back" href="../../../../_autosummary/specless.tsp.solver.ortools.ORTSPSolver.html#specless.tsp.solver.ortools.ORTSPSolver.get_tours_and_cost">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_tours_and_cost</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">manager</span><span class="p">,</span> <span class="n">routing</span><span class="p">,</span> <span class="n">solution</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get tours and cost fromthe ortools solution&quot;&quot;&quot;</span>
+        <span class="n">tours</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">cost</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">solution</span><span class="o">.</span><span class="n">ObjectiveValue</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">vehicle_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;num_vehicles&quot;</span><span class="p">]):</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">routing</span><span class="o">.</span><span class="n">Start</span><span class="p">(</span><span class="n">vehicle_id</span><span class="p">)</span>
+            <span class="n">tour</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">while</span> <span class="ow">not</span> <span class="n">routing</span><span class="o">.</span><span class="n">IsEnd</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">IndexToNode</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+                <span class="n">tour</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="n">solution</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">routing</span><span class="o">.</span><span class="n">NextVar</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">IndexToNode</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+            <span class="n">tour</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="n">tours</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tour</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tours</span><span class="p">,</span> <span class="n">cost</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ORTSPWithTPOSolver">
+<a class="viewcode-back" href="../../../../_autosummary/specless.tsp.solver.ortools.ORTSPWithTPOSolver.html#specless.tsp.solver.ortools.ORTSPWithTPOSolver">[docs]</a>
+<span class="k">class</span> <span class="nc">ORTSPWithTPOSolver</span><span class="p">(</span><span class="n">TSPWithTPOSolver</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">first_solution_strategy</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">metaheuristic</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">solution_limit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">first_solution_strategy</span> <span class="o">=</span> <span class="n">first_solution_strategy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metaheuristic</span> <span class="o">=</span> <span class="n">metaheuristic</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solution_limit</span> <span class="o">=</span> <span class="n">solution_limit</span>
+
+<div class="viewcode-block" id="ORTSPWithTPOSolver.create_data_model">
+<a class="viewcode-back" href="../../../../_autosummary/specless.tsp.solver.ortools.ORTSPWithTPOSolver.html#specless.tsp.solver.ortools.ORTSPWithTPOSolver.create_data_model">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_data_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tsp</span><span class="p">,</span> <span class="n">num_agent</span><span class="p">,</span> <span class="n">init_nodes</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Stores the data for the problem.&quot;&quot;&quot;</span>
+        <span class="n">big_number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">tsp</span><span class="o">.</span><span class="n">costs</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">tsp</span><span class="o">.</span><span class="n">costs</span><span class="p">))</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;time_matrix&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tsp</span><span class="o">.</span><span class="n">costs</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;time_windows&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="n">tsp</span><span class="o">.</span><span class="n">tpo</span><span class="o">.</span><span class="n">global_constraints</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="s2">&quot;lb&quot;</span><span class="p">],</span> <span class="n">tsp</span><span class="o">.</span><span class="n">tpo</span><span class="o">.</span><span class="n">global_constraints</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="s2">&quot;ub&quot;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">tsp</span><span class="o">.</span><span class="n">tpo</span><span class="o">.</span><span class="n">global_constraints</span>
+            <span class="k">else</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">big_number</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">tsp</span><span class="o">.</span><span class="n">nodes</span>
+        <span class="p">]</span>
+        <span class="c1"># src: {tgt: (lb, ub)}</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;local_time_windows&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">n</span><span class="p">:</span> <span class="p">{</span>
+                <span class="n">tgt</span><span class="p">:</span> <span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;lb&quot;</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;ub&quot;</span><span class="p">])</span>
+                <span class="k">for</span> <span class="n">tgt</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">tsp</span><span class="o">.</span><span class="n">tpo</span><span class="o">.</span><span class="n">local_constraints</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="p">}</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">tsp</span><span class="o">.</span><span class="n">nodes</span>
+            <span class="k">if</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">tsp</span><span class="o">.</span><span class="n">tpo</span><span class="o">.</span><span class="n">local_constraints</span>
+        <span class="p">}</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;num_vehicles&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">num_agent</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;depot&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">init_nodes</span>
+        <span class="k">return</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="ORTSPWithTPOSolver.solve">
+<a class="viewcode-back" href="../../../../_autosummary/specless.tsp.solver.ortools.ORTSPWithTPOSolver.html#specless.tsp.solver.ortools.ORTSPWithTPOSolver.solve">[docs]</a>
+    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">tsp</span><span class="p">,</span>
+        <span class="n">num_agent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">init_nodes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">come_back_home</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Solve the VRP with time windows.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">init_nodes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">init_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">tsp</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">*</span> <span class="n">num_agent</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">num_agent</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">init_nodes</span><span class="p">)</span>
+
+        <span class="c1"># Instantiate the data problem.</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_data_model</span><span class="p">(</span><span class="n">tsp</span><span class="p">,</span> <span class="n">num_agent</span><span class="p">,</span> <span class="n">init_nodes</span><span class="p">)</span>
+
+        <span class="c1"># Create the routing index manager.</span>
+        <span class="n">manager</span> <span class="o">=</span> <span class="n">pywrapcp</span><span class="o">.</span><span class="n">RoutingIndexManager</span><span class="p">(</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;time_matrix&quot;</span><span class="p">]),</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;num_vehicles&quot;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;depot&quot;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;depot&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Create Routing Model.</span>
+        <span class="n">routing</span> <span class="o">=</span> <span class="n">pywrapcp</span><span class="o">.</span><span class="n">RoutingModel</span><span class="p">(</span><span class="n">manager</span><span class="p">)</span>
+
+        <span class="c1"># Create and register a transit callback.</span>
+        <span class="k">def</span> <span class="nf">time_callback</span><span class="p">(</span><span class="n">from_index</span><span class="p">,</span> <span class="n">to_index</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Returns the travel time between the two nodes.&quot;&quot;&quot;</span>
+            <span class="c1"># Convert from routing variable Index to time matrix NodeIndex.</span>
+            <span class="n">from_node</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">IndexToNode</span><span class="p">(</span><span class="n">from_index</span><span class="p">)</span>
+            <span class="n">to_node</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">IndexToNode</span><span class="p">(</span><span class="n">to_index</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;time_matrix&quot;</span><span class="p">][</span><span class="n">from_node</span><span class="p">][</span><span class="n">to_node</span><span class="p">]</span>
+
+        <span class="n">transit_callback_index</span> <span class="o">=</span> <span class="n">routing</span><span class="o">.</span><span class="n">RegisterTransitCallback</span><span class="p">(</span><span class="n">time_callback</span><span class="p">)</span>
+
+        <span class="c1"># Define cost of each arc.</span>
+        <span class="n">routing</span><span class="o">.</span><span class="n">SetArcCostEvaluatorOfAllVehicles</span><span class="p">(</span><span class="n">transit_callback_index</span><span class="p">)</span>
+
+        <span class="c1"># Add Time Windows constraint.</span>
+        <span class="n">time</span> <span class="o">=</span> <span class="s2">&quot;Time&quot;</span>
+        <span class="n">maximum_waiting_time</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">ub</span> <span class="o">-</span> <span class="n">lb</span> <span class="k">for</span> <span class="n">lb</span><span class="p">,</span> <span class="n">ub</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;time_windows&quot;</span><span class="p">]])</span>
+        <span class="k">for</span> <span class="n">src</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;local_time_windows&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">tgt</span><span class="p">,</span> <span class="n">bound</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">lb</span><span class="p">,</span> <span class="n">ub</span> <span class="o">=</span> <span class="n">bound</span>
+                <span class="n">maximum_waiting_time</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">maximum_waiting_time</span><span class="p">,</span> <span class="n">ub</span> <span class="o">-</span> <span class="n">lb</span><span class="p">)</span>
+        <span class="c1"># MaxCost * #Nodes</span>
+        <span class="n">maximum_time_per_vehicle</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">tsp</span><span class="o">.</span><span class="n">costs</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">tsp</span><span class="o">.</span><span class="n">costs</span><span class="p">))</span>
+        <span class="n">routing</span><span class="o">.</span><span class="n">AddDimension</span><span class="p">(</span>
+            <span class="n">transit_callback_index</span><span class="p">,</span>
+            <span class="c1"># maximum_waiting_time,  # allow waiting time</span>
+            <span class="mi">20</span><span class="p">,</span>
+            <span class="n">maximum_time_per_vehicle</span><span class="p">,</span>  <span class="c1"># maximum time per vehicle</span>
+            <span class="kc">False</span><span class="p">,</span>  <span class="c1"># Don&#39;t force start cumul to zero.</span>
+            <span class="n">time</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">time_dimension</span> <span class="o">=</span> <span class="n">routing</span><span class="o">.</span><span class="n">GetDimensionOrDie</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+        <span class="n">time_dimension</span><span class="o">.</span><span class="n">SetGlobalSpanCostCoefficient</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+
+        <span class="c1"># Add time window constraints for each location except depot.</span>
+        <span class="k">for</span> <span class="n">location_idx</span><span class="p">,</span> <span class="n">time_window</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;time_windows&quot;</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="n">location_idx</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;depot&quot;</span><span class="p">]:</span>
+                <span class="k">continue</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">NodeToIndex</span><span class="p">(</span><span class="n">location_idx</span><span class="p">)</span>
+            <span class="n">time_dimension</span><span class="o">.</span><span class="n">CumulVar</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">SetRange</span><span class="p">(</span><span class="n">time_window</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">time_window</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="c1"># Add local time window constraints between locations</span>
+        <span class="k">for</span> <span class="n">src</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;local_time_windows&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">tgt</span><span class="p">,</span> <span class="n">bound</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">src_index</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">NodeToIndex</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+                <span class="n">tgt_index</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">NodeToIndex</span><span class="p">(</span><span class="n">tgt</span><span class="p">)</span>
+                <span class="n">lb</span><span class="p">,</span> <span class="n">ub</span> <span class="o">=</span> <span class="n">bound</span>
+
+                <span class="n">routing</span><span class="o">.</span><span class="n">solver</span><span class="p">()</span><span class="o">.</span><span class="n">AddConstraint</span><span class="p">(</span>
+                    <span class="n">routing</span><span class="o">.</span><span class="n">solver</span><span class="p">()</span><span class="o">.</span><span class="n">BetweenCt</span><span class="p">(</span>
+                        <span class="n">time_dimension</span><span class="o">.</span><span class="n">CumulVar</span><span class="p">(</span><span class="n">tgt_index</span><span class="p">)</span>
+                        <span class="o">-</span> <span class="n">time_dimension</span><span class="o">.</span><span class="n">CumulVar</span><span class="p">(</span><span class="n">src_index</span><span class="p">),</span>
+                        <span class="n">lb</span><span class="p">,</span>
+                        <span class="n">ub</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+
+                <span class="c1"># routing.solver().Add(</span>
+                <span class="c1">#     time_dimension.CumulVar(tgt_index)</span>
+                <span class="c1">#     - time_dimension.CumulVar(src_index)</span>
+                <span class="c1">#     &gt;= lb</span>
+                <span class="c1"># )</span>
+                <span class="c1"># routing.solver().Add(</span>
+                <span class="c1">#     time_dimension.CumulVar(tgt_index)</span>
+                <span class="c1">#     - time_dimension.CumulVar(src_index)</span>
+                <span class="c1">#     &lt;= ub</span>
+                <span class="c1"># )</span>
+
+        <span class="c1"># Add time window constraints for each vehicle start node.</span>
+        <span class="k">for</span> <span class="n">depot_idx</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;depot&quot;</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">vehicle_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;num_vehicles&quot;</span><span class="p">]):</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="n">routing</span><span class="o">.</span><span class="n">Start</span><span class="p">(</span><span class="n">vehicle_id</span><span class="p">)</span>
+                <span class="n">time_dimension</span><span class="o">.</span><span class="n">CumulVar</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">SetRange</span><span class="p">(</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s2">&quot;time_windows&quot;</span><span class="p">][</span><span class="n">depot_idx</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s2">&quot;time_windows&quot;</span><span class="p">][</span><span class="n">depot_idx</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span>
+                <span class="p">)</span>
+
+        <span class="c1"># Instantiate route start and end times to produce feasible times.</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;num_vehicles&quot;</span><span class="p">]):</span>
+            <span class="n">routing</span><span class="o">.</span><span class="n">AddVariableMinimizedByFinalizer</span><span class="p">(</span>
+                <span class="n">time_dimension</span><span class="o">.</span><span class="n">CumulVar</span><span class="p">(</span><span class="n">routing</span><span class="o">.</span><span class="n">Start</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+            <span class="p">)</span>
+            <span class="n">routing</span><span class="o">.</span><span class="n">AddVariableMinimizedByFinalizer</span><span class="p">(</span>
+                <span class="n">time_dimension</span><span class="o">.</span><span class="n">CumulVar</span><span class="p">(</span><span class="n">routing</span><span class="o">.</span><span class="n">End</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+            <span class="p">)</span>
+        <span class="n">time_dimension</span><span class="o">.</span><span class="n">SetGlobalSpanCostCoefficient</span><span class="p">(</span><span class="mi">5000</span><span class="p">)</span>
+
+        <span class="c1"># Setting first solution heuristic.</span>
+        <span class="n">search_parameters</span> <span class="o">=</span> <span class="n">pywrapcp</span><span class="o">.</span><span class="n">DefaultRoutingSearchParameters</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_solution_strategy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">search_parameters</span><span class="o">.</span><span class="n">first_solution_strategy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_solution_strategy</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">metaheuristic</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">search_parameters</span><span class="o">.</span><span class="n">local_search_metaheuristic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metaheuristic</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">search_parameters</span><span class="o">.</span><span class="n">time_limit</span><span class="o">.</span><span class="n">seconds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">solution_limit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">search_parameters</span><span class="o">.</span><span class="n">solution_limit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solution_limit</span>
+
+        <span class="c1"># search_parameters.use_light_propagation = False</span>
+        <span class="c1"># To log the search uncomment the following.</span>
+        <span class="n">search_parameters</span><span class="o">.</span><span class="n">log_search</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># Solve the problem.</span>
+        <span class="n">solution</span> <span class="o">=</span> <span class="n">routing</span><span class="o">.</span><span class="n">SolveWithParameters</span><span class="p">(</span><span class="n">search_parameters</span><span class="p">)</span>
+
+        <span class="n">status</span> <span class="o">=</span> <span class="n">routing</span><span class="o">.</span><span class="n">status</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;STATUS: &quot;</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">SOLUTION_STATUS</span><span class="p">[</span><span class="n">status</span><span class="p">])</span>
+
+        <span class="c1"># TODO: If status == ROUTING_PARTIAL_SUCCESS_LOCAL_OPTIMUM_NOT_REACHED:</span>
+        <span class="c1"># Then rerun with solution limit of 100?</span>
+
+        <span class="k">if</span> <span class="n">status</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="p">[],</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
+        <span class="n">tours</span><span class="p">,</span> <span class="n">cost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tours_and_cost</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">manager</span><span class="p">,</span> <span class="n">routing</span><span class="p">,</span> <span class="n">solution</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tours</span><span class="p">,</span> <span class="n">cost</span></div>
+
+
+<div class="viewcode-block" id="ORTSPWithTPOSolver.get_tours_and_cost">
+<a class="viewcode-back" href="../../../../_autosummary/specless.tsp.solver.ortools.ORTSPWithTPOSolver.html#specless.tsp.solver.ortools.ORTSPWithTPOSolver.get_tours_and_cost">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_tours_and_cost</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">manager</span><span class="p">,</span> <span class="n">routing</span><span class="p">,</span> <span class="n">solution</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get tours and cost fromthe ortools solution&quot;&quot;&quot;</span>
+        <span class="n">tours</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">time_dimension</span> <span class="o">=</span> <span class="n">routing</span><span class="o">.</span><span class="n">GetDimensionOrDie</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">)</span>
+        <span class="n">total_time</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">vehicle_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;num_vehicles&quot;</span><span class="p">]):</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">routing</span><span class="o">.</span><span class="n">Start</span><span class="p">(</span><span class="n">vehicle_id</span><span class="p">)</span>
+            <span class="n">tour</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">while</span> <span class="ow">not</span> <span class="n">routing</span><span class="o">.</span><span class="n">IsEnd</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
+                <span class="n">time_var</span> <span class="o">=</span> <span class="n">time_dimension</span><span class="o">.</span><span class="n">CumulVar</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">IndexToNode</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+                <span class="n">tour</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="n">solution</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">routing</span><span class="o">.</span><span class="n">NextVar</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">IndexToNode</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+            <span class="n">tour</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="n">tours</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tour</span><span class="p">)</span>
+            <span class="n">time_var</span> <span class="o">=</span> <span class="n">time_dimension</span><span class="o">.</span><span class="n">CumulVar</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+            <span class="n">total_time</span> <span class="o">+=</span> <span class="n">solution</span><span class="o">.</span><span class="n">Min</span><span class="p">(</span><span class="n">time_var</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tours</span><span class="p">,</span> <span class="n">total_time</span></div>
+</div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="c1"># Number of locations</span>
+    <span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+    <span class="c1"># Travel time</span>
+    <span class="n">costs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">]</span>
+    <span class="c1"># 1. Just Test with the cost (TSP Solver)</span>
+    <span class="n">tsp</span> <span class="o">=</span> <span class="n">TSP</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">costs</span><span class="p">)</span>
+    <span class="n">solver</span> <span class="o">=</span> <span class="n">ORTSPSolver</span><span class="p">()</span>
+    <span class="n">tour</span><span class="p">,</span> <span class="n">cost</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">tsp</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">tour</span><span class="p">,</span> <span class="n">cost</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Kandai Watanabe.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

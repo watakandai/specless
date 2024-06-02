@@ -1,0 +1,6 @@
+specless.utils.collect\_demos.simulate
+======================================
+
+.. currentmodule:: specless.utils.collect_demos
+
+.. autofunction:: simulate

@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>specless.automaton.pdfa &mdash; specless 0.0.2 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=e3a6060d"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            specless
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/specless.html">specless</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">specless</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">specless.automaton.pdfa</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for specless.automaton.pdfa</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="c1"># 3rd-party packages</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">queue</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">from</span> <span class="nn">bidict</span> <span class="kn">import</span> <span class="n">bidict</span>
+
+<span class="c1"># local packages</span>
+<span class="kn">from</span> <span class="nn">specless.factory.builder</span> <span class="kn">import</span> <span class="n">Builder</span>
+
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">SMOOTHING_AMOUNT</span><span class="p">,</span> <span class="n">Automaton</span>
+<span class="kn">from</span> <span class="nn">.dfa</span> <span class="kn">import</span> <span class="n">SafetyDFA</span>
+<span class="kn">from</span> <span class="nn">.fdfa</span> <span class="kn">import</span> <span class="n">FDFA</span>
+<span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Node</span><span class="p">,</span>
+    <span class="n">NXEdgeList</span><span class="p">,</span>
+    <span class="n">NXNodeList</span><span class="p">,</span>
+    <span class="n">Probabilities</span><span class="p">,</span>
+    <span class="n">Probability</span><span class="p">,</span>
+    <span class="n">Symbol</span><span class="p">,</span>
+    <span class="n">Symbols</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">logx</span><span class="p">,</span> <span class="n">xlogx</span><span class="p">,</span> <span class="n">xlogy</span><span class="p">,</span> <span class="n">ylogx</span>
+
+<span class="n">IS_STOCHASTIC</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">SPEC_VIOLATING_STATE</span> <span class="o">=</span> <span class="s2">&quot;q_v&quot;</span>
+
+
+<div class="viewcode-block" id="check_predict_method">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.check_predict_method.html#specless.automaton.pdfa.check_predict_method">[docs]</a>
+<span class="k">def</span> <span class="nf">check_predict_method</span><span class="p">(</span><span class="n">prediction_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    decorator to check an enumerated typestring for prediction method.</span>
+<span class="sd">    pred_method:  The pred_method string to check. one of: {&#39;sample&#39;,</span>
+<span class="sd">    &#39;max_prob&#39;}</span>
+
+<span class="sd">    :type       prediction_function:  function handle to check. Must have</span>
+<span class="sd">                                      keyword argument: &#39;pred_method&#39;</span>
+<span class="sd">    :param      prediction_function:  the function to decorate</span>
+
+<span class="sd">    :raises     ValueError: raises if:</span>
+<span class="sd">                                - pred_method is not a keyword argument</span>
+<span class="sd">                                - pred_method is not one of allowed methods</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">checker</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># checking if the decorator has been applied to an appropriate function</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;pred_method&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">f_name</span> <span class="o">=</span> <span class="n">prediction_function</span><span class="o">.</span><span class="vm">__name__</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&quot;pred_method&quot; is not a kwarg of </span><span class="si">{</span><span class="n">f_name</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="n">pred_method</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;pred_method&quot;</span><span class="p">]</span>
+
+        <span class="c1"># checking for the enumerated types</span>
+        <span class="n">allowed_methods</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;max_prob&quot;</span><span class="p">,</span> <span class="s2">&quot;sample&quot;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">pred_method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowed_methods</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;pred_method: &quot;</span><span class="si">{</span><span class="n">pred_method</span><span class="si">}</span><span class="s1">&quot; must be one of allowed &#39;</span>
+                <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;methods: </span><span class="si">{</span><span class="n">allowed_methods</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">prediction_function</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">checker</span></div>
+
+
+
+<div class="viewcode-block" id="PDFA">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA">[docs]</a>
+<span class="k">class</span> <span class="nc">PDFA</span><span class="p">(</span><span class="n">Automaton</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class describes a probabilistic deterministic finite automaton (pdfa).</span>
+
+<span class="sd">    built on networkx, so inherits node and edge data structure definitions</span>
+
+<span class="sd">    inherits some of its api from the NLTK LM API</span>
+
+<span class="sd">    Node Attributes</span>
+<span class="sd">    -----------------</span>
+<span class="sd">        - final_probability: final state probability for the node</span>
+<span class="sd">        - trans_distribution: a sampled-able function to select the next state</span>
+<span class="sd">          and emitted symbol</span>
+<span class="sd">        - is_accepting: a boolean flag determining whether the pdfa considers</span>
+<span class="sd">          the node accepting</span>
+
+<span class="sd">    Edge Properties</span>
+<span class="sd">    -----------------</span>
+<span class="sd">        - symbol: the symbol value emitted when the edge is traversed</span>
+<span class="sd">        - probability: the probability of selecting this edge for traversal</span>
+
+<span class="sd">    :param      nodes:                 node list as expected by</span>
+<span class="sd">                                       networkx.add_nodes_from() list of</span>
+<span class="sd">                                       tuples: (node label, node, attribute</span>
+<span class="sd">                                       dict)</span>
+<span class="sd">    :param      edges:                 edge list as expected by</span>
+<span class="sd">                                       networkx.add_edges_from() list of</span>
+<span class="sd">                                       tuples: (src node label, dest node</span>
+<span class="sd">                                       label, edge attribute dict)</span>
+<span class="sd">    :param      symbol_display_map:    bidirectional mapping of hashable</span>
+<span class="sd">                                       symbols, to a unique integer index</span>
+<span class="sd">                                       in the symbol map. Needed to</span>
+<span class="sd">                                       translate between the indices in the</span>
+<span class="sd">                                       transition distribution and the</span>
+<span class="sd">                                       hashable representation which is</span>
+<span class="sd">                                       meaningful to the user</span>
+<span class="sd">    :param      alphabet_size:         number of symbols in pdfa alphabet</span>
+<span class="sd">    :param      num_states:            number of states in automaton state</span>
+<span class="sd">                                       space</span>
+<span class="sd">    :param      start_state:           unique start state string label of</span>
+<span class="sd">                                       pdfa</span>
+<span class="sd">    :param      smooth_transitions:    whether to smooth the symbol</span>
+<span class="sd">                                       transitions distributions</span>
+<span class="sd">    :param      smoothing_amount:      probability mass to re-assign to</span>
+<span class="sd">                                       unseen symbols at each node</span>
+<span class="sd">    :param      final_transition_sym:  representation of the termination</span>
+<span class="sd">                                       symbol. If not given, will default</span>
+<span class="sd">                                       to base class default.</span>
+<span class="sd">    :param      empty_transition_sym:  representation of the empty symbol</span>
+<span class="sd">                                       (a.k.a. lambda). If not given, will</span>
+<span class="sd">                                       default to base class default.</span>
+<span class="sd">    :param      beta:                  the final state probability needed</span>
+<span class="sd">                                       for a state to accept.</span>
+<span class="sd">    :param      merge_sinks:           whether to combine all states</span>
+<span class="sd">                                       together that have no outgoing</span>
+<span class="sd">                                       edges</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">nodes</span><span class="p">:</span> <span class="n">NXNodeList</span><span class="p">,</span>
+        <span class="n">edges</span><span class="p">:</span> <span class="n">NXEdgeList</span><span class="p">,</span>
+        <span class="n">symbol_display_map</span><span class="p">:</span> <span class="n">bidict</span><span class="p">,</span>
+        <span class="n">alphabet_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">num_states</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">start_state</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+        <span class="n">smooth_transitions</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">smoothing_amount</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">SMOOTHING_AMOUNT</span><span class="p">,</span>
+        <span class="n">final_transition_sym</span><span class="p">:</span> <span class="p">{</span><span class="n">Symbol</span><span class="p">,</span> <span class="kc">None</span><span class="p">}</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">empty_transition_sym</span><span class="p">:</span> <span class="p">{</span><span class="n">Symbol</span><span class="p">,</span> <span class="kc">None</span><span class="p">}</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">beta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.95</span><span class="p">,</span>
+        <span class="n">merge_sinks</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">is_normalized</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;PDFA&quot;</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_beta</span> <span class="o">=</span> <span class="n">beta</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;the final state probability needed for a state to accept&quot;&quot;&quot;</span>
+
+        <span class="c1"># if we normalize the probabilities</span>
+        <span class="k">if</span> <span class="n">is_normalized</span><span class="p">:</span>
+            <span class="n">is_sampleable</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">is_sampleable</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># need to start with a fully initialized automaton</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">nodes</span><span class="p">,</span>
+            <span class="n">edges</span><span class="p">,</span>
+            <span class="n">symbol_display_map</span><span class="p">,</span>
+            <span class="n">alphabet_size</span><span class="p">,</span>
+            <span class="n">num_states</span><span class="p">,</span>
+            <span class="n">start_state</span><span class="p">,</span>
+            <span class="n">smooth_transitions</span><span class="o">=</span><span class="n">smooth_transitions</span><span class="p">,</span>
+            <span class="n">is_stochastic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">is_sampleable</span><span class="o">=</span><span class="n">is_sampleable</span><span class="p">,</span>
+            <span class="n">is_normalized</span><span class="o">=</span><span class="n">is_normalized</span><span class="p">,</span>
+            <span class="n">num_obs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">final_transition_sym</span><span class="o">=</span><span class="n">final_transition_sym</span><span class="p">,</span>
+            <span class="n">empty_transition_sym</span><span class="o">=</span><span class="n">empty_transition_sym</span><span class="p">,</span>
+            <span class="n">final_weight_key</span><span class="o">=</span><span class="s2">&quot;final_probability&quot;</span><span class="p">,</span>
+            <span class="n">can_have_accepting_nodes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">edge_weight_key</span><span class="o">=</span><span class="s2">&quot;probability&quot;</span><span class="p">,</span>
+            <span class="n">smoothing_amount</span><span class="o">=</span><span class="n">smoothing_amount</span><span class="p">,</span>
+            <span class="n">merge_sinks</span><span class="o">=</span><span class="n">merge_sinks</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="PDFA.predict">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.predict">[docs]</a>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbols</span><span class="p">:</span> <span class="n">Symbols</span><span class="p">,</span> <span class="n">pred_method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;max_prob&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Symbol</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        predicts the next symbol conditioned on the given previous symbols</span>
+
+<span class="sd">        :param      symbols:      The previously observed emitted symbols</span>
+<span class="sd">        :param      pred_method:  The method used to choose the next state. see</span>
+<span class="sd">                                  _choose_next_state for details on how each</span>
+<span class="sd">                                  pred_method is implemented.</span>
+<span class="sd">                                  {&#39;sample&#39;, &#39;max_prob&#39;}</span>
+
+<span class="sd">        :returns:   the most probable next symbol in the sequence</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># simulating the state trajectory under the given sequence</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_state</span>
+
+        <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">symbols</span><span class="p">:</span>
+            <span class="n">state</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_next_state</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">symbol</span><span class="p">)</span>
+
+        <span class="c1"># now making the next state prediction based on the &quot;causal&quot; model</span>
+        <span class="c1"># state induced by the deterministic sequence governed by the</span>
+        <span class="c1"># observed symbols</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">next_symbol</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_choose_next_state</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">next_symbol</span></div>
+
+
+<div class="viewcode-block" id="PDFA.score">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.score">[docs]</a>
+    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trace</span><span class="p">:</span> <span class="n">Symbols</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the given trace&#39;s probability in the language of the PDFA.</span>
+
+<span class="sd">        PDFA is a language model (LM) in this case:</span>
+<span class="sd">            ==&gt; score = P_{PDFA LM}(trace)</span>
+
+<span class="sd">        :param      trace:  A trace</span>
+
+<span class="sd">        :returns:           A trace probability</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">curr_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_state</span>
+        <span class="n">trace_prob</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">n_symbol</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">trace</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="p">(</span><span class="n">next_state</span><span class="p">,</span> <span class="n">trans_probability</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_next_state</span><span class="p">(</span>
+                    <span class="n">curr_state</span><span class="p">,</span> <span class="n">symbol</span>
+                <span class="p">)</span>
+
+            <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+                <span class="k">return</span> <span class="mf">0.0</span>
+
+            <span class="n">trace_prob</span> <span class="o">*=</span> <span class="n">trans_probability</span>
+            <span class="c1"># print(curr_state, &#39;--&gt;&#39;, symbol, &#39;--&gt;&#39;, trans_probability, &#39;, \tTotal: &#39;, trace_prob)</span>
+            <span class="n">curr_state</span> <span class="o">=</span> <span class="n">next_state</span>
+
+        <span class="k">return</span> <span class="n">trace_prob</span></div>
+
+
+<div class="viewcode-block" id="PDFA.scores">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.scores">[docs]</a>
+    <span class="k">def</span> <span class="nf">scores</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">traces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Symbols</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates trace probabilities</span>
+
+<span class="sd">        :param      trace:  A list of traces</span>
+
+<span class="sd">        :returns:   The trace probability.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span> <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">traces</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="PDFA.logscore">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.logscore">[docs]</a>
+    <span class="k">def</span> <span class="nf">logscore</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trace</span><span class="p">:</span> <span class="n">Symbols</span><span class="p">,</span> <span class="n">base</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the log of the score (sequence probability) of the given trace</span>
+<span class="sd">        in the language of the PDFA</span>
+
+<span class="sd">        :param      trace:  The sequence of symbols to compute the log score of</span>
+<span class="sd">        :param      base:   The log base. Commonly set to 2 in classic</span>
+<span class="sd">                            information theory literature</span>
+
+<span class="sd">        :returns:   log of the probability - NOT log odds</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">logx</span><span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="n">base</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PDFA.logscores">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.logscores">[docs]</a>
+    <span class="k">def</span> <span class="nf">logscores</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">traces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Symbols</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes traces log probabilities</span>
+
+<span class="sd">        :param      traces:     A list of traces</span>
+<span class="sd">        :param      base:       The log base.</span>
+
+<span class="sd">        :returns:               log of the probability</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">logscore</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">traces</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="PDFA.cross_entropy_approx">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.cross_entropy_approx">[docs]</a>
+    <span class="k">def</span> <span class="nf">cross_entropy_approx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trace</span><span class="p">:</span> <span class="n">Symbols</span><span class="p">,</span> <span class="n">base</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        computes approximate cross-entropy of the given trace in the language</span>
+<span class="sd">        of the PDFA</span>
+
+<span class="sd">        Here, we are using the Shannon-McMillian-Breiman theorem to define</span>
+<span class="sd">        the cross-entropy of the trace, given that we sampled the trace from</span>
+<span class="sd">        the actual target distribution and we are evaluating it in the PDFA LM.</span>
+<span class="sd">        Then, as a PDFA is a stationary ergodic stochastic process model, we</span>
+<span class="sd">        can calculate the cross-entropy as (eq. 3.49 from SLP ch3):</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            trace \sim target</span>
+<span class="sd">            H(target, model) = lim_{n \rightarrow \infty} {(- 1 / n) * log(P_{model}(trace))}</span>
+
+<span class="sd">        where:</span>
+
+<span class="sd">            H(target) &lt;= H(target, model)</span>
+
+<span class="sd">        The finite-length approximation to the cross-entropy is then given by</span>
+<span class="sd">        (eq. 3.51 from SLP ch3):</span>
+
+<span class="sd">            H(trace) = (- 1 / N) log(P_{model}(trace))</span>
+
+<span class="sd">        References:</span>
+<span class="sd">        NLTK.lm.api</span>
+<span class="sd">        Speech and Language Processing (SLP), 3 ed., Ch3</span>
+<span class="sd">        (https://web.stanford.edu/~jurafsky/slp3/3.pdf)</span>
+
+<span class="sd">        :param      trace:  The sequence of symbols to evaluate</span>
+<span class="sd">        :param      base:   The log base. Commonly set to 2 in classic</span>
+<span class="sd">                            information theory literature</span>
+
+<span class="sd">        :returns:   the approximate cross-entropy of the given trace</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">N</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">logscore</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">base</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PDFA.perplexity_approx">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.perplexity_approx">[docs]</a>
+    <span class="k">def</span> <span class="nf">perplexity_approx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trace</span><span class="p">:</span> <span class="n">Symbols</span><span class="p">,</span> <span class="n">base</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        computes approximate perplexity of the given trace in the language of</span>
+<span class="sd">        the PDFA</span>
+
+<span class="sd">        The approximate perplexity is based on computing the approximate</span>
+<span class="sd">        cross-entropy (cross_entropy_approximate) (eq. 3.52 of SLP).</span>
+
+<span class="sd">        References:</span>
+<span class="sd">        NLTK.lm.api</span>
+<span class="sd">        Speech and Language Processing (SLP), 3 ed., Ch3</span>
+<span class="sd">        (https://web.stanford.edu/~jurafsky/slp3/3.pdf)</span>
+
+<span class="sd">        :param      trace:  The sequence of symbols to evaluate</span>
+<span class="sd">        :param      base:   The log base used for log probability calculations</span>
+<span class="sd">                            of the approximate cross-entropy underpinning the</span>
+<span class="sd">                            perplexity. Commonly set to 2 in classic</span>
+<span class="sd">                            information theory literature</span>
+
+<span class="sd">        :returns:   the approximate perplexity of the given trace</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">base</span> <span class="o">**</span> <span class="bp">self</span><span class="o">.</span><span class="n">cross_entropy_approx</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">base</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PDFA.cross_entropy">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.cross_entropy">[docs]</a>
+    <span class="k">def</span> <span class="nf">cross_entropy</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">traces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Symbols</span><span class="p">],</span>
+        <span class="n">actual_trace_probs</span><span class="p">:</span> <span class="n">Probabilities</span><span class="p">,</span>
+        <span class="n">base</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        computes actual cross-entropy of the given traces in the language of</span>
+<span class="sd">        the PDFA on the given actual trace probabilities</span>
+
+<span class="sd">        References:</span>
+<span class="sd">        Speech and Language Processing (SLP), 3 ed., Ch3</span>
+<span class="sd">        (https://web.stanford.edu/~jurafsky/slp3/3.pdf)</span>
+
+<span class="sd">        :param      traces:              The list of sequences of symbols to</span>
+<span class="sd">                                         evaluate the model&#39;s actual cross</span>
+<span class="sd">                                         entropy on.</span>
+<span class="sd">        :param      actual_trace_probs:  The actual probability of each trace</span>
+<span class="sd">                                         in the target language distribution</span>
+<span class="sd">        :param      base:                The log base. Commonly set to 2 in</span>
+<span class="sd">                                         classic information theory literature</span>
+
+<span class="sd">        :returns:   the actual cross-entropy of the given trace</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">cross_entropy_sum</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="k">for</span> <span class="n">target_p</span><span class="p">,</span> <span class="n">trace</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">actual_trace_probs</span><span class="p">,</span> <span class="n">traces</span><span class="p">):</span>
+            <span class="n">est_q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+            <span class="n">cross_entropy_sum</span> <span class="o">+=</span> <span class="n">ylogx</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">target_p</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">est_q</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="o">-</span><span class="n">cross_entropy_sum</span></div>
+
+
+<div class="viewcode-block" id="PDFA.perplexity">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.perplexity">[docs]</a>
+    <span class="k">def</span> <span class="nf">perplexity</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">traces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Symbols</span><span class="p">],</span>
+        <span class="n">actual_trace_probs</span><span class="p">:</span> <span class="n">Probabilities</span><span class="p">,</span>
+        <span class="n">base</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        computes actual perplexity of the given traces in the language of</span>
+<span class="sd">        the PDFA on the given actual trace probabilities</span>
+
+<span class="sd">        References:</span>
+<span class="sd">        Speech and Language Processing (SLP), 3 ed., Ch3</span>
+<span class="sd">        (https://web.stanford.edu/~jurafsky/slp3/3.pdf)</span>
+
+<span class="sd">        :param      traces:              The list of sequences of symbols to</span>
+<span class="sd">                                         evaluate the model&#39;s actual cross</span>
+<span class="sd">                                         entropy on.</span>
+<span class="sd">        :param      actual_trace_probs:  The actual probability of each trace</span>
+<span class="sd">                                         in the target language distribution</span>
+<span class="sd">        :param      base:                The log base. Commonly set to 2 in</span>
+<span class="sd">                                         classic information theory literature</span>
+
+<span class="sd">        :returns:   the actual cross-entropy of the given trace</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">base</span> <span class="o">**</span> <span class="bp">self</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">(</span><span class="n">traces</span><span class="p">,</span> <span class="n">actual_trace_probs</span><span class="p">,</span> <span class="n">base</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PDFA.norm">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.norm">[docs]</a>
+    <span class="k">def</span> <span class="nf">norm</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">traces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Symbols</span><span class="p">],</span> <span class="n">actual_trace_probs</span><span class="p">:</span> <span class="n">Probabilities</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        computes Ln Norm (default n=2)</span>
+
+<span class="sd">        :param      traces:              The list of sequences of symbols to</span>
+<span class="sd">                                         evaluate the model&#39;s actual cross</span>
+<span class="sd">                                         entropy on.</span>
+<span class="sd">        :param      actual_trace_probs:  The actual probability of each trace</span>
+<span class="sd">                                         in the target language distribution</span>
+<span class="sd">        :param      n:                   n norm</span>
+
+<span class="sd">        :returns:   the ln norm between true and estimated distributions</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">norm_sum</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="k">for</span> <span class="n">target_prob</span><span class="p">,</span> <span class="n">trace</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">actual_trace_probs</span><span class="p">,</span> <span class="n">traces</span><span class="p">):</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+            <span class="n">norm</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">target_prob</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span> <span class="o">**</span> <span class="n">n</span>
+            <span class="n">norm_sum</span> <span class="o">+=</span> <span class="n">norm</span>
+
+        <span class="k">return</span> <span class="n">norm_sum</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PDFA.average_norm">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.average_norm">[docs]</a>
+    <span class="k">def</span> <span class="nf">average_norm</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">traces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Symbols</span><span class="p">],</span> <span class="n">actual_trace_probs</span><span class="p">:</span> <span class="n">Probabilities</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        computes Ln Norm (default n=2)</span>
+
+<span class="sd">        :param      traces:              The list of sequences of symbols to</span>
+<span class="sd">                                         evaluate the model&#39;s actual cross</span>
+<span class="sd">                                         entropy on.</span>
+<span class="sd">        :param      actual_trace_probs:  The actual probability of each trace</span>
+<span class="sd">                                         in the target language distribution</span>
+<span class="sd">        :param      n:                   n norm</span>
+
+<span class="sd">        :returns:   the average ln norm between true and estimated distributions</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">traces</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">traces</span><span class="p">,</span> <span class="n">actual_trace_probs</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PDFA.kldivergence">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.kldivergence">[docs]</a>
+    <span class="k">def</span> <span class="nf">kldivergence</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">traces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Symbols</span><span class="p">],</span>
+        <span class="n">actual_trace_probs</span><span class="p">:</span> <span class="n">Probabilities</span><span class="p">,</span>
+        <span class="n">base</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+        <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Forward KL Divergence</span>
+<span class="sd">        Use ForwardKL on traces generated by this automaton.</span>
+
+<span class="sd">        KL(p||q) =  p log(p) - p log(q)</span>
+
+<span class="sd">        where p is the true probability and q is the estimated probability</span>
+<span class="sd">        q must not be 0 otherwise the KL divergence goes to infinity.</span>
+<span class="sd">        Therefore, we must be certain that the traces were generated by</span>
+<span class="sd">        this automaton, so that q is always positive q&gt;0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">kldivergence</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">max_trace_length</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">len</span><span class="p">,</span> <span class="n">traces</span><span class="p">)))</span>
+
+        <span class="k">for</span> <span class="n">target_p</span><span class="p">,</span> <span class="n">trace</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">actual_trace_probs</span><span class="p">,</span> <span class="n">traces</span><span class="p">):</span>
+            <span class="n">est_q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">est_q</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+                <span class="n">est_q</span> <span class="o">=</span> <span class="n">epsilon</span><span class="o">**</span><span class="n">max_trace_length</span>
+            <span class="n">kldivergence</span> <span class="o">+=</span> <span class="n">xlogx</span><span class="p">(</span><span class="n">target_p</span><span class="p">)</span> <span class="o">-</span> <span class="n">xlogy</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">target_p</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">est_q</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">kldivergence</span></div>
+
+
+<div class="viewcode-block" id="PDFA.reverse_kldivergence">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.reverse_kldivergence">[docs]</a>
+    <span class="k">def</span> <span class="nf">reverse_kldivergence</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">traces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Symbols</span><span class="p">],</span>
+        <span class="n">actual_trace_probs</span><span class="p">:</span> <span class="n">Probabilities</span><span class="p">,</span>
+        <span class="n">base</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+        <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reverse KL Divergence</span>
+<span class="sd">        Use ReverseKL on traces generated by other automaton</span>
+
+<span class="sd">        KL(q||p) =  q log(q) - q log(p)</span>
+
+<span class="sd">        where p is the true probability and q is the estimated probability</span>
+<span class="sd">        p must not be 0 otherwise the KL divergence goes to infinity.</span>
+<span class="sd">        Therefore, we must be certain that the traces were generated by</span>
+<span class="sd">        the true automaton, so that p is always positive p&gt;0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">kldivergence</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">max_trace_length</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">len</span><span class="p">,</span> <span class="n">traces</span><span class="p">)))</span>
+
+        <span class="k">for</span> <span class="n">target_p</span><span class="p">,</span> <span class="n">trace</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">actual_trace_probs</span><span class="p">,</span> <span class="n">traces</span><span class="p">):</span>
+            <span class="n">est_q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">target_p</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+                <span class="n">target_p</span> <span class="o">=</span> <span class="n">epsilon</span><span class="o">**</span><span class="n">max_trace_length</span>
+            <span class="n">kldivergence</span> <span class="o">+=</span> <span class="n">xlogx</span><span class="p">(</span><span class="n">est_q</span><span class="p">)</span> <span class="o">-</span> <span class="n">xlogy</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">est_q</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">target_p</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">kldivergence</span></div>
+
+
+<div class="viewcode-block" id="PDFA.predictive_accuracy">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.predictive_accuracy">[docs]</a>
+    <span class="k">def</span> <span class="nf">predictive_accuracy</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">test_traces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Symbols</span><span class="p">],</span> <span class="n">pred_method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;max_prob&quot;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        compares the model&#39;s predictions to the actual values of the next</span>
+<span class="sd">        symbol and returns the ratio of correct predictions.</span>
+
+<span class="sd">        :param      test_traces:  The traces to compute predictive accuracy for</span>
+<span class="sd">        :param      pred_method:  The method used to choose the next state.</span>
+<span class="sd">                                  see _choose_next_state for details on how</span>
+<span class="sd">                                  each pred_method is implemented.</span>
+<span class="sd">                                  {&#39;sample&#39;, &#39;max_prob&#39;}</span>
+
+<span class="sd">        :returns:   predictive accuracy ratio ([0 -&gt; 1]) of the model on the</span>
+<span class="sd">                    given traces</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_traces</span><span class="p">)</span>
+        <span class="n">num_correct_predictions</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">test_traces</span><span class="p">:</span>
+            <span class="n">observations</span> <span class="o">=</span> <span class="n">trace</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">actual_symbol</span> <span class="o">=</span> <span class="n">trace</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="c1"># check the predictive capability when conditioned on all but the</span>
+            <span class="c1"># last symbol</span>
+            <span class="n">predicted_symbol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">observations</span><span class="p">,</span> <span class="n">pred_method</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">predicted_symbol</span> <span class="o">==</span> <span class="n">actual_symbol</span><span class="p">:</span>
+                <span class="n">num_correct_predictions</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">num_correct_predictions</span> <span class="o">/</span> <span class="n">N</span></div>
+
+
+<div class="viewcode-block" id="PDFA.mdi_score">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.mdi_score">[docs]</a>
+    <span class="k">def</span> <span class="nf">mdi_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">traces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Symbols</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        computes the mdi score given a list of traces and the current</span>
+<span class="sd">        automata</span>
+
+<span class="sd">        :param traces:                   The list of sequences of symbols to</span>
+<span class="sd">                                         evaluate the model&#39;s MDI score.</span>
+
+<span class="sd">        :returns:   the MDI score</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># computes the occurrence of each trace</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">traces</span><span class="p">)</span>
+
+        <span class="c1"># computes the MDI score</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">traces</span><span class="p">:</span>
+            <span class="n">score</span> <span class="o">+=</span> <span class="p">(</span><span class="n">traces</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">logscore</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+
+        <span class="c1"># divide by the No. of nodes in the Automata</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="n">score</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">score</span></div>
+
+
+    <span class="k">def</span> <span class="nf">refit_prob_dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">traces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Symbols</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">transitionCounts</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">start_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_state</span>
+
+        <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">traces</span><span class="p">:</span>
+            <span class="n">curr_state</span> <span class="o">=</span> <span class="n">start_state</span>
+            <span class="n">trace_prob</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+            <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">trace</span><span class="p">:</span>
+                <span class="n">next_state</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_next_state</span><span class="p">(</span><span class="n">curr_state</span><span class="p">,</span> <span class="n">symbol</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">curr_state</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">transitionCounts</span><span class="p">:</span>
+                    <span class="n">transitionCounts</span><span class="p">[</span><span class="n">curr_state</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">if</span> <span class="n">symbol</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">transitionCounts</span><span class="p">[</span><span class="n">curr_state</span><span class="p">]:</span>
+                    <span class="n">transitionCounts</span><span class="p">[</span><span class="n">curr_state</span><span class="p">][</span><span class="n">symbol</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+                <span class="n">transitionCounts</span><span class="p">[</span><span class="n">curr_state</span><span class="p">][</span><span class="n">symbol</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">curr_state</span> <span class="o">=</span> <span class="n">next_state</span>
+
+        <span class="c1"># Now compare against the actual distribution</span>
+        <span class="k">for</span> <span class="n">curr_state</span><span class="p">,</span> <span class="n">eachNodeTransitions</span> <span class="ow">in</span> <span class="n">transitionCounts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">sum_counts</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">eachNodeTransitions</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+            <span class="k">for</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">counts</span> <span class="ow">in</span> <span class="n">eachNodeTransitions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">next_state</span><span class="p">,</span> <span class="n">old_prob_dist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_next_state</span><span class="p">(</span><span class="n">curr_state</span><span class="p">,</span> <span class="n">symbol</span><span class="p">)</span>
+                <span class="n">new_prob_dist</span> <span class="o">=</span> <span class="n">counts</span> <span class="o">/</span> <span class="n">sum_counts</span>
+                <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">edge_data</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">[</span><span class="n">curr_state</span><span class="p">][</span><span class="n">next_state</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">edge_data</span><span class="p">[</span><span class="s2">&quot;symbol&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">symbol</span><span class="p">:</span>
+                        <span class="n">edge_data</span><span class="p">[</span><span class="s2">&quot;probability&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_prob_dist</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_node_edge_properties</span><span class="p">(</span>
+            <span class="n">initial_weight_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">final_weight_key</span><span class="o">=</span><span class="s2">&quot;final_probability&quot;</span><span class="p">,</span>
+            <span class="n">state_observation_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">can_have_accepting_nodes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">edge_weight_key</span><span class="o">=</span><span class="s2">&quot;probability&quot;</span><span class="p">,</span>
+            <span class="n">merge_sinks</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_set_state_acceptance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curr_state</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the state acceptance property for the given state.</span>
+
+<span class="sd">        If curr_state&#39;s final_probability &gt;= self._beta, then the state accepts</span>
+
+<span class="sd">        :param      curr_state:  The current state&#39;s node label</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">curr_final_prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_node_data</span><span class="p">(</span><span class="n">curr_state</span><span class="p">,</span> <span class="s2">&quot;final_probability&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">curr_final_prob</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_beta</span><span class="p">:</span>
+            <span class="n">state_accepts</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">state_accepts</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_node_data</span><span class="p">(</span><span class="n">curr_state</span><span class="p">,</span> <span class="s2">&quot;is_accepting&quot;</span><span class="p">,</span> <span class="n">state_accepts</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_compute_product</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">specification</span><span class="p">:</span> <span class="n">PDFA</span><span class="p">,</span> <span class="n">safety</span><span class="p">:</span> <span class="n">SafetyDFA</span><span class="p">,</span> <span class="n">delete_sinks</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute a product between a PDFA and a safetyDFA</span>
+
+<span class="sd">        :param      specification:      A PDFA specification</span>
+<span class="sd">        :param      safety:             The safety automaton instance</span>
+<span class="sd">        :param      delete_sinks:       whether to delete unnecessary</span>
+<span class="sd">                                        sink states</span>
+
+<span class="sd">        :returns:   dict of configurations to build the pdfa</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># naming to follow written algorithm</span>
+        <span class="n">C</span> <span class="o">=</span> <span class="n">specification</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="n">safety</span>
+
+        <span class="n">symbols</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="c1"># Visit all nodes and edges to find all symbols</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">S</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">dest_state</span><span class="p">,</span> <span class="n">edges</span> <span class="ow">in</span> <span class="n">S</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">edge_key</span><span class="p">,</span> <span class="n">edge_data</span> <span class="ow">in</span> <span class="n">edges</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">partial_symbols</span> <span class="o">=</span> <span class="n">SafetyDFA</span><span class="o">.</span><span class="n">_extract_symbols_from_formula</span><span class="p">(</span>
+                        <span class="n">edge_data</span><span class="p">[</span><span class="s2">&quot;symbol&quot;</span><span class="p">]</span>
+                    <span class="p">)</span>
+                    <span class="n">symbols</span> <span class="o">|=</span> <span class="n">partial_symbols</span>
+
+        <span class="c1"># Initial State</span>
+        <span class="n">qc_init</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">start_state</span>
+        <span class="n">qs_init</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">start_state</span>
+        <span class="n">init_prod_state</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_product_state_label</span><span class="p">(</span><span class="n">qc_init</span><span class="p">,</span> <span class="n">qs_init</span><span class="p">)</span>
+
+        <span class="c1"># Prepare dicts to store graph info</span>
+        <span class="n">nodes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># Start Search from the initial state</span>
+        <span class="n">search_queue</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">()</span>
+        <span class="n">search_queue</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">qc_init</span><span class="p">,</span> <span class="n">qs_init</span><span class="p">))</span>
+        <span class="n">visited</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">qc_init</span><span class="p">,</span> <span class="n">qs_init</span><span class="p">))</span>
+
+        <span class="n">nodes_to_delete</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">inverted_edges</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">search_queue</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
+            <span class="c1"># pop a node</span>
+            <span class="n">qc</span><span class="p">,</span> <span class="n">qs</span> <span class="o">=</span> <span class="n">search_queue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="n">qc_final_prob</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">_get_node_data</span><span class="p">(</span><span class="n">qc</span><span class="p">,</span> <span class="s2">&quot;final_probability&quot;</span><span class="p">)</span>
+            <span class="n">prob_sum</span> <span class="o">=</span> <span class="n">qc_final_prob</span>
+
+            <span class="c1"># Search each edge in Cosafety PDFA</span>
+            <span class="n">cosafe_sigmas</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">cosafe_edges</span> <span class="ow">in</span> <span class="n">C</span><span class="p">[</span><span class="n">qc</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">cosafe_edge</span> <span class="ow">in</span> <span class="n">cosafe_edges</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                    <span class="n">cosafe_sigmas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cosafe_edge</span><span class="p">[</span><span class="s2">&quot;symbol&quot;</span><span class="p">])</span>
+
+            <span class="n">formulas</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">safe_edges</span> <span class="ow">in</span> <span class="n">S</span><span class="p">[</span><span class="n">qs</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">safe_edge</span> <span class="ow">in</span> <span class="n">safe_edges</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                    <span class="n">formulas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">safe_edge</span><span class="p">[</span><span class="s2">&quot;symbol&quot;</span><span class="p">])</span>
+
+            <span class="c1"># Check if each edge in Cosafety PDFA satisfies</span>
+            <span class="c1"># Safety Specification</span>
+            <span class="k">for</span> <span class="n">cosafe_sigma</span> <span class="ow">in</span> <span class="n">cosafe_sigmas</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">formulas</span><span class="p">:</span>
+                    <span class="c1"># Check if the &quot;sigma&quot; satisfies the &quot;formula&quot;</span>
+                    <span class="n">valid</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">satisfy_formula</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">cosafe_sigma</span><span class="p">,</span> <span class="n">symbols</span><span class="p">)</span>
+
+                    <span class="c1"># No need for searching for invalid transition</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">valid</span><span class="p">:</span>
+                        <span class="k">continue</span>
+
+                    <span class="n">qs_prime</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">_get_next_state</span><span class="p">(</span><span class="n">qs</span><span class="p">,</span> <span class="n">formula</span><span class="p">)</span>
+                    <span class="c1"># If the next state is a sink state, don&#39;t transition</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">S</span><span class="p">[</span><span class="n">qs_prime</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="k">continue</span>
+
+                    <span class="c1"># Get Transition Probability from Cosafety PDFA</span>
+                    <span class="n">qc_prime</span><span class="p">,</span> <span class="n">trans_prob</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">_get_next_state</span><span class="p">(</span><span class="n">qc</span><span class="p">,</span> <span class="n">cosafe_sigma</span><span class="p">)</span>
+                    <span class="n">qc_prime_final_prob</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">_get_node_data</span><span class="p">(</span>
+                        <span class="n">qc_prime</span><span class="p">,</span> <span class="s2">&quot;final_probability&quot;</span>
+                    <span class="p">)</span>
+
+                    <span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_add_product_edge</span><span class="p">(</span>
+                        <span class="n">nodes</span><span class="p">,</span>
+                        <span class="n">edges</span><span class="p">,</span>
+                        <span class="n">qc_src</span><span class="o">=</span><span class="n">qc</span><span class="p">,</span>
+                        <span class="n">qc_dest</span><span class="o">=</span><span class="n">qc_prime</span><span class="p">,</span>
+                        <span class="n">qs_src</span><span class="o">=</span><span class="n">qs</span><span class="p">,</span>
+                        <span class="n">qs_dest</span><span class="o">=</span><span class="n">qs_prime</span><span class="p">,</span>
+                        <span class="n">qc_src_final_prob</span><span class="o">=</span><span class="n">qc_final_prob</span><span class="p">,</span>
+                        <span class="n">qc_dest_final_prob</span><span class="o">=</span><span class="n">qc_prime_final_prob</span><span class="p">,</span>
+                        <span class="n">sigma</span><span class="o">=</span><span class="n">cosafe_sigma</span><span class="p">,</span>
+                        <span class="n">trans_prob</span><span class="o">=</span><span class="n">trans_prob</span><span class="p">,</span>
+                    <span class="p">)</span>
+
+                    <span class="n">inverted_edges</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_add_product_inverted_edge</span><span class="p">(</span>
+                        <span class="n">inverted_edges</span><span class="p">,</span>
+                        <span class="n">qc_src</span><span class="o">=</span><span class="n">qc</span><span class="p">,</span>
+                        <span class="n">qc_dest</span><span class="o">=</span><span class="n">qc_prime</span><span class="p">,</span>
+                        <span class="n">qs_src</span><span class="o">=</span><span class="n">qs</span><span class="p">,</span>
+                        <span class="n">qs_dest</span><span class="o">=</span><span class="n">qs_prime</span><span class="p">,</span>
+                        <span class="n">qc_src_final_prob</span><span class="o">=</span><span class="n">qc_prime_final_prob</span><span class="p">,</span>
+                        <span class="n">qc_dest_final_prob</span><span class="o">=</span><span class="n">qc_final_prob</span><span class="p">,</span>
+                        <span class="n">sigma</span><span class="o">=</span><span class="n">cosafe_sigma</span><span class="p">,</span>
+                        <span class="n">trans_prob</span><span class="o">=</span><span class="n">trans_prob</span><span class="p">,</span>
+                    <span class="p">)</span>
+
+                    <span class="n">prob_sum</span> <span class="o">+=</span> <span class="n">trans_prob</span>
+
+                    <span class="n">prod_dest_state</span> <span class="o">=</span> <span class="p">(</span><span class="n">qc_prime</span><span class="p">,</span> <span class="n">qs_prime</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">prod_dest_state</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">visited</span> <span class="ow">and</span> <span class="n">qc_prime_final_prob</span> <span class="o">!=</span> <span class="mf">1.0</span><span class="p">:</span>
+                        <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">prod_dest_state</span><span class="p">)</span>
+                        <span class="n">search_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">prod_dest_state</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">prob_sum</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+                <span class="n">src_state</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_product_state_label</span><span class="p">(</span><span class="n">qc</span><span class="p">,</span> <span class="n">qs</span><span class="p">)</span>
+                <span class="n">nodes_to_delete</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">src_state</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">delete_sinks</span><span class="p">:</span>
+            <span class="n">nodes</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_minimize_sink_states</span><span class="p">(</span>
+                <span class="n">nodes</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">inverted_edges</span><span class="p">,</span> <span class="n">nodes_to_delete</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_package_data</span><span class="p">(</span><span class="n">specification</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">init_prod_state</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_minimize_sink_states</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">nodes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">edges</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">inverted_edges</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">nodes_to_delete</span><span class="p">:</span> <span class="nb">list</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete the unnecessary sink states</span>
+
+<span class="sd">        :param      nodes:              dict of nodes to build the product</span>
+<span class="sd">        :param      edges:              dict of edges to build the product</span>
+<span class="sd">        :param      inverted_edges:     dict of edges between dest_node and</span>
+<span class="sd">                                        src_node</span>
+<span class="sd">        :param      nodes_to_delete:    List of sink nodes to be deleted</span>
+
+<span class="sd">        :returns:   dict of nodes to build the pdfa,</span>
+<span class="sd">                    dict of edges to build the pdfa</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">nodes_to_delete</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">nodes_to_delete</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+
+            <span class="c1"># delete outgoing edges</span>
+            <span class="n">outgoing_edges</span> <span class="o">=</span> <span class="n">edges</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+            <span class="k">del</span> <span class="n">edges</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">dest_node</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">outgoing_edges</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">del</span> <span class="n">inverted_edges</span><span class="p">[</span><span class="n">dest_node</span><span class="p">][</span><span class="n">node</span><span class="p">]</span>
+
+            <span class="c1"># for each incoming edges</span>
+            <span class="n">incoming_edges</span> <span class="o">=</span> <span class="n">inverted_edges</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+
+            <span class="k">for</span> <span class="n">src_node</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">incoming_edges</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="c1"># delete the edge</span>
+                <span class="k">del</span> <span class="n">edges</span><span class="p">[</span><span class="n">src_node</span><span class="p">][</span><span class="n">node</span><span class="p">]</span>
+
+                <span class="c1"># if not visited</span>
+                <span class="k">if</span> <span class="n">src_node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">nodes_to_delete</span><span class="p">:</span>
+                    <span class="c1"># get edges&#39; probabilities</span>
+                    <span class="n">edge_probs</span> <span class="o">=</span> <span class="p">[</span>
+                        <span class="nb">sum</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;probabilities&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">[</span><span class="n">src_node</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+                    <span class="p">]</span>
+
+                    <span class="c1"># if all src node&#39;s outgoing edges sum up to 0</span>
+                    <span class="c1"># then append the node to delete list</span>
+                    <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">edge_probs</span><span class="p">)</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+                        <span class="n">nodes_to_delete</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">src_node</span><span class="p">)</span>
+
+            <span class="c1"># delete the node</span>
+            <span class="k">del</span> <span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">edges</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_get_product_state_label</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">dynamical_system_state</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">specification_state</span><span class="p">:</span> <span class="n">Node</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Node</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the combined product state label</span>
+
+<span class="sd">        :param      dynamical_system_state:  The dynamical system state label</span>
+<span class="sd">        :param      specification_state:     The specification state label</span>
+
+<span class="sd">        :returns:   The product state label.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">dynamical_system_state</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="n">dynamical_system_state</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">dynamical_system_state</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">specification_state</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="n">specification_state</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">specification_state</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">dynamical_system_state</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="n">specification_state</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_add_product_node</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">nodes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">qc</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">qs</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">qc_final_prob</span><span class="p">:</span> <span class="n">Probability</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">Node</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a newly identified product state to the nodes dict w/ needed data</span>
+
+<span class="sd">        :param      nodes:             dict of nodes to build the product out</span>
+<span class="sd">                                       of. must be in the format needed by</span>
+<span class="sd">                                       networkx.add_nodes_from()</span>
+<span class="sd">        :param      qc:                state label in the dynamical system</span>
+<span class="sd">        :param      qs:                state label in the specification</span>
+<span class="sd">        :param      qc_final_prob:     the probability of terminating at q in</span>
+<span class="sd">                                       the specification</span>
+
+<span class="sd">        :returns:   nodes dict populated with all of the given data, and the</span>
+<span class="sd">                    label of the newly added product state</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">prod_state</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_product_state_label</span><span class="p">(</span><span class="n">qc</span><span class="p">,</span> <span class="n">qs</span><span class="p">)</span>
+        <span class="n">is_violating</span> <span class="o">=</span> <span class="n">qc</span> <span class="o">==</span> <span class="n">SPEC_VIOLATING_STATE</span>
+
+        <span class="k">if</span> <span class="n">prod_state</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+            <span class="n">prod_state_data</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;final_probability&quot;</span><span class="p">:</span> <span class="n">qc_final_prob</span><span class="p">,</span>
+                <span class="s2">&quot;trans_distribution&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s2">&quot;is_violating&quot;</span><span class="p">:</span> <span class="n">is_violating</span><span class="p">,</span>
+                <span class="s2">&quot;is_accepting&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="n">nodes</span><span class="p">[</span><span class="n">prod_state</span><span class="p">]</span> <span class="o">=</span> <span class="n">prod_state_data</span>
+
+        <span class="k">return</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">prod_state</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_add_product_edge</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">nodes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+        <span class="n">edges</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+        <span class="n">qc_src</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+        <span class="n">qc_dest</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+        <span class="n">qs_src</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+        <span class="n">qs_dest</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+        <span class="n">qc_src_final_prob</span><span class="p">:</span> <span class="n">Probability</span><span class="p">,</span>
+        <span class="n">qc_dest_final_prob</span><span class="p">:</span> <span class="n">Probability</span><span class="p">,</span>
+        <span class="n">sigma</span><span class="p">:</span> <span class="n">Symbol</span><span class="p">,</span>
+        <span class="n">trans_prob</span><span class="p">:</span> <span class="n">Probability</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">Node</span><span class="p">,</span> <span class="n">Node</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a newly identified product edge to the nodes &amp; edges dicts</span>
+
+<span class="sd">        :param      nodes:              dict of nodes to build the product out</span>
+<span class="sd">                                        of. Must be in the format needed by</span>
+<span class="sd">                                        networkx.add_nodes_from()</span>
+<span class="sd">        :param      edges:              dict of edges to build the product out</span>
+<span class="sd">                                        of. Must be in the format needed by</span>
+<span class="sd">                                        networkx.add_edges_from()</span>
+<span class="sd">        :param      qc_src:             source product edge&#39;s dynamical system</span>
+<span class="sd">                                        state</span>
+<span class="sd">        :param      qc_dest:            dest. product edge&#39;s dynamical system</span>
+<span class="sd">                                        state</span>
+<span class="sd">        :param      qs_src:             source product edge&#39;s specification</span>
+<span class="sd">                                        state</span>
+<span class="sd">        :param      qs_dest:            dest. product edge&#39;s specification</span>
+<span class="sd">                                        state</span>
+<span class="sd">        :param      qc_src_final_prob:  the probability of terminating at q_src</span>
+<span class="sd">                                        in the specification</span>
+<span class="sd">        :param      qc_dest_final_prob: the probability of terminating at</span>
+<span class="sd">                                        q_dest in the specification</span>
+<span class="sd">        :param      sigma:              dynamical system control input symbol</span>
+<span class="sd">                                        enabling the product edge</span>
+<span class="sd">        :param      trans_prob:         The product edge&#39;s transition prob.</span>
+
+<span class="sd">        :returns:   nodes dict populated w/ all the given data for src &amp; dest</span>
+<span class="sd">                    edges dict populated w/ all the given data,</span>
+<span class="sd">                    the label of the newly added source product state,</span>
+<span class="sd">                    the label of the newly added product state</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">nodes</span><span class="p">,</span> <span class="n">prod_src</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_add_product_node</span><span class="p">(</span>
+            <span class="n">nodes</span><span class="p">,</span> <span class="n">qc_src</span><span class="p">,</span> <span class="n">qs_src</span><span class="p">,</span> <span class="n">qc_src_final_prob</span>
+        <span class="p">)</span>
+        <span class="n">nodes</span><span class="p">,</span> <span class="n">prod_dest</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_add_product_node</span><span class="p">(</span>
+            <span class="n">nodes</span><span class="p">,</span> <span class="n">qc_dest</span><span class="p">,</span> <span class="n">qs_dest</span><span class="p">,</span> <span class="n">qc_dest_final_prob</span>
+        <span class="p">)</span>
+        <span class="n">prod_edge_data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;symbols&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">sigma</span><span class="p">],</span> <span class="s2">&quot;probabilities&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">trans_prob</span><span class="p">]}</span>
+        <span class="n">prod_edge</span> <span class="o">=</span> <span class="p">{</span><span class="n">prod_dest</span><span class="p">:</span> <span class="n">prod_edge_data</span><span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">prod_src</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">prod_dest</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">[</span><span class="n">prod_src</span><span class="p">]:</span>
+                <span class="n">existing_edge_data</span> <span class="o">=</span> <span class="n">edges</span><span class="p">[</span><span class="n">prod_src</span><span class="p">][</span><span class="n">prod_dest</span><span class="p">]</span>
+
+                <span class="n">existing_edge_data</span><span class="p">[</span><span class="s2">&quot;symbols&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">prod_edge_data</span><span class="p">[</span><span class="s2">&quot;symbols&quot;</span><span class="p">])</span>
+                <span class="n">new_probs</span> <span class="o">=</span> <span class="n">prod_edge_data</span><span class="p">[</span><span class="s2">&quot;probabilities&quot;</span><span class="p">]</span>
+                <span class="n">existing_edge_data</span><span class="p">[</span><span class="s2">&quot;probabilities&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">new_probs</span><span class="p">)</span>
+
+                <span class="n">edges</span><span class="p">[</span><span class="n">prod_src</span><span class="p">][</span><span class="n">prod_dest</span><span class="p">]</span> <span class="o">=</span> <span class="n">existing_edge_data</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">edges</span><span class="p">[</span><span class="n">prod_src</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">prod_edge</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">edges</span><span class="p">[</span><span class="n">prod_src</span><span class="p">]</span> <span class="o">=</span> <span class="n">prod_edge</span>
+
+        <span class="k">return</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">prod_src</span><span class="p">,</span> <span class="n">prod_dest</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_add_product_inverted_edge</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">inverted_edges</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+        <span class="n">qc_src</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+        <span class="n">qc_dest</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+        <span class="n">qs_src</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+        <span class="n">qs_dest</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+        <span class="n">qc_src_final_prob</span><span class="p">:</span> <span class="n">Probability</span><span class="p">,</span>
+        <span class="n">qc_dest_final_prob</span><span class="p">:</span> <span class="n">Probability</span><span class="p">,</span>
+        <span class="n">sigma</span><span class="p">:</span> <span class="n">Symbol</span><span class="p">,</span>
+        <span class="n">trans_prob</span><span class="p">:</span> <span class="n">Probability</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a newly identified product edge (reverse) to the inverted_edges</span>
+<span class="sd">        dicts</span>
+
+<span class="sd">        :param      inverted_edges:     dict of edges to build the product out</span>
+<span class="sd">                                        of. Must be in the format needed by</span>
+<span class="sd">                                        networkx.add_edges_from()</span>
+<span class="sd">        :param      qc_src:             source product edge&#39;s dynamical system</span>
+<span class="sd">                                        state</span>
+<span class="sd">        :param      qc_dest:            dest. product edge&#39;s dynamical system</span>
+<span class="sd">                                        state</span>
+<span class="sd">        :param      qs_src:             source product edge&#39;s specification</span>
+<span class="sd">                                        state</span>
+<span class="sd">        :param      qs_dest:            dest. product edge&#39;s specification</span>
+<span class="sd">                                        state</span>
+<span class="sd">        :param      qc_src_final_prob:  the probability of terminating at q_src</span>
+<span class="sd">                                        in the specification</span>
+<span class="sd">        :param      qc_dest_final_prob: the probability of terminating at</span>
+<span class="sd">                                        q_dest in the specification</span>
+<span class="sd">        :param      sigma:              dynamical system control input symbol</span>
+<span class="sd">                                        enabling the product edge</span>
+<span class="sd">        :param      trans_prob:         The product edge&#39;s transition prob.</span>
+
+<span class="sd">        :returns:   nodes dict populated w/ all the given data for src &amp; dest</span>
+<span class="sd">                    edges dict populated w/ all the given data,</span>
+<span class="sd">                    the label of the newly added source product state,</span>
+<span class="sd">                    the label of the newly added product state</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prod_src</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_product_state_label</span><span class="p">(</span><span class="n">qc_src</span><span class="p">,</span> <span class="n">qs_src</span><span class="p">)</span>
+        <span class="n">prod_dest</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_product_state_label</span><span class="p">(</span><span class="n">qc_dest</span><span class="p">,</span> <span class="n">qs_dest</span><span class="p">)</span>
+        <span class="n">prod_edge_data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;symbols&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">sigma</span><span class="p">],</span> <span class="s2">&quot;probabilities&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">trans_prob</span><span class="p">]}</span>
+        <span class="n">prod_edge</span> <span class="o">=</span> <span class="p">{</span><span class="n">prod_src</span><span class="p">:</span> <span class="n">prod_edge_data</span><span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">prod_dest</span> <span class="ow">in</span> <span class="n">inverted_edges</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">prod_src</span> <span class="ow">in</span> <span class="n">inverted_edges</span><span class="p">[</span><span class="n">prod_dest</span><span class="p">]:</span>
+                <span class="n">existing_edge_data</span> <span class="o">=</span> <span class="n">inverted_edges</span><span class="p">[</span><span class="n">prod_dest</span><span class="p">][</span><span class="n">prod_src</span><span class="p">]</span>
+                <span class="n">existing_edge_data</span><span class="p">[</span><span class="s2">&quot;symbols&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">prod_edge_data</span><span class="p">[</span><span class="s2">&quot;symbols&quot;</span><span class="p">])</span>
+                <span class="n">new_probs</span> <span class="o">=</span> <span class="n">prod_edge_data</span><span class="p">[</span><span class="s2">&quot;probabilities&quot;</span><span class="p">]</span>
+                <span class="n">existing_edge_data</span><span class="p">[</span><span class="s2">&quot;probabilities&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">new_probs</span><span class="p">)</span>
+
+                <span class="n">inverted_edges</span><span class="p">[</span><span class="n">prod_dest</span><span class="p">][</span><span class="n">prod_src</span><span class="p">]</span> <span class="o">=</span> <span class="n">existing_edge_data</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">inverted_edges</span><span class="p">[</span><span class="n">prod_dest</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">prod_edge</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">inverted_edges</span><span class="p">[</span><span class="n">prod_dest</span><span class="p">]</span> <span class="o">=</span> <span class="n">prod_edge</span>
+
+        <span class="k">return</span> <span class="n">inverted_edges</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_package_data</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">specification</span><span class="p">:</span> <span class="n">PDFA</span><span class="p">,</span> <span class="n">nodes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">edges</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">init_prod_state</span><span class="p">:</span> <span class="n">Node</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete the unnecessary sink states</span>
+
+<span class="sd">        :param      nodes:              dict of nodes to build the product</span>
+<span class="sd">        :param      edges:              dict of edges to build the product</span>
+<span class="sd">        :param      init_prod_state:    initial node of the product</span>
+
+<span class="sd">        :returns:   dict of nodes to build the pdfa,</span>
+<span class="sd">                    dict of edges to build the pdfa</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">config_data</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">final_sym</span> <span class="o">=</span> <span class="n">specification</span><span class="o">.</span><span class="n">final_transition_sym</span>
+        <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;final_transition_sym&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">final_sym</span>
+        <span class="n">empty_sym</span> <span class="o">=</span> <span class="n">specification</span><span class="o">.</span><span class="n">empty_transition_sym</span>
+        <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;empty_transition_sym&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">empty_sym</span>
+
+        <span class="c1"># can directly compute these from the graph data</span>
+        <span class="n">symbols</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">state_labels</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">state</span><span class="p">,</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">edge_data</span> <span class="ow">in</span> <span class="n">edge</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">symbols</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">edge_data</span><span class="p">[</span><span class="s2">&quot;symbols&quot;</span><span class="p">])</span>
+                <span class="n">state_labels</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+
+        <span class="n">alphabet_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">symbols</span><span class="p">)</span>
+        <span class="n">num_states</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">state_labels</span><span class="p">)</span>
+
+        <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;alphabet_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">alphabet_size</span>
+        <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;num_states&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">num_states</span>
+
+        <span class="p">(</span><span class="n">symbol_display_map</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">edges</span><span class="p">)</span> <span class="o">=</span> <span class="n">Automaton</span><span class="o">.</span><span class="n">_convert_states_edges</span><span class="p">(</span>
+            <span class="n">nodes</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">final_sym</span><span class="p">,</span> <span class="n">empty_sym</span><span class="p">,</span> <span class="n">is_stochastic</span><span class="o">=</span><span class="n">IS_STOCHASTIC</span>
+        <span class="p">)</span>
+        <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;nodes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">nodes</span>
+        <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;edges&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">edges</span>
+        <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;start_state&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">init_prod_state</span>
+        <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;symbol_display_map&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">symbol_display_map</span>
+
+        <span class="k">return</span> <span class="n">config_data</span></div>
+
+
+
+<div class="viewcode-block" id="PDFABuilder">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFABuilder.html#specless.automaton.pdfa.PDFABuilder">[docs]</a>
+<span class="k">class</span> <span class="nc">PDFABuilder</span><span class="p">(</span><span class="n">Builder</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Implements the generic automaton builder class for PDFA objects</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;PDFABuilder&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructs a new instance of the PDFABuilder</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># need to call the super class constructor to gain its properties</span>
+        <span class="n">Builder</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="c1"># keep these properties so we don&#39;t re-initialize unless underlying</span>
+        <span class="c1"># data changes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edges</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="PDFABuilder.__call__">
+<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFABuilder.html#specless.automaton.pdfa.PDFABuilder.__call__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">graph_data</span><span class="p">:</span> <span class="p">{</span><span class="nb">str</span><span class="p">,</span> <span class="n">FDFA</span><span class="p">},</span> <span class="n">graph_data_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;yaml&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PDFA</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns an initialized PDFA instance given the graph_data</span>
+
+<span class="sd">        graph_data and graph_data_format must match</span>
+
+<span class="sd">        :param      graph_data:         The variable specifying graph data</span>
+<span class="sd">        :param      graph_data_format:  The graph data file format.</span>
+<span class="sd">                                        {&#39;yaml&#39;, &#39;fdfa_object&#39;}</span>
+<span class="sd">        :param      kwargs:             The keywords arguments to the specific</span>
+<span class="sd">                                        constructors</span>
+
+<span class="sd">        :returns:   instance of an initialized PDFA object</span>
+
+<span class="sd">        :raises     ValueError:         checks if graph_data and</span>
+<span class="sd">                                        graph_data_format have a compatible</span>
+<span class="sd">                                        data loader</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">graph_data_format</span> <span class="o">==</span> <span class="s2">&quot;yaml&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_from_yaml</span><span class="p">(</span><span class="n">graph_data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">graph_data_format</span> <span class="o">==</span> <span class="s2">&quot;fdfa_object&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_from_fdfa</span><span class="p">(</span><span class="n">graph_data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">graph_data_format</span> <span class="o">==</span> <span class="s2">&quot;existing_objects&quot;</span><span class="p">:</span>
+            <span class="n">spec</span> <span class="o">=</span> <span class="n">graph_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">safety</span> <span class="o">=</span> <span class="n">graph_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_from_automata</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="n">safety</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s1">&#39;graph_data_format (</span><span class="si">{}</span><span class="s1">) must be one of: &quot;yaml&quot;, &#39;</span>
+                <span class="o">+</span> <span class="s1">&#39;&quot;fdfa_object&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">()</span>
+            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_from_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph_data_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">is_normalized</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PDFA</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns an instance of a PDFA from the .yaml graph_data_file</span>
+
+<span class="sd">        Only reads the config data once, otherwise just returns the built</span>
+<span class="sd">        object</span>
+
+<span class="sd">        :param      graph_data_file:  The graph configuration file name</span>
+
+<span class="sd">        :returns:   instance of an initialized PDFA object</span>
+
+<span class="sd">        :raises     ValueError:       checks if graph_data_file&#39;s ext is YAML</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">_</span><span class="p">,</span> <span class="n">file_extension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">graph_data_file</span><span class="p">)</span>
+
+        <span class="n">allowed_exts</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;.yml&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">file_extension</span> <span class="ow">in</span> <span class="n">allowed_exts</span><span class="p">:</span>
+            <span class="n">config_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_YAML_config_data</span><span class="p">(</span><span class="n">graph_data_file</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;graph_data_file (</span><span class="si">{}</span><span class="s2">) is not a (</span><span class="si">{}</span><span class="s2">) file&quot;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">graph_data_file</span><span class="p">,</span> <span class="n">allowed_exts</span><span class="p">))</span>
+
+        <span class="n">nodes_have_changed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">!=</span> <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;nodes&quot;</span><span class="p">]</span>
+        <span class="n">edges_have_changed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span> <span class="o">!=</span> <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;edges&quot;</span><span class="p">]</span>
+        <span class="n">no_instance_loaded_yet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span> <span class="ow">is</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">no_instance_loaded_yet</span> <span class="ow">or</span> <span class="n">nodes_have_changed</span> <span class="ow">or</span> <span class="n">edges_have_changed</span><span class="p">:</span>
+            <span class="c1"># nodes and edges must be in the format needed by:</span>
+            <span class="c1">#   - networkx.add_nodes_from()</span>
+            <span class="c1">#   - networkx.add_edges_from()</span>
+            <span class="n">final_transition_sym</span> <span class="o">=</span> <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;final_transition_sym&quot;</span><span class="p">]</span>
+            <span class="n">empty_transition_sym</span> <span class="o">=</span> <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;empty_transition_sym&quot;</span><span class="p">]</span>
+            <span class="p">(</span><span class="n">symbol_display_map</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="n">edges</span><span class="p">)</span> <span class="o">=</span> <span class="n">Automaton</span><span class="o">.</span><span class="n">_convert_states_edges</span><span class="p">(</span>
+                <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;nodes&quot;</span><span class="p">],</span>
+                <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;edges&quot;</span><span class="p">],</span>
+                <span class="n">final_transition_sym</span><span class="p">,</span>
+                <span class="n">empty_transition_sym</span><span class="p">,</span>
+                <span class="n">is_stochastic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;symbol_display_map&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">symbol_display_map</span>
+            <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;nodes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">states</span>
+            <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;edges&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">edges</span>
+            <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;is_normalized&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">is_normalized</span>
+
+            <span class="c1"># saving these so we can just return initialized instances if the</span>
+            <span class="c1"># underlying data has not changed</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="n">states</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">edges</span> <span class="o">=</span> <span class="n">edges</span>
+
+            <span class="n">instance</span> <span class="o">=</span> <span class="n">PDFA</span><span class="p">(</span><span class="o">**</span><span class="n">config_data</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">instance</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span>
+
+    <span class="k">def</span> <span class="nf">_from_fdfa</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">fdfa</span><span class="p">:</span> <span class="n">FDFA</span><span class="p">,</span>
+        <span class="n">merge_sinks</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">smooth_transitions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">smoothing_amount</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">SMOOTHING_AMOUNT</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PDFA</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns an instance of a PDFA from an instance of FDFA</span>
+
+<span class="sd">        :param      fdfa:                initialized fdfa instance to convert</span>
+<span class="sd">                                         to a pdfa</span>
+<span class="sd">        :param      merge_sinks:         whether to combine all states</span>
+<span class="sd">                                         together that have no outgoing</span>
+<span class="sd">                                         edges</span>
+<span class="sd">        :param      smooth_transitions:  whether or not to smooth the input</span>
+<span class="sd">                                         sym. transition distributions</span>
+<span class="sd">        :param      smoothing_amount:    probability mass to re-assign to</span>
+<span class="sd">                                         unseen symbols at each node</span>
+
+<span class="sd">        :returns:   instance of an initialized PDFA object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">nodes</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="n">fdfa</span><span class="o">.</span><span class="n">to_pdfa_data</span><span class="p">()</span>
+
+        <span class="c1"># saving these so we can just return initialized instances if the</span>
+        <span class="c1"># underlying data has not changed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="n">nodes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edges</span> <span class="o">=</span> <span class="n">edges</span>
+
+        <span class="n">instance</span> <span class="o">=</span> <span class="n">PDFA</span><span class="p">(</span>
+            <span class="n">nodes</span><span class="o">=</span><span class="n">nodes</span><span class="p">,</span>
+            <span class="n">edges</span><span class="o">=</span><span class="n">edges</span><span class="p">,</span>
+            <span class="n">symbol_display_map</span><span class="o">=</span><span class="n">fdfa</span><span class="o">.</span><span class="n">_symbol_display_map</span><span class="p">,</span>
+            <span class="c1"># just choose a default value, FDFAs have no notion of acceptance</span>
+            <span class="c1"># this at the moment</span>
+            <span class="n">beta</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
+            <span class="n">alphabet_size</span><span class="o">=</span><span class="n">fdfa</span><span class="o">.</span><span class="n">alphabet_size</span><span class="p">,</span>
+            <span class="n">num_states</span><span class="o">=</span><span class="n">fdfa</span><span class="o">.</span><span class="n">num_states</span><span class="p">,</span>
+            <span class="n">final_transition_sym</span><span class="o">=</span><span class="n">fdfa</span><span class="o">.</span><span class="n">final_transition_sym</span><span class="p">,</span>
+            <span class="n">empty_transition_sym</span><span class="o">=</span><span class="n">fdfa</span><span class="o">.</span><span class="n">empty_transition_sym</span><span class="p">,</span>
+            <span class="n">start_state</span><span class="o">=</span><span class="n">fdfa</span><span class="o">.</span><span class="n">start_state</span><span class="p">,</span>
+            <span class="n">smooth_transitions</span><span class="o">=</span><span class="n">smooth_transitions</span><span class="p">,</span>
+            <span class="n">smoothing_amount</span><span class="o">=</span><span class="n">smoothing_amount</span><span class="p">,</span>
+            <span class="n">merge_sinks</span><span class="o">=</span><span class="n">merge_sinks</span><span class="p">,</span>
+            <span class="n">is_normalized</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">instance</span>
+
+    <span class="k">def</span> <span class="nf">_from_automata</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">specification</span><span class="p">:</span> <span class="n">PDFA</span><span class="p">,</span>
+        <span class="n">safety</span><span class="p">:</span> <span class="n">SafetyDFA</span><span class="p">,</span>
+        <span class="n">smooth_transitions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">normalize_trans_probabilities</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">delete_sinks</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PDFA</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns an instance of a PDFA from an instance of PDFA and DFA</span>
+
+<span class="sd">        :param      specification:      The specification automaton instance</span>
+<span class="sd">        :param      safety:             The safety automaton instance</span>
+
+<span class="sd">        :returns:   instance of an initialized PDFA object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">config_data</span> <span class="o">=</span> <span class="n">PDFA</span><span class="o">.</span><span class="n">_compute_product</span><span class="p">(</span><span class="n">specification</span><span class="p">,</span> <span class="n">safety</span><span class="p">,</span> <span class="n">delete_sinks</span><span class="p">)</span>
+
+        <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;smooth_transitions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">smooth_transitions</span>
+        <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;is_normalized&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalize_trans_probabilities</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;nodes&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edges</span> <span class="o">=</span> <span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;edges&quot;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;no compatible edges were found, so the product is empty&quot;</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="ne">RuntimeWarning</span><span class="p">)</span>
+            <span class="n">instance</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">instance</span> <span class="o">=</span> <span class="n">PDFA</span><span class="p">(</span><span class="o">**</span><span class="n">config_data</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">instance</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Kandai Watanabe.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

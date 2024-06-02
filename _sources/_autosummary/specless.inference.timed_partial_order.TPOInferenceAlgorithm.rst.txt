@@ -1,0 +1,33 @@
+specless.inference.timed\_partial\_order.TPOInferenceAlgorithm
+==============================================================
+
+.. currentmodule:: specless.inference.timed_partial_order
+
+.. autoclass:: TPOInferenceAlgorithm
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~TPOInferenceAlgorithm.format_timed_trace
+      ~TPOInferenceAlgorithm.format_timed_traces
+      ~TPOInferenceAlgorithm.get_event_bounds
+      ~TPOInferenceAlgorithm.get_event_pair_bounds
+      ~TPOInferenceAlgorithm.get_reachability_order
+      ~TPOInferenceAlgorithm.infer
+      ~TPOInferenceAlgorithm.infer_time_constraints
+      ~TPOInferenceAlgorithm.select_next_edge_iterator
+      ~TPOInferenceAlgorithm.select_post_processing_func
+   
+   
+
+   
+   
+   

@@ -1,0 +1,32 @@
+specless.inference.partial\_order
+=================================
+
+.. automodule:: specless.inference.partial_order
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      POInferenceAlgorithm
+   
+   
+
+   
+   
+   
+
+
+

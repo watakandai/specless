@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>specless.wrapper.actionwrapper.DirectionalActionWrapper &mdash; specless 0.0.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=e3a6060d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="specless.wrapper.actionwrapper.EightOmniDirectionActions" href="specless.wrapper.actionwrapper.EightOmniDirectionActions.html" />
+    <link rel="prev" title="specless.wrapper.actionwrapper.DiagOmniDirectionActions" href="specless.wrapper.actionwrapper.DiagOmniDirectionActions.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            specless
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="specless.html">specless</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="specless.html#id1">specless</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.api.html">specless.api</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.automaton.html">specless.automaton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.cli.html">specless.cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.const.html">specless.const</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.dataset.html">specless.dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.factory.html">specless.factory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.inference.html">specless.inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.io.html">specless.io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.minigrid.html">specless.minigrid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.parser.html">specless.parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.specification.html">specless.specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.strategy.html">specless.strategy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.synthesis.html">specless.synthesis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.tsp.html">specless.tsp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.typing.html">specless.typing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.utils.html">specless.utils</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="specless.wrapper.html">specless.wrapper</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="specless.wrapper.actionwrapper.html">specless.wrapper.actionwrapper</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="specless.wrapper.actionwrapper.DiagOmniDirectionActions.html">specless.wrapper.actionwrapper.DiagOmniDirectionActions</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">specless.wrapper.actionwrapper.DirectionalActionWrapper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="specless.wrapper.actionwrapper.EightOmniDirectionActions.html">specless.wrapper.actionwrapper.EightOmniDirectionActions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="specless.wrapper.actionwrapper.FourOmniDirectionActions.html">specless.wrapper.actionwrapper.FourOmniDirectionActions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="specless.wrapper.actionwrapper.OmniDirectionActionWrapper.html">specless.wrapper.actionwrapper.OmniDirectionActionWrapper</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="specless.wrapper.labelwrapper.html">specless.wrapper.labelwrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specless.wrapper.minigridwrapper.html">specless.wrapper.minigridwrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specless.wrapper.multiagentwrapper.html">specless.wrapper.multiagentwrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specless.wrapper.selectstatewrapper.html">specless.wrapper.selectstatewrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specless.wrapper.terminatewrapper.html">specless.wrapper.terminatewrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specless.wrapper.tswrapper.html">specless.wrapper.tswrapper</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">specless</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="specless.html">specless</a></li>
+          <li class="breadcrumb-item"><a href="specless.wrapper.html">specless.wrapper</a></li>
+          <li class="breadcrumb-item"><a href="specless.wrapper.actionwrapper.html">specless.wrapper.actionwrapper</a></li>
+      <li class="breadcrumb-item active">specless.wrapper.actionwrapper.DirectionalActionWrapper</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_autosummary/specless.wrapper.actionwrapper.DirectionalActionWrapper.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="specless-wrapper-actionwrapper-directionalactionwrapper">
+<h1>specless.wrapper.actionwrapper.DirectionalActionWrapper<a class="headerlink" href="#specless-wrapper-actionwrapper-directionalactionwrapper" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="specless.wrapper.actionwrapper.DirectionalActionWrapper">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">specless.wrapper.actionwrapper.</span></span><span class="sig-name descname"><span class="pre">DirectionalActionWrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specless/wrapper/actionwrapper.html#DirectionalActionWrapper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Wrapper</span></code></p>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.class_name" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.class_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_name</span></code></a></p></td>
+<td><p>Returns the class name of the wrapper.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.close" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code></a></p></td>
+<td><p>Closes the wrapper and <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.get_wrapper_attr" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.get_wrapper_attr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_wrapper_attr</span></code></a></p></td>
+<td><p>Gets an attribute from the wrapper and lower environments if <cite>name</cite> doesn't exist in this object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.render" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.render"><code class="xref py py-obj docutils literal notranslate"><span class="pre">render</span></code></a></p></td>
+<td><p>Uses the <a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.render" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.render"><code class="xref py py-meth docutils literal notranslate"><span class="pre">render()</span></code></a> of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code> that can be overwritten to change the returned data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.reset" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a></p></td>
+<td><p>Uses the <a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.reset" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.reset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code></a> of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code> that can be overwritten to change the returned data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.step" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">step</span></code></a></p></td>
+<td><p>Uses the <a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.step" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code></a> of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code> that can be overwritten to change the returned data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.wrapper_spec" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.wrapper_spec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wrapper_spec</span></code></a></p></td>
+<td><p>Generates a <cite>WrapperSpec</cite> for the wrappers.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.action_space" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.action_space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">action_space</span></code></a></p></td>
+<td><p>Return the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.action_space" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.action_space"><code class="xref py py-attr docutils literal notranslate"><span class="pre">action_space</span></code></a> unless overwritten then the wrapper <a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.action_space" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.action_space"><code class="xref py py-attr docutils literal notranslate"><span class="pre">action_space</span></code></a> is used.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.metadata" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.metadata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metadata</span></code></a></p></td>
+<td><p>Returns the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.metadata" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.metadata"><code class="xref py py-attr docutils literal notranslate"><span class="pre">metadata</span></code></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.np_random" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.np_random"><code class="xref py py-obj docutils literal notranslate"><span class="pre">np_random</span></code></a></p></td>
+<td><p>Returns the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.np_random" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.np_random"><code class="xref py py-attr docutils literal notranslate"><span class="pre">np_random</span></code></a> attribute.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.observation_space" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.observation_space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">observation_space</span></code></a></p></td>
+<td><p>Return the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.observation_space" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.observation_space"><code class="xref py py-attr docutils literal notranslate"><span class="pre">observation_space</span></code></a> unless overwritten then the wrapper <a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.observation_space" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.observation_space"><code class="xref py py-attr docutils literal notranslate"><span class="pre">observation_space</span></code></a> is used.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.render_mode" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.render_mode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">render_mode</span></code></a></p></td>
+<td><p>Returns the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.render_mode" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.render_mode"><code class="xref py py-attr docutils literal notranslate"><span class="pre">render_mode</span></code></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.reward_range" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.reward_range"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reward_range</span></code></a></p></td>
+<td><p>Return the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.reward_range" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.reward_range"><code class="xref py py-attr docutils literal notranslate"><span class="pre">reward_range</span></code></a> unless overwritten then the wrapper <a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.reward_range" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.reward_range"><code class="xref py py-attr docutils literal notranslate"><span class="pre">reward_range</span></code></a> is used.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.spec" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.spec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spec</span></code></a></p></td>
+<td><p>Returns the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.spec" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.spec"><code class="xref py py-attr docutils literal notranslate"><span class="pre">spec</span></code></a> attribute with the <cite>WrapperSpec</cite> if the wrapper inherits from <cite>EzPickle</cite>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.unwrapped" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.unwrapped"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unwrapped</span></code></a></p></td>
+<td><p>Returns the base environment of the wrapper.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="specless.wrapper.actionwrapper.DirectionalActionWrapper.Actions">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Actions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specless/wrapper/actionwrapper.html#DirectionalActionWrapper.Actions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.Actions" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">IntEnum</span></code></p>
+<p>An enumeration.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.wrapper.actionwrapper.DirectionalActionWrapper.Actions.__add__">
+<span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.Actions.__add__" title="Link to this definition"></a></dt>
+<dd><p>Return self+value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.wrapper.actionwrapper.DirectionalActionWrapper.Actions.__mul__">
+<span class="sig-name descname"><span class="pre">__mul__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.Actions.__mul__" title="Link to this definition"></a></dt>
+<dd><p>Return self*value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.wrapper.actionwrapper.DirectionalActionWrapper.Actions.as_integer_ratio">
+<span class="sig-name descname"><span class="pre">as_integer_ratio</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.Actions.as_integer_ratio" title="Link to this definition"></a></dt>
+<dd><p>Return integer ratio.</p>
+<p>Return a pair of integers, whose ratio is exactly equal to the original int
+and with a positive denominator.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">as_integer_ratio</span><span class="p">()</span>
+<span class="go">(10, 1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">as_integer_ratio</span><span class="p">()</span>
+<span class="go">(-10, 1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">as_integer_ratio</span><span class="p">()</span>
+<span class="go">(0, 1)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.wrapper.actionwrapper.DirectionalActionWrapper.Actions.bit_count">
+<span class="sig-name descname"><span class="pre">bit_count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.Actions.bit_count" title="Link to this definition"></a></dt>
+<dd><p>Number of ones in the binary representation of the absolute value of self.</p>
+<p>Also known as the population count.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">13</span><span class="p">)</span>
+<span class="go">&#39;0b1101&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">13</span><span class="p">)</span><span class="o">.</span><span class="n">bit_count</span><span class="p">()</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.wrapper.actionwrapper.DirectionalActionWrapper.Actions.bit_length">
+<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.Actions.bit_length" title="Link to this definition"></a></dt>
+<dd><p>Number of bits necessary to represent self in binary.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
+<span class="go">&#39;0b100101&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
+<span class="go">6</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.wrapper.actionwrapper.DirectionalActionWrapper.Actions.conjugate">
+<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.Actions.conjugate" title="Link to this definition"></a></dt>
+<dd><p>Returns self, the complex conjugate of any int.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="specless.wrapper.actionwrapper.DirectionalActionWrapper.Actions.denominator">
+<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.Actions.denominator" title="Link to this definition"></a></dt>
+<dd><p>the denominator of a rational number in lowest terms</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.wrapper.actionwrapper.DirectionalActionWrapper.Actions.from_bytes">
+<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.Actions.from_bytes" title="Link to this definition"></a></dt>
+<dd><p>Return the integer represented by the given array of bytes.</p>
+<dl class="simple">
+<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
+support the buffer protocol or be an iterable object producing bytes.
+Bytes and bytearray are examples of built-in objects that support the
+buffer protocol.</p>
+</dd>
+<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
+the most significant byte is at the beginning of the byte array.  If
+byteorder is ‘little’, the most significant byte is at the end of the
+byte array.  To request the native byte order of the host system, use
+<a href="#id1"><span class="problematic" id="id2">`</span></a>sys.byteorder’ as the byte order value.</p>
+</dd>
+<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="specless.wrapper.actionwrapper.DirectionalActionWrapper.Actions.imag">
+<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.Actions.imag" title="Link to this definition"></a></dt>
+<dd><p>the imaginary part of a complex number</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="specless.wrapper.actionwrapper.DirectionalActionWrapper.Actions.numerator">
+<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.Actions.numerator" title="Link to this definition"></a></dt>
+<dd><p>the numerator of a rational number in lowest terms</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="specless.wrapper.actionwrapper.DirectionalActionWrapper.Actions.real">
+<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.Actions.real" title="Link to this definition"></a></dt>
+<dd><p>the real part of a complex number</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.wrapper.actionwrapper.DirectionalActionWrapper.Actions.to_bytes">
+<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.Actions.to_bytes" title="Link to this definition"></a></dt>
+<dd><p>Return an array of bytes representing an integer.</p>
+<dl class="simple">
+<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
+integer is not representable with the given number of bytes.</p>
+</dd>
+<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
+the most significant byte is at the beginning of the byte array.  If
+byteorder is ‘little’, the most significant byte is at the end of the
+byte array.  To request the native byte order of the host system, use
+<a href="#id3"><span class="problematic" id="id4">`</span></a>sys.byteorder’ as the byte order value.</p>
+</dd>
+<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
+If signed is False and a negative integer is given, an OverflowError
+is raised.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="specless.wrapper.actionwrapper.DirectionalActionWrapper.action_space">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">action_space</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Space</span><span class="p"><span class="pre">[</span></span><span class="pre">ActType</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Space</span><span class="p"><span class="pre">[</span></span><span class="pre">WrapperActType</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.action_space" title="Link to this definition"></a></dt>
+<dd><p>Return the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.action_space" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.action_space"><code class="xref py py-attr docutils literal notranslate"><span class="pre">action_space</span></code></a> unless overwritten then the wrapper <a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.action_space" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.action_space"><code class="xref py py-attr docutils literal notranslate"><span class="pre">action_space</span></code></a> is used.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.wrapper.actionwrapper.DirectionalActionWrapper.class_name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.class_name" title="Link to this definition"></a></dt>
+<dd><p>Returns the class name of the wrapper.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.wrapper.actionwrapper.DirectionalActionWrapper.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.close" title="Link to this definition"></a></dt>
+<dd><p>Closes the wrapper and <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.wrapper.actionwrapper.DirectionalActionWrapper.get_wrapper_attr">
+<span class="sig-name descname"><span class="pre">get_wrapper_attr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.get_wrapper_attr" title="Link to this definition"></a></dt>
+<dd><p>Gets an attribute from the wrapper and lower environments if <cite>name</cite> doesn’t exist in this object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> – The variable name to get</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The variable with name in wrapper or lower environments</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="specless.wrapper.actionwrapper.DirectionalActionWrapper.metadata">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">metadata</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.metadata" title="Link to this definition"></a></dt>
+<dd><p>Returns the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.metadata" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.metadata"><code class="xref py py-attr docutils literal notranslate"><span class="pre">metadata</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="specless.wrapper.actionwrapper.DirectionalActionWrapper.np_random">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">np_random</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Generator</span></em><a class="headerlink" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.np_random" title="Link to this definition"></a></dt>
+<dd><p>Returns the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.np_random" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.np_random"><code class="xref py py-attr docutils literal notranslate"><span class="pre">np_random</span></code></a> attribute.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="specless.wrapper.actionwrapper.DirectionalActionWrapper.observation_space">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">observation_space</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Space</span><span class="p"><span class="pre">[</span></span><span class="pre">ObsType</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Space</span><span class="p"><span class="pre">[</span></span><span class="pre">WrapperObsType</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.observation_space" title="Link to this definition"></a></dt>
+<dd><p>Return the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.observation_space" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.observation_space"><code class="xref py py-attr docutils literal notranslate"><span class="pre">observation_space</span></code></a> unless overwritten then the wrapper <a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.observation_space" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.observation_space"><code class="xref py py-attr docutils literal notranslate"><span class="pre">observation_space</span></code></a> is used.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.wrapper.actionwrapper.DirectionalActionWrapper.render">
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">RenderFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">RenderFrame</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.render" title="Link to this definition"></a></dt>
+<dd><p>Uses the <a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.render" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.render"><code class="xref py py-meth docutils literal notranslate"><span class="pre">render()</span></code></a> of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code> that can be overwritten to change the returned data.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="specless.wrapper.actionwrapper.DirectionalActionWrapper.render_mode">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">render_mode</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.render_mode" title="Link to this definition"></a></dt>
+<dd><p>Returns the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.render_mode" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.render_mode"><code class="xref py py-attr docutils literal notranslate"><span class="pre">render_mode</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.wrapper.actionwrapper.DirectionalActionWrapper.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">WrapperObsType</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.reset" title="Link to this definition"></a></dt>
+<dd><p>Uses the <a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.reset" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.reset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code></a> of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code> that can be overwritten to change the returned data.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="specless.wrapper.actionwrapper.DirectionalActionWrapper.reward_range">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reward_range</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">SupportsFloat</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">SupportsFloat</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.reward_range" title="Link to this definition"></a></dt>
+<dd><p>Return the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.reward_range" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.reward_range"><code class="xref py py-attr docutils literal notranslate"><span class="pre">reward_range</span></code></a> unless overwritten then the wrapper <a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.reward_range" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.reward_range"><code class="xref py py-attr docutils literal notranslate"><span class="pre">reward_range</span></code></a> is used.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="specless.wrapper.actionwrapper.DirectionalActionWrapper.spec">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">spec</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">EnvSpec</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.spec" title="Link to this definition"></a></dt>
+<dd><p>Returns the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.spec" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.spec"><code class="xref py py-attr docutils literal notranslate"><span class="pre">spec</span></code></a> attribute with the <cite>WrapperSpec</cite> if the wrapper inherits from <cite>EzPickle</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.wrapper.actionwrapper.DirectionalActionWrapper.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IntEnum</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/specless/wrapper/actionwrapper.html#DirectionalActionWrapper.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.step" title="Link to this definition"></a></dt>
+<dd><p>Uses the <a class="reference internal" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.step" title="specless.wrapper.actionwrapper.DirectionalActionWrapper.step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code></a> of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code> that can be overwritten to change the returned data.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="specless.wrapper.actionwrapper.DirectionalActionWrapper.unwrapped">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unwrapped</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Env</span><span class="p"><span class="pre">[</span></span><span class="pre">ObsType</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ActType</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.unwrapped" title="Link to this definition"></a></dt>
+<dd><p>Returns the base environment of the wrapper.</p>
+<p>This will be the bare <code class="xref py py-class docutils literal notranslate"><span class="pre">gymnasium.Env</span></code> environment, underneath all layers of wrappers.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.wrapper.actionwrapper.DirectionalActionWrapper.wrapper_spec">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wrapper_spec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">WrapperSpec</span></span></span><a class="headerlink" href="#specless.wrapper.actionwrapper.DirectionalActionWrapper.wrapper_spec" title="Link to this definition"></a></dt>
+<dd><p>Generates a <cite>WrapperSpec</cite> for the wrappers.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="specless.wrapper.actionwrapper.DiagOmniDirectionActions.html" class="btn btn-neutral float-left" title="specless.wrapper.actionwrapper.DiagOmniDirectionActions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="specless.wrapper.actionwrapper.EightOmniDirectionActions.html" class="btn btn-neutral float-right" title="specless.wrapper.actionwrapper.EightOmniDirectionActions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Kandai Watanabe.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

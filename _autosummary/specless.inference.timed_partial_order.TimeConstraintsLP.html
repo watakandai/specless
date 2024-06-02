@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>specless.inference.timed_partial_order.TimeConstraintsLP &mdash; specless 0.0.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=e3a6060d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="specless.io" href="specless.io.html" />
+    <link rel="prev" title="specless.inference.timed_partial_order.TPOInferenceAlgorithm" href="specless.inference.timed_partial_order.TPOInferenceAlgorithm.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            specless
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="specless.html">specless</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="specless.html#id1">specless</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.api.html">specless.api</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.automaton.html">specless.automaton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.cli.html">specless.cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.const.html">specless.const</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.dataset.html">specless.dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.factory.html">specless.factory</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="specless.inference.html">specless.inference</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="specless.inference.base.html">specless.inference.base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specless.inference.edsm.html">specless.inference.edsm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specless.inference.partial_order.html">specless.inference.partial_order</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="specless.inference.timed_partial_order.html">specless.inference.timed_partial_order</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="specless.inference.timed_partial_order.html#inference-algorithm">Inference Algorithm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="specless.inference.timed_partial_order.TPOInferenceAlgorithm.html">specless.inference.timed_partial_order.TPOInferenceAlgorithm</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">specless.inference.timed_partial_order.TimeConstraintsLP</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="specless.io.html">specless.io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.minigrid.html">specless.minigrid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.parser.html">specless.parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.specification.html">specless.specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.strategy.html">specless.strategy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.synthesis.html">specless.synthesis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.tsp.html">specless.tsp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.typing.html">specless.typing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.utils.html">specless.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specless.wrapper.html">specless.wrapper</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">specless</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="specless.html">specless</a></li>
+          <li class="breadcrumb-item"><a href="specless.inference.html">specless.inference</a></li>
+          <li class="breadcrumb-item"><a href="specless.inference.timed_partial_order.html">specless.inference.timed_partial_order</a></li>
+      <li class="breadcrumb-item active">specless.inference.timed_partial_order.TimeConstraintsLP</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="specless-inference-timed-partial-order-timeconstraintslp">
+<h1>specless.inference.timed_partial_order.TimeConstraintsLP<a class="headerlink" href="#specless-inference-timed-partial-order-timeconstraintslp" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="specless.inference.timed_partial_order.TimeConstraintsLP">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">specless.inference.timed_partial_order.</span></span><span class="sig-name descname"><span class="pre">TimeConstraintsLP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">traces</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">partial_order</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decimals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slack_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specless/inference/timed_partial_order.html#TimeConstraintsLP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.inference.timed_partial_order.TimeConstraintsLP" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Handle Time Constraints Operation for Linear Programming</p>
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">events</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">A</span> <span class="pre">set</span> <span class="pre">of</span> <span class="pre">events</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">pairs</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">A</span> <span class="pre">set</span> <span class="pre">of</span> <span class="pre">event</span> <span class="pre">pairs</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>source, target</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">event_to_bound</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">A</span> <span class="pre">dictionary</span> <span class="pre">that</span> <span class="pre">maps</span> <span class="pre">an</span> <span class="pre">event</span> <span class="pre">to</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>lb, ub</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">event_pair_to_bound</span>&#160;&#160;&#160;&#160; <span class="pre">A</span> <span class="pre">dictionary</span> <span class="pre">that</span> <span class="pre">maps</span> <span class="pre">an</span> <span class="pre">event</span> <span class="pre">pair</span> <span class="pre">to</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>lb, ub</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">A,</span> <span class="pre">b</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="specless.inference.timed_partial_order.TimeConstraintsLP.event_to_index">
+<span class="sig-name descname"><span class="pre">event_to_index</span></span><a class="headerlink" href="#specless.inference.timed_partial_order.TimeConstraintsLP.event_to_index" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="specless.inference.timed_partial_order.TimeConstraintsLP.pair_to_index">
+<span class="sig-name descname"><span class="pre">pair_to_index</span></span><a class="headerlink" href="#specless.inference.timed_partial_order.TimeConstraintsLP.pair_to_index" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.inference.timed_partial_order.TimeConstraintsLP.construct_lp_constraints" title="specless.inference.timed_partial_order.TimeConstraintsLP.construct_lp_constraints"><code class="xref py py-obj docutils literal notranslate"><span class="pre">construct_lp_constraints</span></code></a></p></td>
+<td><p>Construct Linear Programming Constraints</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.inference.timed_partial_order.TimeConstraintsLP.get_column_index" title="specless.inference.timed_partial_order.TimeConstraintsLP.get_column_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_column_index</span></code></a></p></td>
+<td><p>Get the event variable index (column index)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.inference.timed_partial_order.TimeConstraintsLP.get_constraint_string" title="specless.inference.timed_partial_order.TimeConstraintsLP.get_constraint_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_constraint_string</span></code></a></p></td>
+<td><p>Get Constraint String</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.inference.timed_partial_order.TimeConstraintsLP.get_constraints_without" title="specless.inference.timed_partial_order.TimeConstraintsLP.get_constraints_without"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_constraints_without</span></code></a></p></td>
+<td><p>Get Constraints A and b without the specified constraint</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.inference.timed_partial_order.TimeConstraintsLP.get_event_from_row_index" title="specless.inference.timed_partial_order.TimeConstraintsLP.get_event_from_row_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_event_from_row_index</span></code></a></p></td>
+<td><p>Get Event from index</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.inference.timed_partial_order.TimeConstraintsLP.get_event_row_index" title="specless.inference.timed_partial_order.TimeConstraintsLP.get_event_row_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_event_row_index</span></code></a></p></td>
+<td><p>Get an index for the given constraint (row index)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.inference.timed_partial_order.TimeConstraintsLP.get_events" title="specless.inference.timed_partial_order.TimeConstraintsLP.get_events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_events</span></code></a></p></td>
+<td><p>Find which event the indices are refering to</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.inference.timed_partial_order.TimeConstraintsLP.get_events_string" title="specless.inference.timed_partial_order.TimeConstraintsLP.get_events_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_events_string</span></code></a></p></td>
+<td><p>Translate a constraint to an strin</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.inference.timed_partial_order.TimeConstraintsLP.get_pair_bound" title="specless.inference.timed_partial_order.TimeConstraintsLP.get_pair_bound"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_pair_bound</span></code></a></p></td>
+<td><p>Get Lower/Upper bound for the event pair</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.inference.timed_partial_order.TimeConstraintsLP.get_pair_from_row_index" title="specless.inference.timed_partial_order.TimeConstraintsLP.get_pair_from_row_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_pair_from_row_index</span></code></a></p></td>
+<td><p>Get Pair From index</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.inference.timed_partial_order.TimeConstraintsLP.get_pair_row_index" title="specless.inference.timed_partial_order.TimeConstraintsLP.get_pair_row_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_pair_row_index</span></code></a></p></td>
+<td><p>Get Index of the constraint</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.inference.timed_partial_order.TimeConstraintsLP.get_row" title="specless.inference.timed_partial_order.TimeConstraintsLP.get_row"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_row</span></code></a></p></td>
+<td><p>Get a row of the provided constraint</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.inference.timed_partial_order.TimeConstraintsLP.get_signs" title="specless.inference.timed_partial_order.TimeConstraintsLP.get_signs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_signs</span></code></a></p></td>
+<td><p>Get Sign</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.inference.timed_partial_order.TimeConstraintsLP.is_redundant" title="specless.inference.timed_partial_order.TimeConstraintsLP.is_redundant"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_redundant</span></code></a></p></td>
+<td><p>Check whther the constraint was redudant by analyzing the changes between the original bound and the new bound</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.inference.timed_partial_order.TimeConstraintsLP.remove_constraint" title="specless.inference.timed_partial_order.TimeConstraintsLP.remove_constraint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_constraint</span></code></a></p></td>
+<td><p>Remove the constraint</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.inference.timed_partial_order.TimeConstraintsLP.set_event_bound" title="specless.inference.timed_partial_order.TimeConstraintsLP.set_event_bound"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_event_bound</span></code></a></p></td>
+<td><p>Set Event Lower/Upper Bound</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.inference.timed_partial_order.TimeConstraintsLP.set_pair_bound" title="specless.inference.timed_partial_order.TimeConstraintsLP.set_pair_bound"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_pair_bound</span></code></a></p></td>
+<td><p>Set Pair Lower/Upper Bound</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.inference.timed_partial_order.TimeConstraintsLP.solvefor" title="specless.inference.timed_partial_order.TimeConstraintsLP.solvefor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solvefor</span></code></a></p></td>
+<td><p>Solve for the specified constraint.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.inference.timed_partial_order.TimeConstraintsLP.construct_lp_constraints">
+<span class="sig-name descname"><span class="pre">construct_lp_constraints</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/specless/inference/timed_partial_order.html#TimeConstraintsLP.construct_lp_constraints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.inference.timed_partial_order.TimeConstraintsLP.construct_lp_constraints" title="Link to this definition"></a></dt>
+<dd><p>Construct Linear Programming Constraints</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.inference.timed_partial_order.TimeConstraintsLP.get_column_index">
+<span class="sig-name descname"><span class="pre">get_column_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/specless/inference/timed_partial_order.html#TimeConstraintsLP.get_column_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.inference.timed_partial_order.TimeConstraintsLP.get_column_index" title="Link to this definition"></a></dt>
+<dd><p>Get the event variable index (column index)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.inference.timed_partial_order.TimeConstraintsLP.get_constraint_string">
+<span class="sig-name descname"><span class="pre">get_constraint_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_lb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decimals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/specless/inference/timed_partial_order.html#TimeConstraintsLP.get_constraint_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.inference.timed_partial_order.TimeConstraintsLP.get_constraint_string" title="Link to this definition"></a></dt>
+<dd><p>Get Constraint String</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.inference.timed_partial_order.TimeConstraintsLP.get_constraints_without">
+<span class="sig-name descname"><span class="pre">get_constraints_without</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_lb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/specless/inference/timed_partial_order.html#TimeConstraintsLP.get_constraints_without"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.inference.timed_partial_order.TimeConstraintsLP.get_constraints_without" title="Link to this definition"></a></dt>
+<dd><p>Get Constraints A and b without the specified constraint</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.inference.timed_partial_order.TimeConstraintsLP.get_event_from_row_index">
+<span class="sig-name descname"><span class="pre">get_event_from_row_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/specless/inference/timed_partial_order.html#TimeConstraintsLP.get_event_from_row_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.inference.timed_partial_order.TimeConstraintsLP.get_event_from_row_index" title="Link to this definition"></a></dt>
+<dd><p>Get Event from index</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.inference.timed_partial_order.TimeConstraintsLP.get_event_row_index">
+<span class="sig-name descname"><span class="pre">get_event_row_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_lb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/specless/inference/timed_partial_order.html#TimeConstraintsLP.get_event_row_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.inference.timed_partial_order.TimeConstraintsLP.get_event_row_index" title="Link to this definition"></a></dt>
+<dd><p>Get an index for the given constraint (row index)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.inference.timed_partial_order.TimeConstraintsLP.get_events">
+<span class="sig-name descname"><span class="pre">get_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span></span></span><a class="reference internal" href="../_modules/specless/inference/timed_partial_order.html#TimeConstraintsLP.get_events"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.inference.timed_partial_order.TimeConstraintsLP.get_events" title="Link to this definition"></a></dt>
+<dd><p>Find which event the indices are refering to</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.inference.timed_partial_order.TimeConstraintsLP.get_events_string">
+<span class="sig-name descname"><span class="pre">get_events_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/specless/inference/timed_partial_order.html#TimeConstraintsLP.get_events_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.inference.timed_partial_order.TimeConstraintsLP.get_events_string" title="Link to this definition"></a></dt>
+<dd><p>Translate a constraint to an strin</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.inference.timed_partial_order.TimeConstraintsLP.get_pair_bound">
+<span class="sig-name descname"><span class="pre">get_pair_bound</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_lb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/specless/inference/timed_partial_order.html#TimeConstraintsLP.get_pair_bound"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.inference.timed_partial_order.TimeConstraintsLP.get_pair_bound" title="Link to this definition"></a></dt>
+<dd><p>Get Lower/Upper bound for the event pair</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.inference.timed_partial_order.TimeConstraintsLP.get_pair_from_row_index">
+<span class="sig-name descname"><span class="pre">get_pair_from_row_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/specless/inference/timed_partial_order.html#TimeConstraintsLP.get_pair_from_row_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.inference.timed_partial_order.TimeConstraintsLP.get_pair_from_row_index" title="Link to this definition"></a></dt>
+<dd><p>Get Pair From index</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.inference.timed_partial_order.TimeConstraintsLP.get_pair_row_index">
+<span class="sig-name descname"><span class="pre">get_pair_row_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_lb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/specless/inference/timed_partial_order.html#TimeConstraintsLP.get_pair_row_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.inference.timed_partial_order.TimeConstraintsLP.get_pair_row_index" title="Link to this definition"></a></dt>
+<dd><p>Get Index of the constraint</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.inference.timed_partial_order.TimeConstraintsLP.get_row">
+<span class="sig-name descname"><span class="pre">get_row</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_lb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/specless/inference/timed_partial_order.html#TimeConstraintsLP.get_row"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.inference.timed_partial_order.TimeConstraintsLP.get_row" title="Link to this definition"></a></dt>
+<dd><p>Get a row of the provided constraint</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.inference.timed_partial_order.TimeConstraintsLP.get_signs">
+<span class="sig-name descname"><span class="pre">get_signs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_lb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/specless/inference/timed_partial_order.html#TimeConstraintsLP.get_signs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.inference.timed_partial_order.TimeConstraintsLP.get_signs" title="Link to this definition"></a></dt>
+<dd><p>Get Sign</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.inference.timed_partial_order.TimeConstraintsLP.is_redundant">
+<span class="sig-name descname"><span class="pre">is_redundant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orig_bound</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_bound</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/specless/inference/timed_partial_order.html#TimeConstraintsLP.is_redundant"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.inference.timed_partial_order.TimeConstraintsLP.is_redundant" title="Link to this definition"></a></dt>
+<dd><p>Check whther the constraint was redudant by analyzing the changes
+between the original bound and the new bound</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.inference.timed_partial_order.TimeConstraintsLP.remove_constraint">
+<span class="sig-name descname"><span class="pre">remove_constraint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_event</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/specless/inference/timed_partial_order.html#TimeConstraintsLP.remove_constraint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.inference.timed_partial_order.TimeConstraintsLP.remove_constraint" title="Link to this definition"></a></dt>
+<dd><p>Remove the constraint</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.inference.timed_partial_order.TimeConstraintsLP.set_event_bound">
+<span class="sig-name descname"><span class="pre">set_event_bound</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ub</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/specless/inference/timed_partial_order.html#TimeConstraintsLP.set_event_bound"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.inference.timed_partial_order.TimeConstraintsLP.set_event_bound" title="Link to this definition"></a></dt>
+<dd><p>Set Event Lower/Upper Bound</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.inference.timed_partial_order.TimeConstraintsLP.set_pair_bound">
+<span class="sig-name descname"><span class="pre">set_pair_bound</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ub</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/specless/inference/timed_partial_order.html#TimeConstraintsLP.set_pair_bound"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.inference.timed_partial_order.TimeConstraintsLP.set_pair_bound" title="Link to this definition"></a></dt>
+<dd><p>Set Pair Lower/Upper Bound</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specless.inference.timed_partial_order.TimeConstraintsLP.solvefor">
+<span class="sig-name descname"><span class="pre">solvefor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decimals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slack_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="../_modules/specless/inference/timed_partial_order.html#TimeConstraintsLP.solvefor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.inference.timed_partial_order.TimeConstraintsLP.solvefor" title="Link to this definition"></a></dt>
+<dd><p>Solve for the specified constraint.
+1. Remove the specified constraint from the constraint list
+2. Optimize for the specified constraint (minimize if lb or else maximize if ub)
+3. If the constraint was identified “redundant”, return all the information</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="specless.inference.timed_partial_order.TPOInferenceAlgorithm.html" class="btn btn-neutral float-left" title="specless.inference.timed_partial_order.TPOInferenceAlgorithm" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="specless.io.html" class="btn btn-neutral float-right" title="specless.io" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Kandai Watanabe.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

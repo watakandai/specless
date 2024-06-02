@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>specless.wrapper.labelwrapper &mdash; specless 0.0.2 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=e3a6060d"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            specless
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/specless.html">specless</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">specless</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">specless.wrapper.labelwrapper</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for specless.wrapper.labelwrapper</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">Label MiniGrid Wrapper</span>
+
+<span class="sd">import gym_minigrid  # noqa: F401</span>
+<span class="sd">import gymnasium as gym</span>
+<span class="sd">from specless.env.labelwrapper import LabelMiniGridWrapper</span>
+
+<span class="sd">env = gym.make(&quot;MiniGrid-BlockedUnlockPickup-v0&quot;)</span>
+<span class="sd">env = LabelMiniGridWrapper(env)</span>
+<span class="sd">state, info = env.reset()</span>
+<span class="sd">print(state)</span>
+
+<span class="sd">label = env.get_label_from_state(state)</span>
+<span class="sd">print(label)</span>
+
+<span class="sd">Returns:</span>
+<span class="sd">    _type_: _description_</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
+
+<span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<span class="kn">from</span> <span class="nn">gym_minigrid.minigrid</span> <span class="kn">import</span> <span class="n">MiniGridEnv</span>
+
+<span class="kn">from</span> <span class="nn">specless.const</span> <span class="kn">import</span> <span class="n">IDX_TO_COLOR</span><span class="p">,</span> <span class="n">IDX_TO_OBJECT</span><span class="p">,</span> <span class="n">OBJECT_TO_IDX</span>
+
+
+<div class="viewcode-block" id="LabelMiniGridWrapper">
+<a class="viewcode-back" href="../../../_autosummary/specless.wrapper.labelwrapper.LabelMiniGridWrapper.html#specless.wrapper.labelwrapper.LabelMiniGridWrapper">[docs]</a>
+<span class="k">class</span> <span class="nc">LabelMiniGridWrapper</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Wrapper</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">:</span> <span class="n">MiniGridEnv</span><span class="p">,</span> <span class="n">labelkey</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="n">skiplist</span><span class="o">=</span><span class="p">[])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labelkey</span> <span class="o">=</span> <span class="n">labelkey</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">skiplist</span> <span class="o">=</span> <span class="n">skiplist</span>
+
+<div class="viewcode-block" id="LabelMiniGridWrapper.get_label_from_state">
+<a class="viewcode-back" href="../../../_autosummary/specless.wrapper.labelwrapper.LabelMiniGridWrapper.html#specless.wrapper.labelwrapper.LabelMiniGridWrapper.get_label_from_state">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_label_from_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get label from state</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            state (Dict): _description_</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            _type_: _description_</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">base_env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">unwrapped</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="n">base_env</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">*</span><span class="n">base_env</span><span class="o">.</span><span class="n">agent_pos</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cell</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">obj_type</span> <span class="o">=</span> <span class="n">OBJECT_TO_IDX</span><span class="p">[</span><span class="s2">&quot;empty&quot;</span><span class="p">]</span>
+            <span class="n">obs</span> <span class="o">=</span> <span class="p">(</span><span class="n">obj_type</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">obs</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+
+        <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_color</span><span class="p">,</span> <span class="n">obj_state</span> <span class="o">=</span> <span class="n">obs</span>
+        <span class="c1"># Return &#39;&#39; if in the skiplist</span>
+        <span class="k">if</span> <span class="n">IDX_TO_OBJECT</span><span class="p">[</span><span class="n">obj_type</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">skiplist</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="n">prop_string_base</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">IDX_TO_OBJECT</span><span class="p">[</span><span class="n">obj_type</span><span class="p">],</span> <span class="n">IDX_TO_COLOR</span><span class="p">[</span><span class="n">obj_color</span><span class="p">]])</span>
+        <span class="c1"># return &quot;_&quot;.join([prop_string_base, DIR_TO_STRING[obj_state]])</span>
+        <span class="k">return</span> <span class="n">prop_string_base</span></div>
+
+
+<div class="viewcode-block" id="LabelMiniGridWrapper.reset">
+<a class="viewcode-back" href="../../../_autosummary/specless.wrapper.labelwrapper.LabelMiniGridWrapper.html#specless.wrapper.labelwrapper.LabelMiniGridWrapper.reset">[docs]</a>
+    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">obs</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_label_from_state</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
+        <span class="n">obs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="bp">self</span><span class="o">.</span><span class="n">labelkey</span><span class="p">:</span> <span class="n">label</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">obs</span><span class="p">,</span> <span class="n">info</span></div>
+
+
+<div class="viewcode-block" id="LabelMiniGridWrapper.step">
+<a class="viewcode-back" href="../../../_autosummary/specless.wrapper.labelwrapper.LabelMiniGridWrapper.html#specless.wrapper.labelwrapper.LabelMiniGridWrapper.step">[docs]</a>
+    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+        <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_label_from_state</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
+        <span class="n">obs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="bp">self</span><span class="o">.</span><span class="n">labelkey</span><span class="p">:</span> <span class="n">label</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="AddPosDirToMiniGridWrapper">
+<a class="viewcode-back" href="../../../_autosummary/specless.wrapper.labelwrapper.AddPosDirToMiniGridWrapper.html#specless.wrapper.labelwrapper.AddPosDirToMiniGridWrapper">[docs]</a>
+<span class="k">class</span> <span class="nc">AddPosDirToMiniGridWrapper</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Wrapper</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">:</span> <span class="n">MiniGridEnv</span><span class="p">,</span> <span class="n">poslabel</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;pos&quot;</span><span class="p">,</span> <span class="n">dirlabel</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;dir&quot;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">poslabel</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">poslabel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dirlabel</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">dirlabel</span>
+
+<div class="viewcode-block" id="AddPosDirToMiniGridWrapper.get_label_from_state">
+<a class="viewcode-back" href="../../../_autosummary/specless.wrapper.labelwrapper.AddPosDirToMiniGridWrapper.html#specless.wrapper.labelwrapper.AddPosDirToMiniGridWrapper.get_label_from_state">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_label_from_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get label from state</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            state (Dict): _description_</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            _type_: _description_</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">base_env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">unwrapped</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">base_env</span><span class="o">.</span><span class="n">agent_pos</span><span class="p">)</span>
+        <span class="nb">dir</span> <span class="o">=</span> <span class="n">base_env</span><span class="o">.</span><span class="n">agent_dir</span>
+
+        <span class="n">state</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;pos&quot;</span><span class="p">:</span> <span class="n">pos</span><span class="p">,</span> <span class="s2">&quot;dir&quot;</span><span class="p">:</span> <span class="nb">dir</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">state</span></div>
+
+
+<div class="viewcode-block" id="AddPosDirToMiniGridWrapper.reset">
+<a class="viewcode-back" href="../../../_autosummary/specless.wrapper.labelwrapper.AddPosDirToMiniGridWrapper.html#specless.wrapper.labelwrapper.AddPosDirToMiniGridWrapper.reset">[docs]</a>
+    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">obs</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">obs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_label_from_state</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">obs</span><span class="p">,</span> <span class="n">info</span></div>
+
+
+<div class="viewcode-block" id="AddPosDirToMiniGridWrapper.step">
+<a class="viewcode-back" href="../../../_autosummary/specless.wrapper.labelwrapper.AddPosDirToMiniGridWrapper.html#specless.wrapper.labelwrapper.AddPosDirToMiniGridWrapper.step">[docs]</a>
+    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+        <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+        <span class="n">obs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_label_from_state</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Kandai Watanabe.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

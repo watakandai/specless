@@ -1,0 +1,32 @@
+specless.wrapper.terminatewrapper
+=================================
+
+.. automodule:: specless.wrapper.terminatewrapper
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      TerminateIfNoStrategyWrapper
+   
+   
+
+   
+   
+   
+
+
+

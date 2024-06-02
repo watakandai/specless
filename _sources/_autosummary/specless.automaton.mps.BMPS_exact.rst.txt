@@ -1,0 +1,6 @@
+specless.automaton.mps.BMPS\_exact
+==================================
+
+.. currentmodule:: specless.automaton.mps
+
+.. autofunction:: BMPS_exact

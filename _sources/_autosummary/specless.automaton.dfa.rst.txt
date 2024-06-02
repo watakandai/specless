@@ -1,0 +1,34 @@
+specless.automaton.dfa
+======================
+
+.. automodule:: specless.automaton.dfa
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      DFA
+      SafetyDFA
+      SafetyDFABuilder
+   
+   
+
+   
+   
+   
+
+
+

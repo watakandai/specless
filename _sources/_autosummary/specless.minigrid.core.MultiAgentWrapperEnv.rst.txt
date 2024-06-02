@@ -1,0 +1,42 @@
+specless.minigrid.core.MultiAgentWrapperEnv
+===========================================
+
+.. currentmodule:: specless.minigrid.core
+
+.. autoclass:: MultiAgentWrapperEnv
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MultiAgentWrapperEnv.close
+      ~MultiAgentWrapperEnv.get_wrapper_attr
+      ~MultiAgentWrapperEnv.render
+      ~MultiAgentWrapperEnv.reset
+      ~MultiAgentWrapperEnv.step
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MultiAgentWrapperEnv.metadata
+      ~MultiAgentWrapperEnv.np_random
+      ~MultiAgentWrapperEnv.render_mode
+      ~MultiAgentWrapperEnv.reward_range
+      ~MultiAgentWrapperEnv.spec
+      ~MultiAgentWrapperEnv.unwrapped
+      ~MultiAgentWrapperEnv.action_space
+      ~MultiAgentWrapperEnv.observation_space
+   
+   

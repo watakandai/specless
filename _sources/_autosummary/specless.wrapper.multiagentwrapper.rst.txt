@@ -1,0 +1,32 @@
+specless.wrapper.multiagentwrapper
+==================================
+
+.. automodule:: specless.wrapper.multiagentwrapper
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      MultiAgentWrapper
+   
+   
+
+   
+   
+   
+
+
+

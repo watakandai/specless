@@ -1,0 +1,33 @@
+specless.inference
+==================
+
+.. automodule:: specless.inference
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   specless.inference.base
+   specless.inference.edsm
+   specless.inference.partial_order
+   specless.inference.timed_partial_order
+

@@ -1,0 +1,103 @@
+specless.automaton.dfa.SafetyDFA
+================================
+
+.. currentmodule:: specless.automaton.dfa
+
+.. autoclass:: SafetyDFA
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~SafetyDFA.add_edge
+      ~SafetyDFA.add_edges_from
+      ~SafetyDFA.add_node
+      ~SafetyDFA.add_nodes_from
+      ~SafetyDFA.add_weighted_edges_from
+      ~SafetyDFA.adjacency
+      ~SafetyDFA.clear
+      ~SafetyDFA.clear_edges
+      ~SafetyDFA.copy
+      ~SafetyDFA.disp_edges
+      ~SafetyDFA.disp_nodes
+      ~SafetyDFA.draw
+      ~SafetyDFA.edge_subgraph
+      ~SafetyDFA.generate_trace
+      ~SafetyDFA.generate_traces
+      ~SafetyDFA.get_edge_data
+      ~SafetyDFA.has_edge
+      ~SafetyDFA.has_node
+      ~SafetyDFA.has_predecessor
+      ~SafetyDFA.has_successor
+      ~SafetyDFA.is_directed
+      ~SafetyDFA.is_multigraph
+      ~SafetyDFA.is_safe
+      ~SafetyDFA.most_probable_string
+      ~SafetyDFA.nbunch_iter
+      ~SafetyDFA.neighbors
+      ~SafetyDFA.new_edge_key
+      ~SafetyDFA.number_of_edges
+      ~SafetyDFA.number_of_nodes
+      ~SafetyDFA.observe
+      ~SafetyDFA.order
+      ~SafetyDFA.plot_node_trans_dist
+      ~SafetyDFA.predecessors
+      ~SafetyDFA.remove_edge
+      ~SafetyDFA.remove_edges_from
+      ~SafetyDFA.remove_node
+      ~SafetyDFA.remove_nodes_from
+      ~SafetyDFA.reverse
+      ~SafetyDFA.satisfy_formula
+      ~SafetyDFA.size
+      ~SafetyDFA.subgraph
+      ~SafetyDFA.successors
+      ~SafetyDFA.to_directed
+      ~SafetyDFA.to_directed_class
+      ~SafetyDFA.to_undirected
+      ~SafetyDFA.to_undirected_class
+      ~SafetyDFA.update
+      ~SafetyDFA.write_traces_to_file
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~SafetyDFA.adj
+      ~SafetyDFA.automata_data_dir
+      ~SafetyDFA.automata_display_data_dir_name
+      ~SafetyDFA.degree
+      ~SafetyDFA.edges
+      ~SafetyDFA.in_degree
+      ~SafetyDFA.in_edges
+      ~SafetyDFA.name
+      ~SafetyDFA.nodes
+      ~SafetyDFA.out_degree
+      ~SafetyDFA.out_edges
+      ~SafetyDFA.pred
+      ~SafetyDFA.succ
+      ~SafetyDFA.alphabet_size
+      ~SafetyDFA.num_states
+      ~SafetyDFA.num_obs
+      ~SafetyDFA.final_transition_sym
+      ~SafetyDFA.empty_transition_sym
+      ~SafetyDFA.start_state
+      ~SafetyDFA.is_stochastic
+      ~SafetyDFA.is_sampleable
+      ~SafetyDFA.is_normalized
+      ~SafetyDFA.symbols
+      ~SafetyDFA.state_labels
+      ~SafetyDFA.observations
+      ~SafetyDFA.is_deterministic
+   
+   

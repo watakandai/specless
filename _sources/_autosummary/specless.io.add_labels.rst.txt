@@ -1,0 +1,6 @@
+specless.io.add\_labels
+=======================
+
+.. currentmodule:: specless.io
+
+.. autofunction:: add_labels
