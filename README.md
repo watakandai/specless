@@ -6,7 +6,7 @@
 
 # [WIP] specless (SPECification LEarning and Strategy Synthesis)
 
-[![Documentation Status](https://readthedocs.org/projects/specless/badge/?version=latest)](https://specless.readthedocs.io/en/latest/?badge=latest)
+[![Deploy Documentation](https://github.com/watakandai/specless/actions/workflows/main.yml/badge.svg)](https://github.com/watakandai/specless/actions/workflows/main.yml)
 [![Test Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/watakandai/5f5c84f28e80b29f2f9ce92300859446/raw/covbadge.json)](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/watakandai/5f5c84f28e80b29f2f9ce92300859446/raw/covbadge.json)
 [![PyPI Latest Release](https://img.shields.io/pypi/v/specless)](https://pypi.org/project/specless/)
 [![PyPI Downloads](https://img.shields.io/pypi/dm/specless)](https://pypi.org/project/specless/)
