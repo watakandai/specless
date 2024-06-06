@@ -9,14 +9,19 @@ Examples
 --------
 
 >>> import specless as sl
->>> traces = [[a,b,c], [a,b,b,c], [a,a,b,b,c]]
->>> dataset = sl.ArrayDataset(traces)
->>> inference = sl.TPOInference()
->>> specification = inference.infer(demonstrations)
-
+>>> demonstrations: list = [
+...     [[1, "a"], [2, "b"], [3, "c"]],
+...     [[4, "d"], [5, "e"], [6, "f"]],
+... ]
+>>> columns: list = ["timestamp", "symbol"]
+>>> timedtrace_dataset = sl.ArrayDataset(demonstrations, columns)
+>>> inference = sl.TPOInferenceAlgorithm()
+>>> specification = inference.infer(timedtrace_dataset)
 """
 
 import copy
+import glob
+import os
 import queue
 import random
 from collections import defaultdict
@@ -26,6 +31,7 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union
 import cvxopt as cvx
 import networkx as nx
 import numpy as np
+import pandas as pd
 
 from specless.dataset import ArrayDataset, BaseDataset
 from specless.inference.base import InferenceAlgorithm
@@ -59,6 +65,60 @@ class TPOInferenceAlgorithm(InferenceAlgorithm):
         self.graph = None
         self.partial_order = None
 
+    @staticmethod
+    def load_csvfiles_as_timedtraces(
+        filedir: str, symbolkey: str, timekey: str
+    ) -> TimedTraceList:
+        # Load all csv files in the directory
+        filepaths = sorted(glob.glob(os.path.join(filedir, "*.csv")))
+        dfs = [pd.read_csv(fp) for fp in filepaths]
+
+        if len(dfs) == 0:
+            return []
+
+        # Check if all dfs have the same column names
+        columns = dfs[0].columns
+        assert all([all(df.columns == columns) for df in dfs])
+
+        # Now check which
+        timedtraces = []
+        for df in dfs:
+            timedtrace = df[[symbolkey, timekey]].values.tolist()
+            timedtraces.append(timedtrace)
+        return timedtraces
+
+    @staticmethod
+    def load_concat_csvfile_as_timedtraces(
+        filename: str, symbolkey: str, timekey: str, iterkey: str
+    ):
+        df = pd.read_csv(filename)
+
+        timedtraces = []
+        for df in df.groupby(iterkey):
+            timedtrace = df[[symbolkey, timekey]].values.tolist()
+            timedtraces.append(timedtrace)
+        return timedtraces
+
+    @staticmethod
+    def load_abbadingofile_as_timetraces():
+        """Load a abbadingo-style data file
+        Files start from (#dataset, #symbols)
+        following a list of (#neg/pos{0,1} #datalength, data)
+
+        For example,
+        4 2
+        1 10 a a a a a b b b b b
+        1 5 a a a a b
+        1 2 a b
+        1 10 a a a a a a a a a b
+
+        Raises
+        ------
+        NotImplementedError
+            _description_
+        """
+        raise NotImplementedError()
+
     def infer(self, dataset: BaseDataset) -> Union[Specification, Exception]:
         """Infer a Timed Partial Order (TPO) from a list of timed traces
 
@@ -82,7 +142,7 @@ class TPOInferenceAlgorithm(InferenceAlgorithm):
             Timed Trace Data
 
         Returns
-        ------
+        -------
         Specification:
             Timed Partial Order
         """
@@ -752,3 +812,37 @@ class TimeConstraintsLP:
             "orig_bound": orig_bound,
             "new_bound": new_bound,
         }
+
+
+class PostProcessingFunc:
+    """Post Processing Function Class"""
+
+    def __init__(self, partial_order):
+        self.curr_node = None
+        self.target_nodes = []
+        self.redundants = []
+        self.edge_to_bound = {}
+        self.partial_order = partial_order
+
+    def __call__(
+        self, lp, source_event, target_event, redundant, lb, ub, *args, **kwargs
+    ):
+        """Post processing function call"""
+        if source_event != self.curr_node:
+            self.curr_node = source_event
+            self.target_nodes = []
+            self.redundants = []
+            self.edge_to_bound = {}
+        self.target_nodes.append(target_event)
+        self.redundants.append(redundant)
+        self.edge_to_bound[(source_event, target_event)] = (lb, ub)
+        if set(self.target_nodes) == set(self.partial_order[source_event]):
+            # If all of the constraints are redundant, keep it as it is
+            # (kept the constraints removed)
+            if sum(self.redundants) == len(self.partial_order[source_event]):
+                pass
+            # Else put all the contraints back
+            else:
+                for target_node in self.target_nodes:
+                    lb, ub = self.edge_to_bound[(source_event, target_node)]
+                    lp.set_pair_bound(source_event, target_node, lb, ub)

@@ -6,6 +6,7 @@ from typing import Callable, Dict, List, Optional, Tuple, Type, Union
 
 import networkx as nx
 import numpy as np
+import pandas as pd
 
 from specless.typing import TimedTrace
 
@@ -27,6 +28,10 @@ class TimedPartialOrder(PartialOrder):
         self.reverse_constraints: Dict[int, Dict[int, Dict[str, float]]] = defaultdict(
             lambda: defaultdict()
         )
+
+    @classmethod
+    def from_csv(cls, path: str) -> Type["TimedPartialOrder"]:
+        raise NotImplementedError()
 
     @classmethod
     def from_constraints(
@@ -340,6 +345,97 @@ class TimedPartialOrder(PartialOrder):
                 ub = d["ub"]
                 string += f"\t{lb} <= t_{tgt} - t_{src} <= {ub}\n"
         return string
+
+
+class Service:
+    name: str
+    type: str
+    from_str: str
+    to_str: str
+    service_time: float
+    controllabe: bool
+    precedences: List
+
+    def __init__(
+        self,
+        name,
+        type,
+        from_str,
+        to_str,
+        service_time,
+        controllable,
+        precedences: List,
+    ):
+        self.name = name
+        self.type = type
+        self.from_str = from_str
+        self.to_str = to_str
+        self.service_time = service_time
+        self.controllable = controllable
+        self.precedences = precedences
+
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.name
+
+
+class ServiceTimedPartialOrder(TimedPartialOrder):
+    def __init__(self) -> None:
+        super().__init__()
+
+    @staticmethod
+    def load_services(filepath: str) -> List[Service]:
+        """Parse Timed Partial Order with Service Time from CSV
+        CSV Columns: No.,Activity,ServiceTime,Service,From,To,Precedence,Operation
+
+        Arguments
+        =========
+        filepath: str
+            Path to the CSV file
+
+        Returns
+        =======
+        ServiceTimedPartialOrder
+
+        """
+
+        df = pd.read_csv(filepath)
+
+        services = []
+        for index, row in df.iterrows():
+            name = row["Activity"]
+            type = row["Service"]
+            from_str = row["From"]
+            to_str = row["To"]
+            service_time = row["ServiceTime"]
+            if not isinstance(from_str, str):
+                from_str = ""
+            if not isinstance(to_str, str):
+                to_str = ""
+            controllable = type != "Uncontrollable"
+            precedences = [
+                df[df["No."] == int(n)]["Activity"].values[0]
+                for n in df[df["No."] == row["No."]]["Precedence"].values[0].split(",")
+                if n != " "
+            ]
+            services.append(
+                Service(
+                    name,
+                    type,
+                    from_str,
+                    to_str,
+                    service_time,
+                    controllable,
+                    precedences,
+                )
+            )
+        return services
+
+    @classmethod
+    def from_services(cls, services):
+        pass
 
 
 def generate_random_timed_partial_order(

@@ -9,11 +9,11 @@ Examples
 --------
 
 >>> import specless as sl
->>> traces = [[a,b,c], [a,b,b,c], [a,a,b,b,c]]
->>> dataset = sl.ArrayDataset(traces)
->>> inference = sl.AutomataInferenceAlgorithm()
->>> specification = inference.infer(demonstrations)
+>>> filepath = 'examples/demo/pdfa.yaml'
+>>> dataset = sl.PathToFileDataset(filepath)
+>>> infernce = sl.AutomataInferenceAlgorithm()
 
+# TODO: >>> infernce.infer(dataset)
 """
 
 import os

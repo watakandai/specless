@@ -4,9 +4,11 @@ SpeclessEnv
 A standard gym.Env is accepted if the states and actions are finite
 (Discrete Obs and Action Space)
 >>> import gymnasium as gym
->>> env = gym.make("CustomEnv-v0")
->>> env.obs_space
-Dict(Discrete(), Text())
+>>> from specless.minigrid.tspenv import TSPEnv  # NOQA
+>>> env = gym.make("MiniGrid-TSP-v0")
+
+# >>> env.obs_space
+# Dict(Discrete(), Text())
 
 
 Wrapper
@@ -14,37 +16,37 @@ Wrapper
 A standard gym environment with other spaces (e.g., Dict)
 can be translated into a SpeclessEnv by providing the
 
+# TODO: >>>
+# >>> from specless.minigrid.core import SpeclessWwrapper
+# >>> env = SpeclessWwrapper(env, states, actions)
 
->>> from specless.gym.wrappers import SpeclessWwrapper
->>> env = SpeclessWwrapper(env, states, actions)
-* Note, continuous space will be supported in the future
+Note, continuous space will be supported in the future
 (using Sampled-based planners to translate the env into a finite system.)
 
 If wanted, we can extend it to multiple agents
->>> from specless.gym.wrappers import MultiAgentWrapper
->>> initial_states = [(1, 1), (2, 2), (3, 3)]
->>> env = MultiAgentWrapper(env, initial_states, concurrent=False) # Turn-based
+# TODO: >>>
+# >>> from specless.minigrid.core import MultiAgentWrapper
+# >>> initial_states = [(1, 1), (2, 2), (3, 3)]
+# >>> env = MultiAgentWrapper(env, initial_states, concurrent=False) # Turn-based
 
 Transition System Builder
 =========================
->>> from specless.system import TSBuilder
->>> env: SpeclessEnv = gym.make("CustomEnv-v0")
->>> actions = env.action_space.start + np.arange(env.action_space.n)
->>> tsbuilder = TSBuilder(actions)
->>> ts = tsbuilder(env)
-
-For multiple agents
->>> env: SpeclessEnv = gym.make("CustomEnv-v0")
->>> initial_states = [(1, 1), (2, 2), (3, 3)]
->>> env = MultiAgentWrapper(env, initial_states, concurrent=True)
+>>> import numpy as np
+>>> from specless.automaton.transition_system import TSBuilder
+>>> env = gym.make("MiniGrid-TSP-v0")
+>>> env = MiniGridTransitionSystemWrapper(env, ignore_direction=True)
 >>> tsbuilder = TSBuilder()
 >>> ts = tsbuilder(env)
 
-Users can set a function to label nodes
->>> tsbuilder.set_add_node_func(add_node_func)
+For multiple agents
+>>> env = gym.make("MiniGrid-TSP-v0")
+>>> env = MiniGridTransitionSystemWrapper(env, ignore_direction=True)
+>>> initial_states = [(1, 1), (2, 2), (3, 3)]
 
-and a function to set edge labels
->>> tsbuilder.set_add_edge_func(add_edge_func)
+#TODO: >>> env = MultiAgentWrapper(env, initial_states, concurrent=True)
+
+>>> tsbuilder = TSBuilder()
+>>> ts = tsbuilder(env)
 """
 
 from typing import Dict, List, Tuple
@@ -70,29 +72,16 @@ from specless.wrapper.tswrapper import TransitionSystemWrapper
 
 
 class MiniGridTransitionSystemWrapper(TransitionSystemWrapper):
-    """_summary_
+    """Wrapper for the MiniGrid environment to build a transition system.
 
     MiniGridEnv returns a state of type Dict
 
-    >>> state: Dict = {
-    >>>     'image': image,
-    >>>     'direction': self.agent_dir,
-    >>>     'mission': self.mission
-    >>> }
+    # state: Dict = {
+    #      'image': image,
+    #      'direction': self.agent_dir,
+    #      'mission': self.mission
+    # }
 
-    Args:
-        TransitionSystemWrapper (_type_): _description_
-
-    Raises:
-        NotImplementedError: _description_
-        NotImplementedError: _description_
-        NotImplementedError: _description_
-        NotImplementedError: _description_
-        NotImplementedError: _description_
-        NotImplementedError: _description_
-
-    Returns:
-        _type_: _description_
     """
 
     LABELKEY = "observation"
@@ -107,11 +96,13 @@ class MiniGridTransitionSystemWrapper(TransitionSystemWrapper):
         """
 
         MiniGridEnv
-        =============
+        -----------
         # Action enumeration for this environment
         self.actions: IntEnum = MiniGridEnv.Actions
+
         # Actions are discrete integer values
         self.action_space: gym.spaces.Discrete = spaces.Discrete(len(self.actions))
+
         """
         self.ignore_direction = ignore_direction
 
@@ -145,11 +136,13 @@ class MiniGridTransitionSystemWrapper(TransitionSystemWrapper):
         """Get current "node" from state.
         We only need agent's position and direction.
 
-        Args:
-            state (Dict): _description_
+        Args
+        ----
+        state (Dict): _description_
 
-        Returns:
-            Tuple: _description_
+        Returns
+        -------
+        Tuple: _description_
         """
         # Copied from gym_minigrid.minigrid.MiniGridEnv.__str__
         AGENT_DIR_TO_STR: dict[int, str] = {0: ">", 1: "V", 2: "<", 3: "^"}
@@ -168,8 +161,9 @@ class MiniGridTransitionSystemWrapper(TransitionSystemWrapper):
 
         Additionally, we need the agent's position and the direction
 
-        Returns:
-            Dict: _description_
+        Returns
+        -------
+        Dict: _description_
         """
         return obs
 
@@ -208,10 +202,12 @@ class MiniGridTransitionSystemWrapper(TransitionSystemWrapper):
         It can be accessed via key LABELKEY specified when
         LabelMinigridWrapper was instantiated.
 
-        Args:
-            state (Dict): _description_
+        Args
+        ----
+        state (Dict): _description_
 
-        Returns:
-            _type_: _description_
+        Returns
+        -------
+        _type_: _description_
         """
         return state[self.LABELKEY]

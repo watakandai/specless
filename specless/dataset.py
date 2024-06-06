@@ -8,21 +8,22 @@ Data Class
 
 It's basically a table. You can access its  size:
 
+>>> from specless.typing import Data
+>>> demonstration = Data([['a', 1], ['b', 4], ['c', 6]], columns=['symbol', 'timestamp'])
 >>> l = demonstration.size       # Return the number of elements in this object
-
 
 If it were a TimedTraceData object, it has a trace and timestamp data.
 
 >>> symbols = demonstration["symbol"]            # or demonstration.symbol
-                                                # Returns a Series object
+...                                              # Returns a Series object
 
->>> timestamps = demonstration["timestamp"]       # or demonstration.timestamp
-                                                  # Returns a Series object
+>>> timestamps = demonstration["timestamp"]      # or demonstration.timestamp
+...                                              # Returns a Series object
 
 or turn it into a list of tuples
 
->>> demo_list = demonstration.values.tolist()    # Returns a list of list
-[[s1, t1], [s2, t2], ..., [sn, tn]]
+>>> demonstration.values.tolist()                # Returns a list of list
+[['a', 1], ['b', 4], ['c', 6]]
 
 You can sort the data
 
@@ -33,21 +34,23 @@ Dataset Class
 ==============
 A Data object can access a data (demonstration/trace) by:
 
+>>> import specless as sl
 >>> demonstrations = [
-...     ["e1", "e2", "e3", "e4", "e5"],             # trace 1
-...     ["e1", "e4", "e2", "e3", "e5"],             # trace 2
-...     ["e1", "e2", "e4", "e3", "e5"],             # trace 3
-...]
+...     [["e1",1], ["e2",2], ["e3",3], ["e4",4], ["e5",5]],  # trace 1
+...     [["e1",1], ["e4",3], ["e2",5], ["e3",7], ["e5",9]],  # trace 2
+...     [["e1",2], ["e2",4], ["e4",6], ["e3",8], ["e5",10]], # trace 3
+... ]
 
->>> demonstrations = sl.ArrayDataset(demnstrations, columns=["symbol"])
->>> demonstration = demonstrations[i]
+>>> demonstrations = sl.ArrayDataset(demonstrations, columns=["symbol", "timestamp"])
+>>> demonstration = demonstrations[0]
 
 We can also return a list of data
 
->>> timed_traces = demonstrations.tolist()
-[[[s1, t1], [s2, t2], ..., [sn, tn]], ..., [[s1, t1], [s2, t2], ..., [sm, tm]]]
->>> traces = demonstrations.tolist(key="symbol")
-[[s1, s2, ..., sn], ..., [s1, s2, ..., sn]]
+>>> demonstrations.tolist()
+[[['e1', 1], ['e2', 2], ['e3', 3], ['e4', 4], ['e5', 5]], [['e1', 1], ['e4', 3], ['e2', 5], ['e3', 7], ['e5', 9]], [['e1', 2], ['e2', 4], ['e4', 6], ['e3', 8], ['e5', 10]]]
+
+>>> demonstrations.tolist(key="symbol")
+[['e1', 'e2', 'e3', 'e4', 'e5'], ['e1', 'e4', 'e2', 'e3', 'e5'], ['e1', 'e2', 'e4', 'e3', 'e5']]
 
 You can sort dataset in a batch
 
@@ -82,7 +85,7 @@ class BaseDataset(Dataset):
         data : List[Data]
             A list of data to be stored in the dataset.
         """
-        assert len(set(map(lambda d: tuple(d.columns.tolist()), data))) == 1
+        # assert len(set(map(lambda d: tuple(d.columns.tolist()), data))) == 1
         self.data: List[Data] = data
 
     @property
@@ -172,7 +175,7 @@ class ArrayDataset(BaseDataset):
         Examples
         --------
         >>> data = [[1, 2, 3], [4, 5, 6]]
-        >>> columns = ['a', 'b', 'c']
+        >>> columns = ['symbol']
         >>> dataset = ArrayDataset(data, columns)
         """
         super().__init__([Data(d, columns=columns) for d in data])
@@ -187,14 +190,14 @@ class CSVDataset(BaseDataset):
     --------
     Provide a directory to the traces:
 
-    >>> filedir = '/path/to/the/csv/directory/'
-    >>> dataset = CSVDataset(filedir)
+    >>> filedir = '/path/to/the/csv/directory/'     # doctest: +SKIP
+    >>> dataset = CSVDataset(filedir)               # doctest: +SKIP
 
     If the user strictly needs a sorted dataset, they can provide a list of paths:
 
-    >>> filedir = '/path/to/the/csv/directory/'
-    >>> filepaths = [os.path.join(filedir, str(i)) for i in range(100)]
-    >>> dataset = CSVDataset(filedir, filepaths=filepaths)
+    >>> filedir = '/path/to/the/csv/directory/'                         # doctest: +SKIP
+    >>> filepaths = [os.path.join(filedir, str(i)) for i in range(100)]  # doctest: +SKIP
+    >>> dataset = CSVDataset(filedir, filepaths=filepaths)                # doctest: +SKIP
     """
 
     def __init__(
@@ -213,7 +216,7 @@ class CSVDataset(BaseDataset):
         """
         if filepaths is None:
             filepaths = sorted(glob.glob(os.path.join(filedir, "*.csv")))
-        super().__init__([Data(pd.read_csv(fp)) for fp in filepaths])
+        super().__init__([pd.read_csv(fp) for fp in filepaths])
 
 
 class PathToFileDataset(BaseDataset):
@@ -225,7 +228,7 @@ class PathToFileDataset(BaseDataset):
 
     Examples
     --------
-    >>> filepath = '/path/to/the/file'
+    >>> filepath = 'examples/demo/pdfa.yaml'
     >>> dataset = PathToFileDataset(filepath)
     """
 

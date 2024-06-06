@@ -20,3 +20,4 @@ pyyaml
 gurobipy==10.0.3 # I think there was a reason ...
 ortools
 distinctipy
+scipy

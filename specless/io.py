@@ -11,6 +11,7 @@ Draw a graph:
 >>> G.add_node("B")
 >>> G.add_edge("A", "B")
 >>> draw_graph(G, "graph.png")
+<IPython.core.display.Image object>
 
 Draw a strategy:
 >>> from specless.strategy import PlanStrategy

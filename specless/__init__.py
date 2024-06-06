@@ -54,8 +54,10 @@ from .specification import (
     AutomataSpecification,  # NOQA
     MultiSpecifications,  # NOQA
     PartialOrder,  # NOQA
-    Specification,  # NOQA
     # PDFA,  # NOQA
+    Service,  # NOQA
+    ServiceTimedPartialOrder,  # NOQA
+    Specification,  # NOQA
     TimedPartialOrder,  # NOQA
     generate_random_constraints,  # NOQA
     generate_random_partial_order,  # NOQA
@@ -71,6 +73,7 @@ from .strategy import (
 from .synthesis import (
     ProductGraphSynthesisAlgorithm,  # NOQA
     RLynthesisAlgorithm,  # NOQA
+    ServiceTSPSynthesisAlgorithm,  # NOQA
     TSPSynthesisAlgorithm,  # NOQA
 )
 from .tsp import (

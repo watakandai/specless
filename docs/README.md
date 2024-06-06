@@ -3,6 +3,10 @@
 make html
 ```
 
+# Doc Tests
+```
+make doctest
+```
 
 # Error
 ## WARNING: toctree contains reference to nonexisting document

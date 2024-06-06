@@ -4,9 +4,11 @@ SpeclessEnv
 A standard gym.Env is accepted if the states and actions are finite
 (Discrete Obs and Action Space)
 >>> import gymnasium as gym
->>> env = gym.make("CustomEnv-v0")
->>> env.obs_space
-Dict(Discrete(), Text())
+>>> from specless.minigrid.tspenv import TSPEnv  # NOQA
+>>> env = gym.make("MiniGrid-TSP-v0")
+
+# >>> env.obs_space
+# Dict(Discrete(), Text())
 
 
 Wrapper
@@ -14,38 +16,40 @@ Wrapper
 A standard gym environment with other spaces (e.g., Dict)
 can be translated into a SpeclessEnv by providing the
 
+# TODO: >>>
+# >>> from specless.minigrid.core import SpeclessWwrapper
+# >>> env = SpeclessWwrapper(env, states, actions)
 
->>> from specless.gym.wrappers import SpeclessWwrapper
->>> env = SpeclessWwrapper(env, states, actions)
-* Note, continuous space will be supported in the future
+Note, continuous space will be supported in the future
 (using Sampled-based planners to translate the env into a finite system.)
 
 If wanted, we can extend it to multiple agents
->>> from specless.gym.wrappers import MultiAgentWrapper
->>> initial_states = [(1, 1), (2, 2), (3, 3)]
->>> env = MultiAgentWrapper(env, initial_states, concurrent=False) # Turn-based
+# TODO: >>>
+# >>> from specless.minigrid.core import MultiAgentWrapper
+# >>> initial_states = [(1, 1), (2, 2), (3, 3)]
+# >>> env = MultiAgentWrapper(env, initial_states, concurrent=False) # Turn-based
 
 Transition System Builder
 =========================
->>> from specless.system import TSBuilder
->>> env: SpeclessEnv = gym.make("CustomEnv-v0")
->>> actions = env.action_space.start + np.arange(env.action_space.n)
->>> tsbuilder = TSBuilder(actions)
->>> ts = tsbuilder(env)
-
-For multiple agents
->>> env: SpeclessEnv = gym.make("CustomEnv-v0")
->>> initial_states = [(1, 1), (2, 2), (3, 3)]
->>> env = MultiAgentWrapper(env, initial_states, concurrent=True)
+>>> import numpy as np
+>>> import specless as sl
+>>> from specless.automaton.transition_system import TSBuilder
+>>> env = gym.make("MiniGrid-TSP-v0")
+>>> env = sl.MiniGridTransitionSystemWrapper(env, ignore_direction=True)
 >>> tsbuilder = TSBuilder()
 >>> ts = tsbuilder(env)
 
-Users can set a function to label nodes
->>> tsbuilder.set_add_node_func(add_node_func)
+For multiple agents
+>>> env = gym.make("MiniGrid-TSP-v0")
+>>> env = sl.MiniGridTransitionSystemWrapper(env, ignore_direction=True)
+>>> initial_states = [(1, 1), (2, 2), (3, 3)]
 
-and a function to set edge labels
->>> tsbuilder.set_add_edge_func(add_edge_func)
+#TODO: >>> env = MultiAgentWrapper(env, initial_states, concurrent=True)
+
+>>> tsbuilder = TSBuilder()
+>>> ts = tsbuilder(env)
 """
+
 import queue
 from abc import ABCMeta, abstractmethod
 from typing import Any, Dict, Tuple

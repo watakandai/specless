@@ -9,10 +9,14 @@ Examples
 --------
 
 >>> import specless as sl
->>> traces = [[a,b,c], [a,b,b,c], [a,a,b,b,c]]
->>> dataset = sl.ArrayDataset(traces)
->>> inference = sl.TPOInference()
->>> specification = inference.infer(demonstrations)
+>>> demonstrations: list = [
+...     [[1, "a"], [2, "b"], [3, "c"]],
+...     [[4, "d"], [5, "e"], [6, "f"]],
+... ]
+>>> columns: list = ["timestamp", "symbol"]
+>>> timedtrace_dataset = sl.ArrayDataset(demonstrations, columns)
+>>> inference = sl.TPOInferenceAlgorithm()
+>>> specification = inference.infer(timedtrace_dataset)
 
 """
 

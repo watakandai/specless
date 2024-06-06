@@ -24,6 +24,8 @@ def collect_demonstration(
                 return [t] + s
             elif isinstance(s, tuple):
                 return (t, *s)
+            elif isinstance(s, str):
+                return (t, s)
             else:
                 msg = "Please pass a proper add_timestamp_func to add a timestamp to observations"
                 raise Exception(msg)
@@ -65,12 +67,11 @@ def collect_demonstrations(
     only_success: bool = False,
     only_failure: bool = False,
     only_finished: bool = False,
-    only_unfinished: bool = False,
     timeout: int = 10,
     **kwargs,
 ) -> List[List]:
-    msg = "Pick either only_success, only_failure, only_finished, or only_finished. `finished` includes success and failure."
-    assert sum([only_success, only_failure, only_finished, only_unfinished]) < 2, msg
+    msg = "Pick either only_success, only_failure, or only_finished. `finished` includes success and failure."
+    assert sum([only_success, only_failure, only_finished]) < 2, msg
 
     if only_success:
         collect_types = ["success"]
@@ -78,8 +79,8 @@ def collect_demonstrations(
         collect_types = ["failure"]
     if only_finished:
         collect_types = ["success", "failure"]
-    if only_unfinished:
-        collect_types = ["unfinished"]
+    else:
+        collect_types = []
 
     demonstrations: List = []
     start_time = time.time()
@@ -91,11 +92,9 @@ def collect_demonstrations(
         # Decided whether to add the demonstration to the list
         if "success" in collect_types and terminated:
             demonstrations.append(demo)
-
-        if "failure" in collect_types and truncated:
+        elif "failure" in collect_types and truncated:
             demonstrations.append(demo)
-
-        if "unfinished" in collect_types and not terminated and not truncated:
+        else:
             demonstrations.append(demo)
 
         if time.time() - start_time > timeout:

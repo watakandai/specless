@@ -39,7 +39,7 @@ def test_inference_on_gym_env():
     # Collect Demonstrations
     demonstrations = collect_demonstrations(
         env,
-        only_success=True,
+        only_finished=True,
         add_timestamp=True,
         num=10,
         timeout=1000,
