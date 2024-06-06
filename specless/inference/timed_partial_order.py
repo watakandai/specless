@@ -119,7 +119,6 @@ class TPOInferenceAlgorithm(InferenceAlgorithm):
         """
         raise NotImplementedError()
 
-    @staticmethod
     def infer(self, dataset: BaseDataset) -> Union[Specification, Exception]:
         """Infer a Timed Partial Order (TPO) from a list of timed traces
 
