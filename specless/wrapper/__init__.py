@@ -1,4 +1,7 @@
 from .actionwrapper import (
+    DIAG_ACTION_TO_POS_DELTA,  # NOQA
+    EIGHT_ACTION_TO_POS_DELTA,  # NOQA
+    FOUR_ACTION_TO_POS_DELTA,  # NOQA
     DiagOmniDirectionActions,  # NOQA
     DirectionalActionWrapper,  # NOQA
     EightOmniDirectionActions,  # NOQA
