@@ -21,7 +21,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="specless.inference.timed_partial_order.TimeConstraintsLP" href="specless.inference.timed_partial_order.TimeConstraintsLP.html" />
-    <link rel="prev" title="specless.inference.timed_partial_order" href="specless.inference.timed_partial_order.html" /> 
+    <link rel="prev" title="specless.inference.timed_partial_order.PostProcessingFunc" href="specless.inference.timed_partial_order.PostProcessingFunc.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -53,11 +53,13 @@
 <li class="toctree-l2"><a class="reference internal" href="specless.dataset.html">specless.dataset</a></li>
 <li class="toctree-l2"><a class="reference internal" href="specless.factory.html">specless.factory</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="specless.inference.html">specless.inference</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="specless.inference.html#inference-algorithm">Inference Algorithm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="specless.inference.base.html">specless.inference.base</a></li>
 <li class="toctree-l3"><a class="reference internal" href="specless.inference.edsm.html">specless.inference.edsm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="specless.inference.partial_order.html">specless.inference.partial_order</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="specless.inference.timed_partial_order.html">specless.inference.timed_partial_order</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="specless.inference.timed_partial_order.html#inference-algorithm">Inference Algorithm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="specless.inference.timed_partial_order.PostProcessingFunc.html">specless.inference.timed_partial_order.PostProcessingFunc</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">specless.inference.timed_partial_order.TPOInferenceAlgorithm</a></li>
 <li class="toctree-l4"><a class="reference internal" href="specless.inference.timed_partial_order.TimeConstraintsLP.html">specless.inference.timed_partial_order.TimeConstraintsLP</a></li>
 </ul>
@@ -141,10 +143,19 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#specless.inference.timed_partial_order.TPOInferenceAlgorithm.infer_time_constraints" title="specless.inference.timed_partial_order.TPOInferenceAlgorithm.infer_time_constraints"><code class="xref py py-obj docutils literal notranslate"><span class="pre">infer_time_constraints</span></code></a></p></td>
 <td><p>Infer Time Bounds on Nodes and Edges given Partial Order.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#specless.inference.timed_partial_order.TPOInferenceAlgorithm.select_next_edge_iterator" title="specless.inference.timed_partial_order.TPOInferenceAlgorithm.select_next_edge_iterator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_next_edge_iterator</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.inference.timed_partial_order.TPOInferenceAlgorithm.load_abbadingofile_as_timetraces" title="specless.inference.timed_partial_order.TPOInferenceAlgorithm.load_abbadingofile_as_timetraces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_abbadingofile_as_timetraces</span></code></a></p></td>
+<td><p>Load a abbadingo-style data file Files start from (#dataset, #symbols) following a list of (#neg/pos{0,1} #datalength, data)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_concat_csvfile_as_timedtraces</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_csvfiles_as_timedtraces</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.inference.timed_partial_order.TPOInferenceAlgorithm.select_next_edge_iterator" title="specless.inference.timed_partial_order.TPOInferenceAlgorithm.select_next_edge_iterator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_next_edge_iterator</span></code></a></p></td>
 <td><p>Select next_edge_iter function</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#specless.inference.timed_partial_order.TPOInferenceAlgorithm.select_post_processing_func" title="specless.inference.timed_partial_order.TPOInferenceAlgorithm.select_post_processing_func"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_post_processing_func</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.inference.timed_partial_order.TPOInferenceAlgorithm.select_post_processing_func" title="specless.inference.timed_partial_order.TPOInferenceAlgorithm.select_post_processing_func"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_post_processing_func</span></code></a></p></td>
 <td><p>Select a Post Processing Function</p></td>
 </tr>
 </tbody>
@@ -247,6 +258,25 @@ b.shape = (num_constraint, 1) or simply vector b</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="specless.inference.timed_partial_order.TPOInferenceAlgorithm.load_abbadingofile_as_timetraces">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_abbadingofile_as_timetraces</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specless/inference/timed_partial_order.html#TPOInferenceAlgorithm.load_abbadingofile_as_timetraces"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.inference.timed_partial_order.TPOInferenceAlgorithm.load_abbadingofile_as_timetraces" title="Link to this definition"></a></dt>
+<dd><p>Load a abbadingo-style data file
+Files start from (#dataset, #symbols)
+following a list of (#neg/pos{0,1} #datalength, data)</p>
+<p>For example,
+4 2
+1 10 a a a a a b b b b b
+1 5 a a a a b
+1 2 a b
+1 10 a a a a a a a a a b</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – _description_</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="specless.inference.timed_partial_order.TPOInferenceAlgorithm.select_next_edge_iterator">
 <span class="sig-name descname"><span class="pre">select_next_edge_iterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP" title="specless.inference.timed_partial_order.TimeConstraintsLP"><span class="pre">TimeConstraintsLP</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">po</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="specless.specification.partial_order.PartialOrder.html#specless.specification.partial_order.PartialOrder" title="specless.specification.partial_order.PartialOrder"><span class="pre">PartialOrder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">partial_order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span></span></span><a class="reference internal" href="../_modules/specless/inference/timed_partial_order.html#TPOInferenceAlgorithm.select_next_edge_iterator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.inference.timed_partial_order.TPOInferenceAlgorithm.select_next_edge_iterator" title="Link to this definition"></a></dt>
 <dd><p>Select next_edge_iter function</p>
@@ -266,7 +296,7 @@ b.shape = (num_constraint, 1) or simply vector b</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="specless.inference.timed_partial_order.html" class="btn btn-neutral float-left" title="specless.inference.timed_partial_order" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="specless.inference.timed_partial_order.PostProcessingFunc.html" class="btn btn-neutral float-left" title="specless.inference.timed_partial_order.PostProcessingFunc" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="specless.inference.timed_partial_order.TimeConstraintsLP.html" class="btn btn-neutral float-right" title="specless.inference.timed_partial_order.TimeConstraintsLP" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

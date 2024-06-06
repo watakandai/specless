@@ -76,6 +76,7 @@
 
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="kn">from</span> <span class="nn">specless.typing</span> <span class="kn">import</span> <span class="n">TimedTrace</span>
 
@@ -99,6 +100,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">reverse_constraints</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span>
             <span class="k">lambda</span><span class="p">:</span> <span class="n">defaultdict</span><span class="p">()</span>
         <span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_csv</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;TimedPartialOrder&quot;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 
 <div class="viewcode-block" id="TimedPartialOrder.from_constraints">
 <a class="viewcode-back" href="../../../_autosummary/specless.specification.timed_partial_order.TimedPartialOrder.html#specless.specification.timed_partial_order.TimedPartialOrder.from_constraints">[docs]</a>
@@ -433,6 +438,106 @@
                 <span class="n">ub</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;ub&quot;</span><span class="p">]</span>
                 <span class="n">string</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">{</span><span class="n">lb</span><span class="si">}</span><span class="s2"> &lt;= t_</span><span class="si">{</span><span class="n">tgt</span><span class="si">}</span><span class="s2"> - t_</span><span class="si">{</span><span class="n">src</span><span class="si">}</span><span class="s2"> &lt;= </span><span class="si">{</span><span class="n">ub</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="n">string</span></div>
+
+
+
+<div class="viewcode-block" id="Service">
+<a class="viewcode-back" href="../../../_autosummary/specless.specification.timed_partial_order.Service.html#specless.specification.timed_partial_order.Service">[docs]</a>
+<span class="k">class</span> <span class="nc">Service</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">from_str</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">to_str</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">service_time</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">controllabe</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">precedences</span><span class="p">:</span> <span class="n">List</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">,</span>
+        <span class="nb">type</span><span class="p">,</span>
+        <span class="n">from_str</span><span class="p">,</span>
+        <span class="n">to_str</span><span class="p">,</span>
+        <span class="n">service_time</span><span class="p">,</span>
+        <span class="n">controllable</span><span class="p">,</span>
+        <span class="n">precedences</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">from_str</span> <span class="o">=</span> <span class="n">from_str</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">to_str</span> <span class="o">=</span> <span class="n">to_str</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">service_time</span> <span class="o">=</span> <span class="n">service_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">controllable</span> <span class="o">=</span> <span class="n">controllable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">precedences</span> <span class="o">=</span> <span class="n">precedences</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span></div>
+
+
+
+<div class="viewcode-block" id="ServiceTimedPartialOrder">
+<a class="viewcode-back" href="../../../_autosummary/specless.specification.timed_partial_order.ServiceTimedPartialOrder.html#specless.specification.timed_partial_order.ServiceTimedPartialOrder">[docs]</a>
+<span class="k">class</span> <span class="nc">ServiceTimedPartialOrder</span><span class="p">(</span><span class="n">TimedPartialOrder</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="ServiceTimedPartialOrder.load_services">
+<a class="viewcode-back" href="../../../_autosummary/specless.specification.timed_partial_order.ServiceTimedPartialOrder.html#specless.specification.timed_partial_order.ServiceTimedPartialOrder.load_services">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">load_services</span><span class="p">(</span><span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Service</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse Timed Partial Order with Service Time from CSV</span>
+<span class="sd">        CSV Columns: No.,Activity,ServiceTime,Service,From,To,Precedence,Operation</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        =========</span>
+<span class="sd">        filepath: str</span>
+<span class="sd">            Path to the CSV file</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        =======</span>
+<span class="sd">        ServiceTimedPartialOrder</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+
+        <span class="n">services</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;Activity&quot;</span><span class="p">]</span>
+            <span class="nb">type</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;Service&quot;</span><span class="p">]</span>
+            <span class="n">from_str</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;From&quot;</span><span class="p">]</span>
+            <span class="n">to_str</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;To&quot;</span><span class="p">]</span>
+            <span class="n">service_time</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;ServiceTime&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">from_str</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">from_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">to_str</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">to_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">controllable</span> <span class="o">=</span> <span class="nb">type</span> <span class="o">!=</span> <span class="s2">&quot;Uncontrollable&quot;</span>
+            <span class="n">precedences</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;No.&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="p">)][</span><span class="s2">&quot;Activity&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;No.&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;No.&quot;</span><span class="p">]][</span><span class="s2">&quot;Precedence&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">n</span> <span class="o">!=</span> <span class="s2">&quot; &quot;</span>
+            <span class="p">]</span>
+            <span class="n">services</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">Service</span><span class="p">(</span>
+                    <span class="n">name</span><span class="p">,</span>
+                    <span class="nb">type</span><span class="p">,</span>
+                    <span class="n">from_str</span><span class="p">,</span>
+                    <span class="n">to_str</span><span class="p">,</span>
+                    <span class="n">service_time</span><span class="p">,</span>
+                    <span class="n">controllable</span><span class="p">,</span>
+                    <span class="n">precedences</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">services</span></div>
+
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_services</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">services</span><span class="p">):</span>
+        <span class="k">pass</span></div>
 
 
 

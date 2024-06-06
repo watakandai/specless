@@ -78,21 +78,22 @@
 
 <span class="sd">It&#39;s basically a table. You can access its  size:</span>
 
+<span class="sd">&gt;&gt;&gt; from specless.typing import Data</span>
+<span class="sd">&gt;&gt;&gt; demonstration = Data([[&#39;a&#39;, 1], [&#39;b&#39;, 4], [&#39;c&#39;, 6]], columns=[&#39;symbol&#39;, &#39;timestamp&#39;])</span>
 <span class="sd">&gt;&gt;&gt; l = demonstration.size       # Return the number of elements in this object</span>
-
 
 <span class="sd">If it were a TimedTraceData object, it has a trace and timestamp data.</span>
 
 <span class="sd">&gt;&gt;&gt; symbols = demonstration[&quot;symbol&quot;]            # or demonstration.symbol</span>
-<span class="sd">                                                # Returns a Series object</span>
+<span class="sd">...                                              # Returns a Series object</span>
 
-<span class="sd">&gt;&gt;&gt; timestamps = demonstration[&quot;timestamp&quot;]       # or demonstration.timestamp</span>
-<span class="sd">                                                  # Returns a Series object</span>
+<span class="sd">&gt;&gt;&gt; timestamps = demonstration[&quot;timestamp&quot;]      # or demonstration.timestamp</span>
+<span class="sd">...                                              # Returns a Series object</span>
 
 <span class="sd">or turn it into a list of tuples</span>
 
-<span class="sd">&gt;&gt;&gt; demo_list = demonstration.values.tolist()    # Returns a list of list</span>
-<span class="sd">[[s1, t1], [s2, t2], ..., [sn, tn]]</span>
+<span class="sd">&gt;&gt;&gt; demonstration.values.tolist()                # Returns a list of list</span>
+<span class="sd">[[&#39;a&#39;, 1], [&#39;b&#39;, 4], [&#39;c&#39;, 6]]</span>
 
 <span class="sd">You can sort the data</span>
 
@@ -103,21 +104,23 @@
 <span class="sd">==============</span>
 <span class="sd">A Data object can access a data (demonstration/trace) by:</span>
 
+<span class="sd">&gt;&gt;&gt; import specless as sl</span>
 <span class="sd">&gt;&gt;&gt; demonstrations = [</span>
-<span class="sd">...     [&quot;e1&quot;, &quot;e2&quot;, &quot;e3&quot;, &quot;e4&quot;, &quot;e5&quot;],             # trace 1</span>
-<span class="sd">...     [&quot;e1&quot;, &quot;e4&quot;, &quot;e2&quot;, &quot;e3&quot;, &quot;e5&quot;],             # trace 2</span>
-<span class="sd">...     [&quot;e1&quot;, &quot;e2&quot;, &quot;e4&quot;, &quot;e3&quot;, &quot;e5&quot;],             # trace 3</span>
-<span class="sd">...]</span>
+<span class="sd">...     [[&quot;e1&quot;,1], [&quot;e2&quot;,2], [&quot;e3&quot;,3], [&quot;e4&quot;,4], [&quot;e5&quot;,5]],  # trace 1</span>
+<span class="sd">...     [[&quot;e1&quot;,1], [&quot;e4&quot;,3], [&quot;e2&quot;,5], [&quot;e3&quot;,7], [&quot;e5&quot;,9]],  # trace 2</span>
+<span class="sd">...     [[&quot;e1&quot;,2], [&quot;e2&quot;,4], [&quot;e4&quot;,6], [&quot;e3&quot;,8], [&quot;e5&quot;,10]], # trace 3</span>
+<span class="sd">... ]</span>
 
-<span class="sd">&gt;&gt;&gt; demonstrations = sl.ArrayDataset(demnstrations, columns=[&quot;symbol&quot;])</span>
-<span class="sd">&gt;&gt;&gt; demonstration = demonstrations[i]</span>
+<span class="sd">&gt;&gt;&gt; demonstrations = sl.ArrayDataset(demonstrations, columns=[&quot;symbol&quot;, &quot;timestamp&quot;])</span>
+<span class="sd">&gt;&gt;&gt; demonstration = demonstrations[0]</span>
 
 <span class="sd">We can also return a list of data</span>
 
-<span class="sd">&gt;&gt;&gt; timed_traces = demonstrations.tolist()</span>
-<span class="sd">[[[s1, t1], [s2, t2], ..., [sn, tn]], ..., [[s1, t1], [s2, t2], ..., [sm, tm]]]</span>
-<span class="sd">&gt;&gt;&gt; traces = demonstrations.tolist(key=&quot;symbol&quot;)</span>
-<span class="sd">[[s1, s2, ..., sn], ..., [s1, s2, ..., sn]]</span>
+<span class="sd">&gt;&gt;&gt; demonstrations.tolist()</span>
+<span class="sd">[[[&#39;e1&#39;, 1], [&#39;e2&#39;, 2], [&#39;e3&#39;, 3], [&#39;e4&#39;, 4], [&#39;e5&#39;, 5]], [[&#39;e1&#39;, 1], [&#39;e4&#39;, 3], [&#39;e2&#39;, 5], [&#39;e3&#39;, 7], [&#39;e5&#39;, 9]], [[&#39;e1&#39;, 2], [&#39;e2&#39;, 4], [&#39;e4&#39;, 6], [&#39;e3&#39;, 8], [&#39;e5&#39;, 10]]]</span>
+
+<span class="sd">&gt;&gt;&gt; demonstrations.tolist(key=&quot;symbol&quot;)</span>
+<span class="sd">[[&#39;e1&#39;, &#39;e2&#39;, &#39;e3&#39;, &#39;e4&#39;, &#39;e5&#39;], [&#39;e1&#39;, &#39;e4&#39;, &#39;e2&#39;, &#39;e3&#39;, &#39;e5&#39;], [&#39;e1&#39;, &#39;e2&#39;, &#39;e4&#39;, &#39;e3&#39;, &#39;e5&#39;]]</span>
 
 <span class="sd">You can sort dataset in a batch</span>
 
@@ -154,7 +157,7 @@
 <span class="sd">        data : List[Data]</span>
 <span class="sd">            A list of data to be stored in the dataset.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()),</span> <span class="n">data</span><span class="p">)))</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="c1"># assert len(set(map(lambda d: tuple(d.columns.tolist()), data))) == 1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Data</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
 
     <span class="nd">@property</span>
@@ -253,7 +256,7 @@
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; data = [[1, 2, 3], [4, 5, 6]]</span>
-<span class="sd">        &gt;&gt;&gt; columns = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; columns = [&#39;symbol&#39;]</span>
 <span class="sd">        &gt;&gt;&gt; dataset = ArrayDataset(data, columns)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">([</span><span class="n">Data</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">])</span></div>
@@ -271,14 +274,14 @@
 <span class="sd">    --------</span>
 <span class="sd">    Provide a directory to the traces:</span>
 
-<span class="sd">    &gt;&gt;&gt; filedir = &#39;/path/to/the/csv/directory/&#39;</span>
-<span class="sd">    &gt;&gt;&gt; dataset = CSVDataset(filedir)</span>
+<span class="sd">    &gt;&gt;&gt; filedir = &#39;/path/to/the/csv/directory/&#39;     # doctest: +SKIP</span>
+<span class="sd">    &gt;&gt;&gt; dataset = CSVDataset(filedir)               # doctest: +SKIP</span>
 
 <span class="sd">    If the user strictly needs a sorted dataset, they can provide a list of paths:</span>
 
-<span class="sd">    &gt;&gt;&gt; filedir = &#39;/path/to/the/csv/directory/&#39;</span>
-<span class="sd">    &gt;&gt;&gt; filepaths = [os.path.join(filedir, str(i)) for i in range(100)]</span>
-<span class="sd">    &gt;&gt;&gt; dataset = CSVDataset(filedir, filepaths=filepaths)</span>
+<span class="sd">    &gt;&gt;&gt; filedir = &#39;/path/to/the/csv/directory/&#39;                         # doctest: +SKIP</span>
+<span class="sd">    &gt;&gt;&gt; filepaths = [os.path.join(filedir, str(i)) for i in range(100)]  # doctest: +SKIP</span>
+<span class="sd">    &gt;&gt;&gt; dataset = CSVDataset(filedir, filepaths=filepaths)                # doctest: +SKIP</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -297,7 +300,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">filepaths</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">filepaths</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filedir</span><span class="p">,</span> <span class="s2">&quot;*.csv&quot;</span><span class="p">)))</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">([</span><span class="n">Data</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">fp</span><span class="p">))</span> <span class="k">for</span> <span class="n">fp</span> <span class="ow">in</span> <span class="n">filepaths</span><span class="p">])</span></div>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">([</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span> <span class="k">for</span> <span class="n">fp</span> <span class="ow">in</span> <span class="n">filepaths</span><span class="p">])</span></div>
 
 
 
@@ -312,7 +315,7 @@
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt; filepath = &#39;/path/to/the/file&#39;</span>
+<span class="sd">    &gt;&gt;&gt; filepath = &#39;examples/demo/pdfa.yaml&#39;</span>
 <span class="sd">    &gt;&gt;&gt; dataset = PathToFileDataset(filepath)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 

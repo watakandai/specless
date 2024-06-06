@@ -83,26 +83,34 @@
 
 <span class="sd">Examples</span>
 <span class="sd">--------</span>
-<span class="sd">&gt;&gt;&gt; from specless.synthesis import ProductGraphSynthesisAlgorithm</span>
-<span class="sd">&gt;&gt;&gt; from specless.automaton.pdfa import PDFA</span>
-<span class="sd">&gt;&gt;&gt; from specless.wrapper.minigridwrapper import MiniGridTransitionSystemWrapper</span>
-<span class="sd">&gt;&gt;&gt; from specless.specification.base import Specification</span>
-<span class="sd">&gt;&gt;&gt; from specless.strategy import Strategy</span>
-<span class="sd">&gt;&gt;&gt; env = MiniGridTransitionSystemWrapper()</span>
-<span class="sd">&gt;&gt;&gt; specification = PDFA()</span>
-<span class="sd">&gt;&gt;&gt; synthesis_algorithm = ProductGraphSynthesisAlgorithm()</span>
-<span class="sd">&gt;&gt;&gt; strategy: Strategy = synthesis_algorithm.synthesize(env, specification)</span>
+<span class="sd">&gt;&gt;&gt; import os</span>
+<span class="sd">&gt;&gt;&gt; import gymnasium as gym</span>
+<span class="sd">&gt;&gt;&gt; import specless as sl</span>
+<span class="sd">&gt;&gt;&gt; from specless.minigrid.tspenv import TSPEnv  # NOQA</span>
+
+<span class="sd">&gt;&gt;&gt; env = gym.make(&quot;MiniGrid-TSP-v0&quot;, render_mode=&quot;rgb_array&quot;, seed=3)</span>
+<span class="sd">&gt;&gt;&gt; env = sl.MiniGridTransitionSystemWrapper(</span>
+<span class="sd">...     env, ignore_direction=True, skip_observations=[&quot;unseen&quot;, &quot;wall&quot;]</span>
+<span class="sd">... )</span>
+<span class="sd">&gt;&gt;&gt; pdfabuilder = sl.PDFABuilder()</span>
+<span class="sd">&gt;&gt;&gt; specification = pdfabuilder(os.path.join(os.getcwd(), &quot;examples/demo/pdfa.yaml&quot;))</span>
+<span class="sd">&gt;&gt;&gt; synthesis_algorithm = sl.ProductGraphSynthesisAlgorithm()</span>
+<span class="sd">&gt;&gt;&gt; strategy = synthesis_algorithm.synthesize(env, specification)</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
 
 <span class="kn">from</span> <span class="nn">specless.automaton.pdfa</span> <span class="kn">import</span> <span class="n">PDFA</span>
 <span class="kn">from</span> <span class="nn">specless.automaton.product</span> <span class="kn">import</span> <span class="n">ProductBuilder</span>
 <span class="kn">from</span> <span class="nn">specless.automaton.transition_system</span> <span class="kn">import</span> <span class="n">MinigridTransitionSystem</span><span class="p">,</span> <span class="n">TSBuilder</span>
-<span class="kn">from</span> <span class="nn">specless.factory.tspbuilder</span> <span class="kn">import</span> <span class="n">TSPBuilder</span><span class="p">,</span> <span class="n">TSPWithTPOBuilder</span>
+<span class="kn">from</span> <span class="nn">specless.factory.tspbuilder</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AircraftTurnaroundTSPBuilder</span><span class="p">,</span>
+    <span class="n">TSPBuilder</span><span class="p">,</span>
+    <span class="n">TSPWithTPOBuilder</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">specless.specification.base</span> <span class="kn">import</span> <span class="n">Specification</span>
 <span class="kn">from</span> <span class="nn">specless.specification.timed_partial_order</span> <span class="kn">import</span> <span class="n">TimedPartialOrder</span>
 <span class="kn">from</span> <span class="nn">specless.strategy</span> <span class="kn">import</span> <span class="p">(</span>
@@ -110,7 +118,7 @@
     <span class="n">Strategy</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">specless.tsp.solver.milp</span> <span class="kn">import</span> <span class="n">MILPTSPSolver</span><span class="p">,</span> <span class="n">MILPTSPWithTPOSolver</span>
-<span class="kn">from</span> <span class="nn">specless.tsp.tsp</span> <span class="kn">import</span> <span class="n">TSPWithTPO</span>
+<span class="kn">from</span> <span class="nn">specless.tsp.tsp</span> <span class="kn">import</span> <span class="n">Node</span><span class="p">,</span> <span class="n">TSPWithTPO</span>
 <span class="kn">from</span> <span class="nn">specless.wrapper.minigridwrapper</span> <span class="kn">import</span> <span class="n">MiniGridTransitionSystemWrapper</span>
 
 
@@ -222,6 +230,7 @@
         <span class="n">env</span><span class="p">:</span> <span class="n">gym</span><span class="o">.</span><span class="n">Env</span><span class="p">,</span>
         <span class="n">specification</span><span class="p">:</span> <span class="n">Specification</span><span class="p">,</span>
         <span class="n">num_agent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">init_nodes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">*</span><span class="n">args</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Strategy</span><span class="p">:</span>
@@ -266,7 +275,9 @@
             <span class="c1"># Solve TSP -&gt; Tours</span>
             <span class="n">tspsolver</span> <span class="o">=</span> <span class="n">MILPTSPWithTPOSolver</span><span class="p">()</span>
             <span class="c1"># TODO: tsp argument should be passed to the solve() function</span>
-            <span class="n">tours</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">timestamps</span> <span class="o">=</span> <span class="n">tspsolver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">tsp_with_tpo</span><span class="p">,</span> <span class="n">num_agent</span><span class="o">=</span><span class="n">num_agent</span><span class="p">)</span>
+            <span class="n">tours</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">timestamps</span> <span class="o">=</span> <span class="n">tspsolver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span>
+                <span class="n">tsp_with_tpo</span><span class="p">,</span> <span class="n">num_agent</span><span class="o">=</span><span class="n">num_agent</span><span class="p">,</span> <span class="n">init_nodes</span><span class="o">=</span><span class="n">init_nodes</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Convert the Transition System to a Traveling Saleseman Problem</span>
             <span class="n">tspbuilder</span> <span class="o">=</span> <span class="n">TSPBuilder</span><span class="p">()</span>
@@ -275,10 +286,127 @@
 
             <span class="c1"># Solve the TSP and obtain tours</span>
             <span class="n">tspsolver</span> <span class="o">=</span> <span class="n">MILPTSPSolver</span><span class="p">()</span>
-            <span class="n">tours</span><span class="p">,</span> <span class="n">cost</span> <span class="o">=</span> <span class="n">tspsolver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">tsp</span><span class="p">,</span> <span class="n">num_agent</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+            <span class="n">tours</span><span class="p">,</span> <span class="n">cost</span> <span class="o">=</span> <span class="n">tspsolver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span>
+                <span class="n">tsp</span><span class="p">,</span> <span class="n">num_agent</span><span class="o">=</span><span class="n">num_agent</span><span class="p">,</span> <span class="n">init_nodes</span><span class="o">=</span><span class="n">init_nodes</span>
+            <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">tspbuilder</span><span class="o">.</span><span class="n">synthesize_strategy</span><span class="p">(</span><span class="n">tours</span><span class="p">)</span></div>
 </div>
+
+
+
+<div class="viewcode-block" id="ServiceTSPSynthesisAlgorithm">
+<a class="viewcode-back" href="../../_autosummary/specless.synthesis.ServiceTSPSynthesisAlgorithm.html#specless.synthesis.ServiceTSPSynthesisAlgorithm">[docs]</a>
+<span class="k">class</span> <span class="nc">ServiceTSPSynthesisAlgorithm</span><span class="p">(</span><span class="n">SynthesisAlgorithm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Traveling Salesman Problem based synthesis algorithm&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tspsolver</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="ServiceTSPSynthesisAlgorithm.synthesize">
+<a class="viewcode-back" href="../../_autosummary/specless.synthesis.ServiceTSPSynthesisAlgorithm.html#specless.synthesis.ServiceTSPSynthesisAlgorithm.synthesize">[docs]</a>
+    <span class="k">def</span> <span class="nf">synthesize</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">env</span><span class="p">:</span> <span class="n">gym</span><span class="o">.</span><span class="n">Env</span><span class="p">,</span>
+        <span class="n">specification</span><span class="p">:</span> <span class="n">Specification</span><span class="p">,</span>
+        <span class="n">num_agent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">init_nodes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">services</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Strategy</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Synthesizes a PlanStrategy in an env given the specification.</span>
+
+<span class="sd">        Env+#Agent -&gt; TS+#Agent -&gt; (Nodes, Costs, ServiceTimes)+#Agent -&gt; List[Strategy]</span>
+<span class="sd">        -&gt; MultiEnv</span>
+<span class="sd">        * How should I deal with multiple robots?</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        env : gym.Env</span>
+<span class="sd">            The environment in which to synthesize the strategy.</span>
+<span class="sd">        specification : Specification</span>
+<span class="sd">            The specification for the strategy.</span>
+<span class="sd">        num_agent : int, optional</span>
+<span class="sd">            The number of agents. Default is 1.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Strategy</span>
+<span class="sd">            The synthesized strategy.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        Exception</span>
+<span class="sd">            If the environment is not wrapped by MiniGridTransitionSystemWrapper.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Env -&gt; TransitionSystem</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">MiniGridTransitionSystemWrapper</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">env</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;env must be wrapped by MiniGridTransitionSystemWrapper&quot;</span><span class="p">)</span>
+
+        <span class="n">tsbuilder</span> <span class="o">=</span> <span class="n">TSBuilder</span><span class="p">()</span>
+        <span class="n">transition_system</span><span class="p">:</span> <span class="n">MinigridTransitionSystem</span> <span class="o">=</span> <span class="n">tsbuilder</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+
+        <span class="c1"># =========================================</span>
+        <span class="n">tspbuilder</span> <span class="o">=</span> <span class="n">AircraftTurnaroundTSPBuilder</span><span class="p">(</span>
+            <span class="n">transition_system</span><span class="p">,</span>
+            <span class="n">init_nodes</span><span class="p">,</span>
+            <span class="n">services</span><span class="p">,</span>
+            <span class="n">ignoring_obs_keys</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;empty&quot;</span><span class="p">,</span> <span class="s2">&quot;lava&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="n">nodes</span><span class="p">,</span> <span class="n">costs</span><span class="p">,</span> <span class="n">service_times</span> <span class="o">=</span> <span class="n">tspbuilder</span><span class="o">.</span><span class="n">to_tsp_nodes_and_costs</span><span class="p">()</span>
+        <span class="c1"># =========================================</span>
+
+        <span class="n">global_constraints</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">local_constraints</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">construct_tpo_constraints</span><span class="p">(</span><span class="n">specification</span><span class="p">,</span> <span class="n">tspbuilder</span><span class="p">)</span>
+
+        <span class="c1"># =========================================</span>
+        <span class="n">tpo</span> <span class="o">=</span> <span class="n">TPO</span><span class="p">(</span><span class="n">global_constraints</span><span class="p">,</span> <span class="n">local_constraints</span><span class="p">)</span>
+        <span class="n">tsptc</span> <span class="o">=</span> <span class="n">TSPTC</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">costs</span><span class="p">,</span> <span class="n">tpo</span><span class="p">,</span> <span class="n">service_times</span><span class="p">)</span>
+        <span class="n">tsp_with_tpo</span><span class="p">:</span> <span class="n">TSPWithTPO</span> <span class="o">=</span> <span class="n">TSPWithTPO</span><span class="p">(</span><span class="n">tsptc</span><span class="p">)</span>
+
+        <span class="c1"># =========================================</span>
+        <span class="n">init_nodes</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nodes</span> <span class="k">if</span> <span class="s2">&quot;Robot&quot;</span> <span class="ow">in</span> <span class="n">tspbuilder</span><span class="o">.</span><span class="n">service_to_node</span><span class="o">.</span><span class="n">inverse</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+        <span class="p">]</span>
+        <span class="n">uncontrollable_init_nodes</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">tspbuilder</span><span class="o">.</span><span class="n">service_to_node</span><span class="p">[</span><span class="n">s</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">tspbuilder</span><span class="o">.</span><span class="n">uncontrollables</span>
+            <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;Arrival&quot;</span>
+        <span class="p">]</span>
+        <span class="n">init_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">uncontrollable_init_nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="c1"># =========================================</span>
+        <span class="n">solver</span> <span class="o">=</span> <span class="n">MILPTSPWithTPOSolver</span><span class="p">(</span><span class="n">tsp_with_tpo</span><span class="p">,</span> <span class="n">init_nodes</span><span class="o">=</span><span class="n">init_nodes</span><span class="p">)</span>
+        <span class="c1"># TPO &amp; TransitionSystem -&gt; TSP</span>
+        <span class="n">tspbuilder</span> <span class="o">=</span> <span class="n">TSPWithTPOBuilder</span><span class="p">()</span>
+        <span class="n">tsp_with_tpo</span><span class="p">:</span> <span class="n">TSPWithTPO</span> <span class="o">=</span> <span class="n">tspbuilder</span><span class="p">(</span><span class="n">transition_system</span><span class="p">,</span> <span class="n">specification</span><span class="p">)</span>
+
+        <span class="c1"># Solve TSP -&gt; Tours</span>
+        <span class="n">tspsolver</span> <span class="o">=</span> <span class="n">MILPTSPWithTPOSolver</span><span class="p">()</span>
+        <span class="c1"># TODO: tsp argument should be passed to the solve() function</span>
+        <span class="n">tours</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">timestamps</span> <span class="o">=</span> <span class="n">tspsolver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span>
+            <span class="n">tsp_with_tpo</span><span class="p">,</span> <span class="n">num_agent</span><span class="o">=</span><span class="n">num_agent</span><span class="p">,</span> <span class="n">init_nodes</span><span class="o">=</span><span class="n">init_nodes</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">tspbuilder</span><span class="o">.</span><span class="n">synthesize_strategy</span><span class="p">(</span><span class="n">tours</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">construct_tpo_constraints</span><span class="p">(</span><span class="n">specification</span><span class="p">,</span> <span class="n">ts_converter</span><span class="p">):</span>
+        <span class="n">local_constraints</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">src</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">specification</span><span class="o">.</span><span class="n">nodes</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+            <span class="n">src_service_name</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;Activity&quot;</span><span class="p">]</span>
+            <span class="n">src_node</span> <span class="o">=</span> <span class="n">ts_converter</span><span class="o">.</span><span class="n">service_name_to_node</span><span class="p">[</span><span class="n">src_service_name</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">tgt</span> <span class="ow">in</span> <span class="n">specification</span><span class="o">.</span><span class="n">successors</span><span class="p">(</span><span class="n">src</span><span class="p">):</span>
+                <span class="n">tgt_service_name</span> <span class="o">=</span> <span class="n">specification</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">tgt</span><span class="p">][</span><span class="s2">&quot;Activity&quot;</span><span class="p">]</span>
+                <span class="n">tgt_node</span> <span class="o">=</span> <span class="n">ts_converter</span><span class="o">.</span><span class="n">service_name_to_node</span><span class="p">[</span><span class="n">tgt_service_name</span><span class="p">]</span>
+                <span class="n">service</span> <span class="o">=</span> <span class="n">ts_converter</span><span class="o">.</span><span class="n">name_to_service</span><span class="p">[</span><span class="n">tgt_service_name</span><span class="p">]</span>
+                <span class="n">lb</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">if</span> <span class="n">service</span><span class="o">.</span><span class="n">service_time</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">lb</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">service_time</span>
+                <span class="n">local_constraints</span><span class="p">[(</span><span class="n">src_node</span><span class="p">,</span> <span class="n">tgt_node</span><span class="p">)]</span> <span class="o">=</span> <span class="p">(</span><span class="n">lb</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">local_constraints</span></div>
 
 
 

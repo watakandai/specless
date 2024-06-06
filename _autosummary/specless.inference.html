@@ -53,6 +53,7 @@
 <li class="toctree-l2"><a class="reference internal" href="specless.dataset.html">specless.dataset</a></li>
 <li class="toctree-l2"><a class="reference internal" href="specless.factory.html">specless.factory</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">specless.inference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#inference-algorithm">Inference Algorithm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="specless.inference.base.html">specless.inference.base</a></li>
 <li class="toctree-l3"><a class="reference internal" href="specless.inference.edsm.html">specless.inference.edsm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="specless.inference.partial_order.html">specless.inference.partial_order</a></li>
@@ -100,6 +101,37 @@
              
   <section id="module-specless.inference">
 <span id="specless-inference"></span><h1>specless.inference<a class="headerlink" href="#module-specless.inference" title="Link to this heading"></a></h1>
+<section id="inference-algorithm">
+<h2>Inference Algorithm<a class="headerlink" href="#inference-algorithm" title="Link to this heading"></a></h2>
+<p>Inference algorithms are the core of the Specless library. They are responsible for inferring a specification from demonstrations (dataset). The library provides a set of inference algorithms that can be used to infer different types of specifications. The inference algorithms are implemented as classes that inherit from the <cite>InferenceAlgorithm</cite> base class. Each inference algorithm implements the <cite>infer</cite> method, which takes a dataset as input and returns a specification.</p>
+<p>The library provides the following inference algorithms:</p>
+<ol class="arabic simple">
+<li><p>Partial Order (PO) Inference Algorithm</p></li>
+<li><p>Timed Partial Order (TPO) Inference Algorithm</p></li>
+<li><p>Automata Inference Algorithm</p></li>
+</ol>
+<p>The <cite>POInferenceAlgorithm</cite> infers a partial order specification from a list of traces. The <cite>TPOInferenceAlgorithm</cite> infers a timed partial order specification from a list of timed traces. The <cite>AutomataInferenceAlgorithm</cite> infers an automaton specification from a list of traces.</p>
+<p>Here is an example of how to use the inference algorithms</p>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a><a href="#id3"><span class="problematic" id="id4">`</span></a>python
+# Import the Specless library
+import specless as sl</p>
+<p># Create a list of traces
+traces = [[“a”, “b”, “c”], [“a”, “b”, “b”, “c”], [“a”, “a”, “b”, “b”, “c”]]
+dataset = sl.ArrayDataset(traces)</p>
+<p># Infer a partial order specification
+inference = sl.POInferenceAlgorithm()
+specification = inference.infer(dataset)</p>
+<p># Infer a timed partial order specification
+inference = sl.TPOInferenceAlgorithm()
+specification = inference.infer(dataset)</p>
+<p># Infer an automaton specification
+inference = sl.AutomataInferenceAlgorithm()
+specification = inference.infer(dataset)</p>
+<p><a href="#id5"><span class="problematic" id="id6">``</span></a><a href="#id7"><span class="problematic" id="id8">`</span></a></p>
+<p>The <cite>infer</cite> method of the inference algorithms returns a specification object. The specification object can be used to generate a visualization of the inferred specification.</p>
+<p>The inference algorithms can be used to infer specifications from different types of data, such as traces, timed traces, and datasets. The inferred specifications can be used to generate strategies for different types of systems, such as control systems, robotic systems, and game-playing systems.</p>
+<p>The Specless library provides a flexible and extensible framework for inferring specifications from data. The library can be used to infer specifications for a wide range of applications, including system verification, system synthesis, and system analysis.</p>
+</section>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="specless.inference.base.html#module-specless.inference.base" title="specless.inference.base"><code class="xref py py-obj docutils literal notranslate"><span class="pre">specless.inference.base</span></code></a></p></td>

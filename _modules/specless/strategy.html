@@ -96,13 +96,22 @@
 
 <span class="sd">Examples</span>
 <span class="sd">--------</span>
-<span class="sd">&gt;&gt;&gt; from gymnasium.strategy import PlanStrategy</span>
+<span class="sd">&gt;&gt;&gt; from specless.strategy import PlanStrategy</span>
 <span class="sd">&gt;&gt;&gt; plan = [0, 1, 2, 3]</span>
 <span class="sd">&gt;&gt;&gt; strategy = PlanStrategy(plan)</span>
-<span class="sd">&gt;&gt;&gt; state = [0, 0, 0]</span>
+<span class="sd">&gt;&gt;&gt; state = 0 # Anything is fine.</span>
 <span class="sd">&gt;&gt;&gt; action = strategy.action(state)</span>
 <span class="sd">&gt;&gt;&gt; print(action)</span>
-<span class="sd">[0, 1, 2, 3]</span>
+<span class="sd">0</span>
+<span class="sd">&gt;&gt;&gt; action = strategy.action(state)</span>
+<span class="sd">&gt;&gt;&gt; print(action)</span>
+<span class="sd">1</span>
+<span class="sd">&gt;&gt;&gt; action = strategy.action(state)</span>
+<span class="sd">&gt;&gt;&gt; print(action)</span>
+<span class="sd">2</span>
+<span class="sd">&gt;&gt;&gt; action = strategy.action(state)</span>
+<span class="sd">&gt;&gt;&gt; print(action)</span>
+<span class="sd">3</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>

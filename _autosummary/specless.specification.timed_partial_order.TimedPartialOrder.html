@@ -20,7 +20,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="specless.strategy" href="specless.strategy.html" />
-    <link rel="prev" title="specless.specification.timed_partial_order.generate_random_timed_trace" href="specless.specification.timed_partial_order.generate_random_timed_trace.html" /> 
+    <link rel="prev" title="specless.specification.timed_partial_order.ServiceTimedPartialOrder" href="specless.specification.timed_partial_order.ServiceTimedPartialOrder.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -64,6 +64,8 @@
 <li class="toctree-l4"><a class="reference internal" href="specless.specification.timed_partial_order.generate_random_constraints.html">specless.specification.timed_partial_order.generate_random_constraints</a></li>
 <li class="toctree-l4"><a class="reference internal" href="specless.specification.timed_partial_order.generate_random_timed_partial_order.html">specless.specification.timed_partial_order.generate_random_timed_partial_order</a></li>
 <li class="toctree-l4"><a class="reference internal" href="specless.specification.timed_partial_order.generate_random_timed_trace.html">specless.specification.timed_partial_order.generate_random_timed_trace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="specless.specification.timed_partial_order.Service.html">specless.specification.timed_partial_order.Service</a></li>
+<li class="toctree-l4"><a class="reference internal" href="specless.specification.timed_partial_order.ServiceTimedPartialOrder.html">specless.specification.timed_partial_order.ServiceTimedPartialOrder</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">specless.specification.timed_partial_order.TimedPartialOrder</a></li>
 </ul>
 </li>
@@ -160,106 +162,109 @@
 </dl>
 </p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.get_edge_data" title="specless.specification.timed_partial_order.TimedPartialOrder.get_edge_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_edge_data</span></code></a></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_csv</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.get_edge_data" title="specless.specification.timed_partial_order.TimedPartialOrder.get_edge_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_edge_data</span></code></a></p></td>
 <td><p>Returns the attribute dictionary associated with edge (u, v).</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_reverse_constraints</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_reverse_constraints</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.has_edge" title="specless.specification.timed_partial_order.TimedPartialOrder.has_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_edge</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.has_edge" title="specless.specification.timed_partial_order.TimedPartialOrder.has_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_edge</span></code></a></p></td>
 <td><p>Returns True if the edge (u, v) is in the graph.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.has_node" title="specless.specification.timed_partial_order.TimedPartialOrder.has_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_node</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.has_node" title="specless.specification.timed_partial_order.TimedPartialOrder.has_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_node</span></code></a></p></td>
 <td><p>Returns True if the graph contains the node n.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.has_predecessor" title="specless.specification.timed_partial_order.TimedPartialOrder.has_predecessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_predecessor</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.has_predecessor" title="specless.specification.timed_partial_order.TimedPartialOrder.has_predecessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_predecessor</span></code></a></p></td>
 <td><p>Returns True if node u has predecessor v.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.has_successor" title="specless.specification.timed_partial_order.TimedPartialOrder.has_successor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_successor</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.has_successor" title="specless.specification.timed_partial_order.TimedPartialOrder.has_successor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_successor</span></code></a></p></td>
 <td><p>Returns True if node u has successor v.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.is_directed" title="specless.specification.timed_partial_order.TimedPartialOrder.is_directed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_directed</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.is_directed" title="specless.specification.timed_partial_order.TimedPartialOrder.is_directed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_directed</span></code></a></p></td>
 <td><p>Returns True if graph is directed, False otherwise.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.is_multigraph" title="specless.specification.timed_partial_order.TimedPartialOrder.is_multigraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_multigraph</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.is_multigraph" title="specless.specification.timed_partial_order.TimedPartialOrder.is_multigraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_multigraph</span></code></a></p></td>
 <td><p>Returns True if graph is a multigraph, False otherwise.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.makespan" title="specless.specification.timed_partial_order.TimedPartialOrder.makespan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">makespan</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.makespan" title="specless.specification.timed_partial_order.TimedPartialOrder.makespan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">makespan</span></code></a></p></td>
 <td><p>Penelize the tour if the tour violates the constraints</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">makespan2</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">makespan2</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify_cost</span></code></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify_cost</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.nbunch_iter" title="specless.specification.timed_partial_order.TimedPartialOrder.nbunch_iter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nbunch_iter</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.nbunch_iter" title="specless.specification.timed_partial_order.TimedPartialOrder.nbunch_iter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nbunch_iter</span></code></a></p></td>
 <td><p>Returns an iterator over nodes contained in nbunch that are also in the graph.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.neighbors" title="specless.specification.timed_partial_order.TimedPartialOrder.neighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">neighbors</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.neighbors" title="specless.specification.timed_partial_order.TimedPartialOrder.neighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">neighbors</span></code></a></p></td>
 <td><p>Returns an iterator over successor nodes of n.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.number_of_edges" title="specless.specification.timed_partial_order.TimedPartialOrder.number_of_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_edges</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.number_of_edges" title="specless.specification.timed_partial_order.TimedPartialOrder.number_of_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_edges</span></code></a></p></td>
 <td><p>Returns the number of edges between two nodes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.number_of_nodes" title="specless.specification.timed_partial_order.TimedPartialOrder.number_of_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_nodes</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.number_of_nodes" title="specless.specification.timed_partial_order.TimedPartialOrder.number_of_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_nodes</span></code></a></p></td>
 <td><p>Returns the number of nodes in the graph.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.order" title="specless.specification.timed_partial_order.TimedPartialOrder.order"><code class="xref py py-obj docutils literal notranslate"><span class="pre">order</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.order" title="specless.specification.timed_partial_order.TimedPartialOrder.order"><code class="xref py py-obj docutils literal notranslate"><span class="pre">order</span></code></a></p></td>
 <td><p>Returns the number of nodes in the graph.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.penalize" title="specless.specification.timed_partial_order.TimedPartialOrder.penalize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">penalize</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.penalize" title="specless.specification.timed_partial_order.TimedPartialOrder.penalize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">penalize</span></code></a></p></td>
 <td><p>Penelize the tour if the tour violates the constraints</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.predecessors" title="specless.specification.timed_partial_order.TimedPartialOrder.predecessors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predecessors</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.predecessors" title="specless.specification.timed_partial_order.TimedPartialOrder.predecessors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predecessors</span></code></a></p></td>
 <td><p>Returns an iterator over predecessor nodes of n.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">print</span></code></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">print</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.remove_edge" title="specless.specification.timed_partial_order.TimedPartialOrder.remove_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_edge</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.remove_edge" title="specless.specification.timed_partial_order.TimedPartialOrder.remove_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_edge</span></code></a></p></td>
 <td><p>Remove the edge between u and v.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.remove_edges_from" title="specless.specification.timed_partial_order.TimedPartialOrder.remove_edges_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_edges_from</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.remove_edges_from" title="specless.specification.timed_partial_order.TimedPartialOrder.remove_edges_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_edges_from</span></code></a></p></td>
 <td><p>Remove all edges specified in ebunch.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.remove_node" title="specless.specification.timed_partial_order.TimedPartialOrder.remove_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_node</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.remove_node" title="specless.specification.timed_partial_order.TimedPartialOrder.remove_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_node</span></code></a></p></td>
 <td><p>Remove node n.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.remove_nodes_from" title="specless.specification.timed_partial_order.TimedPartialOrder.remove_nodes_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_nodes_from</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.remove_nodes_from" title="specless.specification.timed_partial_order.TimedPartialOrder.remove_nodes_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_nodes_from</span></code></a></p></td>
 <td><p>Remove multiple nodes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.reverse" title="specless.specification.timed_partial_order.TimedPartialOrder.reverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reverse</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.reverse" title="specless.specification.timed_partial_order.TimedPartialOrder.reverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reverse</span></code></a></p></td>
 <td><p>Returns the reverse of the graph.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.satisfy" title="specless.specification.timed_partial_order.TimedPartialOrder.satisfy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">satisfy</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.satisfy" title="specless.specification.timed_partial_order.TimedPartialOrder.satisfy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">satisfy</span></code></a></p></td>
 <td><p>Checks if the timed_trace satisfies the TPO constraints</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.size" title="specless.specification.timed_partial_order.TimedPartialOrder.size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">size</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.size" title="specless.specification.timed_partial_order.TimedPartialOrder.size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">size</span></code></a></p></td>
 <td><p>Returns the number of edges or total of all edge weights.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.subgraph" title="specless.specification.timed_partial_order.TimedPartialOrder.subgraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subgraph</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.subgraph" title="specless.specification.timed_partial_order.TimedPartialOrder.subgraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subgraph</span></code></a></p></td>
 <td><p>Returns a SubGraph view of the subgraph induced on <cite>nodes</cite>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.successors" title="specless.specification.timed_partial_order.TimedPartialOrder.successors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">successors</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.successors" title="specless.specification.timed_partial_order.TimedPartialOrder.successors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">successors</span></code></a></p></td>
 <td><p>Returns an iterator over successor nodes of n.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.to_directed" title="specless.specification.timed_partial_order.TimedPartialOrder.to_directed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_directed</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.to_directed" title="specless.specification.timed_partial_order.TimedPartialOrder.to_directed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_directed</span></code></a></p></td>
 <td><p>Returns a directed representation of the graph.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.to_directed_class" title="specless.specification.timed_partial_order.TimedPartialOrder.to_directed_class"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_directed_class</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.to_directed_class" title="specless.specification.timed_partial_order.TimedPartialOrder.to_directed_class"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_directed_class</span></code></a></p></td>
 <td><p>Returns the class to use for empty directed copies.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.to_undirected" title="specless.specification.timed_partial_order.TimedPartialOrder.to_undirected"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_undirected</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.to_undirected" title="specless.specification.timed_partial_order.TimedPartialOrder.to_undirected"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_undirected</span></code></a></p></td>
 <td><p>Returns an undirected representation of the digraph.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.to_undirected_class" title="specless.specification.timed_partial_order.TimedPartialOrder.to_undirected_class"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_undirected_class</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.to_undirected_class" title="specless.specification.timed_partial_order.TimedPartialOrder.to_undirected_class"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_undirected_class</span></code></a></p></td>
 <td><p>Returns the class to use for empty undirected copies.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.transitive_reduction" title="specless.specification.timed_partial_order.TimedPartialOrder.transitive_reduction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transitive_reduction</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.transitive_reduction" title="specless.specification.timed_partial_order.TimedPartialOrder.transitive_reduction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transitive_reduction</span></code></a></p></td>
 <td><p>Transitive Reduce the model to remove redundant edges</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.update" title="specless.specification.timed_partial_order.TimedPartialOrder.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#specless.specification.timed_partial_order.TimedPartialOrder.update" title="specless.specification.timed_partial_order.TimedPartialOrder.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a></p></td>
 <td><p>Update the graph using nodes/edges/graphs as input.</p></td>
 </tr>
 </tbody>
@@ -2124,7 +2129,7 @@ be slightly different and require tweaks of these examples:</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="specless.specification.timed_partial_order.generate_random_timed_trace.html" class="btn btn-neutral float-left" title="specless.specification.timed_partial_order.generate_random_timed_trace" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="specless.specification.timed_partial_order.ServiceTimedPartialOrder.html" class="btn btn-neutral float-left" title="specless.specification.timed_partial_order.ServiceTimedPartialOrder" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="specless.strategy.html" class="btn btn-neutral float-right" title="specless.strategy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

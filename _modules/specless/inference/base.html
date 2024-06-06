@@ -79,10 +79,14 @@
 <span class="sd">--------</span>
 
 <span class="sd">&gt;&gt;&gt; import specless as sl</span>
-<span class="sd">&gt;&gt;&gt; traces = [[a,b,c], [a,b,b,c], [a,a,b,b,c]]</span>
-<span class="sd">&gt;&gt;&gt; dataset = sl.ArrayDataset(traces)</span>
-<span class="sd">&gt;&gt;&gt; inference = sl.TPOInference()</span>
-<span class="sd">&gt;&gt;&gt; specification = inference.infer(demonstrations)</span>
+<span class="sd">&gt;&gt;&gt; demonstrations: list = [</span>
+<span class="sd">...     [[1, &quot;a&quot;], [2, &quot;b&quot;], [3, &quot;c&quot;]],</span>
+<span class="sd">...     [[4, &quot;d&quot;], [5, &quot;e&quot;], [6, &quot;f&quot;]],</span>
+<span class="sd">... ]</span>
+<span class="sd">&gt;&gt;&gt; columns: list = [&quot;timestamp&quot;, &quot;symbol&quot;]</span>
+<span class="sd">&gt;&gt;&gt; timedtrace_dataset = sl.ArrayDataset(demonstrations, columns)</span>
+<span class="sd">&gt;&gt;&gt; inference = sl.TPOInferenceAlgorithm()</span>
+<span class="sd">&gt;&gt;&gt; specification = inference.infer(timedtrace_dataset)</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 

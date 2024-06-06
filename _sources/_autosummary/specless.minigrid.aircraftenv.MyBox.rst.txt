@@ -1,0 +1,32 @@
+specless.minigrid.aircraftenv.MyBox
+===================================
+
+.. currentmodule:: specless.minigrid.aircraftenv
+
+.. autoclass:: MyBox
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MyBox.can_contain
+      ~MyBox.can_overlap
+      ~MyBox.can_pickup
+      ~MyBox.decode
+      ~MyBox.encode
+      ~MyBox.render
+      ~MyBox.see_behind
+      ~MyBox.toggle
+   
+   
+
+   
+   
+   

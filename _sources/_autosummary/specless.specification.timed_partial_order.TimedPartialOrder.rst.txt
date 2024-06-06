@@ -29,6 +29,7 @@ specless.specification.timed\_partial\_order.TimedPartialOrder
       ~TimedPartialOrder.copy
       ~TimedPartialOrder.edge_subgraph
       ~TimedPartialOrder.from_constraints
+      ~TimedPartialOrder.from_csv
       ~TimedPartialOrder.get_edge_data
       ~TimedPartialOrder.get_reverse_constraints
       ~TimedPartialOrder.has_edge

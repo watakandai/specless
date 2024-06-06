@@ -96,6 +96,8 @@
                 <span class="k">return</span> <span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">+</span> <span class="n">s</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
                 <span class="k">return</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="o">*</span><span class="n">s</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Please pass a proper add_timestamp_func to add a timestamp to observations&quot;</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
@@ -140,12 +142,11 @@
     <span class="n">only_success</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">only_failure</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">only_finished</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="n">only_unfinished</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">]:</span>
-    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Pick either only_success, only_failure, only_finished, or only_finished. `finished` includes success and failure.&quot;</span>
-    <span class="k">assert</span> <span class="nb">sum</span><span class="p">([</span><span class="n">only_success</span><span class="p">,</span> <span class="n">only_failure</span><span class="p">,</span> <span class="n">only_finished</span><span class="p">,</span> <span class="n">only_unfinished</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">,</span> <span class="n">msg</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Pick either only_success, only_failure, or only_finished. `finished` includes success and failure.&quot;</span>
+    <span class="k">assert</span> <span class="nb">sum</span><span class="p">([</span><span class="n">only_success</span><span class="p">,</span> <span class="n">only_failure</span><span class="p">,</span> <span class="n">only_finished</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">,</span> <span class="n">msg</span>
 
     <span class="k">if</span> <span class="n">only_success</span><span class="p">:</span>
         <span class="n">collect_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;success&quot;</span><span class="p">]</span>
@@ -153,8 +154,8 @@
         <span class="n">collect_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;failure&quot;</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">only_finished</span><span class="p">:</span>
         <span class="n">collect_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;success&quot;</span><span class="p">,</span> <span class="s2">&quot;failure&quot;</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">only_unfinished</span><span class="p">:</span>
-        <span class="n">collect_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;unfinished&quot;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">collect_types</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="n">demonstrations</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
@@ -166,11 +167,9 @@
         <span class="c1"># Decided whether to add the demonstration to the list</span>
         <span class="k">if</span> <span class="s2">&quot;success&quot;</span> <span class="ow">in</span> <span class="n">collect_types</span> <span class="ow">and</span> <span class="n">terminated</span><span class="p">:</span>
             <span class="n">demonstrations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">demo</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="s2">&quot;failure&quot;</span> <span class="ow">in</span> <span class="n">collect_types</span> <span class="ow">and</span> <span class="n">truncated</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="s2">&quot;failure&quot;</span> <span class="ow">in</span> <span class="n">collect_types</span> <span class="ow">and</span> <span class="n">truncated</span><span class="p">:</span>
             <span class="n">demonstrations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">demo</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="s2">&quot;unfinished&quot;</span> <span class="ow">in</span> <span class="n">collect_types</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">terminated</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">truncated</span><span class="p">:</span>
+        <span class="k">else</span><span class="p">:</span>
             <span class="n">demonstrations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">demo</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span> <span class="o">&gt;</span> <span class="n">timeout</span><span class="p">:</span>

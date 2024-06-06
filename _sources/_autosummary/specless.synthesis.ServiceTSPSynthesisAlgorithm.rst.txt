@@ -1,0 +1,26 @@
+specless.synthesis.ServiceTSPSynthesisAlgorithm
+===============================================
+
+.. currentmodule:: specless.synthesis
+
+.. autoclass:: ServiceTSPSynthesisAlgorithm
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~ServiceTSPSynthesisAlgorithm.construct_tpo_constraints
+      ~ServiceTSPSynthesisAlgorithm.synthesize
+   
+   
+
+   
+   
+   

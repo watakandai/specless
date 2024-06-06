@@ -114,36 +114,13 @@
 <dt class="sig sig-object py" id="specless.wrapper.minigridwrapper.MiniGridTransitionSystemWrapper">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">specless.wrapper.minigridwrapper.</span></span><span class="sig-name descname"><span class="pre">MiniGridTransitionSystemWrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MiniGridEnv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_observations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['unseen',</span> <span class="pre">'wall',</span> <span class="pre">'empty']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_done</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specless/wrapper/minigridwrapper.html#MiniGridTransitionSystemWrapper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.wrapper.minigridwrapper.MiniGridTransitionSystemWrapper" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="specless.wrapper.tswrapper.TransitionSystemWrapper.html#specless.wrapper.tswrapper.TransitionSystemWrapper" title="specless.wrapper.tswrapper.TransitionSystemWrapper"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransitionSystemWrapper</span></code></a></p>
-<p>_summary_</p>
+<p>Wrapper for the MiniGrid environment to build a transition system.</p>
 <p>MiniGridEnv returns a state of type Dict</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">state</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="p">{</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s1">&#39;image&#39;</span><span class="p">:</span> <span class="n">image</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s1">&#39;direction&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent_dir</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s1">&#39;mission&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mission</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">}</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>TransitionSystemWrapper</strong> (<em>_type_</em>) – _description_</p>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>NotImplementedError</strong> – _description_</p></li>
-<li><p><strong>NotImplementedError</strong> – _description_</p></li>
-<li><p><strong>NotImplementedError</strong> – _description_</p></li>
-<li><p><strong>NotImplementedError</strong> – _description_</p></li>
-<li><p><strong>NotImplementedError</strong> – _description_</p></li>
-<li><p><strong>NotImplementedError</strong> – _description_</p></li>
-</ul>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>_description_</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>_type_</p>
-</dd>
-</dl>
+<p># state: Dict = {
+#      ‘image’: image,
+#      ‘direction’: self.agent_dir,
+#      ‘mission’: self.mission
+# }</p>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>

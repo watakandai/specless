@@ -61,6 +61,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#synthesis-algorithms">Synthesis Algorithms</a></li>
 <li class="toctree-l3"><a class="reference internal" href="specless.synthesis.ProductGraphSynthesisAlgorithm.html">specless.synthesis.ProductGraphSynthesisAlgorithm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="specless.synthesis.RLynthesisAlgorithm.html">specless.synthesis.RLynthesisAlgorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specless.synthesis.ServiceTSPSynthesisAlgorithm.html">specless.synthesis.ServiceTSPSynthesisAlgorithm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="specless.synthesis.SynthesisAlgorithm.html">specless.synthesis.SynthesisAlgorithm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="specless.synthesis.TSPSynthesisAlgorithm.html">specless.synthesis.TSPSynthesisAlgorithm</a></li>
 </ul>
@@ -113,15 +114,20 @@
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">specless.synthesis</span> <span class="kn">import</span> <span class="n">ProductGraphSynthesisAlgorithm</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">specless.automaton.pdfa</span> <span class="kn">import</span> <span class="n">PDFA</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">specless.wrapper.minigridwrapper</span> <span class="kn">import</span> <span class="n">MiniGridTransitionSystemWrapper</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">specless.specification.base</span> <span class="kn">import</span> <span class="n">Specification</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">specless.strategy</span> <span class="kn">import</span> <span class="n">Strategy</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">env</span> <span class="o">=</span> <span class="n">MiniGridTransitionSystemWrapper</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">specification</span> <span class="o">=</span> <span class="n">PDFA</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">synthesis_algorithm</span> <span class="o">=</span> <span class="n">ProductGraphSynthesisAlgorithm</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">strategy</span><span class="p">:</span> <span class="n">Strategy</span> <span class="o">=</span> <span class="n">synthesis_algorithm</span><span class="o">.</span><span class="n">synthesize</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">specification</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">specless</span> <span class="k">as</span> <span class="nn">sl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">specless.minigrid.tspenv</span> <span class="kn">import</span> <span class="n">TSPEnv</span>  <span class="c1"># NOQA</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;MiniGrid-TSP-v0&quot;</span><span class="p">,</span> <span class="n">render_mode</span><span class="o">=</span><span class="s2">&quot;rgb_array&quot;</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">env</span> <span class="o">=</span> <span class="n">sl</span><span class="o">.</span><span class="n">MiniGridTransitionSystemWrapper</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">env</span><span class="p">,</span> <span class="n">ignore_direction</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">skip_observations</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;unseen&quot;</span><span class="p">,</span> <span class="s2">&quot;wall&quot;</span><span class="p">]</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pdfabuilder</span> <span class="o">=</span> <span class="n">sl</span><span class="o">.</span><span class="n">PDFABuilder</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">specification</span> <span class="o">=</span> <span class="n">pdfabuilder</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s2">&quot;examples/demo/pdfa.yaml&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">synthesis_algorithm</span> <span class="o">=</span> <span class="n">sl</span><span class="o">.</span><span class="n">ProductGraphSynthesisAlgorithm</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">strategy</span> <span class="o">=</span> <span class="n">synthesis_algorithm</span><span class="o">.</span><span class="n">synthesize</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">specification</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -134,10 +140,13 @@
 <tr class="row-even"><td><p><a class="reference internal" href="specless.synthesis.RLynthesisAlgorithm.html#specless.synthesis.RLynthesisAlgorithm" title="specless.synthesis.RLynthesisAlgorithm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RLynthesisAlgorithm</span></code></a></p></td>
 <td><p>Reinforcement Algorithm based synthesis algorithm</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="specless.synthesis.SynthesisAlgorithm.html#specless.synthesis.SynthesisAlgorithm" title="specless.synthesis.SynthesisAlgorithm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SynthesisAlgorithm</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="specless.synthesis.ServiceTSPSynthesisAlgorithm.html#specless.synthesis.ServiceTSPSynthesisAlgorithm" title="specless.synthesis.ServiceTSPSynthesisAlgorithm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ServiceTSPSynthesisAlgorithm</span></code></a></p></td>
+<td><p>Traveling Salesman Problem based synthesis algorithm</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="specless.synthesis.SynthesisAlgorithm.html#specless.synthesis.SynthesisAlgorithm" title="specless.synthesis.SynthesisAlgorithm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SynthesisAlgorithm</span></code></a></p></td>
 <td><p>Base classs for all synthesis algorithms</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="specless.synthesis.TSPSynthesisAlgorithm.html#specless.synthesis.TSPSynthesisAlgorithm" title="specless.synthesis.TSPSynthesisAlgorithm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TSPSynthesisAlgorithm</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="specless.synthesis.TSPSynthesisAlgorithm.html#specless.synthesis.TSPSynthesisAlgorithm" title="specless.synthesis.TSPSynthesisAlgorithm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TSPSynthesisAlgorithm</span></code></a></p></td>
 <td><p>Traveling Salesman Problem based synthesis algorithm</p></td>
 </tr>
 </tbody>

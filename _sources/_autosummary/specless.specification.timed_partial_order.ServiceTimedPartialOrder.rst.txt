@@ -1,0 +1,91 @@
+specless.specification.timed\_partial\_order.ServiceTimedPartialOrder
+=====================================================================
+
+.. currentmodule:: specless.specification.timed_partial_order
+
+.. autoclass:: ServiceTimedPartialOrder
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~ServiceTimedPartialOrder.add_edge
+      ~ServiceTimedPartialOrder.add_edges_from
+      ~ServiceTimedPartialOrder.add_global_constraint
+      ~ServiceTimedPartialOrder.add_local_constraint
+      ~ServiceTimedPartialOrder.add_node
+      ~ServiceTimedPartialOrder.add_nodes_from
+      ~ServiceTimedPartialOrder.add_weighted_edges_from
+      ~ServiceTimedPartialOrder.adjacency
+      ~ServiceTimedPartialOrder.clear
+      ~ServiceTimedPartialOrder.clear_edges
+      ~ServiceTimedPartialOrder.copy
+      ~ServiceTimedPartialOrder.edge_subgraph
+      ~ServiceTimedPartialOrder.from_constraints
+      ~ServiceTimedPartialOrder.from_csv
+      ~ServiceTimedPartialOrder.from_services
+      ~ServiceTimedPartialOrder.get_edge_data
+      ~ServiceTimedPartialOrder.get_reverse_constraints
+      ~ServiceTimedPartialOrder.has_edge
+      ~ServiceTimedPartialOrder.has_node
+      ~ServiceTimedPartialOrder.has_predecessor
+      ~ServiceTimedPartialOrder.has_successor
+      ~ServiceTimedPartialOrder.is_directed
+      ~ServiceTimedPartialOrder.is_multigraph
+      ~ServiceTimedPartialOrder.load_services
+      ~ServiceTimedPartialOrder.makespan
+      ~ServiceTimedPartialOrder.makespan2
+      ~ServiceTimedPartialOrder.modify_cost
+      ~ServiceTimedPartialOrder.nbunch_iter
+      ~ServiceTimedPartialOrder.neighbors
+      ~ServiceTimedPartialOrder.number_of_edges
+      ~ServiceTimedPartialOrder.number_of_nodes
+      ~ServiceTimedPartialOrder.order
+      ~ServiceTimedPartialOrder.penalize
+      ~ServiceTimedPartialOrder.predecessors
+      ~ServiceTimedPartialOrder.print
+      ~ServiceTimedPartialOrder.remove_edge
+      ~ServiceTimedPartialOrder.remove_edges_from
+      ~ServiceTimedPartialOrder.remove_node
+      ~ServiceTimedPartialOrder.remove_nodes_from
+      ~ServiceTimedPartialOrder.reverse
+      ~ServiceTimedPartialOrder.satisfy
+      ~ServiceTimedPartialOrder.size
+      ~ServiceTimedPartialOrder.subgraph
+      ~ServiceTimedPartialOrder.successors
+      ~ServiceTimedPartialOrder.to_directed
+      ~ServiceTimedPartialOrder.to_directed_class
+      ~ServiceTimedPartialOrder.to_undirected
+      ~ServiceTimedPartialOrder.to_undirected_class
+      ~ServiceTimedPartialOrder.transitive_reduction
+      ~ServiceTimedPartialOrder.update
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ServiceTimedPartialOrder.adj
+      ~ServiceTimedPartialOrder.degree
+      ~ServiceTimedPartialOrder.edges
+      ~ServiceTimedPartialOrder.in_degree
+      ~ServiceTimedPartialOrder.in_edges
+      ~ServiceTimedPartialOrder.name
+      ~ServiceTimedPartialOrder.nodes
+      ~ServiceTimedPartialOrder.out_degree
+      ~ServiceTimedPartialOrder.out_edges
+      ~ServiceTimedPartialOrder.partial_order
+      ~ServiceTimedPartialOrder.pred
+      ~ServiceTimedPartialOrder.succ
+   
+   

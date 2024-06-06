@@ -52,6 +52,7 @@
 <li class="toctree-l2"><a class="reference internal" href="specless.dataset.html">specless.dataset</a></li>
 <li class="toctree-l2"><a class="reference internal" href="specless.factory.html">specless.factory</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="specless.inference.html">specless.inference</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="specless.inference.html#inference-algorithm">Inference Algorithm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="specless.inference.base.html">specless.inference.base</a></li>
 <li class="toctree-l3"><a class="reference internal" href="specless.inference.edsm.html">specless.inference.edsm</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">specless.inference.partial_order</a><ul>
@@ -109,10 +110,14 @@
 <p>Inference algorithms then use such demonstrations to come up with a specification.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">specless</span> <span class="k">as</span> <span class="nn">sl</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">traces</span> <span class="o">=</span> <span class="p">[[</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">],</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">],</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">]]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">sl</span><span class="o">.</span><span class="n">ArrayDataset</span><span class="p">(</span><span class="n">traces</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">inference</span> <span class="o">=</span> <span class="n">sl</span><span class="o">.</span><span class="n">TPOInference</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">specification</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">infer</span><span class="p">(</span><span class="n">demonstrations</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inference</span> <span class="o">=</span> <span class="n">sl</span><span class="o">.</span><span class="n">POInferenceAlgorithm</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">demonstrations</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">],</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">columns</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;symbol&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">trace_dataset</span> <span class="o">=</span> <span class="n">sl</span><span class="o">.</span><span class="n">ArrayDataset</span><span class="p">(</span><span class="n">demonstrations</span><span class="p">,</span> <span class="n">columns</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">specification</span><span class="p">:</span> <span class="n">Specification</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">infer</span><span class="p">(</span><span class="n">trace_dataset</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>

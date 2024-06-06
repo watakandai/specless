@@ -1,0 +1,44 @@
+specless.factory.tspbuilder.AircraftTurnaroundTSPBuilder
+========================================================
+
+.. currentmodule:: specless.factory.tspbuilder
+
+.. autoclass:: AircraftTurnaroundTSPBuilder
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~AircraftTurnaroundTSPBuilder.get_all_pair_shortest_paths
+      ~AircraftTurnaroundTSPBuilder.get_all_pair_state_shortest_paths
+      ~AircraftTurnaroundTSPBuilder.load_YAML_config_data
+      ~AircraftTurnaroundTSPBuilder.location_to_state
+      ~AircraftTurnaroundTSPBuilder.service_position_label_to_state
+      ~AircraftTurnaroundTSPBuilder.state_to_location
+      ~AircraftTurnaroundTSPBuilder.to_controls
+      ~AircraftTurnaroundTSPBuilder.to_tsp_nodes_and_costs
+      ~AircraftTurnaroundTSPBuilder.tour_to_services
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~AircraftTurnaroundTSPBuilder.ignoring_obs_keys
+      ~AircraftTurnaroundTSPBuilder.service_name_to_node
+      ~AircraftTurnaroundTSPBuilder.uncontrollables
+      ~AircraftTurnaroundTSPBuilder.service_path
+      ~AircraftTurnaroundTSPBuilder.all_pair_shortest_paths
+      ~AircraftTurnaroundTSPBuilder.all_pair_state_shortest_paths
+   
+   

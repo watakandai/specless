@@ -79,14 +79,19 @@
 <span class="sd">--------</span>
 
 <span class="sd">&gt;&gt;&gt; import specless as sl</span>
-<span class="sd">&gt;&gt;&gt; traces = [[a,b,c], [a,b,b,c], [a,a,b,b,c]]</span>
-<span class="sd">&gt;&gt;&gt; dataset = sl.ArrayDataset(traces)</span>
-<span class="sd">&gt;&gt;&gt; inference = sl.TPOInference()</span>
-<span class="sd">&gt;&gt;&gt; specification = inference.infer(demonstrations)</span>
-
+<span class="sd">&gt;&gt;&gt; demonstrations: list = [</span>
+<span class="sd">...     [[1, &quot;a&quot;], [2, &quot;b&quot;], [3, &quot;c&quot;]],</span>
+<span class="sd">...     [[4, &quot;d&quot;], [5, &quot;e&quot;], [6, &quot;f&quot;]],</span>
+<span class="sd">... ]</span>
+<span class="sd">&gt;&gt;&gt; columns: list = [&quot;timestamp&quot;, &quot;symbol&quot;]</span>
+<span class="sd">&gt;&gt;&gt; timedtrace_dataset = sl.ArrayDataset(demonstrations, columns)</span>
+<span class="sd">&gt;&gt;&gt; inference = sl.TPOInferenceAlgorithm()</span>
+<span class="sd">&gt;&gt;&gt; specification = inference.infer(timedtrace_dataset)</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">queue</span>
 <span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
@@ -96,6 +101,7 @@
 <span class="kn">import</span> <span class="nn">cvxopt</span> <span class="k">as</span> <span class="nn">cvx</span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="kn">from</span> <span class="nn">specless.dataset</span> <span class="kn">import</span> <span class="n">ArrayDataset</span><span class="p">,</span> <span class="n">BaseDataset</span>
 <span class="kn">from</span> <span class="nn">specless.inference.base</span> <span class="kn">import</span> <span class="n">InferenceAlgorithm</span>
@@ -131,6 +137,63 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">partial_order</span> <span class="o">=</span> <span class="kc">None</span>
 
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">load_csvfiles_as_timedtraces</span><span class="p">(</span>
+        <span class="n">filedir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">symbolkey</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">timekey</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TimedTraceList</span><span class="p">:</span>
+        <span class="c1"># Load all csv files in the directory</span>
+        <span class="n">filepaths</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filedir</span><span class="p">,</span> <span class="s2">&quot;*.csv&quot;</span><span class="p">)))</span>
+        <span class="n">dfs</span> <span class="o">=</span> <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span> <span class="k">for</span> <span class="n">fp</span> <span class="ow">in</span> <span class="n">filepaths</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dfs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+
+        <span class="c1"># Check if all dfs have the same column names</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="n">dfs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span>
+        <span class="k">assert</span> <span class="nb">all</span><span class="p">([</span><span class="nb">all</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">==</span> <span class="n">columns</span><span class="p">)</span> <span class="k">for</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">dfs</span><span class="p">])</span>
+
+        <span class="c1"># Now check which</span>
+        <span class="n">timedtraces</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">dfs</span><span class="p">:</span>
+            <span class="n">timedtrace</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="n">symbolkey</span><span class="p">,</span> <span class="n">timekey</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+            <span class="n">timedtraces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">timedtrace</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">timedtraces</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">load_concat_csvfile_as_timedtraces</span><span class="p">(</span>
+        <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">symbolkey</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">timekey</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">iterkey</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">):</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+        <span class="n">timedtraces</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">iterkey</span><span class="p">):</span>
+            <span class="n">timedtrace</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="n">symbolkey</span><span class="p">,</span> <span class="n">timekey</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+            <span class="n">timedtraces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">timedtrace</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">timedtraces</span>
+
+<div class="viewcode-block" id="TPOInferenceAlgorithm.load_abbadingofile_as_timetraces">
+<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TPOInferenceAlgorithm.html#specless.inference.timed_partial_order.TPOInferenceAlgorithm.load_abbadingofile_as_timetraces">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">load_abbadingofile_as_timetraces</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load a abbadingo-style data file</span>
+<span class="sd">        Files start from (#dataset, #symbols)</span>
+<span class="sd">        following a list of (#neg/pos{0,1} #datalength, data)</span>
+
+<span class="sd">        For example,</span>
+<span class="sd">        4 2</span>
+<span class="sd">        1 10 a a a a a b b b b b</span>
+<span class="sd">        1 5 a a a a b</span>
+<span class="sd">        1 2 a b</span>
+<span class="sd">        1 10 a a a a a a a a a b</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        NotImplementedError</span>
+<span class="sd">            _description_</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+
 <div class="viewcode-block" id="TPOInferenceAlgorithm.infer">
 <a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TPOInferenceAlgorithm.html#specless.inference.timed_partial_order.TPOInferenceAlgorithm.infer">[docs]</a>
     <span class="k">def</span> <span class="nf">infer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">:</span> <span class="n">BaseDataset</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Specification</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">]:</span>
@@ -156,7 +219,7 @@
 <span class="sd">            Timed Trace Data</span>
 
 <span class="sd">        Returns</span>
-<span class="sd">        ------</span>
+<span class="sd">        -------</span>
 <span class="sd">        Specification:</span>
 <span class="sd">            Timed Partial Order</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -901,6 +964,46 @@
             <span class="s2">&quot;orig_bound&quot;</span><span class="p">:</span> <span class="n">orig_bound</span><span class="p">,</span>
             <span class="s2">&quot;new_bound&quot;</span><span class="p">:</span> <span class="n">new_bound</span><span class="p">,</span>
         <span class="p">}</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="PostProcessingFunc">
+<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.PostProcessingFunc.html#specless.inference.timed_partial_order.PostProcessingFunc">[docs]</a>
+<span class="k">class</span> <span class="nc">PostProcessingFunc</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Post Processing Function Class&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">partial_order</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">curr_node</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redundants</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edge_to_bound</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">partial_order</span> <span class="o">=</span> <span class="n">partial_order</span>
+
+<div class="viewcode-block" id="PostProcessingFunc.__call__">
+<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.PostProcessingFunc.html#specless.inference.timed_partial_order.PostProcessingFunc.__call__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">lp</span><span class="p">,</span> <span class="n">source_event</span><span class="p">,</span> <span class="n">target_event</span><span class="p">,</span> <span class="n">redundant</span><span class="p">,</span> <span class="n">lb</span><span class="p">,</span> <span class="n">ub</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Post processing function call&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">source_event</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">curr_node</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">curr_node</span> <span class="o">=</span> <span class="n">source_event</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">target_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">redundants</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">edge_to_bound</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">target_event</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redundants</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">redundant</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edge_to_bound</span><span class="p">[(</span><span class="n">source_event</span><span class="p">,</span> <span class="n">target_event</span><span class="p">)]</span> <span class="o">=</span> <span class="p">(</span><span class="n">lb</span><span class="p">,</span> <span class="n">ub</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target_nodes</span><span class="p">)</span> <span class="o">==</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">partial_order</span><span class="p">[</span><span class="n">source_event</span><span class="p">]):</span>
+            <span class="c1"># If all of the constraints are redundant, keep it as it is</span>
+            <span class="c1"># (kept the constraints removed)</span>
+            <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">redundants</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">partial_order</span><span class="p">[</span><span class="n">source_event</span><span class="p">]):</span>
+                <span class="k">pass</span>
+            <span class="c1"># Else put all the contraints back</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">target_node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_nodes</span><span class="p">:</span>
+                    <span class="n">lb</span><span class="p">,</span> <span class="n">ub</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_to_bound</span><span class="p">[(</span><span class="n">source_event</span><span class="p">,</span> <span class="n">target_node</span><span class="p">)]</span>
+                    <span class="n">lp</span><span class="o">.</span><span class="n">set_pair_bound</span><span class="p">(</span><span class="n">source_event</span><span class="p">,</span> <span class="n">target_node</span><span class="p">,</span> <span class="n">lb</span><span class="p">,</span> <span class="n">ub</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

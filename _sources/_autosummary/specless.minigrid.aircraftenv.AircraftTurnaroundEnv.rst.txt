@@ -1,0 +1,60 @@
+specless.minigrid.aircraftenv.AircraftTurnaroundEnv
+===================================================
+
+.. currentmodule:: specless.minigrid.aircraftenv
+
+.. autoclass:: AircraftTurnaroundEnv
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~AircraftTurnaroundEnv.agent_sees
+      ~AircraftTurnaroundEnv.close
+      ~AircraftTurnaroundEnv.gen_obs
+      ~AircraftTurnaroundEnv.gen_obs_grid
+      ~AircraftTurnaroundEnv.get_frame
+      ~AircraftTurnaroundEnv.get_full_render
+      ~AircraftTurnaroundEnv.get_pov_render
+      ~AircraftTurnaroundEnv.get_view_coords
+      ~AircraftTurnaroundEnv.get_view_exts
+      ~AircraftTurnaroundEnv.get_wrapper_attr
+      ~AircraftTurnaroundEnv.hash
+      ~AircraftTurnaroundEnv.in_view
+      ~AircraftTurnaroundEnv.place_agent
+      ~AircraftTurnaroundEnv.place_obj
+      ~AircraftTurnaroundEnv.put_obj
+      ~AircraftTurnaroundEnv.relative_coords
+      ~AircraftTurnaroundEnv.render
+      ~AircraftTurnaroundEnv.reset
+      ~AircraftTurnaroundEnv.step
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~AircraftTurnaroundEnv.dir_vec
+      ~AircraftTurnaroundEnv.front_pos
+      ~AircraftTurnaroundEnv.metadata
+      ~AircraftTurnaroundEnv.np_random
+      ~AircraftTurnaroundEnv.render_mode
+      ~AircraftTurnaroundEnv.reward_range
+      ~AircraftTurnaroundEnv.right_vec
+      ~AircraftTurnaroundEnv.spec
+      ~AircraftTurnaroundEnv.steps_remaining
+      ~AircraftTurnaroundEnv.unwrapped
+      ~AircraftTurnaroundEnv.action_space
+      ~AircraftTurnaroundEnv.observation_space
+   
+   

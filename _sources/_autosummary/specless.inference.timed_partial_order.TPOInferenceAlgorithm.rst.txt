@@ -23,6 +23,9 @@ specless.inference.timed\_partial\_order.TPOInferenceAlgorithm
       ~TPOInferenceAlgorithm.get_reachability_order
       ~TPOInferenceAlgorithm.infer
       ~TPOInferenceAlgorithm.infer_time_constraints
+      ~TPOInferenceAlgorithm.load_abbadingofile_as_timetraces
+      ~TPOInferenceAlgorithm.load_concat_csvfile_as_timedtraces
+      ~TPOInferenceAlgorithm.load_csvfiles_as_timedtraces
       ~TPOInferenceAlgorithm.select_next_edge_iterator
       ~TPOInferenceAlgorithm.select_post_processing_func
    

@@ -1,0 +1,24 @@
+specless.inference.timed\_partial\_order.PostProcessingFunc
+===========================================================
+
+.. currentmodule:: specless.inference.timed_partial_order
+
+.. autoclass:: PostProcessingFunc
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+   
+   
+
+   
+   
+   

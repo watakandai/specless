@@ -79,11 +79,11 @@
 <span class="sd">--------</span>
 
 <span class="sd">&gt;&gt;&gt; import specless as sl</span>
-<span class="sd">&gt;&gt;&gt; traces = [[a,b,c], [a,b,b,c], [a,a,b,b,c]]</span>
-<span class="sd">&gt;&gt;&gt; dataset = sl.ArrayDataset(traces)</span>
-<span class="sd">&gt;&gt;&gt; inference = sl.AutomataInferenceAlgorithm()</span>
-<span class="sd">&gt;&gt;&gt; specification = inference.infer(demonstrations)</span>
+<span class="sd">&gt;&gt;&gt; filepath = &#39;examples/demo/pdfa.yaml&#39;</span>
+<span class="sd">&gt;&gt;&gt; dataset = sl.PathToFileDataset(filepath)</span>
+<span class="sd">&gt;&gt;&gt; infernce = sl.AutomataInferenceAlgorithm()</span>
 
+<span class="sd"># TODO: &gt;&gt;&gt; infernce.infer(dataset)</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">os</span>

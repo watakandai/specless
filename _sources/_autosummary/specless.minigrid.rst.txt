@@ -26,6 +26,7 @@ specless.minigrid
    :template: custom-module-template.rst
    :recursive:
 
+   specless.minigrid.aircraftenv
    specless.minigrid.core
    specless.minigrid.tspenv
 

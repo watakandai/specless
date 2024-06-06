@@ -20,6 +20,7 @@ specless.inference.timed\_partial\_order
       :template: custom-class-template.rst
       :nosignatures:
    
+      PostProcessingFunc
       TPOInferenceAlgorithm
       TimeConstraintsLP
    

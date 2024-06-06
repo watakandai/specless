@@ -31,6 +31,8 @@ specless.specification.timed\_partial\_order
       :template: custom-class-template.rst
       :nosignatures:
    
+      Service
+      ServiceTimedPartialOrder
       TimedPartialOrder
    
    

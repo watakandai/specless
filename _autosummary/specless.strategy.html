@@ -131,13 +131,22 @@
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gymnasium.strategy</span> <span class="kn">import</span> <span class="n">PlanStrategy</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">specless.strategy</span> <span class="kn">import</span> <span class="n">PlanStrategy</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plan</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">strategy</span> <span class="o">=</span> <span class="n">PlanStrategy</span><span class="p">(</span><span class="n">plan</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">state</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">state</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># Anything is fine.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">action</span> <span class="o">=</span> <span class="n">strategy</span><span class="o">.</span><span class="n">action</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
-<span class="go">[0, 1, 2, 3]</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">action</span> <span class="o">=</span> <span class="n">strategy</span><span class="o">.</span><span class="n">action</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">action</span> <span class="o">=</span> <span class="n">strategy</span><span class="o">.</span><span class="n">action</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">action</span> <span class="o">=</span> <span class="n">strategy</span><span class="o">.</span><span class="n">action</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+<span class="go">3</span>
 </pre></div>
 </div>
 </section>

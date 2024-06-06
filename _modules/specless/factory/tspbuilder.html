@@ -69,44 +69,42 @@
              
   <h1>Source code for specless.factory.tspbuilder</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">&gt;&gt;&gt; from specless.system.tsbuilder import TSBuilder</span>
-<span class="sd">&gt;&gt;&gt; from specless.system.tspbuilder import TSPBuilder</span>
-<span class="sd">&gt;&gt;&gt; from specless.solver import MILPTSPSolver</span>
-<span class="sd">&gt;&gt;&gt; import gym_minigrid # To load MiniGrid-BlockedUnlockPickup-v0</span>
+<span class="sd">&gt;&gt;&gt; from specless.automaton.transition_system import TSBuilder</span>
+<span class="sd">&gt;&gt;&gt; from specless.factory.tspbuilder import TSPBuilder</span>
+<span class="sd">&gt;&gt;&gt; from specless.tsp.solver.milp import MILPTSPSolver</span>
+<span class="sd">&gt;&gt;&gt; import gymnasium as gym</span>
+<span class="sd">&gt;&gt;&gt; import gym_minigrid # To load MiniGrid-Empty-5x5-v0</span>
+<span class="sd">&gt;&gt;&gt; from specless.wrapper.minigridwrapper import MiniGridTransitionSystemWrapper</span>
 
-<span class="sd">&gt;&gt;&gt; env = gym.make(&quot;MiniGrid-BlockedUnlockPickup-v0&quot;)</span>
+<span class="sd">&gt;&gt;&gt; env = gym.make(&quot;MiniGrid-Empty-5x5-v0&quot;)</span>
+<span class="sd">&gt;&gt;&gt; env = MiniGridTransitionSystemWrapper(env, ignore_direction=True)</span>
 <span class="sd">&gt;&gt;&gt; tsbuilder = TSBuilder()</span>
 <span class="sd">&gt;&gt;&gt; transition_system = tsbuilder(graph_data=env)</span>
+<span class="sd">&gt;&gt;&gt; tspbuilder = TSPBuilder()</span>
 <span class="sd">&gt;&gt;&gt; tsp = tspbuilder(transition_system)</span>
 <span class="sd">&gt;&gt;&gt; tspsolver = MILPTSPSolver()</span>
-<span class="sd">&gt;&gt;&gt; tours, costs = tspsolver(tsp)</span>
+<span class="sd">&gt;&gt;&gt; tours, costs = tspsolver.solve(tsp) # doctest: +ELLIPSIS</span>
+<span class="sd">Restricted license...</span>
 <span class="sd">&gt;&gt;&gt; tours</span>
-<span class="sd">[[1,2,3,4,5]]</span>
+<span class="sd">[[0, 1, 0]]</span>
 <span class="sd">&gt;&gt;&gt; costs</span>
-<span class="sd">[100]</span>
-
-<span class="sd">&gt;&gt;&gt; env = MultiAgentWrapper(env, initial_states, concurrent=True)</span>
-<span class="sd">&gt;&gt;&gt; tsbuilder = TSBuilder()</span>
-<span class="sd">&gt;&gt;&gt; tspsolver = MILPTSPSolver()</span>
-<span class="sd">&gt;&gt;&gt; tours, costs = tspsolver(tsp)</span>
-<span class="sd">&gt;&gt;&gt; tours</span>
-<span class="sd">[[1,2,3,4,5], [6,7,8,9,10], ..., [96,97,98,99,100]]</span>
-<span class="sd">&gt;&gt;&gt; costs</span>
-<span class="sd">[100, 120, ..., 90]</span>
+<span class="sd">10.0</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
 
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">bidict</span> <span class="kn">import</span> <span class="n">bidict</span>
 <span class="kn">from</span> <span class="nn">gymnasium.core</span> <span class="kn">import</span> <span class="n">ActType</span>
 
 <span class="kn">from</span> <span class="nn">specless.automaton.transition_system</span> <span class="kn">import</span> <span class="n">MinigridTransitionSystem</span>
 <span class="kn">from</span> <span class="nn">specless.factory.builder</span> <span class="kn">import</span> <span class="n">Builder</span>
 <span class="kn">from</span> <span class="nn">specless.specification.base</span> <span class="kn">import</span> <span class="n">Specification</span>
-<span class="kn">from</span> <span class="nn">specless.specification.timed_partial_order</span> <span class="kn">import</span> <span class="n">TimedPartialOrder</span>
+<span class="kn">from</span> <span class="nn">specless.specification.timed_partial_order</span> <span class="kn">import</span> <span class="n">Service</span><span class="p">,</span> <span class="n">TimedPartialOrder</span>
 <span class="kn">from</span> <span class="nn">specless.strategy</span> <span class="kn">import</span> <span class="n">CombinedStrategy</span><span class="p">,</span> <span class="n">PlanStrategy</span><span class="p">,</span> <span class="n">Strategy</span>
 <span class="kn">from</span> <span class="nn">specless.tsp.tsp</span> <span class="kn">import</span> <span class="n">GTSP</span><span class="p">,</span> <span class="n">TSP</span><span class="p">,</span> <span class="n">TSPWithTPO</span>
 
@@ -417,6 +415,305 @@
                         <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">local_constraints</span></div>
+
+
+
+<div class="viewcode-block" id="AircraftTurnaroundTSPBuilder">
+<a class="viewcode-back" href="../../../_autosummary/specless.factory.tspbuilder.AircraftTurnaroundTSPBuilder.html#specless.factory.tspbuilder.AircraftTurnaroundTSPBuilder">[docs]</a>
+<span class="k">class</span> <span class="nc">AircraftTurnaroundTSPBuilder</span><span class="p">(</span><span class="n">Builder</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build a TSP Problem from Aircraft Turnaround Minigrid&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">T</span><span class="p">,</span>
+        <span class="n">initial_locations</span><span class="p">,</span>
+        <span class="n">services</span><span class="p">,</span>
+        <span class="n">position_label_to_location</span><span class="p">,</span>
+        <span class="n">ignoring_obs_keys</span><span class="o">=</span><span class="p">[],</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;IMPORTANT: We call</span>
+<span class="sd">        - TS states as &quot;states&quot;</span>
+<span class="sd">        - Service (df &#39;Activity) as &quot;service&quot;</span>
+<span class="sd">        - TSP nodes as &quot;nodes&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">T</span> <span class="o">=</span> <span class="n">T</span>
+        <span class="c1"># Add initial state &quot;Services&quot;</span>
+        <span class="n">initial_services</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">Service</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Robot</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">Start&quot;</span><span class="p">,</span> <span class="s2">&quot;Stay&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Init</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Init</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">initial_locations</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">services</span> <span class="o">=</span> <span class="n">services</span> <span class="o">+</span> <span class="n">initial_services</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">position_label_to_location</span> <span class="o">=</span> <span class="n">position_label_to_location</span> <span class="o">|</span> <span class="p">{</span>
+            <span class="sa">f</span><span class="s2">&quot;Init</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">l</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">initial_locations</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ignoring_obs_keys</span> <span class="o">=</span> <span class="n">ignoring_obs_keys</span>
+
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Service to TSP Node&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">service_to_node</span> <span class="o">=</span> <span class="n">bidict</span><span class="p">({</span><span class="n">s</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">services</span><span class="p">)})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">service_name_to_node</span> <span class="o">=</span> <span class="n">bidict</span><span class="p">(</span>
+            <span class="p">{</span><span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">services</span><span class="p">)}</span>
+        <span class="p">)</span>
+
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Uncontrollable&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uncontrollables</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">services</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">s</span><span class="o">.</span><span class="n">controllable</span><span class="p">]</span>
+
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;TS Nodes Service Time&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">service_time</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">service_path</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[])</span>
+
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;all pair shortest paths&quot;&quot;&quot;</span>
+        <span class="c1"># nodes, nodes =&gt; path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_pair_shortest_paths</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[]))</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Between States&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_pair_state_shortest_paths</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span>
+            <span class="k">lambda</span><span class="p">:</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[])</span>
+        <span class="p">)</span>
+
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;For convenience&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name_to_service</span> <span class="o">=</span> <span class="p">{</span><span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">services</span><span class="p">}</span>
+
+<div class="viewcode-block" id="AircraftTurnaroundTSPBuilder.__call__">
+<a class="viewcode-back" href="../../../_autosummary/specless.factory.tspbuilder.AircraftTurnaroundTSPBuilder.html#specless.factory.tspbuilder.AircraftTurnaroundTSPBuilder.__call__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">T</span><span class="p">:</span> <span class="n">MinigridTransitionSystem</span><span class="p">,</span>
+        <span class="n">specification</span><span class="p">:</span> <span class="n">TimedPartialOrder</span><span class="p">,</span>
+        <span class="n">initial_states</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">ignoring_obs_keys</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+        <span class="n">uniquelabel</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TSPWithTPO</span><span class="p">:</span>  <span class="c1"># type: ignore[override]</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Translate a MiniGrid Transition System to a TSP with</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            _type_: _description_</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">T</span><span class="p">:</span> <span class="n">MinigridTransitionSystem</span> <span class="o">=</span> <span class="n">T</span>
+
+        <span class="k">if</span> <span class="n">initial_states</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_initial_state</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">initial_state</span> <span class="ow">in</span> <span class="n">initial_states</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_initial_state</span><span class="p">(</span><span class="n">initial_state</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">build_mappings_from_ts</span><span class="p">(</span><span class="n">ignoring_obs_keys</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_pair_shortest_paths</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_pair_shortest_paths</span><span class="p">()</span>
+
+        <span class="c1"># MUST map TPO (w/ string labeled nodes) to TPO (with numbered nodes)</span>
+        <span class="n">numbered_tpo</span><span class="p">:</span> <span class="n">TimedPartialOrder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_tpo</span><span class="p">(</span><span class="n">specification</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">TSPWithTPO</span><span class="o">.</span><span class="n">from_tsp</span><span class="p">(</span><span class="n">tsp</span><span class="p">,</span> <span class="n">numbered_tpo</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">location_to_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">location</span><span class="p">),</span> <span class="s2">&quot;right&quot;</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">state_to_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\(([\d]*), ([\d]*)\), ([a-z]*)&quot;</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+
+    <span class="k">def</span> <span class="nf">to_tsp_nodes_and_costs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_all_pair_state_shortest_paths</span><span class="p">()</span>
+        <span class="n">costs</span><span class="p">,</span> <span class="n">service_costs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_pair_shortest_paths</span><span class="p">()</span>
+        <span class="n">nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">costs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">costs</span> <span class="o">=</span> <span class="p">[[</span><span class="n">c</span> <span class="k">for</span> <span class="n">tgt</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span> <span class="k">for</span> <span class="n">src</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">costs</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+        <span class="k">return</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">costs</span><span class="p">,</span> <span class="n">service_costs</span>
+
+    <span class="k">def</span> <span class="nf">get_all_pair_state_shortest_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;weight&quot;</span><span class="p">):</span>
+        <span class="c1"># TODO: Set 1 if NESW and set 1.41 if NE,SE,SW,NW</span>
+        <span class="n">G</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">src</span><span class="p">,</span> <span class="n">tgt</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
+            <span class="n">src_loc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state_to_location</span><span class="p">(</span><span class="n">src</span><span class="p">))</span>
+            <span class="n">tgt_loc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state_to_location</span><span class="p">(</span><span class="n">tgt</span><span class="p">))</span>
+            <span class="c1"># Diagnoal Move!</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">src_loc</span> <span class="o">-</span> <span class="n">tgt_loc</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="c1"># G[src][tgt][0][weight_key] = 1.4 * 0.51</span>
+                <span class="c1"># G[src][tgt][0][weight_key] = 1 * 0.5</span>
+                <span class="n">G</span><span class="p">[</span><span class="n">src</span><span class="p">][</span><span class="n">tgt</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="n">weight_key</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+            <span class="c1"># Else North, South, East, West</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># G[src][tgt][0][weight_key] = 1 * 0.5</span>
+                <span class="n">G</span><span class="p">[</span><span class="n">src</span><span class="p">][</span><span class="n">tgt</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="n">weight_key</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="n">to_states</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">location_to_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">position_label_to_location</span><span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">to_str</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">services</span>
+            <span class="k">if</span> <span class="n">s</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">uncontrollables</span>
+        <span class="p">]</span>
+        <span class="n">from_states</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">location_to_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">position_label_to_location</span><span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">from_str</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">services</span>
+            <span class="k">if</span> <span class="n">s</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">uncontrollables</span>
+        <span class="p">]</span>
+
+        <span class="n">states</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">to_states</span> <span class="o">+</span> <span class="n">from_states</span><span class="p">)</span>
+
+        <span class="c1"># Compute d = |l1 - l2|^1</span>
+        <span class="k">for</span> <span class="n">src</span> <span class="ow">in</span> <span class="n">states</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">tgt</span> <span class="ow">in</span> <span class="n">states</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">src</span> <span class="o">==</span> <span class="n">tgt</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">all_pair_state_shortest_paths</span><span class="p">[</span><span class="n">src</span><span class="p">][</span><span class="n">tgt</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">[])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="c1"># Set edge weight to other visiting states very large so that it avoids the state</span>
+                        <span class="n">other_states</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">states</span><span class="p">)</span> <span class="o">-</span> <span class="p">{</span><span class="n">src</span><span class="p">,</span> <span class="n">tgt</span><span class="p">})</span>
+                        <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">other_states</span><span class="p">:</span>
+                            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">predecessors</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+                                <span class="n">G</span><span class="p">[</span><span class="n">p</span><span class="p">][</span><span class="n">state</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="n">weight_key</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100000</span>
+
+                        <span class="n">distance</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">single_source_dijkstra</span><span class="p">(</span>
+                            <span class="n">G</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">src</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">tgt</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">weight_key</span>
+                        <span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">all_pair_state_shortest_paths</span><span class="p">[</span><span class="n">src</span><span class="p">][</span><span class="n">tgt</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">distance</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+
+                        <span class="c1"># Set the edge weights back</span>
+                        <span class="n">other_states</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">states</span><span class="p">)</span> <span class="o">-</span> <span class="p">{</span><span class="n">src</span><span class="p">,</span> <span class="n">tgt</span><span class="p">})</span>
+                        <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">other_states</span><span class="p">:</span>
+                            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">predecessors</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+                                <span class="n">G</span><span class="p">[</span><span class="n">p</span><span class="p">][</span><span class="n">state</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="n">weight_key</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+                    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">tgt</span><span class="p">)</span>
+                        <span class="k">raise</span> <span class="n">e</span>
+
+<div class="viewcode-block" id="AircraftTurnaroundTSPBuilder.get_all_pair_shortest_paths">
+<a class="viewcode-back" href="../../../_autosummary/specless.factory.tspbuilder.AircraftTurnaroundTSPBuilder.html#specless.factory.tspbuilder.AircraftTurnaroundTSPBuilder.get_all_pair_shortest_paths">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_all_pair_shortest_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;weight&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Must Compute the Cost Between Services &amp; Service Cost.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            weight_key (str, optional): _description_. Defaults to &#39;weight&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">costs</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">service_costs</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">service</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">service_to_node</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">service</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">uncontrollables</span><span class="p">:</span>
+                <span class="n">service_costs</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">service_time</span>
+                <span class="k">continue</span>
+
+            <span class="n">state_from</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location_to_state</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">position_label_to_location</span><span class="p">[</span><span class="n">service</span><span class="o">.</span><span class="n">from_str</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">state_to</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location_to_state</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">position_label_to_location</span><span class="p">[</span><span class="n">service</span><span class="o">.</span><span class="n">to_str</span><span class="p">]</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">state_from</span> <span class="o">==</span> <span class="n">state_to</span><span class="p">:</span>
+                <span class="n">service_costs</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">service_time</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">distance</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_pair_state_shortest_paths</span><span class="p">[</span><span class="n">state_from</span><span class="p">][</span><span class="n">state_to</span><span class="p">]</span>
+                <span class="n">service_costs</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">distance</span>
+
+        <span class="k">for</span> <span class="n">src_service</span><span class="p">,</span> <span class="n">src_node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">service_to_node</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">src_service</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">uncontrollables</span><span class="p">:</span>
+                <span class="n">src_state_to</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">service_position_label_to_state</span><span class="p">(</span><span class="n">src_service</span><span class="o">.</span><span class="n">to_str</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">tgt_service</span><span class="p">,</span> <span class="n">tgt_node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">service_to_node</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="n">src_service</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">uncontrollables</span>
+                    <span class="ow">or</span> <span class="n">tgt_service</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">uncontrollables</span>
+                <span class="p">):</span>
+                    <span class="n">costs</span><span class="p">[</span><span class="n">src_node</span><span class="p">][</span><span class="n">tgt_node</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">all_pair_shortest_paths</span><span class="p">[</span><span class="n">src_node</span><span class="p">][</span><span class="n">tgt_node</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">[])</span>
+                    <span class="k">continue</span>
+
+                <span class="n">tgt_state_from</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">service_position_label_to_state</span><span class="p">(</span>
+                    <span class="n">tgt_service</span><span class="o">.</span><span class="n">from_str</span>
+                <span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">src_state_to</span> <span class="o">==</span> <span class="n">tgt_state_from</span><span class="p">:</span>
+                    <span class="n">costs</span><span class="p">[</span><span class="n">src_node</span><span class="p">][</span><span class="n">tgt_node</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">all_pair_shortest_paths</span><span class="p">[</span><span class="n">src_node</span><span class="p">][</span><span class="n">tgt_node</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">[])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">distance</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_pair_state_shortest_paths</span><span class="p">[</span><span class="n">src_state_to</span><span class="p">][</span>
+                        <span class="n">tgt_state_from</span>
+                    <span class="p">]</span>
+                    <span class="n">costs</span><span class="p">[</span><span class="n">src_node</span><span class="p">][</span><span class="n">tgt_node</span><span class="p">]</span> <span class="o">=</span> <span class="n">distance</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">all_pair_shortest_paths</span><span class="p">[</span><span class="n">src_node</span><span class="p">][</span><span class="n">tgt_node</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">distance</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">costs</span><span class="p">,</span> <span class="n">service_costs</span></div>
+
+
+    <span class="k">def</span> <span class="nf">service_position_label_to_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position_label</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">location_to_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">position_label_to_location</span><span class="p">[</span><span class="n">position_label</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">to_controls</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_tour</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">return_states_as_waypoints</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="n">controls</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">trace</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">node_tour</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">controls</span><span class="p">,</span> <span class="n">trace</span>
+
+        <span class="n">node_edges</span> <span class="o">=</span> <span class="n">TSConverter</span><span class="o">.</span><span class="n">node_list_to_edges</span><span class="p">(</span><span class="n">node_tour</span><span class="p">)</span>
+        <span class="n">init_service</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">service_to_node</span><span class="o">.</span><span class="n">inverse</span><span class="p">[</span><span class="n">node_tour</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="k">if</span> <span class="n">init_service</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">uncontrollables</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">controls</span><span class="p">,</span> <span class="n">trace</span>
+        <span class="n">trace</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node_tour</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="n">curr_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">service_position_label_to_state</span><span class="p">(</span><span class="n">init_service</span><span class="o">.</span><span class="n">from_str</span><span class="p">)</span>
+        <span class="n">curr_step</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">src_node</span><span class="p">,</span> <span class="n">tgt_node</span> <span class="ow">in</span> <span class="n">node_edges</span><span class="p">:</span>
+            <span class="c1"># src_service = self.service_to_node.inverse[src_node]</span>
+            <span class="c1"># tgt_service = self.service_to_node.inverse[tgt_node]</span>
+            <span class="c1"># Must take 2 steps</span>
+            <span class="c1"># 1.Travel: src_node.to -&gt; tgt_node.from</span>
+            <span class="c1"># 2. Service: tgt_node.from -&gt; tgt_node.to</span>
+
+            <span class="c1"># Travel: src_node.to -&gt; tgt_node.from</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">shortest_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_pair_shortest_paths</span><span class="p">[</span><span class="n">src_node</span><span class="p">][</span><span class="n">tgt_node</span><span class="p">]</span>
+            <span class="n">state_edges</span> <span class="o">=</span> <span class="n">TSConverter</span><span class="o">.</span><span class="n">node_list_to_edges</span><span class="p">(</span><span class="n">shortest_path</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">src_state</span><span class="p">,</span> <span class="n">tgt_state</span> <span class="ow">in</span> <span class="n">state_edges</span><span class="p">:</span>
+                <span class="n">edge_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">_get_edge_data</span><span class="p">(</span><span class="n">src_state</span><span class="p">,</span> <span class="n">tgt_state</span><span class="p">)</span>
+                <span class="n">symbol</span> <span class="o">=</span> <span class="n">edge_data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;symbol&quot;</span><span class="p">]</span>
+                <span class="n">controls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span>
+                <span class="n">trace</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">curr_state</span> <span class="o">=</span> <span class="n">tgt_state</span>
+                <span class="n">curr_step</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="c1"># Service: tgt_node.from -&gt; tgt_node.to</span>
+            <span class="n">service</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">service_to_node</span><span class="o">.</span><span class="n">inverse</span><span class="p">[</span><span class="n">tgt_node</span><span class="p">]</span>
+            <span class="n">from_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">service_position_label_to_state</span><span class="p">(</span><span class="n">service</span><span class="o">.</span><span class="n">from_str</span><span class="p">)</span>
+            <span class="n">to_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">service_position_label_to_state</span><span class="p">(</span><span class="n">service</span><span class="o">.</span><span class="n">to_str</span><span class="p">)</span>
+
+            <span class="c1"># Important: Wait until the precedent services are completed</span>
+            <span class="c1"># We cannot start the service until other precedent tasks are done!!!</span>
+            <span class="n">prec_ends</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">times</span><span class="p">[</span><span class="s2">&quot;end&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">service_to_node</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name_to_service</span><span class="p">[</span><span class="n">p</span><span class="p">]]]</span>
+                <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">service</span><span class="o">.</span><span class="n">precedences</span>
+            <span class="p">]</span>
+            <span class="n">maximum_prec_end_time</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">prec_ends</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="nb">max</span><span class="p">(</span><span class="n">prec_ends</span><span class="p">)</span>
+            <span class="k">while</span> <span class="n">curr_step</span> <span class="o">&lt;</span> <span class="n">maximum_prec_end_time</span><span class="p">:</span>
+                <span class="n">edge_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">_get_edge_data</span><span class="p">(</span><span class="n">curr_state</span><span class="p">,</span> <span class="n">curr_state</span><span class="p">)</span>
+                <span class="n">symbol</span> <span class="o">=</span> <span class="n">edge_data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;symbol&quot;</span><span class="p">]</span>
+                <span class="n">controls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span>
+                <span class="n">trace</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">curr_step</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="n">_</span><span class="p">,</span> <span class="n">shortest_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_pair_state_shortest_paths</span><span class="p">[</span><span class="n">from_state</span><span class="p">][</span><span class="n">to_state</span><span class="p">]</span>
+            <span class="c1"># Service at the station</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">shortest_path</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">return_states_as_waypoints</span><span class="p">:</span>
+                <span class="n">duration</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">service_time</span>
+                <span class="n">edge_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">_get_edge_data</span><span class="p">(</span><span class="n">curr_state</span><span class="p">,</span> <span class="n">curr_state</span><span class="p">)</span>
+                <span class="n">symbol</span> <span class="o">=</span> <span class="n">edge_data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;symbol&quot;</span><span class="p">]</span>
+                <span class="n">controls</span> <span class="o">+=</span> <span class="p">[</span><span class="n">symbol</span><span class="p">]</span> <span class="o">*</span> <span class="n">duration</span>
+                <span class="n">trace</span> <span class="o">+=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">duration</span>
+                <span class="n">curr_step</span> <span class="o">+</span> <span class="n">duration</span>
+            <span class="n">state_edges</span> <span class="o">=</span> <span class="n">TSConverter</span><span class="o">.</span><span class="n">node_list_to_edges</span><span class="p">(</span><span class="n">shortest_path</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">src_state</span><span class="p">,</span> <span class="n">tgt_state</span> <span class="ow">in</span> <span class="n">state_edges</span><span class="p">:</span>
+                <span class="n">edge_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">_get_edge_data</span><span class="p">(</span><span class="n">src_state</span><span class="p">,</span> <span class="n">tgt_state</span><span class="p">)</span>
+                <span class="n">symbol</span> <span class="o">=</span> <span class="n">edge_data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;symbol&quot;</span><span class="p">]</span>
+                <span class="n">controls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span>
+                <span class="n">trace</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">curr_state</span> <span class="o">=</span> <span class="n">tgt_state</span>
+                <span class="n">curr_step</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="n">trace</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">tgt_node</span>
+
+        <span class="n">trace</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">return</span> <span class="n">controls</span><span class="p">,</span> <span class="n">trace</span>
+
+    <span class="k">def</span> <span class="nf">tour_to_services</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tour</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">service_to_node</span><span class="o">.</span><span class="n">inverse</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">tour</span><span class="p">]</span></div>
 
 </pre></div>
 

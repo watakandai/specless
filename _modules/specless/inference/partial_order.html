@@ -79,11 +79,14 @@
 <span class="sd">--------</span>
 
 <span class="sd">&gt;&gt;&gt; import specless as sl</span>
-<span class="sd">&gt;&gt;&gt; traces = [[a,b,c], [a,b,b,c], [a,a,b,b,c]]</span>
-<span class="sd">&gt;&gt;&gt; dataset = sl.ArrayDataset(traces)</span>
-<span class="sd">&gt;&gt;&gt; inference = sl.TPOInference()</span>
-<span class="sd">&gt;&gt;&gt; specification = inference.infer(demonstrations)</span>
-
+<span class="sd">&gt;&gt;&gt; inference = sl.POInferenceAlgorithm()</span>
+<span class="sd">&gt;&gt;&gt; demonstrations: list = [</span>
+<span class="sd">...     [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;],</span>
+<span class="sd">...     [&quot;d&quot;, &quot;e&quot;, &quot;f&quot;],</span>
+<span class="sd">... ]</span>
+<span class="sd">&gt;&gt;&gt; columns: list = [&quot;symbol&quot;]</span>
+<span class="sd">&gt;&gt;&gt; trace_dataset = sl.ArrayDataset(demonstrations, columns)</span>
+<span class="sd">&gt;&gt;&gt; specification: Specification = inference.infer(trace_dataset)</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>

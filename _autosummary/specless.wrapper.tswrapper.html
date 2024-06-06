@@ -114,44 +114,46 @@
 <p>A standard gym.Env is accepted if the states and actions are finite
 (Discrete Obs and Action Space)
 &gt;&gt;&gt; import gymnasium as gym
-&gt;&gt;&gt; env = gym.make(“CustomEnv-v0”)
-&gt;&gt;&gt; env.obs_space
-Dict(Discrete(), Text())</p>
+&gt;&gt;&gt; from specless.minigrid.tspenv import TSPEnv  # NOQA
+&gt;&gt;&gt; env = gym.make(“MiniGrid-TSP-v0”)</p>
+<p># &gt;&gt;&gt; env.obs_space
+# Dict(Discrete(), Text())</p>
 </section>
 <section id="wrapper">
 <h2>Wrapper<a class="headerlink" href="#wrapper" title="Link to this heading"></a></h2>
 <p>A standard gym environment with other spaces (e.g., Dict)
 can be translated into a SpeclessEnv by providing the</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">specless.gym.wrappers</span> <span class="kn">import</span> <span class="n">SpeclessWwrapper</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">env</span> <span class="o">=</span> <span class="n">SpeclessWwrapper</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="n">actions</span><span class="p">)</span>
-<span class="go">* Note, continuous space will be supported in the future</span>
-<span class="go">(using Sampled-based planners to translate the env into a finite system.)</span>
-</pre></div>
-</div>
+<p># TODO: &gt;&gt;&gt;
+# &gt;&gt;&gt; from specless.minigrid.core import SpeclessWwrapper
+# &gt;&gt;&gt; env = SpeclessWwrapper(env, states, actions)</p>
+<p>Note, continuous space will be supported in the future
+(using Sampled-based planners to translate the env into a finite system.)</p>
 <p>If wanted, we can extend it to multiple agents
-&gt;&gt;&gt; from specless.gym.wrappers import MultiAgentWrapper
-&gt;&gt;&gt; initial_states = [(1, 1), (2, 2), (3, 3)]
-&gt;&gt;&gt; env = MultiAgentWrapper(env, initial_states, concurrent=False) # Turn-based</p>
+# TODO: &gt;&gt;&gt;
+# &gt;&gt;&gt; from specless.minigrid.core import MultiAgentWrapper
+# &gt;&gt;&gt; initial_states = [(1, 1), (2, 2), (3, 3)]
+# &gt;&gt;&gt; env = MultiAgentWrapper(env, initial_states, concurrent=False) # Turn-based</p>
 </section>
 <section id="transition-system-builder">
 <h2>Transition System Builder<a class="headerlink" href="#transition-system-builder" title="Link to this heading"></a></h2>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">specless.system</span> <span class="kn">import</span> <span class="n">TSBuilder</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">env</span><span class="p">:</span> <span class="n">SpeclessEnv</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;CustomEnv-v0&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">actions</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">start</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tsbuilder</span> <span class="o">=</span> <span class="n">TSBuilder</span><span class="p">(</span><span class="n">actions</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">specless</span> <span class="k">as</span> <span class="nn">sl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">specless.automaton.transition_system</span> <span class="kn">import</span> <span class="n">TSBuilder</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;MiniGrid-TSP-v0&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">env</span> <span class="o">=</span> <span class="n">sl</span><span class="o">.</span><span class="n">MiniGridTransitionSystemWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">ignore_direction</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tsbuilder</span> <span class="o">=</span> <span class="n">TSBuilder</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span> <span class="o">=</span> <span class="n">tsbuilder</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>For multiple agents
-&gt;&gt;&gt; env: SpeclessEnv = gym.make(“CustomEnv-v0”)
-&gt;&gt;&gt; initial_states = [(1, 1), (2, 2), (3, 3)]
-&gt;&gt;&gt; env = MultiAgentWrapper(env, initial_states, concurrent=True)
-&gt;&gt;&gt; tsbuilder = TSBuilder()
-&gt;&gt;&gt; ts = tsbuilder(env)</p>
-<p>Users can set a function to label nodes
-&gt;&gt;&gt; tsbuilder.set_add_node_func(add_node_func)</p>
-<p>and a function to set edge labels
-&gt;&gt;&gt; tsbuilder.set_add_edge_func(add_edge_func)</p>
+&gt;&gt;&gt; env = gym.make(“MiniGrid-TSP-v0”)
+&gt;&gt;&gt; env = sl.MiniGridTransitionSystemWrapper(env, ignore_direction=True)
+&gt;&gt;&gt; initial_states = [(1, 1), (2, 2), (3, 3)]</p>
+<p>#TODO: &gt;&gt;&gt; env = MultiAgentWrapper(env, initial_states, concurrent=True)</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tsbuilder</span> <span class="o">=</span> <span class="n">TSBuilder</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span> <span class="o">=</span> <span class="n">tsbuilder</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
 <p class="rubric">Classes</p>
 <table class="autosummary longtable docutils align-default">

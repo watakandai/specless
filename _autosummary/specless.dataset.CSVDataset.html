@@ -112,14 +112,14 @@
 <p>Users can either provide a directory to the traces or a list of filepaths.</p>
 <p class="rubric">Examples</p>
 <p>Provide a directory to the traces:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">filedir</span> <span class="o">=</span> <span class="s1">&#39;/path/to/the/csv/directory/&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">CSVDataset</span><span class="p">(</span><span class="n">filedir</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">filedir</span> <span class="o">=</span> <span class="s1">&#39;/path/to/the/csv/directory/&#39;</span>     
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">CSVDataset</span><span class="p">(</span><span class="n">filedir</span><span class="p">)</span>               
 </pre></div>
 </div>
 <p>If the user strictly needs a sorted dataset, they can provide a list of paths:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">filedir</span> <span class="o">=</span> <span class="s1">&#39;/path/to/the/csv/directory/&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">filepaths</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filedir</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">CSVDataset</span><span class="p">(</span><span class="n">filedir</span><span class="p">,</span> <span class="n">filepaths</span><span class="o">=</span><span class="n">filepaths</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">filedir</span> <span class="o">=</span> <span class="s1">&#39;/path/to/the/csv/directory/&#39;</span>                         
+<span class="gp">&gt;&gt;&gt; </span><span class="n">filepaths</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filedir</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)]</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">CSVDataset</span><span class="p">(</span><span class="n">filedir</span><span class="p">,</span> <span class="n">filepaths</span><span class="o">=</span><span class="n">filepaths</span><span class="p">)</span>                
 </pre></div>
 </div>
 <p class="rubric">Methods</p>

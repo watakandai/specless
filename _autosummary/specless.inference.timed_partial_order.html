@@ -20,7 +20,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="specless.inference.timed_partial_order.TPOInferenceAlgorithm" href="specless.inference.timed_partial_order.TPOInferenceAlgorithm.html" />
+    <link rel="next" title="specless.inference.timed_partial_order.PostProcessingFunc" href="specless.inference.timed_partial_order.PostProcessingFunc.html" />
     <link rel="prev" title="specless.inference.partial_order.POInferenceAlgorithm" href="specless.inference.partial_order.POInferenceAlgorithm.html" /> 
 </head>
 
@@ -53,11 +53,13 @@
 <li class="toctree-l2"><a class="reference internal" href="specless.dataset.html">specless.dataset</a></li>
 <li class="toctree-l2"><a class="reference internal" href="specless.factory.html">specless.factory</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="specless.inference.html">specless.inference</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="specless.inference.html#inference-algorithm">Inference Algorithm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="specless.inference.base.html">specless.inference.base</a></li>
 <li class="toctree-l3"><a class="reference internal" href="specless.inference.edsm.html">specless.inference.edsm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="specless.inference.partial_order.html">specless.inference.partial_order</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">specless.inference.timed_partial_order</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#inference-algorithm">Inference Algorithm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="specless.inference.timed_partial_order.PostProcessingFunc.html">specless.inference.timed_partial_order.PostProcessingFunc</a></li>
 <li class="toctree-l4"><a class="reference internal" href="specless.inference.timed_partial_order.TPOInferenceAlgorithm.html">specless.inference.timed_partial_order.TPOInferenceAlgorithm</a></li>
 <li class="toctree-l4"><a class="reference internal" href="specless.inference.timed_partial_order.TimeConstraintsLP.html">specless.inference.timed_partial_order.TimeConstraintsLP</a></li>
 </ul>
@@ -111,20 +113,27 @@
 <p>Inference algorithms then use such demonstrations to come up with a specification.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">specless</span> <span class="k">as</span> <span class="nn">sl</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">traces</span> <span class="o">=</span> <span class="p">[[</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">],</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">],</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">]]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">sl</span><span class="o">.</span><span class="n">ArrayDataset</span><span class="p">(</span><span class="n">traces</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">inference</span> <span class="o">=</span> <span class="n">sl</span><span class="o">.</span><span class="n">TPOInference</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">specification</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">infer</span><span class="p">(</span><span class="n">demonstrations</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">demonstrations</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">]],</span>
+<span class="gp">... </span>    <span class="p">[[</span><span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;e&quot;</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">]],</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">columns</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;symbol&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">timedtrace_dataset</span> <span class="o">=</span> <span class="n">sl</span><span class="o">.</span><span class="n">ArrayDataset</span><span class="p">(</span><span class="n">demonstrations</span><span class="p">,</span> <span class="n">columns</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inference</span> <span class="o">=</span> <span class="n">sl</span><span class="o">.</span><span class="n">TPOInferenceAlgorithm</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">specification</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">infer</span><span class="p">(</span><span class="n">timedtrace_dataset</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <p class="rubric">Classes</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="specless.inference.timed_partial_order.TPOInferenceAlgorithm.html#specless.inference.timed_partial_order.TPOInferenceAlgorithm" title="specless.inference.timed_partial_order.TPOInferenceAlgorithm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TPOInferenceAlgorithm</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="specless.inference.timed_partial_order.PostProcessingFunc.html#specless.inference.timed_partial_order.PostProcessingFunc" title="specless.inference.timed_partial_order.PostProcessingFunc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PostProcessingFunc</span></code></a></p></td>
+<td><p>Post Processing Function Class</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="specless.inference.timed_partial_order.TPOInferenceAlgorithm.html#specless.inference.timed_partial_order.TPOInferenceAlgorithm" title="specless.inference.timed_partial_order.TPOInferenceAlgorithm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TPOInferenceAlgorithm</span></code></a></p></td>
 <td><p>The inference algorithm for inferring a TPO from a list of TimedTraces.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP" title="specless.inference.timed_partial_order.TimeConstraintsLP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TimeConstraintsLP</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP" title="specless.inference.timed_partial_order.TimeConstraintsLP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TimeConstraintsLP</span></code></a></p></td>
 <td><p>Handle Time Constraints Operation for Linear Programming</p></td>
 </tr>
 </tbody>
@@ -136,7 +145,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="specless.inference.partial_order.POInferenceAlgorithm.html" class="btn btn-neutral float-left" title="specless.inference.partial_order.POInferenceAlgorithm" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="specless.inference.timed_partial_order.TPOInferenceAlgorithm.html" class="btn btn-neutral float-right" title="specless.inference.timed_partial_order.TPOInferenceAlgorithm" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="specless.inference.timed_partial_order.PostProcessingFunc.html" class="btn btn-neutral float-right" title="specless.inference.timed_partial_order.PostProcessingFunc" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

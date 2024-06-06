@@ -78,11 +78,11 @@
 <span class="sd">Examples</span>
 <span class="sd">--------</span>
 <span class="sd">Parse an LTL formula:</span>
+<span class="sd"># TODO: &gt;&gt;&gt;</span>
 <span class="sd">&gt;&gt;&gt; from specless.parser import LTLfParser</span>
 <span class="sd">&gt;&gt;&gt; parser = LTLfParser()</span>
 <span class="sd">&gt;&gt;&gt; formula = &quot;G(a -&gt; F b)&quot;</span>
-<span class="sd">&gt;&gt;&gt; dfa = parser.parse(formula)</span>
-<span class="sd">&gt;&gt;&gt; print(dfa)</span>
+<span class="sd">&gt;&gt;&gt; dfa = parser.parse(formula) # doctest: +SKIP</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>

@@ -1,0 +1,36 @@
+specless.specification.timed\_partial\_order.Service
+====================================================
+
+.. currentmodule:: specless.specification.timed_partial_order
+
+.. autoclass:: Service
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Service.name
+      ~Service.type
+      ~Service.from_str
+      ~Service.to_str
+      ~Service.service_time
+      ~Service.controllabe
+      ~Service.precedences
+   
+   
