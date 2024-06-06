@@ -9,11 +9,14 @@ Examples
 --------
 
 >>> import specless as sl
->>> traces = [[a,b,c], [a,b,b,c], [a,a,b,b,c]]
->>> dataset = sl.ArrayDataset(traces)
->>> inference = sl.TPOInference()
->>> specification = inference.infer(demonstrations)
-
+>>> inference = sl.POInferenceAlgorithm()
+>>> demonstrations: list = [
+...     ["a", "b", "c"],
+...     ["d", "e", "f"],
+... ]
+>>> columns: list = ["symbol"]
+>>> trace_dataset = sl.ArrayDataset(demonstrations, columns)
+>>> specification: Specification = inference.infer(trace_dataset)
 """
 
 from collections import defaultdict

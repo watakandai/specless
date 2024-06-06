@@ -26,13 +26,22 @@ CombinedStrategy
 
 Examples
 --------
->>> from gymnasium.strategy import PlanStrategy
+>>> from specless.strategy import PlanStrategy
 >>> plan = [0, 1, 2, 3]
 >>> strategy = PlanStrategy(plan)
->>> state = [0, 0, 0]
+>>> state = 0 # Anything is fine.
 >>> action = strategy.action(state)
 >>> print(action)
-[0, 1, 2, 3]
+0
+>>> action = strategy.action(state)
+>>> print(action)
+1
+>>> action = strategy.action(state)
+>>> print(action)
+2
+>>> action = strategy.action(state)
+>>> print(action)
+3
 """
 
 from abc import ABCMeta, abstractmethod

@@ -5,10 +5,13 @@ TSP
 # Number of locations
 >>> n = 4
 >>> nodes: List[int] = [0, 1, 2, 3]
+
 # Ready time
 >>> a: List[float] = [0, 5, 0, 8]
+
 # Due time
 >>> b: List[float] = [100, 16, 10, 14]
+
 # Travel time
 >>> costs: List[List[float]] = [
 ...     [0, 3, 4, 5],

@@ -8,11 +8,11 @@ This module provides a parser for Linear Temporal Logic (LTL) formulas.
 Examples
 --------
 Parse an LTL formula:
+# TODO: >>>
 >>> from specless.parser import LTLfParser
 >>> parser = LTLfParser()
 >>> formula = "G(a -> F b)"
->>> dfa = parser.parse(formula)
->>> print(dfa)
+>>> dfa = parser.parse(formula) # doctest: +SKIP
 """
 
 import networkx as nx

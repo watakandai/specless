@@ -1,6 +1,6 @@
 """
 
->>> from specless.solver import MILPTSPSolver
+>>> import specless as sl
 
 >>> n = 4
 >>> nodes: List[int] = [0, 1, 2, 3]
@@ -16,16 +16,21 @@
 # Travel time
 
 >>> costs: List[List[float]] = [
-    [0, 3, 4, 5],
-    [3, 0, 5, 4],
-    [4, 5, 0, 3],
-    [5, 4, 3, 0],
-]
->>> tsp = TSP(nodes, costs)
->>> tspsolver = MILPTSPSolver()
->>> tsp = tspbuilder(transition_system)
->>> tours, costs = tspsolver(tsp)
+...    [0, 3, 4, 5],
+...    [3, 0, 5, 4],
+...    [4, 5, 0, 3],
+...    [5, 4, 3, 0],
+... ]
+>>> tsp = sl.TSP(nodes, costs)
+>>> tspsolver = sl.MILPTSPSolver()
+>>> tours, costs = tspsolver.solve(tsp) # doctest: +ELLIPSIS
+Restricted license...
+>>> tours
+[[0, 2, 3, 1, 0]]
+>>> costs # doctest: +ELLIPSIS
+13.99...
 """
+
 import copy
 import sys
 from pathlib import Path
@@ -56,6 +61,7 @@ class MILPTSPSolver(TSPSolver):
 
         # Declare and initialize model
         m = gp.Model(env=env)
+        m.setParam("OutputFlag", False)
         # Create decision variables for choosing edges
         x = m.addVars(tsp.edges, vtype=GRB.BINARY, name="edges")
         # Create continuous time variables [1, n]
@@ -71,9 +77,6 @@ class MILPTSPSolver(TSPSolver):
     def optimize(self, m, variables, objective: gp.LinExpr):
         """Optimize the defined model"""
         m.setObjective(objective, GRB.MINIMIZE)
-        # save model for inspection
-        class_name = type(self).__name__
-        m.write(f"{class_name}.lp")
         m.optimize()
 
     def get_tours(self, m, variables):
@@ -204,7 +207,9 @@ class MILPTSPWithTPOSolver(TSPWithTPOSolver):
         # Create continuous time variables [1, n]
         t = m.addVars(tsp.nodes, lb=0.0, vtype=GRB.CONTINUOUS, name="times")
         # Create continuous time variables for the TERMINAL nodes
-        init_nodes: list[tuple[int, Node]] = [(i, n) for i, n in enumerate(self.init_nodes)]
+        init_nodes: list[tuple[int, Node]] = [
+            (i, n) for i, n in enumerate(self.init_nodes)
+        ]
         tT = m.addVars(init_nodes, lb=0.0, vtype=GRB.CONTINUOUS, name="timesTerminal")
         tf = m.addVar(lb=0.0, vtype=GRB.CONTINUOUS, name="tFinal")
 
@@ -216,9 +221,6 @@ class MILPTSPWithTPOSolver(TSPWithTPOSolver):
         """Optimize the defined model"""
         # print("Objective Type: ", type(objective))
         m.setObjective(objective, GRB.MINIMIZE)
-        # save model for inspection
-        class_name = type(self).__name__
-        m.write(f"{class_name}.lp")
         m.optimize()
 
     def get_tours(self, m, variables):
@@ -268,7 +270,7 @@ class MILPTSPWithTPOSolver(TSPWithTPOSolver):
     ) -> Tuple[List, float]:
         tsp = copy.deepcopy(tsp)
         if len(tsp.nodes) < num_agent:
-            num_agent = len(tsp.nodes)-1
+            num_agent = len(tsp.nodes) - 1
 
         # Argument Priority: num_agent < init_nodes
         # If both are provided, init_nodes is prioritized

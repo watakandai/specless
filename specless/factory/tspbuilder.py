@@ -1,42 +1,40 @@
 """
->>> from specless.system.tsbuilder import TSBuilder
->>> from specless.system.tspbuilder import TSPBuilder
->>> from specless.solver import MILPTSPSolver
->>> import gym_minigrid # To load MiniGrid-BlockedUnlockPickup-v0
+>>> from specless.automaton.transition_system import TSBuilder
+>>> from specless.factory.tspbuilder import TSPBuilder
+>>> from specless.tsp.solver.milp import MILPTSPSolver
+>>> import gymnasium as gym
+>>> import gym_minigrid # To load MiniGrid-Empty-5x5-v0
+>>> from specless.wrapper.minigridwrapper import MiniGridTransitionSystemWrapper
 
->>> env = gym.make("MiniGrid-BlockedUnlockPickup-v0")
+>>> env = gym.make("MiniGrid-Empty-5x5-v0")
+>>> env = MiniGridTransitionSystemWrapper(env, ignore_direction=True)
 >>> tsbuilder = TSBuilder()
 >>> transition_system = tsbuilder(graph_data=env)
+>>> tspbuilder = TSPBuilder()
 >>> tsp = tspbuilder(transition_system)
 >>> tspsolver = MILPTSPSolver()
->>> tours, costs = tspsolver(tsp)
+>>> tours, costs = tspsolver.solve(tsp) # doctest: +ELLIPSIS
+Restricted license...
 >>> tours
-[[1,2,3,4,5]]
+[[0, 1, 0]]
 >>> costs
-[100]
-
->>> env = MultiAgentWrapper(env, initial_states, concurrent=True)
->>> tsbuilder = TSBuilder()
->>> tspsolver = MILPTSPSolver()
->>> tours, costs = tspsolver(tsp)
->>> tours
-[[1,2,3,4,5], [6,7,8,9,10], ..., [96,97,98,99,100]]
->>> costs
-[100, 120, ..., 90]
+10.0
 """
 
 import copy
+import re
 from collections import defaultdict
 from typing import Dict, List, Optional, Tuple
 
 import networkx as nx
+import numpy as np
 from bidict import bidict
 from gymnasium.core import ActType
 
 from specless.automaton.transition_system import MinigridTransitionSystem
 from specless.factory.builder import Builder
 from specless.specification.base import Specification
-from specless.specification.timed_partial_order import TimedPartialOrder
+from specless.specification.timed_partial_order import Service, TimedPartialOrder
 from specless.strategy import CombinedStrategy, PlanStrategy, Strategy
 from specless.tsp.tsp import GTSP, TSP, TSPWithTPO
 
@@ -333,3 +331,293 @@ class TSPWithTPOBuilder(TSPBuilder):
                         )
 
         return local_constraints
+
+
+class AircraftTurnaroundTSPBuilder(Builder):
+    """Build a TSP Problem from Aircraft Turnaround Minigrid"""
+
+    def __init__(
+        self,
+        T,
+        initial_locations,
+        services,
+        position_label_to_location,
+        ignoring_obs_keys=[],
+    ):
+        """IMPORTANT: We call
+        - TS states as "states"
+        - Service (df 'Activity) as "service"
+        - TSP nodes as "nodes"
+        """
+        self.T = T
+        # Add initial state "Services"
+        initial_services = [
+            Service(f"Robot{i}Start", "Stay", f"Init{i}", f"Init{i}", 0, True, [])
+            for i, l in enumerate(initial_locations)
+        ]
+        self.services = services + initial_services
+        self.position_label_to_location = position_label_to_location | {
+            f"Init{i}": l for i, l in enumerate(initial_locations)
+        }
+        self.ignoring_obs_keys = ignoring_obs_keys
+
+        """Service to TSP Node"""
+        self.service_to_node = bidict({s: i for i, s in enumerate(self.services)})
+        self.service_name_to_node = bidict(
+            {s.name: i for i, s in enumerate(self.services)}
+        )
+
+        """Uncontrollable"""
+        self.uncontrollables = [s for s in services if not s.controllable]
+
+        """TS Nodes Service Time"""
+        self.service_time = defaultdict(lambda: 0)
+        self.service_path = defaultdict(lambda: [])
+
+        """all pair shortest paths"""
+        # nodes, nodes => path
+        self.all_pair_shortest_paths = defaultdict(lambda: defaultdict(lambda: []))
+        """Between States"""
+        self.all_pair_state_shortest_paths = defaultdict(
+            lambda: defaultdict(lambda: [])
+        )
+
+        """For convenience"""
+        self.name_to_service = {s.name: s for s in self.services}
+
+    def __call__(
+        self,
+        T: MinigridTransitionSystem,
+        specification: TimedPartialOrder,
+        initial_states=None,
+        ignoring_obs_keys: List[str] = [],
+        uniquelabel: bool = True,
+        **kwargs,
+    ) -> TSPWithTPO:  # type: ignore[override]
+        """Translate a MiniGrid Transition System to a TSP with
+
+        Returns:
+            _type_: _description_
+        """
+        self.T: MinigridTransitionSystem = T
+
+        if initial_states is None:
+            self.add_initial_state()
+        else:
+            for initial_state in initial_states:
+                self.add_initial_state(initial_state)
+        self.build_mappings_from_ts(ignoring_obs_keys)
+        self.all_pair_shortest_paths = self.get_all_pair_shortest_paths()
+
+        # MUST map TPO (w/ string labeled nodes) to TPO (with numbered nodes)
+        numbered_tpo: TimedPartialOrder = self.convert_tpo(specification)
+
+        return TSPWithTPO.from_tsp(tsp, numbered_tpo)
+
+    def location_to_state(self, location):
+        return ", ".join([str(location), "right"])
+
+    def state_to_location(self, state):
+        m = re.match(r"\(([\d]*), ([\d]*)\), ([a-z]*)", state)
+        return (int(m.group(1)), int(m.group(2)))
+
+    def to_tsp_nodes_and_costs(self):
+        self.get_all_pair_state_shortest_paths()
+        costs, service_costs = self.get_all_pair_shortest_paths()
+        nodes = list(costs.keys())
+        costs = [[c for tgt, c in d.items()] for src, d in costs.items()]
+        return nodes, costs, service_costs
+
+    def get_all_pair_state_shortest_paths(self, weight_key: str = "weight"):
+        # TODO: Set 1 if NESW and set 1.41 if NE,SE,SW,NW
+        G = copy.deepcopy(self.T)
+        for src, tgt in G.edges():
+            src_loc = np.array(self.state_to_location(src))
+            tgt_loc = np.array(self.state_to_location(tgt))
+            # Diagnoal Move!
+            if np.linalg.norm(src_loc - tgt_loc) > 1:
+                # G[src][tgt][0][weight_key] = 1.4 * 0.51
+                # G[src][tgt][0][weight_key] = 1 * 0.5
+                G[src][tgt][0][weight_key] = 2
+            # Else North, South, East, West
+            else:
+                # G[src][tgt][0][weight_key] = 1 * 0.5
+                G[src][tgt][0][weight_key] = 1
+
+        to_states = [
+            self.location_to_state(self.position_label_to_location[s.to_str])
+            for s in self.services
+            if s not in self.uncontrollables
+        ]
+        from_states = [
+            self.location_to_state(self.position_label_to_location[s.from_str])
+            for s in self.services
+            if s not in self.uncontrollables
+        ]
+
+        states = set(to_states + from_states)
+
+        # Compute d = |l1 - l2|^1
+        for src in states:
+            for tgt in states:
+                if src == tgt:
+                    self.all_pair_state_shortest_paths[src][tgt] = (0, [])
+                else:
+                    try:
+                        # Set edge weight to other visiting states very large so that it avoids the state
+                        other_states = list(set(states) - {src, tgt})
+                        for state in other_states:
+                            for p in G.predecessors(state):
+                                G[p][state][0][weight_key] = 100000
+
+                        distance, path = nx.single_source_dijkstra(
+                            G, source=src, target=tgt, weight=weight_key
+                        )
+                        self.all_pair_state_shortest_paths[src][tgt] = (distance, path)
+
+                        # Set the edge weights back
+                        other_states = list(set(states) - {src, tgt})
+                        for state in other_states:
+                            for p in G.predecessors(state):
+                                G[p][state][0][weight_key] = 1
+                    except Exception as e:
+                        print(src, tgt)
+                        raise e
+
+    def get_all_pair_shortest_paths(self, weight_key: str = "weight"):
+        """Must Compute the Cost Between Services & Service Cost.
+
+        Args:
+            weight_key (str, optional): _description_. Defaults to 'weight'.
+        """
+        costs = defaultdict(lambda: defaultdict(lambda: 0))
+        service_costs = defaultdict(lambda: 0)
+
+        for service, node in self.service_to_node.items():
+            if service in self.uncontrollables:
+                service_costs[node] = service.service_time
+                continue
+
+            state_from = self.location_to_state(
+                self.position_label_to_location[service.from_str]
+            )
+            state_to = self.location_to_state(
+                self.position_label_to_location[service.to_str]
+            )
+
+            if state_from == state_to:
+                service_costs[node] = service.service_time
+            else:
+                distance, _ = self.all_pair_state_shortest_paths[state_from][state_to]
+                service_costs[node] = distance
+
+        for src_service, src_node in self.service_to_node.items():
+            if src_service not in self.uncontrollables:
+                src_state_to = self.service_position_label_to_state(src_service.to_str)
+
+            for tgt_service, tgt_node in self.service_to_node.items():
+                if (
+                    src_service in self.uncontrollables
+                    or tgt_service in self.uncontrollables
+                ):
+                    costs[src_node][tgt_node] = 0
+                    self.all_pair_shortest_paths[src_node][tgt_node] = (0, [])
+                    continue
+
+                tgt_state_from = self.service_position_label_to_state(
+                    tgt_service.from_str
+                )
+
+                if src_state_to == tgt_state_from:
+                    costs[src_node][tgt_node] = 0
+                    self.all_pair_shortest_paths[src_node][tgt_node] = (0, [])
+                else:
+                    distance, path = self.all_pair_state_shortest_paths[src_state_to][
+                        tgt_state_from
+                    ]
+                    costs[src_node][tgt_node] = distance
+                    self.all_pair_shortest_paths[src_node][tgt_node] = (distance, path)
+
+        return costs, service_costs
+
+    def service_position_label_to_state(self, position_label):
+        return self.location_to_state(self.position_label_to_location[position_label])
+
+    def to_controls(self, node_tour, times, return_states_as_waypoints: bool = False):
+        controls = []
+        trace = []
+        if len(node_tour) == 0:
+            return controls, trace
+
+        node_edges = TSConverter.node_list_to_edges(node_tour)
+        init_service = self.service_to_node.inverse[node_tour[0]]
+        if init_service in self.uncontrollables:
+            return controls, trace
+        trace.append(node_tour[0])
+
+        curr_state = self.service_position_label_to_state(init_service.from_str)
+        curr_step = 0
+
+        for src_node, tgt_node in node_edges:
+            # src_service = self.service_to_node.inverse[src_node]
+            # tgt_service = self.service_to_node.inverse[tgt_node]
+            # Must take 2 steps
+            # 1.Travel: src_node.to -> tgt_node.from
+            # 2. Service: tgt_node.from -> tgt_node.to
+
+            # Travel: src_node.to -> tgt_node.from
+            _, shortest_path = self.all_pair_shortest_paths[src_node][tgt_node]
+            state_edges = TSConverter.node_list_to_edges(shortest_path)
+
+            for src_state, tgt_state in state_edges:
+                edge_data = self.T._get_edge_data(src_state, tgt_state)
+                symbol = edge_data[0]["symbol"]
+                controls.append(symbol)
+                trace.append(-1)
+                curr_state = tgt_state
+                curr_step += 1
+
+            # Service: tgt_node.from -> tgt_node.to
+            service = self.service_to_node.inverse[tgt_node]
+            from_state = self.service_position_label_to_state(service.from_str)
+            to_state = self.service_position_label_to_state(service.to_str)
+
+            # Important: Wait until the precedent services are completed
+            # We cannot start the service until other precedent tasks are done!!!
+            prec_ends = [
+                times["end"][self.service_to_node[self.name_to_service[p]]]
+                for p in service.precedences
+            ]
+            maximum_prec_end_time = 0 if len(prec_ends) == 0 else max(prec_ends)
+            while curr_step < maximum_prec_end_time:
+                edge_data = self.T._get_edge_data(curr_state, curr_state)
+                symbol = edge_data[0]["symbol"]
+                controls.append(symbol)
+                trace.append(-1)
+                curr_step += 1
+
+            _, shortest_path = self.all_pair_state_shortest_paths[from_state][to_state]
+            # Service at the station
+            if len(shortest_path) == 0 and not return_states_as_waypoints:
+                duration = service.service_time
+                edge_data = self.T._get_edge_data(curr_state, curr_state)
+                symbol = edge_data[0]["symbol"]
+                controls += [symbol] * duration
+                trace += [-1] * duration
+                curr_step + duration
+            state_edges = TSConverter.node_list_to_edges(shortest_path)
+            for src_state, tgt_state in state_edges:
+                edge_data = self.T._get_edge_data(src_state, tgt_state)
+                symbol = edge_data[0]["symbol"]
+                controls.append(symbol)
+                trace.append(-1)
+                curr_state = tgt_state
+                curr_step += 1
+
+            trace[-1] = tgt_node
+
+        trace[-1] = -1
+        return controls, trace
+
+    def tour_to_services(self, tour):
+        return [self.service_to_node.inverse[n] for n in tour]
