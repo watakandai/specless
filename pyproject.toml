@@ -2,7 +2,7 @@
 name = "specless"
 version = "0.0.2"
 description = "Package to learn specification and synthesize strategy from demonstrations"
-authors = [{name = "Kandai Watanabe, email = "kandai.wata@gmail.com"}]
+authors = [{name = "Kandai Watanabe", email = "kandai.wata@gmail.com"}]
 license = {file = "LICENSE"}
 readme = "README.md"
 dynamic = ["dependencies", "optional-dependencies"]
