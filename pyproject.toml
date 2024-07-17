@@ -6,7 +6,7 @@ authors = [{name = "Kandai Watanabe", email = "kandai.wata@gmail.com"}]
 license = {file = "LICENSE"}
 readme = "README.md"
 dynamic = ["dependencies", "optional-dependencies"]
-requires-python = ">= 3.9"
+requires-python = ">= 3.8"
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
@@ -21,7 +21,7 @@ license = "LICENSE"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.8"
 
 [build-system]
 requires = ["poetry-core"]
