@@ -1,7 +1,21 @@
+[project]
+name = "specless"
+version = "0.0.2"
+description = "Package to learn specification and synthesize strategy from demonstrations"
+authors = [{name = "Kandai Watanabe, email = "kandai.wata@gmail.com"}]
+license = {file = "LICENSE"}
+readme = "README.md"
+dynamic = ["dependencies", "optional-dependencies"]
+requires-python = ">= 3.8"
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+optional-dependencies = {dev = { file = ["requirements-dev.txt"] }}
+
 [tool.poetry]
 name = "specless"
 version = "0.0.2"
-description = "A package to learn specification and synthesize strategy from demonstrations"
+description = "Package to learn specification and synthesize strategy from demonstrations"
 authors = ["Kandai Watanabe <kandai.wata@gmail.com>"]
 license = "LICENSE"
 readme = "README.md"
@@ -15,7 +29,4 @@ build-backend = "poetry.core.masonry.api"
 
 [project.urls]
 Repository = "https://github.com/watakandai/specless"
-Documentation = "https://specless.readthedocs.io/en/latest/"
-
-[tool.setuptools.dynamic]
-dependencies = {file = ["requirements.txt"]}
+Documentation = "https://watakandai.github.io/specless/"
