@@ -11,7 +11,7 @@ cvxopt
 # pygraphviz
 pm4py
 gymnasium
-torch
+# torch
 ltlf2dfa
 click
 # This is a legacy gym_minigrid package (v1.2.2) with the replacement of "gym" with "gymnasium"

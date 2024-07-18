@@ -65,14 +65,15 @@ def main():
     # Load files
 
     # TODO: Define a list of locations
+    # locations = [(4, 4), (2, 0), (0, 2), (3, 3)]
     locations = [(4, 4), (2, 0), (0, 2), (3, 3)]
-    initial_nodes = [0]
+    initial_nodes = [0, 1]
 
     # TODO: OPTIONAL: Define a list of travel costs between locations if EUCLIDEAN distance is not used
-    # costs = [[]]
+    # costs = [[0, 3, 4, 5], [3, 0, 5, 4], [4, 5, 0, 3], [5, 4, 3, 0]]
 
     # TODO: Define a list of global time constraints map at locations in the form of (LB, UB)
-    global_constraints: Dict[Location, TimeBound] = {
+    global_constraints: Dict[int, TimeBound] = {
         # ex) (1, 2): [0, 10] means a robot must reach at (1, 2) between 0 to 10 seconds since the simulation has started
         0: (0, 100),
         1: (5, 16),
@@ -81,7 +82,7 @@ def main():
     }
 
     # TODO: Define a list of local time constraints between locations in the form of (LB, UB)
-    local_constraints: Dict[Tuple[Location, Location], TimeBound] = {
+    local_constraints: Dict[Tuple[int, int], TimeBound] = {
         # ex) ((1, 2), (5, 4)): [10, 20] means from location (1, 2) to (5, 4) it must reach in between 10 to 20 seconds
         (1, 2): [3, 7],
     }
