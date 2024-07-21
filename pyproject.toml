@@ -1,6 +1,7 @@
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
 [tool.poetry]
 name = "specless"
 version = "0.0.2"
@@ -11,31 +12,31 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-bidict
-scikit-learn
-numpy
-networkx
-matplotlib
-pydot
-graphviz
-ipython
-cvxopt
-pm4py
-gymnasium
-torch
-ltlf2dfa
-click
-gym_minigrid {git = "https://github.com/watakandai/gym-minigrid@gym-minigrid-legacy"}
-pyyaml
+bidict = "*"
+scikit-learn = "*"
+numpy = "*"
+networkx = "*"
+matplotlib = "*"
+pydot = "*"
+graphviz = "*"
+ipython = "*"
+cvxopt = "*"
+pm4py = "*"
+gymnasium = "*"
+ltlf2dfa = "*"
+click = "*"
+gym_minigrid = {git = "https://github.com/watakandai/gym-minigrid.git", branch="gym-minigrid-legacy"}
+pyyaml = "*"
 gurobipy = {version="10.0.3"}
-ortools
-distinctipy
-scipy
+ortools = "*"
+distinctipy = "*"
+scipy = "*"
 
 [tool.poetry.group.dev]
 optional = true
 
 [tool.poetry.group.dev.dependencies]
+tox = "^3.27.1"
 ruff = "^0.1.5"
 mypy = "^1.7.0"
 pyroma = "^4.2"
@@ -45,8 +46,8 @@ optional = true
 
 [tool.poetry.group.test.dependencies]
 pytest = "^7.4.3"
-pytest-cov
-pytest-mock = "*"
+pytest-mock = "^3.10.0"
+pytest-cov = "^4.0.0"
 
 [tool.poetry.group.docs]
 optional = true

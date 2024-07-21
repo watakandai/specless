@@ -1,4 +1,5 @@
 import random
+from typing import Tuple
 
 import distinctipy
 import gymnasium as gym
@@ -24,7 +25,7 @@ class TSPEnv(MiniGridEnv):
         num_locations: int = 5,
         width: int = 6,
         height: int = 6,
-        agent_start_pos: tuple[int, int] = (1, 1),
+        agent_start_pos: Tuple[int, int] = (1, 1),
         agent_start_dir: int = 0,
         seed=None,
         **kwargs,
