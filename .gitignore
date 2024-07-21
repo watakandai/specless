@@ -170,3 +170,4 @@ benchmark.csv
 logs.logs
 **/*.lp
 minigrid_env_logs/**
+.python-version
