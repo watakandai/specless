@@ -44,9 +44,20 @@ jobs:
         if: matrix.os == 'macos-latest'
         run: brew install graphviz
 
-      - name: "Install Poetry"
+      - name: Install Poetry for Linux/macOS
+        if: matrix.os != 'windows-latest'
+        shell: bash
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
+  
+      - name: Install Poetry for Windows
+        if: matrix.os == 'windows-latest'
+        shell: pwsh
+        run: |
+          (Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | py -
+
+      - name: "Install Dependencies"
+        run: |
           poetry install --with dev,test,docs
 
       - name: "Run tox for ${{ matrix.python-version }}"
