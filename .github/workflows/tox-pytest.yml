@@ -26,25 +26,26 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: ['3.8', '3.9', '3.10']
+        python-version: ['3.8']
+        # python-version: ['3.8', '3.9', '3.10']
         poetry-version: ['1.8.3']
         include:
           - os: ubuntu-latest
-            poetry_home: ''
-            poetry_path: ''
-            poetry_cache_paths: |
+            poetry-home: ''
+            poetry-path: ''
+            poetry-cache-paths: |
               ~/.local/share/pypoetry
               ~/.local/bin/poetry
           - os: macos-latest
-            poetry_home: ''
-            poetry_path: ${HOME}/.local/bin
-            poetry_cache_paths: |
+            poetry-home: ''
+            poetry-path: ${HOME}/.local/bin
+            poetry-cache-paths: |
               ~/Library/Application Support/pypoetry
               ~/.local/bin/poetry
           - os: windows-latest
-            poetry_home: ''
-            poetry_path: ${APPDATA}\pypoetry\venv\Scripts
-            poetry_cache_paths: |
+            poetry-home: ''
+            poetry-path: ${APPDATA}\pypoetry\venv\Scripts
+            poetry-cache-paths: |
               ~\AppData\Roaming\pypoetry
               ~\AppData\Roaming\Python\Scripts\poetry.exe
         poetry-cache-key-fmt: ['poetry-{0}-{1}-python-{2}']
@@ -86,7 +87,7 @@ jobs:
         with:
           cache-key: ${{ format(matrix.venv-cache-key-fmt, matrix.os, steps.setup-python.outputs.python-version, hashFiles('**/poetry.lock')) }}
           python-version: ${{ steps.setup-python.outputs.python-version }}
-          poetry-install-args: --no-interaction --no-root --with dev
+          poetry-install-args: --no-interaction --with dev
 
       - name: Test with pytest
         id: test-with-pytest
@@ -94,10 +95,6 @@ jobs:
         run: |
           ${{ steps.setup-poetry-dependencies.outputs.venv-activate }}
           tox -e py -- -v
-        #   tox -e py -- -v --color=yes
-        #   deactivate
-        #   # Create a dummy file.
-        #   touch "dummy-$(echo .coverage.*)"
 
       - name: Upload coverage reports
         if: steps.test-with-pytest.conclusion != 'skipped' && matrix.enable-coverage == 'true'
@@ -107,11 +104,15 @@ jobs:
           path: .coverage.*
           retention-days: 1
 
-      - name: Get Total Coverage from coverage.json
-        if: steps.test-with-pytest.conclusion != 'skipped' && matrix.enable-coverage == 'true'
+      - name: "Export Coverage Percentage"
+        id: report-coverage
+        if: inputs.enable-test == true
         run: |
-            export TOTAL=$(python -c "import json;print(json.load(open('coverage.json'))['totals']['percent_covered_display'])")
-            echo "### Total coverage: ${TOTAL}%" >> $GITHUB_STEP_SUMMARY
+          ${{ steps.setup-poetry-dependencies.outputs.venv-activate }}
+          tox -e report
+          export TOTAL=$(python -c "import json;print(json.load(open('coverage.json'))['totals']['percent_covered_display'])")
+          echo "total=$TOTAL" >> $GITHUB_ENV
+          echo "### Total coverage: ${TOTAL}%" >> $GITHUB_STEP_SUMMARY
 
       - name: "Make badge"
         uses: schneegans/dynamic-badges-action@v1.4.0
