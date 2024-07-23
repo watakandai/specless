@@ -48,3 +48,15 @@ runs:
 
     - name: Install Poetry for Windows
       if: runner.os == 'Windows' && steps.cached-poetry.outputs.cache-hit != 'true'
+      shell: pwsh
+      env:
+        POETRY_VERSION: ${{ inputs.poetry-version }}
+        POETRY_HOME: ${{ inputs.poetry-home }}
+      run: |
+        (Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | py -
+
+    - name: Add Poetry to the PATH environment variable
+      if: inputs.poetry-path != ''
+      shell: bash
+      run: |
+        echo "${{ inputs.poetry-path }}" >> $GITHUB_PATH
