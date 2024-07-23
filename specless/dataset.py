@@ -60,17 +60,15 @@ You can sort dataset in a batch
 
 import glob
 import os
-from abc import abstractmethod
 from typing import Any, Callable, List, Optional, Union
 
 import numpy as np
 import pandas as pd
-from torch.utils.data import Dataset
 
 from specless.typing import Data
 
 
-class BaseDataset(Dataset):
+class BaseDataset:
     """Base Dataset Class
 
     Attributes
@@ -99,7 +97,6 @@ class BaseDataset(Dataset):
         """
         return len(self.data)
 
-    @abstractmethod
     def __len__(self) -> int:
         """Get the length of the data.
 
@@ -110,7 +107,6 @@ class BaseDataset(Dataset):
         """
         return len(self.data)
 
-    @abstractmethod
     def __getitem__(self, idx: int) -> Any:
         """Get the item at the specified index.
 

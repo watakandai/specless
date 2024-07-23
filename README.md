@@ -21,7 +21,7 @@
 
 # Installation
 
-- from PyPI
+<!-- - from PyPI
 
 ```bash
 pip install specless
@@ -30,14 +30,22 @@ pip install specless
 - from source
 ```bash
 pip install git@github.com:watakandai/specless.git
-```
+``` -->
 
-- or clone and install.
+<!-- - or clone and install. -->
+
 ```bash
+# Install poetry
+curl -sSL https://install.python-poetry.org | python3 -
 git clone https://github.com/watakandai/specless.git
 cd specless
-pip install .
+# Activate the virtual environment
+# with venv: source env/bin/activate
+# with poetry: poetry shell
+poetry install
 ```
+
+Done!
 
 # Quickstart
 

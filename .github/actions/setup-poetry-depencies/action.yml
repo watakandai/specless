@@ -1,0 +1,77 @@
+inputs:
+  cache-key:
+    description: 'The argument to pass to actions/cache'
+    required: true
+
+  python-version:
+    description: 'This is used to create a virtual environment on Windows'
+    required: false
+    default: ''
+
+  poetry-install-args:
+    description: 'The argument to pass to install'
+    required: false
+    default: '--no-interaction'
+
+outputs:
+  cache-hit:
+    description: 'The output from actions/cache'
+    value: ${{ steps.cached-poetry-dependencies.outputs.cache-hit }}
+
+  venv-activate:
+    description: 'Command to activate venv'
+    value: ${{ steps.venv-activate.outputs.cmd }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Path to cached venv
+      id: cached-venv
+      shell: bash
+      run: |
+        if [ $(poetry config virtualenvs.in-project) == 'true' ]; then
+          echo 'path=.venv' >> $GITHUB_OUTPUT
+        else
+          echo "path=$(poetry config virtualenvs.path)" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Load cached venv
+      id: cached-poetry-dependencies
+      uses: actions/cache@v3
+      with:
+        path: ${{ steps.cached-venv.outputs.path }}
+        key: ${{ inputs.cache-key }}
+
+    - name: Set the environment used by Poetry on Windows 1/2
+      if: runner.os == 'Windows' && steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+      id: py
+      shell: bash
+      run: |
+        VER='${{ inputs.python-version }}'
+        ARR=(${VER//./ })
+        echo "tag=${ARR[0]}.${ARR[1]}" >> $GITHUB_OUTPUT
+
+    - name: Set the environment used by Poetry on Windows 2/2
+      if: runner.os == 'Windows' && steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+      shell: bash
+      env:
+        PY_PYTHON: ${{ steps.py.outputs.tag }}
+      run: |
+        poetry env use py
+
+    - name: Install dependencies
+      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        poetry install ${{ inputs.poetry-install-args }}
+
+    - name: Command to activate venv
+      id: venv-activate
+      shell: bash
+      run: |
+        PATH=$(poetry env info --path)
+        if [ "$RUNNER_OS" == 'Windows' ]; then
+          echo "cmd=${PATH}\Scripts\activate.ps1" >> $GITHUB_OUTPUT
+        else
+          echo "cmd=. ${PATH}/bin/activate" >> $GITHUB_OUTPUT
+        fi
