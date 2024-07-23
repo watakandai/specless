@@ -36,7 +36,7 @@ pip install git@github.com:watakandai/specless.git
 curl -sSL https://install.python-poetry.org | python3 -
 ```
 
-###
+### Install specless & dependencies
 
 ```bash
 # Clone locally
@@ -50,9 +50,8 @@ cd specless
 # Activate the virtual environment
 python -m venv env
 source env/bin/activate
-# Install
+# Install specless & dependencies
 poetry install
-#
 ```
 
 Done!

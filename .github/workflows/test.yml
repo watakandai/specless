@@ -1,0 +1,31 @@
+name: '🧪 Test'
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+
+jobs:
+  py-test:
+    uses: ./.github/workflows/tox-pytest.yml
+    with:
+      enable-test: true
+
+#   determine-changes:
+#     if: |
+#       github.event_name != 'pull_request' ||
+#       github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
+#     runs-on: ubuntu-latest
+#     outputs:
+#       has-changes: ${{ fromJson(steps.filter.outputs.changes)[0] != null }}
+#       py: ${{ steps.filter.outputs.py }}
+#       py-test: ${{ steps.filter.outputs.py-test }}
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
+
+#       - name: Categorize changed files
+#         uses: dorny/paths-filter@v2
+#         id: filter
+#         with:
+#           filters: .github/settings/test-filters.yml
