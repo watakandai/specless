@@ -93,7 +93,7 @@ jobs:
         if: inputs.enable-test == true
         run: |
           ${{ steps.setup-poetry-dependencies.outputs.venv-activate }}
-          tox -v
+          tox -e py -- -v
         #   tox -e py -- -v --color=yes
         #   deactivate
         #   # Create a dummy file.
