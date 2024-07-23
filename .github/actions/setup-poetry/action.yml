@@ -1,0 +1,50 @@
+inputs:
+  cache-path:
+    description: 'The argument to pass to actions/cache'
+    required: true
+
+  cache-key:
+    description: 'The argument to pass to actions/cache'
+    required: true
+
+  poetry-version:
+    description: 'Used for POETRY_VERSION'
+    required: false
+    default: ''
+
+  poetry-home:
+    description: 'Used for POETRY_HOME'
+    required: false
+    default: ''
+
+  poetry-path:
+    description: 'Path to Poetry is to be added to the PATH environment variable'
+    required: false
+    default: ''
+
+outputs:
+  cache-hit:
+    description: 'The output from actions/cache'
+    value: ${{ steps.cached-poetry.outputs.cache-hit }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Load cached Poetry installation
+      id: cached-poetry
+      uses: actions/cache@v3
+      with:
+        path: ${{ inputs.cache-path }}
+        key: ${{ inputs.cache-key }}
+
+    - name: Install Poetry for Linux/macOS
+      if: runner.os != 'Windows' && steps.cached-poetry.outputs.cache-hit != 'true'
+      shell: bash
+      env:
+        POETRY_VERSION: ${{ inputs.poetry-version }}
+        POETRY_HOME: ${{ inputs.poetry-home }}
+      run: |
+        curl -sSL https://install.python-poetry.org | python3 -
+
+    - name: Install Poetry for Windows
+      if: runner.os == 'Windows' && steps.cached-poetry.outputs.cache-hit != 'true'

@@ -1,0 +1,148 @@
+name: '🧪 Test: py'
+
+on:
+  workflow_call:
+    inputs:
+      enable-test:
+        description: 'Enable test'
+        default: true
+        required: false
+        type: boolean
+
+      artifact-name:
+        description: 'Artifact name'
+        default: 'coverage-reports'
+        required: false
+        type: string
+
+    outputs:
+      has-coverage-reports:
+        description: 'This test has coverage reports or not'
+        value: ${{ jobs.check.outputs.has-coverage-reports }}
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ['3.7', '3.8', '3.9', '3.10']
+        poetry_version: ['1.3.1']
+        include:
+          - os: ubuntu-latest
+            poetry_home: ''
+            poetry_path: ''
+            poetry_cache_paths: |
+              ~/.local/share/pypoetry
+              ~/.local/bin/poetry
+          - os: macos-latest
+            poetry_home: ''
+            poetry_path: ${HOME}/.local/bin
+            poetry_cache_paths: |
+              ~/Library/Application Support/pypoetry
+              ~/.local/bin/poetry
+          - os: windows-latest
+            poetry_home: ''
+            poetry_path: ${APPDATA}\pypoetry\venv\Scripts
+            poetry_cache_paths: |
+              ~\AppData\Roaming\pypoetry
+              ~\AppData\Roaming\Python\Scripts\poetry.exe
+        poetry-cache-key-fmt: ['poetry-{0}-{1}-python-{2}']
+        venv-cache-key-fmt: ['venv-{0}-python-{1}-{2}']
+        enable-coverage: ['true']
+    runs-on: ${{ matrix.os }}
+    name: ${{ format('build ({0}, {1})', matrix.os, matrix.python-version) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python-version }}
+        id: setup-python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Graphviz on Ubuntu
+        if: matrix.os == 'ubuntu-latest'
+        run: sudo apt-get install graphviz
+
+      - name: Install Graphviz on macOS
+        if: matrix.os == 'macos-latest'
+        run: brew install graphviz
+
+      - name: Set up Poetry ${{ matrix.poetry-version }}
+        id: setup-poetry
+        uses: ./.github/actions/setup-poetry
+        with:
+          cache-path: ${{ matrix.poetry-cache-paths }}
+          cache-key: ${{ format(matrix.poetry-cache-key-fmt, matrix.poetry-version, matrix.os, steps.setup-python.outputs.python-version) }}
+          poetry-version: ${{ matrix.poetry-version }}
+          poetry-home: ${{ matrix.poetry-home }}
+          poetry-path: ${{ matrix.poetry-path }}
+
+      - name: Set up Poetry dependencies
+        id: setup-poetry-dependencies
+        uses: ./.github/actions/setup-poetry-dependencies
+        with:
+          cache-key: ${{ format(matrix.venv-cache-key-fmt, matrix.os, steps.setup-python.outputs.python-version, hashFiles('**/poetry.lock')) }}
+          python-version: ${{ steps.setup-python.outputs.python-version }}
+          poetry-install-args: --no-interaction --no-root --with dev
+
+      - name: Test with pytest
+        id: test-with-pytest
+        if: inputs.enable-test == true
+        run: |
+          ${{ steps.setup-poetry-dependencies.outputs.venv-activate }}
+          tox -v
+        #   tox -e py -- -v --color=yes
+        #   deactivate
+        #   # Create a dummy file.
+        #   touch "dummy-$(echo .coverage.*)"
+
+      - name: Upload coverage reports
+        if: steps.test-with-pytest.conclusion != 'skipped' && matrix.enable-coverage == 'true'
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: .coverage.*
+          retention-days: 1
+
+      - name: Get Total Coverage from coverage.json
+        if: steps.test-with-pytest.conclusion != 'skipped' && matrix.enable-coverage == 'true'
+        run: |
+            export TOTAL=$(python -c "import json;print(json.load(open('coverage.json'))['totals']['percent_covered_display'])")
+            echo "### Total coverage: ${TOTAL}%" >> $GITHUB_STEP_SUMMARY
+
+      - name: "Make badge"
+        uses: schneegans/dynamic-badges-action@v1.4.0
+        with:
+          # GIST_TOKEN is a GitHub personal access token with scope "gist".
+          auth: ${{ secrets.GIST_TOKEN }}
+          gistID: 5f5c84f28e80b29f2f9ce92300859446   # replace with your real Gist id.
+          filename: covbadge.json
+          label: Coverage
+          message: ${{ env.total }}%
+          minColorRange: 50
+          maxColorRange: 90
+          valColorRange: ${{ env.total }}
+
+      - name: Upload dummy files
+        if: steps.test-with-pytest.conclusion != 'skipped' && matrix.enable-coverage == 'true'
+        uses: actions/upload-artifact@v3
+        with:
+          name: dummy-files
+          path: dummy-*
+          retention-days: 1
+
+  check:
+    needs: build
+    runs-on: ubuntu-latest
+    outputs:
+      has-coverage-reports: ${{ steps.download.outputs.download-path != '' }}
+    steps:
+      - name: Download dummy files
+        id: download
+        continue-on-error: true
+        uses: actions/download-artifact@v3
+        with:
+          name: dummy-files
