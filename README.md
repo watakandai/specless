@@ -26,23 +26,33 @@
 ```bash
 pip install specless
 ```
-
 - from source
 ```bash
 pip install git@github.com:watakandai/specless.git
 ``` -->
 
-<!-- - or clone and install. -->
+### Install poetry (Linux / Mac)
+```bash
+curl -sSL https://install.python-poetry.org | python3 -
+```
+
+###
 
 ```bash
-# Install poetry
-curl -sSL https://install.python-poetry.org | python3 -
+# Clone locally
 git clone https://github.com/watakandai/specless.git
 cd specless
+
+# Optional: Change Python version using pyenv
+# pyenv install 3.9
+# pyenv local 3.9
+
 # Activate the virtual environment
-# with venv: source env/bin/activate
-# with poetry: poetry shell
+python -m venv env
+source env/bin/activate
+# Install
 poetry install
+#
 ```
 
 Done!
