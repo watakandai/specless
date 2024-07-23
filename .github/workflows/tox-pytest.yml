@@ -114,18 +114,18 @@ jobs:
           echo "total=$TOTAL" >> $GITHUB_ENV
           echo "### Total coverage: ${TOTAL}%" >> $GITHUB_STEP_SUMMARY
 
-      - name: "Make badge"
-        uses: schneegans/dynamic-badges-action@v1.7.0
-        with:
-          # GIST_TOKEN is a GitHub personal access token with scope "gist".
-          auth: ${{ secrets.GIST_TOKEN }}
-          gistID: 5f5c84f28e80b29f2f9ce92300859446   # replace with your real Gist id.
-          filename: covbadge.json
-          label: Coverage
-          message: ${{ env.total }}%
-          minColorRange: 50
-          maxColorRange: 90
-          valColorRange: ${{ env.total }}
+      # - name: "Make badge"
+      #   uses: schneegans/dynamic-badges-action@v1.7.0
+      #   with:
+      #     # GIST_TOKEN is a GitHub personal access token with scope "gist".
+      #     auth: ${{ secrets.GIST_TOKEN }}
+      #     gistID: 5f5c84f28e80b29f2f9ce92300859446   # replace with your real Gist id.
+      #     filename: covbadge.json
+      #     label: Coverage
+      #     message: ${{ env.total }}%
+      #     minColorRange: 50
+      #     maxColorRange: 90
+      #     valColorRange: ${{ env.total }}
 
       - name: Upload dummy files
         if: steps.test-with-pytest.conclusion != 'skipped' && matrix.enable-coverage == 'true'
