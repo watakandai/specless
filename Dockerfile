@@ -1,6 +1,13 @@
 ARG PYTHON_VERSION=3.11
 FROM python:${PYTHON_VERSION}
 
+
+RUN apt-get update && \
+    apt-get install -y software-properties-common &&\
+	apt update && \
+	apt install -y graphviz
+	# add-apt-repository universe && \
+
 # https://python-poetry.org/docs#ci-recommendations
 ENV POETRY_VERSION=1.7.0
 # ENV POETRY_HOME=/opt/poetry
@@ -13,7 +20,6 @@ ENV POETRY_CACHE_DIR=/opt/.cache
 RUN python3 -m venv $POETRY_VENV \
 	&& $POETRY_VENV/bin/pip install -U pip setuptools \
 	&& $POETRY_VENV/bin/pip install poetry==${POETRY_VERSION}
-
 
 # Add Poetry to PATH
 ENV PATH="${PATH}:${POETRY_VENV}/bin"
