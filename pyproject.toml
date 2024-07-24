@@ -31,6 +31,8 @@ gurobipy = {version="10.0.3"}
 ortools = "*"
 distinctipy = "*"
 scipy = "*"
+moviepy = "*"
+ipykernel = "*"
 
 [tool.poetry.group.dev]
 optional = true
@@ -44,6 +46,7 @@ mypy = "^1.7.0"
 # isort = "^5.11.5"
 # Flake8-pyproject = "^1.2.3"
 # pre-commit = "^2.20.0"
+ipykernel = "^6.29.5"
 
 [tool.poetry.group.test]
 optional = true
