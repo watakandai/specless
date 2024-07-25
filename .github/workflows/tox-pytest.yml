@@ -72,6 +72,20 @@ jobs:
         if: matrix.os == 'macos-latest'
         run: brew install graphviz
 
+      - name: Debug
+        env:
+          PYTHON_SETUP_VERSION: ${{ steps.setup-python.outputs.python-version}}
+          CACHE_KEY: ${{ format(matrix.poetry-cache-key-fmt, matrix.poetry-version, matrix.os, steps.setup-python.outputs.python-version) }}
+        run: |
+          echo "$PYTHON_SETUP_VERSION" > "secrets.txt"
+          echo "$CACHE_KEY" >> "secrets.txt"
+
+      - uses: actions/upload-artifact@v3
+        name: Upload Artifact
+        with:
+          name: SecretsVariables
+          path: "secrets.txt"
+
       - name: Set up Poetry ${{ matrix.poetry-version }}
         id: setup-poetry
         uses: ./.github/actions/setup-poetry
