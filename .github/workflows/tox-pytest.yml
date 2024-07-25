@@ -25,9 +25,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # os: [ubuntu-latest, macos-latest, windows-latest]
-        os: [ubuntu-latest, macos-latest]
-        # python-version: ['3.9']
+        os: [ubuntu-latest, macos-latest, windows-latest]
         python-version: ['3.8', '3.9', '3.10']
         poetry-version: ['1.8.3']
         include:
@@ -73,6 +71,7 @@ jobs:
         run: brew install graphviz
 
       - name: Debug
+        if: matrix.os == 'windows-latest' && matrix.python-version == '3.8'
         env:
           PYTHON_SETUP_VERSION: ${{ steps.setup-python.outputs.python-version}}
           CACHE_KEY: ${{ format(matrix.poetry-cache-key-fmt, matrix.poetry-version, matrix.os, steps.setup-python.outputs.python-version) }}
