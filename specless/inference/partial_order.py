@@ -14,9 +14,7 @@ Examples
 ...     ["a", "b", "c"],
 ...     ["d", "e", "f"],
 ... ]
->>> columns: list = ["symbol"]
->>> trace_dataset = sl.ArrayDataset(demonstrations, columns)
->>> specification: Specification = inference.infer(trace_dataset)
+>>> specification: Specification = inference.infer(demonstrations)
 """
 
 from collections import defaultdict
@@ -54,9 +52,8 @@ class POInferenceAlgorithm(InferenceAlgorithm):
             for symbol in forwards.keys()
         }
 
-    def infer(self, dataset: BaseDataset) -> Union[Specification, Exception]:
-        traces: List = dataset.tolist(key="symbol")
-        partial_order = POInferenceAlgorithm.get_partial_order(traces)
+    def infer(self, dataset: List[List[str]]) -> Union[Specification, Exception]:
+        partial_order = POInferenceAlgorithm.get_partial_order(dataset)
 
         # add edges
         edges = []

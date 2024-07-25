@@ -6,7 +6,6 @@ import gymnasium as gym  # noqa
 from gymnasium.core import ActType
 
 from specless.automaton.transition_system import MinigridTransitionSystem, TSBuilder
-from specless.dataset import ArrayDataset
 from specless.factory.tspbuilder import TSPWithTPOBuilder
 from specless.inference.timed_partial_order import TPOInferenceAlgorithm
 from specless.specification.base import Specification
@@ -20,22 +19,6 @@ from specless.wrapper.minigridwrapper import MiniGridTransitionSystemWrapper
 from specless.wrapper.selectstatewrapper import SelectStateDataWrapper
 
 
-def build_dataset_from_env(env_):
-    env = copy.deepcopy(env_)
-    env = SelectStateDataWrapper(env, columns=["label"])
-    # Collect Demonstrations
-    demonstrations = collect_demonstrations(
-        env,
-        only_success=True,
-        add_timestamp=True,
-        num=10,
-        timeout=1000,
-    )
-
-    assert len(demonstrations) == 10
-    dataset = ArrayDataset(demonstrations, columns=["timestamp", "symbol"])
-    return dataset
-
 
 def test_tsp_synthesis():
     env = gym.make("MiniGrid-Empty-5x5-v0")
@@ -46,17 +29,15 @@ def test_tsp_synthesis():
     ### Inference
 
     # Collect Data
-    # dataset: ArrayDataset = build_dataset_from_env(env)
     demonstrations = [
         [[00, "goal_green"]],
         [[20, "goal_green"]],
         # [[20, "empty_red"], [50, "goal_green"]],
         # [[20, "empty_red"], [50, "goal_green"]],
     ]
-    dataset = ArrayDataset(demonstrations, columns=["timestamp", "symbol"])
     # Inference
     inference = TPOInferenceAlgorithm()
-    tpo: Specification = inference.infer(dataset)
+    tpo: Specification = inference.infer(demonstrations)
 
     ### Synthesis
 
@@ -101,18 +82,16 @@ def test_wrapped() -> None:
     ### Inference
 
     # Collect Data
-    # dataset: ArrayDataset = build_dataset_from_env(env)
     demonstrations = [
         [[00, "goal_green"]],
         [[20, "goal_green"]],
         # [[20, "empty_red"], [50, "goal_green"]],
         # [[20, "empty_red"], [50, "goal_green"]],
     ]
-    dataset = ArrayDataset(demonstrations, columns=["timestamp", "symbol"])
 
     # Inference
     inference = TPOInferenceAlgorithm()
-    tpo: Specification = inference.infer(dataset)
+    tpo: Specification = inference.infer(demonstrations)
 
     ### Synthesis
 

@@ -44,7 +44,7 @@ def collect_demonstration(
     if add_timestamp:
         demonstration = [add_timestamp_func(state, t)]
     else:
-        demonstration = [state]
+        demonstration = [state[0]]
     for i in range(nsteps):
         action = env.action_space.sample()
         next_state, reward, terminated, truncated, info = env.step(action)
@@ -52,7 +52,7 @@ def collect_demonstration(
         if add_timestamp:
             demonstration.append(add_timestamp_func(next_state, t))
         else:
-            demonstration.append(next_state)
+            demonstration.append(next_state[0])
         state = next_state
         # Return only if succeeded/truncated
         if terminated or truncated:
