@@ -2,7 +2,6 @@ import gymnasium as gym  # noqa
 import gym_minigrid  # noqa: F401 # To load MiniGrid-BlockedUnlockPickup-v0
 
 import specless as sl
-from specless.dataset import ArrayDataset
 from specless.inference.timed_partial_order import TPOInferenceAlgorithm
 from specless.specification.base import Specification
 from specless.specification.timed_partial_order import TimedPartialOrder
@@ -22,9 +21,7 @@ def test_inference():
         [[1, "a"], [2, "b"], [3, "c"]],
         [[4, "d"], [5, "e"], [6, "f"]],
     ]
-    columns: list = ["timestamp", "symbol"]
-    timedtrace_dataset = ArrayDataset(demonstrations, columns)
-    specification: Specification = inference.infer(timedtrace_dataset)
+    specification: Specification = inference.infer(demonstrations)
     assert isinstance(specification, TimedPartialOrder)
 
 
@@ -45,13 +42,7 @@ def test_inference_on_gym_env():
         timeout=1000,
     )
 
-    # TODO: OR Define a DataCollector class to collect data given "symbol" and "timestamp" columns,
-    # and returns a Dataset Class
-
-    # Convert them to a Dataset Class
-    dataset = sl.ArrayDataset(demonstrations, columns=["timestamp", "symbol"])
-
     inference = TPOInferenceAlgorithm()
-    specification: Specification = inference.infer(dataset)
+    specification: Specification = inference.infer(demonstrations)
 
     assert isinstance(specification, TimedPartialOrder)

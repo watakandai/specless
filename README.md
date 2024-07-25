@@ -75,15 +75,10 @@ You can use the `specless` package in two ways: as a library, and as a CLI tool.
 ...    ["e1", "e4", "e2", "e3", "e5"],             # trace 2
 ...    ["e1", "e2", "e4", "e3", "e5"],             # trace 3
 ... ]
->>> dataset = sl.ArrayDataset(demonstrations, columns=["symbol"])
-
-# # or load from a file
-# >>> csv_filename = "examples/readme/example.csv"
-# >>> dataset = sl.BaseDataset(pd.read_csv(csv_filename))
 
 # Run the inference
 >>> inference = sl.POInferenceAlgorithm()
->>> specification = inference.infer(dataset)            # returns a Specification
+>>> specification = inference.infer(demonstrations)  # returns a Specification
 
 # prints the specification
 >>> print(specification) # doctest: +ELLIPSIS
@@ -118,10 +113,6 @@ The environment is based on the OpenAI Gym library (or more specifically, [Petti
 ...     num=10,
 ...     timeout=1000,
 ... )
-
-# Convert them to a Dataset Class
->>> demonstrations = sl.ArrayDataset(demonstrations, columns=["timestamp", "label"])
-
 ```
 
 - Once the specification is obtained, synthesize a strategy:
@@ -178,6 +169,9 @@ synthesize -d <path/to/demo> OR -s <LTLf formula> AND -e <Gym env> AND -p <path/
 ```
 
 
+## Docker + VSCode
+Use Dev Container.
+
 
 ## Development
 
@@ -191,7 +185,7 @@ If you want to contribute, set up your development environment as follows:
 
 To run all tests: `tox`
 
-To run only the code tests: `tox -e py39` or `tox -e py310`
+To run only the code tests: `tox -e py38` (or py39, py310, py311)
 
 To run doctests, `tox -e doctest`
 

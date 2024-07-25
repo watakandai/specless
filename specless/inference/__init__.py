@@ -21,11 +21,10 @@ import specless as sl
 
 # Create a list of traces
 traces = [["a", "b", "c"], ["a", "b", "b", "c"], ["a", "a", "b", "b", "c"]]
-dataset = sl.ArrayDataset(traces)
 
 # Infer a partial order specification
 inference = sl.POInferenceAlgorithm()
-specification = inference.infer(dataset)
+specification = inference.infer(traces)
 
 # Infer a timed partial order specification
 inference = sl.TPOInferenceAlgorithm()

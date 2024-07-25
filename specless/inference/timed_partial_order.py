@@ -13,10 +13,8 @@ Examples
 ...     [[1, "a"], [2, "b"], [3, "c"]],
 ...     [[4, "d"], [5, "e"], [6, "f"]],
 ... ]
->>> columns: list = ["timestamp", "symbol"]
->>> timedtrace_dataset = sl.ArrayDataset(demonstrations, columns)
 >>> inference = sl.TPOInferenceAlgorithm()
->>> specification = inference.infer(timedtrace_dataset)
+>>> specification = inference.infer(demonstrations)
 """
 
 import copy
@@ -119,7 +117,9 @@ class TPOInferenceAlgorithm(InferenceAlgorithm):
         """
         raise NotImplementedError()
 
-    def infer(self, dataset: BaseDataset) -> Union[Specification, Exception]:
+    def infer(
+        self, dataset: List[List[Tuple[float, str]]]
+    ) -> Union[Specification, Exception]:
         """Infer a Timed Partial Order (TPO) from a list of timed traces
 
         Implementation in detail:
@@ -146,17 +146,23 @@ class TPOInferenceAlgorithm(InferenceAlgorithm):
         Specification:
             Timed Partial Order
         """
-        sorted_dataset: BaseDataset = copy.deepcopy(dataset)
-        sorted_dataset.apply(
+        if type(dataset[0][0][0]) == str:
+            columns: list = ["symbol", "timestamp"]
+        else:
+            columns: list = ["timestamp", "symbol"]
+
+        timedtrace_dataset = ArrayDataset(dataset, columns)
+
+        timedtrace_dataset.apply(
             lambda data: data.sort_values(by="timestamp", inplace=True)
         )
-        traces: List = dataset.tolist(key="symbol")
-        timedtraces: List = dataset.tolist()
+        traces: List = timedtrace_dataset.tolist(key="symbol")
+        timedtraces: List = timedtrace_dataset.tolist()
 
         # Find a partial order
         inference = POInferenceAlgorithm()
         partial_order: Dict = inference.get_partial_order(traces)
-        po: Specification = inference.infer(sorted_dataset)
+        po: Specification = inference.infer(traces)
         # Infer Timing Constraints
         global_constraints, local_constraints = self.infer_time_constraints(
             timedtraces, po, partial_order
@@ -350,7 +356,7 @@ class TPOInferenceAlgorithm(InferenceAlgorithm):
         """Compute min and max time boudn for each event"""
         if partial_order is None:
             inference = POInferenceAlgorithm()
-            po = inference.infer(ArrayDataset(traces))
+            po = inference.infer(traces)
             partial_order: Dict = po.partial_order
 
         events = set(

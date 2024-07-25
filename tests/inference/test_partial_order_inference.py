@@ -3,7 +3,6 @@ import gym_minigrid  # noqa: F401
 import gymnasium as gym
 
 import specless as sl
-from specless.dataset import ArrayDataset
 from specless.inference.partial_order import POInferenceAlgorithm
 from specless.specification.base import Specification
 from specless.specification.partial_order import PartialOrder
@@ -23,9 +22,7 @@ def test_inference():
         ["a", "b", "c"],
         ["d", "e", "f"],
     ]
-    columns: list = ["symbol"]
-    trace_dataset = ArrayDataset(demonstrations, columns)
-    specification: Specification = inference.infer(trace_dataset)
+    specification: Specification = inference.infer(demonstrations)
     assert isinstance(specification, PartialOrder)
 
 
@@ -39,13 +36,10 @@ def test_inference_on_gym_env():
     demonstrations = collect_demonstrations(
         env,
         only_success=False,
-        add_timestamp=True,
+        # add_timestamp=True,
         num=10,
         timeout=1000,
     )
-
-    # Convert them to a Dataset Class
-    demonstrations = sl.ArrayDataset(demonstrations, columns=["timestamp", "symbol"])
 
     inference = POInferenceAlgorithm()
     specification: Specification = inference.infer(demonstrations)

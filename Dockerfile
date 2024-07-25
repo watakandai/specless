@@ -1,29 +1,31 @@
-ARG PYTHON_VERSION=3.11
+ARG PYTHON_VERSION=3.8
 FROM python:${PYTHON_VERSION}
 
-
 RUN apt-get update && \
-    apt-get install -y software-properties-common &&\
-	apt update && \
 	apt install -y graphviz
-	# add-apt-repository universe && \
 
 # https://python-poetry.org/docs#ci-recommendations
-ENV POETRY_VERSION=1.7.0
-# ENV POETRY_HOME=/opt/poetry
-ENV POETRY_VENV=/opt/poetry-venv
+ENV POETRY_VERSION=1.7.0 \
+	# Poetry home directory
+    POETRY_HOME='/usr/local' \
+	# Add Poetry's bin folder to the PATH
+	PATH="/usr/local/bin:$PATH" \
+	# Avoids any interactions with the terminal
+    POETRY_NO_INTERACTION=1 \
+	# This avoids poetry from creating a virtualenv
+	# Instead, it directly installs the dependencies in the system's python environment
+    POETRY_VIRTUALENVS_CREATE=false
 
-# Tell Poetry where to place its cache and virtual environment
-ENV POETRY_CACHE_DIR=/opt/.cache
+# System deps:
+RUN curl -sSL https://install.python-poetry.org | python3 -
 
-# Creating a virtual environment just for poetry and install it with pip
-RUN python3 -m venv $POETRY_VENV \
-	&& $POETRY_VENV/bin/pip install -U pip setuptools \
-	&& $POETRY_VENV/bin/pip install poetry==${POETRY_VERSION}
+# Copy the project files
+WORKDIR /home/specless
+COPY pyproject.toml poetry.lock /home/specless/
 
-# Add Poetry to PATH
-ENV PATH="${PATH}:${POETRY_VENV}/bin"
-
-ENV POETRY_VIRTUALENVS_IN_PROJECT=true
+# Project initialization and conditionally install cvxopt if on x86 architecture
+RUN poetry install --no-interaction
+# RUN poetry install --no-interaction && \
+#     if [ "$(uname -m)" = "x86_64" ]; then poetry add cvxopt; fi
 
 CMD ["bash"]
