@@ -1,0 +1,69 @@
+name: "Deploy Documentation"
+
+on:
+  push:
+    branches:
+      - main  # Change to your main branch name if different
+
+env:
+  os: ubuntu-latest
+  python-version: '3.10'
+  poetry-version: '1.8.3'
+  poetry-home: ''
+  poetry-path: ''
+  poetry-cache-paths: |
+    ~/.local/share/pypoetry
+    ~/.local/bin/poetry
+  poetry-cache-key-fmt: 'poetry-{0}-{1}-python-{2}'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+        contents: write
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ env.python-version }}
+      id: setup-python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.python-version }}
+
+    - name: Set up Poetry ${{ env.poetry-version }}
+      id: setup-poetry
+      uses: ./.github/actions/setup-poetry
+      with:
+        cache-path: ${{ env.poetry-cache-paths }}
+        cache-key: ${{ format(env.poetry-cache-key-fmt, env.poetry-version, env.os, steps.setup-python.outputs.python-version) }}
+        poetry-version: ${{ env.poetry-version }}
+        poetry-home: ${{ env.poetry-home }}
+        poetry-path: ${{ env.poetry-path }}
+
+    - name: Set up Poetry dependencies
+      id: setup-poetry-dependencies
+      uses: ./.github/actions/setup-poetry-dependencies
+      with:
+        cache-key: ${{ format(env.venv-cache-key-fmt, env.os, steps.setup-python.outputs.python-version, hashFiles('**/poetry.lock')) }}
+        python-version: ${{ steps.setup-python.outputs.python-version }}
+        poetry-install-args: --no-interaction --with docs
+
+    - name: Sphinx build
+      run: |
+        ${{ steps.setup-poetry-dependencies.outputs.venv-activate }}
+        python -m sphinx docs docs/build
+
+    # Great extra actions to compose with:
+    # Create an artifact of the html output.
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: html-docs
+        path: docs/build
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v4
+      # if: github.ref == 'refs/heads/main'
+      with:
+        publish_branch: gh-pages
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: docs/build
