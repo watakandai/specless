@@ -17,7 +17,7 @@ env:
 
 jobs:
   build:
-    runs-on: ${{ env.os }}
+    runs-on: ubuntu-latest
     permissions:
         contents: write
 
@@ -45,7 +45,7 @@ jobs:
       with:
         cache-key: ${{ format(env.venv-cache-key-fmt, env.os, steps.setup-python.outputs.python-version, hashFiles('**/poetry.lock')) }}
         python-version: ${{ steps.setup-python.outputs.python-version }}
-        poetry-install-args: --no-interaction --with dev
+        poetry-install-args: --no-interaction --with docs
 
     - name: Sphinx build
       run: |
