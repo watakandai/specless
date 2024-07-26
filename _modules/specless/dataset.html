@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>specless.dataset &mdash; specless 0.0.2 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=e3a6060d"></script>
-        <script src="../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=c1dcd045"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -138,9 +140,7 @@
 <span class="kn">from</span> <span class="nn">specless.typing</span> <span class="kn">import</span> <span class="n">Data</span>
 
 
-<div class="viewcode-block" id="BaseDataset">
-<a class="viewcode-back" href="../../_autosummary/specless.dataset.BaseDataset.html#specless.dataset.BaseDataset">[docs]</a>
-<span class="k">class</span> <span class="nc">BaseDataset</span><span class="p">:</span>
+<div class="viewcode-block" id="BaseDataset"><a class="viewcode-back" href="../../_autosummary/specless.dataset.BaseDataset.html#specless.dataset.BaseDataset">[docs]</a><span class="k">class</span> <span class="nc">BaseDataset</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base Dataset Class</span>
 
 <span class="sd">    Attributes</span>
@@ -194,9 +194,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
 
-<div class="viewcode-block" id="BaseDataset.apply">
-<a class="viewcode-back" href="../../_autosummary/specless.dataset.BaseDataset.html#specless.dataset.BaseDataset.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="BaseDataset.apply"><a class="viewcode-back" href="../../_autosummary/specless.dataset.BaseDataset.html#specless.dataset.BaseDataset.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply a function to each item in the data.</span>
 
 <span class="sd">        Parameters</span>
@@ -206,10 +204,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">))</span></div>
 
-
-<div class="viewcode-block" id="BaseDataset.tolist">
-<a class="viewcode-back" href="../../_autosummary/specless.dataset.BaseDataset.html#specless.dataset.BaseDataset.tolist">[docs]</a>
-    <span class="k">def</span> <span class="nf">tolist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseDataset.tolist"><a class="viewcode-back" href="../../_autosummary/specless.dataset.BaseDataset.html#specless.dataset.BaseDataset.tolist">[docs]</a>    <span class="k">def</span> <span class="nf">tolist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the data to a list.</span>
 
 <span class="sd">        Parameters</span>
@@ -225,14 +220,10 @@
         <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">))</span></div>
-</div>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">))</span></div></div>
 
 
-
-<div class="viewcode-block" id="ArrayDataset">
-<a class="viewcode-back" href="../../_autosummary/specless.dataset.ArrayDataset.html#specless.dataset.ArrayDataset">[docs]</a>
-<span class="k">class</span> <span class="nc">ArrayDataset</span><span class="p">(</span><span class="n">BaseDataset</span><span class="p">):</span>
+<div class="viewcode-block" id="ArrayDataset"><a class="viewcode-back" href="../../_autosummary/specless.dataset.ArrayDataset.html#specless.dataset.ArrayDataset">[docs]</a><span class="k">class</span> <span class="nc">ArrayDataset</span><span class="p">(</span><span class="n">BaseDataset</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Dataset class that contains a list of data.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -258,10 +249,7 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">([</span><span class="n">Data</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">])</span></div>
 
 
-
-<div class="viewcode-block" id="CSVDataset">
-<a class="viewcode-back" href="../../_autosummary/specless.dataset.CSVDataset.html#specless.dataset.CSVDataset">[docs]</a>
-<span class="k">class</span> <span class="nc">CSVDataset</span><span class="p">(</span><span class="n">BaseDataset</span><span class="p">):</span>
+<div class="viewcode-block" id="CSVDataset"><a class="viewcode-back" href="../../_autosummary/specless.dataset.CSVDataset.html#specless.dataset.CSVDataset">[docs]</a><span class="k">class</span> <span class="nc">CSVDataset</span><span class="p">(</span><span class="n">BaseDataset</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reads a list of csv files and turns them into a dataset.</span>
 
 <span class="sd">    Users can either provide a directory to the traces or a list of filepaths.</span>
@@ -299,10 +287,7 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">([</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span> <span class="k">for</span> <span class="n">fp</span> <span class="ow">in</span> <span class="n">filepaths</span><span class="p">])</span></div>
 
 
-
-<div class="viewcode-block" id="PathToFileDataset">
-<a class="viewcode-back" href="../../_autosummary/specless.dataset.PathToFileDataset.html#specless.dataset.PathToFileDataset">[docs]</a>
-<span class="k">class</span> <span class="nc">PathToFileDataset</span><span class="p">(</span><span class="n">BaseDataset</span><span class="p">):</span>
+<div class="viewcode-block" id="PathToFileDataset"><a class="viewcode-back" href="../../_autosummary/specless.dataset.PathToFileDataset.html#specless.dataset.PathToFileDataset">[docs]</a><span class="k">class</span> <span class="nc">PathToFileDataset</span><span class="p">(</span><span class="n">BaseDataset</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Dataset class that contains a path to a file</span>
 
 <span class="sd">    A dataset that contains a path to a file, but not the data itself.</span>
@@ -325,7 +310,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">[])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">filepath</span></div>
-
 </pre></div>
 
            </div>

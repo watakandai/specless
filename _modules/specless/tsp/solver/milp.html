@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>specless.tsp.solver.milp &mdash; specless 0.0.2 documentation</title>
-      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
         <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../../_static/documentation_options.js?v=e3a6060d"></script>
-        <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js?v=c1dcd045"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
@@ -119,15 +121,11 @@
 <span class="sd">&quot;&quot;&quot;Extend it to Multi-Agents &amp; Set&quot;&quot;&quot;</span>
 
 
-<div class="viewcode-block" id="MILPTSPSolver">
-<a class="viewcode-back" href="../../../../_autosummary/specless.tsp.solver.milp.MILPTSPSolver.html#specless.tsp.solver.milp.MILPTSPSolver">[docs]</a>
-<span class="k">class</span> <span class="nc">MILPTSPSolver</span><span class="p">(</span><span class="n">TSPSolver</span><span class="p">):</span>
+<div class="viewcode-block" id="MILPTSPSolver"><a class="viewcode-back" href="../../../../_autosummary/specless.tsp.solver.milp.MILPTSPSolver.html#specless.tsp.solver.milp.MILPTSPSolver">[docs]</a><span class="k">class</span> <span class="nc">MILPTSPSolver</span><span class="p">(</span><span class="n">TSPSolver</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
-<div class="viewcode-block" id="MILPTSPSolver.initialize_problem">
-<a class="viewcode-back" href="../../../../_autosummary/specless.tsp.solver.milp.MILPTSPSolver.html#specless.tsp.solver.milp.MILPTSPSolver.initialize_problem">[docs]</a>
-    <span class="k">def</span> <span class="nf">initialize_problem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tsp</span><span class="p">):</span>
+<div class="viewcode-block" id="MILPTSPSolver.initialize_problem"><a class="viewcode-back" href="../../../../_autosummary/specless.tsp.solver.milp.MILPTSPSolver.html#specless.tsp.solver.milp.MILPTSPSolver.initialize_problem">[docs]</a>    <span class="k">def</span> <span class="nf">initialize_problem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tsp</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the problem&quot;&quot;&quot;</span>
         <span class="n">env</span> <span class="o">=</span> <span class="n">gp</span><span class="o">.</span><span class="n">Env</span><span class="p">()</span>
         <span class="c1"># env.setParam(&quot;TimeLimit&quot;, 30 * 60)</span>
@@ -148,14 +146,10 @@
         <span class="n">variables</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;t&quot;</span><span class="p">:</span> <span class="n">t</span><span class="p">,</span> <span class="s2">&quot;tT&quot;</span><span class="p">:</span> <span class="n">tT</span><span class="p">,</span> <span class="s2">&quot;tf&quot;</span><span class="p">:</span> <span class="n">tf</span><span class="p">}</span>
         <span class="k">return</span> <span class="n">m</span><span class="p">,</span> <span class="n">variables</span></div>
 
-
-<div class="viewcode-block" id="MILPTSPSolver.optimize">
-<a class="viewcode-back" href="../../../../_autosummary/specless.tsp.solver.milp.MILPTSPSolver.html#specless.tsp.solver.milp.MILPTSPSolver.optimize">[docs]</a>
-    <span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">variables</span><span class="p">,</span> <span class="n">objective</span><span class="p">:</span> <span class="n">gp</span><span class="o">.</span><span class="n">LinExpr</span><span class="p">):</span>
+<div class="viewcode-block" id="MILPTSPSolver.optimize"><a class="viewcode-back" href="../../../../_autosummary/specless.tsp.solver.milp.MILPTSPSolver.html#specless.tsp.solver.milp.MILPTSPSolver.optimize">[docs]</a>    <span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">variables</span><span class="p">,</span> <span class="n">objective</span><span class="p">:</span> <span class="n">gp</span><span class="o">.</span><span class="n">LinExpr</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Optimize the defined model&quot;&quot;&quot;</span>
         <span class="n">m</span><span class="o">.</span><span class="n">setObjective</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="n">GRB</span><span class="o">.</span><span class="n">MINIMIZE</span><span class="p">)</span>
         <span class="n">m</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span></div>
-
 
     <span class="k">def</span> <span class="nf">get_tours</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">variables</span><span class="p">):</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span>
@@ -266,18 +260,13 @@
         <span class="k">return</span> <span class="n">tours</span><span class="p">,</span> <span class="n">cost</span></div>
 
 
-
-<div class="viewcode-block" id="MILPTSPWithTPOSolver">
-<a class="viewcode-back" href="../../../../_autosummary/specless.tsp.solver.milp.MILPTSPWithTPOSolver.html#specless.tsp.solver.milp.MILPTSPWithTPOSolver">[docs]</a>
-<span class="k">class</span> <span class="nc">MILPTSPWithTPOSolver</span><span class="p">(</span><span class="n">TSPWithTPOSolver</span><span class="p">):</span>
+<div class="viewcode-block" id="MILPTSPWithTPOSolver"><a class="viewcode-back" href="../../../../_autosummary/specless.tsp.solver.milp.MILPTSPWithTPOSolver.html#specless.tsp.solver.milp.MILPTSPWithTPOSolver">[docs]</a><span class="k">class</span> <span class="nc">MILPTSPWithTPOSolver</span><span class="p">(</span><span class="n">TSPWithTPOSolver</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
-<div class="viewcode-block" id="MILPTSPWithTPOSolver.initialize_problem">
-<a class="viewcode-back" href="../../../../_autosummary/specless.tsp.solver.milp.MILPTSPWithTPOSolver.html#specless.tsp.solver.milp.MILPTSPWithTPOSolver.initialize_problem">[docs]</a>
-    <span class="k">def</span> <span class="nf">initialize_problem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tsp</span><span class="p">):</span>
+<div class="viewcode-block" id="MILPTSPWithTPOSolver.initialize_problem"><a class="viewcode-back" href="../../../../_autosummary/specless.tsp.solver.milp.MILPTSPWithTPOSolver.html#specless.tsp.solver.milp.MILPTSPWithTPOSolver.initialize_problem">[docs]</a>    <span class="k">def</span> <span class="nf">initialize_problem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tsp</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the problem&quot;&quot;&quot;</span>
         <span class="c1"># Declare and initialize model</span>
         <span class="n">env</span> <span class="o">=</span> <span class="n">gp</span><span class="o">.</span><span class="n">Env</span><span class="p">()</span>
@@ -300,15 +289,11 @@
 
         <span class="k">return</span> <span class="n">m</span><span class="p">,</span> <span class="n">variables</span></div>
 
-
-<div class="viewcode-block" id="MILPTSPWithTPOSolver.optimize">
-<a class="viewcode-back" href="../../../../_autosummary/specless.tsp.solver.milp.MILPTSPWithTPOSolver.html#specless.tsp.solver.milp.MILPTSPWithTPOSolver.optimize">[docs]</a>
-    <span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">variables</span><span class="p">,</span> <span class="n">objective</span><span class="p">:</span> <span class="n">gp</span><span class="o">.</span><span class="n">LinExpr</span><span class="p">):</span>
+<div class="viewcode-block" id="MILPTSPWithTPOSolver.optimize"><a class="viewcode-back" href="../../../../_autosummary/specless.tsp.solver.milp.MILPTSPWithTPOSolver.html#specless.tsp.solver.milp.MILPTSPWithTPOSolver.optimize">[docs]</a>    <span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">variables</span><span class="p">,</span> <span class="n">objective</span><span class="p">:</span> <span class="n">gp</span><span class="o">.</span><span class="n">LinExpr</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Optimize the defined model&quot;&quot;&quot;</span>
         <span class="c1"># print(&quot;Objective Type: &quot;, type(objective))</span>
         <span class="n">m</span><span class="o">.</span><span class="n">setObjective</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="n">GRB</span><span class="o">.</span><span class="n">MINIMIZE</span><span class="p">)</span>
         <span class="n">m</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span></div>
-
 
     <span class="k">def</span> <span class="nf">get_tours</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">variables</span><span class="p">):</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span>
@@ -475,7 +460,6 @@
         <span class="n">cost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cost</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">tours</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">timestamps</span></div>
-
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>

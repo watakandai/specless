@@ -1,22 +1,23 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>specless.inference &mdash; specless 0.0.2 documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=e3a6060d"></script>
-        <script src="../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=c1dcd045"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -100,9 +101,9 @@
            <div itemprop="articleBody">
              
   <section id="module-specless.inference">
-<span id="specless-inference"></span><h1>specless.inference<a class="headerlink" href="#module-specless.inference" title="Link to this heading"></a></h1>
+<span id="specless-inference"></span><h1>specless.inference<a class="headerlink" href="#module-specless.inference" title="Permalink to this heading"></a></h1>
 <section id="inference-algorithm">
-<h2>Inference Algorithm<a class="headerlink" href="#inference-algorithm" title="Link to this heading"></a></h2>
+<h2>Inference Algorithm<a class="headerlink" href="#inference-algorithm" title="Permalink to this heading"></a></h2>
 <p>Inference algorithms are the core of the Specless library. They are responsible for inferring a specification from demonstrations (dataset). The library provides a set of inference algorithms that can be used to infer different types of specifications. The inference algorithms are implemented as classes that inherit from the <cite>InferenceAlgorithm</cite> base class. Each inference algorithm implements the <cite>infer</cite> method, which takes a dataset as input and returns a specification.</p>
 <p>The library provides the following inference algorithms:</p>
 <ol class="arabic simple">
@@ -116,11 +117,10 @@
 # Import the Specless library
 import specless as sl</p>
 <p># Create a list of traces
-traces = [[“a”, “b”, “c”], [“a”, “b”, “b”, “c”], [“a”, “a”, “b”, “b”, “c”]]
-dataset = sl.ArrayDataset(traces)</p>
+traces = [[“a”, “b”, “c”], [“a”, “b”, “b”, “c”], [“a”, “a”, “b”, “b”, “c”]]</p>
 <p># Infer a partial order specification
 inference = sl.POInferenceAlgorithm()
-specification = inference.infer(dataset)</p>
+specification = inference.infer(traces)</p>
 <p># Infer a timed partial order specification
 inference = sl.TPOInferenceAlgorithm()
 specification = inference.infer(dataset)</p>

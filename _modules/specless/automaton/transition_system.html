@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>specless.automaton.transition_system &mdash; specless 0.0.2 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=e3a6060d"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=c1dcd045"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -97,9 +99,7 @@
 <span class="n">TS_Trans_Data</span> <span class="o">=</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="n">Observation</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="TransitionSystem">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.transition_system.TransitionSystem.html#specless.automaton.transition_system.TransitionSystem">[docs]</a>
-<span class="k">class</span> <span class="nc">TransitionSystem</span><span class="p">(</span><span class="n">Automaton</span><span class="p">):</span>
+<div class="viewcode-block" id="TransitionSystem"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.transition_system.TransitionSystem.html#specless.automaton.transition_system.TransitionSystem">[docs]</a><span class="k">class</span> <span class="nc">TransitionSystem</span><span class="p">(</span><span class="n">Automaton</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A representation of a transition system automaton (a.k.a. moore machine)</span>
 
@@ -163,9 +163,7 @@
             <span class="n">edge_weight_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="p">)</span>
 
-<div class="viewcode-block" id="TransitionSystem.transition">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.transition_system.TransitionSystem.html#specless.automaton.transition_system.TransitionSystem.transition">[docs]</a>
-    <span class="k">def</span> <span class="nf">transition</span><span class="p">(</span>
+<div class="viewcode-block" id="TransitionSystem.transition"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.transition_system.TransitionSystem.html#specless.automaton.transition_system.TransitionSystem.transition">[docs]</a>    <span class="k">def</span> <span class="nf">transition</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">curr_state</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">input_symbol</span><span class="p">:</span> <span class="n">Symbol</span><span class="p">,</span> <span class="o">**</span><span class="n">get_next_state_kwargs</span><span class="p">:</span> <span class="nb">dict</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TS_Trans_Data</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -187,10 +185,7 @@
 
         <span class="k">return</span> <span class="n">next_state</span><span class="p">,</span> <span class="n">observation</span></div>
 
-
-<div class="viewcode-block" id="TransitionSystem.observe">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.transition_system.TransitionSystem.html#specless.automaton.transition_system.TransitionSystem.observe">[docs]</a>
-    <span class="k">def</span> <span class="nf">observe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curr_state</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Observation</span><span class="p">:</span>
+<div class="viewcode-block" id="TransitionSystem.observe"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.transition_system.TransitionSystem.html#specless.automaton.transition_system.TransitionSystem.observe">[docs]</a>    <span class="k">def</span> <span class="nf">observe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curr_state</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Observation</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the given state&#39;s observation symbol</span>
 
@@ -201,10 +196,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_node_data</span><span class="p">(</span><span class="n">curr_state</span><span class="p">,</span> <span class="s2">&quot;observation&quot;</span><span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="TransitionSystem.run">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.transition_system.TransitionSystem.html#specless.automaton.transition_system.TransitionSystem.run">[docs]</a>
-    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span>
+<div class="viewcode-block" id="TransitionSystem.run"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.transition_system.TransitionSystem.html#specless.automaton.transition_system.TransitionSystem.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">:</span> <span class="p">{</span><span class="n">Symbol</span><span class="p">,</span> <span class="n">Symbols</span><span class="p">},</span> <span class="o">**</span><span class="n">get_next_state_kwargs</span><span class="p">:</span> <span class="nb">dict</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Symbols</span><span class="p">,</span> <span class="n">Nodes</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -248,7 +240,6 @@
 
         <span class="k">return</span> <span class="n">output_word</span><span class="p">,</span> <span class="n">state_sequence</span></div>
 
-
     <span class="k">def</span> <span class="nf">_set_state_acceptance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curr_state</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sets the state acceptance property for the given state.</span>
@@ -258,10 +249,7 @@
         <span class="k">pass</span></div>
 
 
-
-<div class="viewcode-block" id="MinigridTransitionSystem">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.transition_system.MinigridTransitionSystem.html#specless.automaton.transition_system.MinigridTransitionSystem">[docs]</a>
-<span class="k">class</span> <span class="nc">MinigridTransitionSystem</span><span class="p">(</span><span class="n">TransitionSystem</span><span class="p">):</span>
+<div class="viewcode-block" id="MinigridTransitionSystem"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.transition_system.MinigridTransitionSystem.html#specless.automaton.transition_system.MinigridTransitionSystem">[docs]</a><span class="k">class</span> <span class="nc">MinigridTransitionSystem</span><span class="p">(</span><span class="n">TransitionSystem</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class representing both a transition system and a Minigrid environment.</span>
 
@@ -318,9 +306,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 
     <span class="c1"># TODO: Remove _get_state_from_str</span>
-<div class="viewcode-block" id="MinigridTransitionSystem.reset">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.transition_system.MinigridTransitionSystem.html#specless.automaton.transition_system.MinigridTransitionSystem.reset">[docs]</a>
-    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="MinigridTransitionSystem.reset"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.transition_system.MinigridTransitionSystem.html#specless.automaton.transition_system.MinigridTransitionSystem.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Resets both the transition system&#39;s state and the Minigrid env itself.</span>
 
@@ -329,7 +315,6 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_state</span></div>
-
 
     <span class="c1"># TODO: Remove OBS!!!</span>
     <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="n">ActionsEnum</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StepData</span><span class="p">:</span>
@@ -348,9 +333,7 @@
 
         <span class="k">return</span> <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">_</span>
 
-<div class="viewcode-block" id="MinigridTransitionSystem.transition">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.transition_system.MinigridTransitionSystem.html#specless.automaton.transition_system.MinigridTransitionSystem.transition">[docs]</a>
-    <span class="k">def</span> <span class="nf">transition</span><span class="p">(</span>
+<div class="viewcode-block" id="MinigridTransitionSystem.transition"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.transition_system.MinigridTransitionSystem.html#specless.automaton.transition_system.MinigridTransitionSystem.transition">[docs]</a>    <span class="k">def</span> <span class="nf">transition</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">curr_state</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
         <span class="n">input_symbol</span><span class="p">:</span> <span class="p">{</span><span class="n">Symbol</span><span class="p">,</span> <span class="n">EnvAct</span><span class="p">},</span>
@@ -372,10 +355,7 @@
 
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">transition</span><span class="p">(</span><span class="n">curr_state</span><span class="p">,</span> <span class="n">input_symbol</span><span class="p">,</span> <span class="o">**</span><span class="n">get_next_state_kwargs</span><span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="MinigridTransitionSystem.run">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.transition_system.MinigridTransitionSystem.html#specless.automaton.transition_system.MinigridTransitionSystem.run">[docs]</a>
-    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span>
+<div class="viewcode-block" id="MinigridTransitionSystem.run"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.transition_system.MinigridTransitionSystem.html#specless.automaton.transition_system.MinigridTransitionSystem.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">word</span><span class="p">:</span> <span class="p">{</span><span class="n">EnvAct</span><span class="p">,</span> <span class="n">EnvActs</span><span class="p">,</span> <span class="n">Symbol</span><span class="p">,</span> <span class="n">Symbols</span><span class="p">},</span>
         <span class="n">record_video</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -407,7 +387,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">temp_env</span>
 
         <span class="k">return</span> <span class="n">output_word</span><span class="p">,</span> <span class="n">state_sequence</span><span class="p">,</span> <span class="n">video_path</span></div>
-
 
     <span class="k">def</span> <span class="nf">_get_next_state</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">curr_state</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="p">{</span><span class="n">Symbol</span><span class="p">,</span> <span class="n">EnvAct</span><span class="p">}</span>
@@ -480,10 +459,7 @@
         <span class="k">return</span> <span class="n">dest_state</span><span class="p">,</span> <span class="n">symbol_probability</span></div>
 
 
-
-<div class="viewcode-block" id="TSBuilder">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.transition_system.TSBuilder.html#specless.automaton.transition_system.TSBuilder">[docs]</a>
-<span class="k">class</span> <span class="nc">TSBuilder</span><span class="p">(</span><span class="n">Builder</span><span class="p">):</span>
+<div class="viewcode-block" id="TSBuilder"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.transition_system.TSBuilder.html#specless.automaton.transition_system.TSBuilder">[docs]</a><span class="k">class</span> <span class="nc">TSBuilder</span><span class="p">(</span><span class="n">Builder</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Implements the generic automaton builder class for TransitionSystem objects</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -501,9 +477,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">edges</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="TSBuilder.__call__">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.transition_system.TSBuilder.html#specless.automaton.transition_system.TSBuilder.__call__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
+<div class="viewcode-block" id="TSBuilder.__call__"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.transition_system.TSBuilder.html#specless.automaton.transition_system.TSBuilder.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">graph_data</span><span class="p">:</span> <span class="p">{</span><span class="nb">str</span><span class="p">,</span> <span class="n">TransitionSystemWrapper</span><span class="p">},</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TransitionSystem</span><span class="p">:</span>
@@ -575,7 +549,6 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span></div>
 
-
     <span class="k">def</span> <span class="nf">_from_minigrid</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">minigrid_environment</span><span class="p">:</span> <span class="n">TransitionSystemWrapper</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TransitionSystem</span><span class="p">:</span>
@@ -597,13 +570,9 @@
         <span class="k">return</span> <span class="n">config_data</span></div>
 
 
-
-<div class="viewcode-block" id="build_transition_system">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.transition_system.build_transition_system.html#specless.automaton.transition_system.build_transition_system">[docs]</a>
-<span class="k">def</span> <span class="nf">build_transition_system</span><span class="p">(</span><span class="n">env</span><span class="p">):</span>
+<div class="viewcode-block" id="build_transition_system"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.transition_system.build_transition_system.html#specless.automaton.transition_system.build_transition_system">[docs]</a><span class="k">def</span> <span class="nf">build_transition_system</span><span class="p">(</span><span class="n">env</span><span class="p">):</span>
     <span class="n">tsbuillder</span> <span class="o">=</span> <span class="n">TSBuilder</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">tsbuillder</span><span class="p">(</span><span class="n">env</span><span class="p">)</span></div>
-
 </pre></div>
 
            </div>

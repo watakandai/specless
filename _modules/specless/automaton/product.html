@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>specless.automaton.product &mdash; specless 0.0.2 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=e3a6060d"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=c1dcd045"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -104,9 +106,7 @@
 <span class="n">SPEC_VIOLATING_STATE</span> <span class="o">=</span> <span class="s2">&quot;q_v&quot;</span>
 
 
-<div class="viewcode-block" id="Product">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.product.Product.html#specless.automaton.product.Product">[docs]</a>
-<span class="k">class</span> <span class="nc">Product</span><span class="p">(</span><span class="n">Automaton</span><span class="p">):</span>
+<div class="viewcode-block" id="Product"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.product.Product.html#specless.automaton.product.Product">[docs]</a><span class="k">class</span> <span class="nc">Product</span><span class="p">(</span><span class="n">Automaton</span><span class="p">):</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Describes a product automaton between a specification automaton</span>
@@ -206,9 +206,7 @@
             <span class="n">edge_weight_key</span><span class="o">=</span><span class="s2">&quot;probability&quot;</span><span class="p">,</span>
         <span class="p">)</span>
 
-<div class="viewcode-block" id="Product.compute_strategy">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.product.Product.html#specless.automaton.product.Product.compute_strategy">[docs]</a>
-    <span class="k">def</span> <span class="nf">compute_strategy</span><span class="p">(</span>
+<div class="viewcode-block" id="Product.compute_strategy"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.product.Product.html#specless.automaton.product.Product.compute_strategy">[docs]</a>    <span class="k">def</span> <span class="nf">compute_strategy</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">min_string_probability</span><span class="p">:</span> <span class="p">{</span><span class="n">Probability</span><span class="p">,</span> <span class="kc">None</span><span class="p">}</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">max_string_length</span><span class="p">:</span> <span class="p">{</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">}</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -260,10 +258,7 @@
 
         <span class="k">return</span> <span class="n">controls_symbols</span><span class="p">,</span> <span class="n">obs_prob</span></div>
 
-
-<div class="viewcode-block" id="Product.generate_traces">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.product.Product.html#specless.automaton.product.Product.generate_traces">[docs]</a>
-    <span class="k">def</span> <span class="nf">generate_traces</span><span class="p">(</span>
+<div class="viewcode-block" id="Product.generate_traces"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.product.Product.html#specless.automaton.product.Product.generate_traces">[docs]</a>    <span class="k">def</span> <span class="nf">generate_traces</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">num_samples</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">N</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -486,10 +481,7 @@
 
         <span class="k">return</span> <span class="n">samples</span><span class="p">,</span> <span class="n">trace_lengths</span><span class="p">,</span> <span class="n">trace_probs</span></div>
 
-
-<div class="viewcode-block" id="Product.observe">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.product.Product.html#specless.automaton.product.Product.observe">[docs]</a>
-    <span class="k">def</span> <span class="nf">observe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curr_state</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Observation</span><span class="p">:</span>
+<div class="viewcode-block" id="Product.observe"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.product.Product.html#specless.automaton.product.Product.observe">[docs]</a>    <span class="k">def</span> <span class="nf">observe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curr_state</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Observation</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the given state&#39;s observation symbol</span>
 
@@ -499,7 +491,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_node_data</span><span class="p">(</span><span class="n">curr_state</span><span class="p">,</span> <span class="s2">&quot;observation&quot;</span><span class="p">)</span></div>
-
 
     <span class="k">def</span> <span class="nf">_set_state_acceptance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curr_state</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -888,10 +879,7 @@
         <span class="k">return</span> <span class="n">config_data</span></div>
 
 
-
-<div class="viewcode-block" id="ProductBuilder">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.product.ProductBuilder.html#specless.automaton.product.ProductBuilder">[docs]</a>
-<span class="k">class</span> <span class="nc">ProductBuilder</span><span class="p">(</span><span class="n">Builder</span><span class="p">):</span>
+<div class="viewcode-block" id="ProductBuilder"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.product.ProductBuilder.html#specless.automaton.product.ProductBuilder">[docs]</a><span class="k">class</span> <span class="nc">ProductBuilder</span><span class="p">(</span><span class="n">Builder</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Implements the generic automaton builder class for Product objects</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -909,9 +897,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">edges</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="ProductBuilder.__call__">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.product.ProductBuilder.html#specless.automaton.product.ProductBuilder.__call__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
+<div class="viewcode-block" id="ProductBuilder.__call__"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.product.ProductBuilder.html#specless.automaton.product.ProductBuilder.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">graph_data</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">TransitionSystem</span><span class="p">,</span> <span class="n">PDFA</span><span class="p">],</span>
         <span class="n">graph_data_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;existing_objects&quot;</span><span class="p">,</span>
@@ -949,7 +935,6 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span></div>
-
 
     <span class="k">def</span> <span class="nf">_from_automata</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1008,7 +993,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="n">Product</span><span class="p">(</span><span class="o">**</span><span class="n">config_data</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span></div>
-
 </pre></div>
 
            </div>

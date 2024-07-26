@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>specless.minigrid.tspenv.TSPEnv &mdash; specless 0.0.2 documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=e3a6060d"></script>
-        <script src="../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=c1dcd045"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -103,10 +105,10 @@
            <div itemprop="articleBody">
              
   <section id="specless-minigrid-tspenv-tspenv">
-<h1>specless.minigrid.tspenv.TSPEnv<a class="headerlink" href="#specless-minigrid-tspenv-tspenv" title="Link to this heading"></a></h1>
+<h1>specless.minigrid.tspenv.TSPEnv<a class="headerlink" href="#specless-minigrid-tspenv-tspenv" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">specless.minigrid.tspenv.</span></span><span class="sig-name descname"><span class="pre">TSPEnv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_locations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent_start_pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(1,</span> <span class="pre">1)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent_start_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specless/minigrid/tspenv.html#TSPEnv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">specless.minigrid.tspenv.</span></span><span class="sig-name descname"><span class="pre">TSPEnv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_locations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent_start_pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(1,</span> <span class="pre">1)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent_start_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specless/minigrid/tspenv.html#TSPEnv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MiniGridEnv</span></code></p>
 <p>TSP Environment with Multiple floor locations with duplicate colors</p>
 <p class="rubric">Methods</p>
@@ -217,145 +219,20 @@
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.Actions">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Actions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.Actions" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Actions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.Actions" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">IntEnum</span></code></p>
 <p>An enumeration.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.Actions.__add__">
-<span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.Actions.__add__" title="Link to this definition"></a></dt>
-<dd><p>Return self+value.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.Actions.__mul__">
-<span class="sig-name descname"><span class="pre">__mul__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.Actions.__mul__" title="Link to this definition"></a></dt>
-<dd><p>Return self*value.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.Actions.as_integer_ratio">
-<span class="sig-name descname"><span class="pre">as_integer_ratio</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.Actions.as_integer_ratio" title="Link to this definition"></a></dt>
-<dd><p>Return integer ratio.</p>
-<p>Return a pair of integers, whose ratio is exactly equal to the original int
-and with a positive denominator.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">as_integer_ratio</span><span class="p">()</span>
-<span class="go">(10, 1)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">as_integer_ratio</span><span class="p">()</span>
-<span class="go">(-10, 1)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">as_integer_ratio</span><span class="p">()</span>
-<span class="go">(0, 1)</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.Actions.bit_count">
-<span class="sig-name descname"><span class="pre">bit_count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.Actions.bit_count" title="Link to this definition"></a></dt>
-<dd><p>Number of ones in the binary representation of the absolute value of self.</p>
-<p>Also known as the population count.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">13</span><span class="p">)</span>
-<span class="go">&#39;0b1101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">13</span><span class="p">)</span><span class="o">.</span><span class="n">bit_count</span><span class="p">()</span>
-<span class="go">3</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.Actions.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.Actions.bit_length" title="Link to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.Actions.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.Actions.conjugate" title="Link to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.Actions.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.Actions.denominator" title="Link to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.Actions.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.Actions.from_bytes" title="Link to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id1"><span class="problematic" id="id2">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.Actions.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.Actions.imag" title="Link to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.Actions.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.Actions.numerator" title="Link to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.Actions.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.Actions.real" title="Link to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.Actions.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.Actions.to_bytes" title="Link to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id3"><span class="problematic" id="id4">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.agent_sees">
-<span class="sig-name descname"><span class="pre">agent_sees</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.agent_sees" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">agent_sees</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.agent_sees" title="Permalink to this definition"></a></dt>
 <dd><p>Check if a non-empty grid position is visible to the agent</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.close">
-<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.close" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.close" title="Permalink to this definition"></a></dt>
 <dd><p>After the user has finished using the environment, close contains the code necessary to “clean up” the environment.</p>
 <p>This is critical for closing rendering windows, database or HTTP connections.
 Calling <code class="docutils literal notranslate"><span class="pre">close</span></code> on an already closed environment has no effect and won’t raise an error.</p>
@@ -363,26 +240,26 @@ Calling <code class="docutils literal notranslate"><span class="pre">close</span
 
 <dl class="py property">
 <dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.dir_vec">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dir_vec</span></span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.dir_vec" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dir_vec</span></span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.dir_vec" title="Permalink to this definition"></a></dt>
 <dd><p>Get the direction vector for the agent, pointing in the direction
 of forward movement.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.front_pos">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">front_pos</span></span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.front_pos" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">front_pos</span></span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.front_pos" title="Permalink to this definition"></a></dt>
 <dd><p>Get the position of the cell that is right in front of the agent</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.gen_obs">
-<span class="sig-name descname"><span class="pre">gen_obs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.gen_obs" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">gen_obs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.gen_obs" title="Permalink to this definition"></a></dt>
 <dd><p>Generate the agent’s view (partially observable, low-resolution encoding)</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.gen_obs_grid">
-<span class="sig-name descname"><span class="pre">gen_obs_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agent_view_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.gen_obs_grid" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">gen_obs_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agent_view_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.gen_obs_grid" title="Permalink to this definition"></a></dt>
 <dd><p>Generate the sub-grid observed by the agent.
 This method also outputs a visibility mask telling us which grid
 cells the agent can actually see.
@@ -391,7 +268,7 @@ if agent_view_size is None, self.agent_view_size is used</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.get_frame">
-<span class="sig-name descname"><span class="pre">get_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">highlight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tile_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent_pov</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.get_frame" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">highlight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tile_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent_pov</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.get_frame" title="Permalink to this definition"></a></dt>
 <dd><p>Returns an RGB image corresponding to the whole environment or the agent’s point of view.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -412,19 +289,19 @@ if agent_view_size is None, self.agent_view_size is used</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.get_full_render">
-<span class="sig-name descname"><span class="pre">get_full_render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">highlight</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tile_size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.get_full_render" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_full_render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">highlight</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tile_size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.get_full_render" title="Permalink to this definition"></a></dt>
 <dd><p>Render a non-paratial observation for visualization</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.get_pov_render">
-<span class="sig-name descname"><span class="pre">get_pov_render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tile_size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.get_pov_render" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_pov_render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tile_size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.get_pov_render" title="Permalink to this definition"></a></dt>
 <dd><p>Render an agent’s POV observation for visualization</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.get_view_coords">
-<span class="sig-name descname"><span class="pre">get_view_coords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.get_view_coords" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_view_coords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.get_view_coords" title="Permalink to this definition"></a></dt>
 <dd><p>Translate and rotate absolute grid coordinates (i, j) into the
 agent’s partially observable view (sub-grid). Note that the resulting
 coordinates may be negative or outside of the agent’s view size.</p>
@@ -432,7 +309,7 @@ coordinates may be negative or outside of the agent’s view size.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.get_view_exts">
-<span class="sig-name descname"><span class="pre">get_view_exts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agent_view_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.get_view_exts" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_view_exts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agent_view_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.get_view_exts" title="Permalink to this definition"></a></dt>
 <dd><p>Get the extents of the square set of tiles visible to the agent
 Note: the bottom extent indices are not included in the set
 if agent_view_size is None, use self.agent_view_size</p>
@@ -440,26 +317,26 @@ if agent_view_size is None, use self.agent_view_size</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.get_wrapper_attr">
-<span class="sig-name descname"><span class="pre">get_wrapper_attr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.get_wrapper_attr" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_wrapper_attr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.get_wrapper_attr" title="Permalink to this definition"></a></dt>
 <dd><p>Gets the attribute <cite>name</cite> from the environment.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.hash">
-<span class="sig-name descname"><span class="pre">hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.hash" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.hash" title="Permalink to this definition"></a></dt>
 <dd><p>Compute a hash that uniquely identifies the current state of the environment.
 :param size: Size of the hashing</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.in_view">
-<span class="sig-name descname"><span class="pre">in_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.in_view" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">in_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.in_view" title="Permalink to this definition"></a></dt>
 <dd><p>check if a grid position is visible to the agent</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.np_random">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">np_random</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Generator</span></em><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.np_random" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">np_random</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Generator</span></em><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.np_random" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the environment’s internal <code class="xref py py-attr docutils literal notranslate"><span class="pre">_np_random</span></code> that if not set will initialise with a random seed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -470,13 +347,13 @@ if agent_view_size is None, use self.agent_view_size</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.place_agent">
-<span class="sig-name descname"><span class="pre">place_agent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rand_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_tries</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.place_agent" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">place_agent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rand_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_tries</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.place_agent" title="Permalink to this definition"></a></dt>
 <dd><p>Set the agent’s starting point at an empty position in the grid</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.place_obj">
-<span class="sig-name descname"><span class="pre">place_obj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reject_fn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_tries</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.place_obj" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">place_obj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reject_fn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_tries</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.place_obj" title="Permalink to this definition"></a></dt>
 <dd><p>Place an object at an empty position in the grid</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -491,19 +368,19 @@ if agent_view_size is None, use self.agent_view_size</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.put_obj">
-<span class="sig-name descname"><span class="pre">put_obj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.put_obj" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">put_obj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.put_obj" title="Permalink to this definition"></a></dt>
 <dd><p>Put an object at a specific position in the grid</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.relative_coords">
-<span class="sig-name descname"><span class="pre">relative_coords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.relative_coords" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">relative_coords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.relative_coords" title="Permalink to this definition"></a></dt>
 <dd><p>Check if a grid position belongs to the agent’s field of view, and returns the corresponding coordinates</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.render">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.render" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.render" title="Permalink to this definition"></a></dt>
 <dd><p>Compute the render frames as specified by <code class="xref py py-attr docutils literal notranslate"><span class="pre">render_mode</span></code> during the initialization of the environment.</p>
 <p>The environment’s <code class="xref py py-attr docutils literal notranslate"><span class="pre">metadata</span></code> render modes (<cite>env.metadata[“render_modes”]</cite>) should contain the possible
 ways to implement the render modes. In addition, list versions for most render modes is achieved through
@@ -538,7 +415,7 @@ in the environment initialised, i.e., <code class="docutils literal notranslate"
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.reset">
-<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.reset" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.reset" title="Permalink to this definition"></a></dt>
 <dd><p>Resets the environment to an initial internal state, returning an initial observation and info.</p>
 <p>This method generates a new starting state often with some randomness to ensure that the agent explores the
 state space and learns a generalised policy about the environment. This randomness can be controlled
@@ -581,13 +458,13 @@ depending on the specific environment)</p></li>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.right_vec">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">right_vec</span></span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.right_vec" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">right_vec</span></span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.right_vec" title="Permalink to this definition"></a></dt>
 <dd><p>Get the vector pointing to the right of the agent.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.step">
-<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.step" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.step" title="Permalink to this definition"></a></dt>
 <dd><p>Run one timestep of the environment’s dynamics using the agent actions.</p>
 <p>When the end of an episode is reached (<code class="docutils literal notranslate"><span class="pre">terminated</span> <span class="pre">or</span> <span class="pre">truncated</span></code>), it is necessary to call <a class="reference internal" href="#specless.minigrid.tspenv.TSPEnv.reset" title="specless.minigrid.tspenv.TSPEnv.reset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code></a> to
 reset this environment’s state for the next episode.</p>
@@ -636,7 +513,7 @@ a certain timelimit was exceeded, or the physics simulation has entered an inval
 
 <dl class="py property">
 <dt class="sig sig-object py" id="specless.minigrid.tspenv.TSPEnv.unwrapped">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unwrapped</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Env</span><span class="p"><span class="pre">[</span></span><span class="pre">ObsType</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ActType</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.unwrapped" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unwrapped</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Env</span><span class="p"><span class="pre">[</span></span><span class="pre">ObsType</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ActType</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#specless.minigrid.tspenv.TSPEnv.unwrapped" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the base non-wrapped environment.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>

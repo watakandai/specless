@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>specless.automaton.pdfa &mdash; specless 0.0.2 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=e3a6060d"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=c1dcd045"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -99,9 +101,7 @@
 <span class="n">SPEC_VIOLATING_STATE</span> <span class="o">=</span> <span class="s2">&quot;q_v&quot;</span>
 
 
-<div class="viewcode-block" id="check_predict_method">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.check_predict_method.html#specless.automaton.pdfa.check_predict_method">[docs]</a>
-<span class="k">def</span> <span class="nf">check_predict_method</span><span class="p">(</span><span class="n">prediction_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">):</span>
+<div class="viewcode-block" id="check_predict_method"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.check_predict_method.html#specless.automaton.pdfa.check_predict_method">[docs]</a><span class="k">def</span> <span class="nf">check_predict_method</span><span class="p">(</span><span class="n">prediction_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    decorator to check an enumerated typestring for prediction method.</span>
 <span class="sd">    pred_method:  The pred_method string to check. one of: {&#39;sample&#39;,</span>
@@ -141,10 +141,7 @@
     <span class="k">return</span> <span class="n">checker</span></div>
 
 
-
-<div class="viewcode-block" id="PDFA">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA">[docs]</a>
-<span class="k">class</span> <span class="nc">PDFA</span><span class="p">(</span><span class="n">Automaton</span><span class="p">):</span>
+<div class="viewcode-block" id="PDFA"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA">[docs]</a><span class="k">class</span> <span class="nc">PDFA</span><span class="p">(</span><span class="n">Automaton</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This class describes a probabilistic deterministic finite automaton (pdfa).</span>
 
@@ -249,9 +246,7 @@
             <span class="n">merge_sinks</span><span class="o">=</span><span class="n">merge_sinks</span><span class="p">,</span>
         <span class="p">)</span>
 
-<div class="viewcode-block" id="PDFA.predict">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.predict">[docs]</a>
-    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbols</span><span class="p">:</span> <span class="n">Symbols</span><span class="p">,</span> <span class="n">pred_method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;max_prob&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Symbol</span><span class="p">:</span>
+<div class="viewcode-block" id="PDFA.predict"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbols</span><span class="p">:</span> <span class="n">Symbols</span><span class="p">,</span> <span class="n">pred_method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;max_prob&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Symbol</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        predicts the next symbol conditioned on the given previous symbols</span>
 
@@ -277,10 +272,7 @@
 
         <span class="k">return</span> <span class="n">next_symbol</span></div>
 
-
-<div class="viewcode-block" id="PDFA.score">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.score">[docs]</a>
-    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trace</span><span class="p">:</span> <span class="n">Symbols</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<div class="viewcode-block" id="PDFA.score"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.score">[docs]</a>    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trace</span><span class="p">:</span> <span class="n">Symbols</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculates the given trace&#39;s probability in the language of the PDFA.</span>
 
@@ -312,10 +304,7 @@
 
         <span class="k">return</span> <span class="n">trace_prob</span></div>
 
-
-<div class="viewcode-block" id="PDFA.scores">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.scores">[docs]</a>
-    <span class="k">def</span> <span class="nf">scores</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">traces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Symbols</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<div class="viewcode-block" id="PDFA.scores"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.scores">[docs]</a>    <span class="k">def</span> <span class="nf">scores</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">traces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Symbols</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculates trace probabilities</span>
 
@@ -325,10 +314,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span> <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">traces</span><span class="p">]</span></div>
 
-
-<div class="viewcode-block" id="PDFA.logscore">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.logscore">[docs]</a>
-    <span class="k">def</span> <span class="nf">logscore</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trace</span><span class="p">:</span> <span class="n">Symbols</span><span class="p">,</span> <span class="n">base</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<div class="viewcode-block" id="PDFA.logscore"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.logscore">[docs]</a>    <span class="k">def</span> <span class="nf">logscore</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trace</span><span class="p">:</span> <span class="n">Symbols</span><span class="p">,</span> <span class="n">base</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes the log of the score (sequence probability) of the given trace</span>
 <span class="sd">        in the language of the PDFA</span>
@@ -344,10 +330,7 @@
 
         <span class="k">return</span> <span class="n">logx</span><span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="n">base</span><span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="PDFA.logscores">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.logscores">[docs]</a>
-    <span class="k">def</span> <span class="nf">logscores</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">traces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Symbols</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<div class="viewcode-block" id="PDFA.logscores"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.logscores">[docs]</a>    <span class="k">def</span> <span class="nf">logscores</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">traces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Symbols</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes traces log probabilities</span>
 
@@ -358,10 +341,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">logscore</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">traces</span><span class="p">]</span></div>
 
-
-<div class="viewcode-block" id="PDFA.cross_entropy_approx">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.cross_entropy_approx">[docs]</a>
-    <span class="k">def</span> <span class="nf">cross_entropy_approx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trace</span><span class="p">:</span> <span class="n">Symbols</span><span class="p">,</span> <span class="n">base</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<div class="viewcode-block" id="PDFA.cross_entropy_approx"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.cross_entropy_approx">[docs]</a>    <span class="k">def</span> <span class="nf">cross_entropy_approx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trace</span><span class="p">:</span> <span class="n">Symbols</span><span class="p">,</span> <span class="n">base</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        computes approximate cross-entropy of the given trace in the language</span>
 <span class="sd">        of the PDFA</span>
@@ -401,10 +381,7 @@
 
         <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">N</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">logscore</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">base</span><span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="PDFA.perplexity_approx">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.perplexity_approx">[docs]</a>
-    <span class="k">def</span> <span class="nf">perplexity_approx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trace</span><span class="p">:</span> <span class="n">Symbols</span><span class="p">,</span> <span class="n">base</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<div class="viewcode-block" id="PDFA.perplexity_approx"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.perplexity_approx">[docs]</a>    <span class="k">def</span> <span class="nf">perplexity_approx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trace</span><span class="p">:</span> <span class="n">Symbols</span><span class="p">,</span> <span class="n">base</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        computes approximate perplexity of the given trace in the language of</span>
 <span class="sd">        the PDFA</span>
@@ -428,10 +405,7 @@
 
         <span class="k">return</span> <span class="n">base</span> <span class="o">**</span> <span class="bp">self</span><span class="o">.</span><span class="n">cross_entropy_approx</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">base</span><span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="PDFA.cross_entropy">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.cross_entropy">[docs]</a>
-    <span class="k">def</span> <span class="nf">cross_entropy</span><span class="p">(</span>
+<div class="viewcode-block" id="PDFA.cross_entropy"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.cross_entropy">[docs]</a>    <span class="k">def</span> <span class="nf">cross_entropy</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">traces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Symbols</span><span class="p">],</span>
         <span class="n">actual_trace_probs</span><span class="p">:</span> <span class="n">Probabilities</span><span class="p">,</span>
@@ -464,10 +438,7 @@
 
         <span class="k">return</span> <span class="o">-</span><span class="n">cross_entropy_sum</span></div>
 
-
-<div class="viewcode-block" id="PDFA.perplexity">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.perplexity">[docs]</a>
-    <span class="k">def</span> <span class="nf">perplexity</span><span class="p">(</span>
+<div class="viewcode-block" id="PDFA.perplexity"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.perplexity">[docs]</a>    <span class="k">def</span> <span class="nf">perplexity</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">traces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Symbols</span><span class="p">],</span>
         <span class="n">actual_trace_probs</span><span class="p">:</span> <span class="n">Probabilities</span><span class="p">,</span>
@@ -494,10 +465,7 @@
 
         <span class="k">return</span> <span class="n">base</span> <span class="o">**</span> <span class="bp">self</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">(</span><span class="n">traces</span><span class="p">,</span> <span class="n">actual_trace_probs</span><span class="p">,</span> <span class="n">base</span><span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="PDFA.norm">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.norm">[docs]</a>
-    <span class="k">def</span> <span class="nf">norm</span><span class="p">(</span>
+<div class="viewcode-block" id="PDFA.norm"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.norm">[docs]</a>    <span class="k">def</span> <span class="nf">norm</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">traces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Symbols</span><span class="p">],</span> <span class="n">actual_trace_probs</span><span class="p">:</span> <span class="n">Probabilities</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -522,10 +490,7 @@
 
         <span class="k">return</span> <span class="n">norm_sum</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="PDFA.average_norm">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.average_norm">[docs]</a>
-    <span class="k">def</span> <span class="nf">average_norm</span><span class="p">(</span>
+<div class="viewcode-block" id="PDFA.average_norm"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.average_norm">[docs]</a>    <span class="k">def</span> <span class="nf">average_norm</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">traces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Symbols</span><span class="p">],</span> <span class="n">actual_trace_probs</span><span class="p">:</span> <span class="n">Probabilities</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -543,10 +508,7 @@
 
         <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">traces</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">traces</span><span class="p">,</span> <span class="n">actual_trace_probs</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="PDFA.kldivergence">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.kldivergence">[docs]</a>
-    <span class="k">def</span> <span class="nf">kldivergence</span><span class="p">(</span>
+<div class="viewcode-block" id="PDFA.kldivergence"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.kldivergence">[docs]</a>    <span class="k">def</span> <span class="nf">kldivergence</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">traces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Symbols</span><span class="p">],</span>
         <span class="n">actual_trace_probs</span><span class="p">:</span> <span class="n">Probabilities</span><span class="p">,</span>
@@ -574,10 +536,7 @@
             <span class="n">kldivergence</span> <span class="o">+=</span> <span class="n">xlogx</span><span class="p">(</span><span class="n">target_p</span><span class="p">)</span> <span class="o">-</span> <span class="n">xlogy</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">target_p</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">est_q</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">kldivergence</span></div>
 
-
-<div class="viewcode-block" id="PDFA.reverse_kldivergence">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.reverse_kldivergence">[docs]</a>
-    <span class="k">def</span> <span class="nf">reverse_kldivergence</span><span class="p">(</span>
+<div class="viewcode-block" id="PDFA.reverse_kldivergence"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.reverse_kldivergence">[docs]</a>    <span class="k">def</span> <span class="nf">reverse_kldivergence</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">traces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Symbols</span><span class="p">],</span>
         <span class="n">actual_trace_probs</span><span class="p">:</span> <span class="n">Probabilities</span><span class="p">,</span>
@@ -605,10 +564,7 @@
             <span class="n">kldivergence</span> <span class="o">+=</span> <span class="n">xlogx</span><span class="p">(</span><span class="n">est_q</span><span class="p">)</span> <span class="o">-</span> <span class="n">xlogy</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">est_q</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">target_p</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">kldivergence</span></div>
 
-
-<div class="viewcode-block" id="PDFA.predictive_accuracy">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.predictive_accuracy">[docs]</a>
-    <span class="k">def</span> <span class="nf">predictive_accuracy</span><span class="p">(</span>
+<div class="viewcode-block" id="PDFA.predictive_accuracy"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.predictive_accuracy">[docs]</a>    <span class="k">def</span> <span class="nf">predictive_accuracy</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">test_traces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Symbols</span><span class="p">],</span> <span class="n">pred_method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;max_prob&quot;</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -641,10 +597,7 @@
 
         <span class="k">return</span> <span class="n">num_correct_predictions</span> <span class="o">/</span> <span class="n">N</span></div>
 
-
-<div class="viewcode-block" id="PDFA.mdi_score">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.mdi_score">[docs]</a>
-    <span class="k">def</span> <span class="nf">mdi_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">traces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Symbols</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<div class="viewcode-block" id="PDFA.mdi_score"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFA.html#specless.automaton.pdfa.PDFA.mdi_score">[docs]</a>    <span class="k">def</span> <span class="nf">mdi_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">traces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Symbols</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        computes the mdi score given a list of traces and the current</span>
 <span class="sd">        automata</span>
@@ -666,7 +619,6 @@
         <span class="n">score</span> <span class="o">=</span> <span class="n">score</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">score</span></div>
-
 
     <span class="k">def</span> <span class="nf">refit_prob_dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">traces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Symbols</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">transitionCounts</span> <span class="o">=</span> <span class="p">{}</span>
@@ -1132,10 +1084,7 @@
         <span class="k">return</span> <span class="n">config_data</span></div>
 
 
-
-<div class="viewcode-block" id="PDFABuilder">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFABuilder.html#specless.automaton.pdfa.PDFABuilder">[docs]</a>
-<span class="k">class</span> <span class="nc">PDFABuilder</span><span class="p">(</span><span class="n">Builder</span><span class="p">):</span>
+<div class="viewcode-block" id="PDFABuilder"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFABuilder.html#specless.automaton.pdfa.PDFABuilder">[docs]</a><span class="k">class</span> <span class="nc">PDFABuilder</span><span class="p">(</span><span class="n">Builder</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Implements the generic automaton builder class for PDFA objects</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1153,9 +1102,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">edges</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="PDFABuilder.__call__">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFABuilder.html#specless.automaton.pdfa.PDFABuilder.__call__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
+<div class="viewcode-block" id="PDFABuilder.__call__"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.pdfa.PDFABuilder.html#specless.automaton.pdfa.PDFABuilder.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">graph_data</span><span class="p">:</span> <span class="p">{</span><span class="nb">str</span><span class="p">,</span> <span class="n">FDFA</span><span class="p">},</span> <span class="n">graph_data_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;yaml&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PDFA</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1192,7 +1139,6 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span></div>
-
 
     <span class="k">def</span> <span class="nf">_from_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph_data_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">is_normalized</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PDFA</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1332,7 +1278,6 @@
             <span class="n">instance</span> <span class="o">=</span> <span class="n">PDFA</span><span class="p">(</span><span class="o">**</span><span class="n">config_data</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">instance</span></div>
-
 </pre></div>
 
            </div>

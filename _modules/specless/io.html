@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>specless.io &mdash; specless 0.0.2 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=e3a6060d"></script>
-        <script src="../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=c1dcd045"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -119,9 +121,7 @@
 <span class="kn">from</span> <span class="nn">pydot</span> <span class="kn">import</span> <span class="n">Dot</span>
 
 
-<div class="viewcode-block" id="save_graph">
-<a class="viewcode-back" href="../../_autosummary/specless.io.save_graph.html#specless.io.save_graph">[docs]</a>
-<span class="k">def</span> <span class="nf">save_graph</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">MultiDiGraph</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="save_graph"><a class="viewcode-back" href="../../_autosummary/specless.io.save_graph.html#specless.io.save_graph">[docs]</a><span class="k">def</span> <span class="nf">save_graph</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">MultiDiGraph</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Save a class that is derived from a networkx MultiDiGraph to a file.</span>
 
@@ -135,10 +135,7 @@
     <span class="k">pass</span></div>
 
 
-
-<div class="viewcode-block" id="node_label_function">
-<a class="viewcode-back" href="../../_autosummary/specless.io.node_label_function.html#specless.io.node_label_function">[docs]</a>
-<span class="k">def</span> <span class="nf">node_label_function</span><span class="p">(</span>
+<div class="viewcode-block" id="node_label_function"><a class="viewcode-back" href="../../_autosummary/specless.io.node_label_function.html#specless.io.node_label_function">[docs]</a><span class="k">def</span> <span class="nf">node_label_function</span><span class="p">(</span>
     <span class="n">n</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
     <span class="n">selected_keys</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -179,10 +176,7 @@
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">: </span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">strings</span><span class="p">)</span></div>
 
 
-
-<div class="viewcode-block" id="edge_label_function">
-<a class="viewcode-back" href="../../_autosummary/specless.io.edge_label_function.html#specless.io.edge_label_function">[docs]</a>
-<span class="k">def</span> <span class="nf">edge_label_function</span><span class="p">(</span>
+<div class="viewcode-block" id="edge_label_function"><a class="viewcode-back" href="../../_autosummary/specless.io.edge_label_function.html#specless.io.edge_label_function">[docs]</a><span class="k">def</span> <span class="nf">edge_label_function</span><span class="p">(</span>
     <span class="n">u</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">v</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
@@ -226,10 +220,7 @@
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">u</span><span class="si">}</span><span class="s2">-&gt;</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">: </span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">strings</span><span class="p">)</span></div>
 
 
-
-<div class="viewcode-block" id="add_labels">
-<a class="viewcode-back" href="../../_autosummary/specless.io.add_labels.html#specless.io.add_labels">[docs]</a>
-<span class="k">def</span> <span class="nf">add_labels</span><span class="p">(</span>
+<div class="viewcode-block" id="add_labels"><a class="viewcode-back" href="../../_autosummary/specless.io.add_labels.html#specless.io.add_labels">[docs]</a><span class="k">def</span> <span class="nf">add_labels</span><span class="p">(</span>
     <span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">MultiDiGraph</span><span class="p">,</span>
     <span class="n">node_label_func</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="n">node_label_function</span><span class="p">,</span>
     <span class="n">edge_label_func</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="n">edge_label_function</span><span class="p">,</span>
@@ -263,10 +254,7 @@
                 <span class="n">graph</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">label</span></div>
 
 
-
-<div class="viewcode-block" id="draw_graph">
-<a class="viewcode-back" href="../../_autosummary/specless.io.draw_graph.html#specless.io.draw_graph">[docs]</a>
-<span class="k">def</span> <span class="nf">draw_graph</span><span class="p">(</span>
+<div class="viewcode-block" id="draw_graph"><a class="viewcode-back" href="../../_autosummary/specless.io.draw_graph.html#specless.io.draw_graph">[docs]</a><span class="k">def</span> <span class="nf">draw_graph</span><span class="p">(</span>
     <span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">,</span>
     <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">should_display</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -315,7 +303,6 @@
 
         <span class="k">if</span> <span class="n">should_display</span><span class="p">:</span>
             <span class="n">display</span><span class="p">(</span><span class="n">gv</span><span class="o">.</span><span class="n">Source</span><span class="p">(</span><span class="n">dot_string</span><span class="p">))</span></div>
-
 
 
 <span class="k">def</span> <span class="nf">_get_pydot_representation</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">MultiDiGraph</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dot</span><span class="p">:</span>
@@ -390,9 +377,7 @@
     <span class="k">return</span> <span class="n">graph</span>
 
 
-<div class="viewcode-block" id="save_strategy">
-<a class="viewcode-back" href="../../_autosummary/specless.io.save_strategy.html#specless.io.save_strategy">[docs]</a>
-<span class="k">def</span> <span class="nf">save_strategy</span><span class="p">(</span><span class="n">strategy</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="save_strategy"><a class="viewcode-back" href="../../_autosummary/specless.io.save_strategy.html#specless.io.save_strategy">[docs]</a><span class="k">def</span> <span class="nf">save_strategy</span><span class="p">(</span><span class="n">strategy</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Save a strategy class to a file.</span>
 
@@ -404,7 +389,6 @@
 <span class="sd">        The path to the file where the strategy will be saved.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">pass</span></div>
-
 </pre></div>
 
            </div>

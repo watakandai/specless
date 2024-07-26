@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>specless.automaton.mps &mdash; specless 0.0.2 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=e3a6060d"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=c1dcd045"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -89,9 +91,7 @@
 <span class="n">MPSReturnData</span> <span class="o">=</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Symbols</span><span class="p">,</span> <span class="n">Probability</span><span class="p">,</span> <span class="n">ViableStringsHeap</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="should_use_BMPS_exact">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.mps.should_use_BMPS_exact.html#specless.automaton.mps.should_use_BMPS_exact">[docs]</a>
-<span class="k">def</span> <span class="nf">should_use_BMPS_exact</span><span class="p">(</span>
+<div class="viewcode-block" id="should_use_BMPS_exact"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.mps.should_use_BMPS_exact.html#specless.automaton.mps.should_use_BMPS_exact">[docs]</a><span class="k">def</span> <span class="nf">should_use_BMPS_exact</span><span class="p">(</span>
     <span class="n">num_strings_to_find</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">try_to_use_greedy</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">is_deterministic</span><span class="p">:</span> <span class="nb">bool</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -124,10 +124,7 @@
     <span class="k">return</span> <span class="n">use_BMPS_exact</span></div>
 
 
-
-<div class="viewcode-block" id="postprocess_MPS">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.mps.postprocess_MPS.html#specless.automaton.mps.postprocess_MPS">[docs]</a>
-<span class="k">def</span> <span class="nf">postprocess_MPS</span><span class="p">(</span>
+<div class="viewcode-block" id="postprocess_MPS"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.mps.postprocess_MPS.html#specless.automaton.mps.postprocess_MPS">[docs]</a><span class="k">def</span> <span class="nf">postprocess_MPS</span><span class="p">(</span>
     <span class="n">mps_symbols</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
     <span class="n">mps_prob</span><span class="p">:</span> <span class="n">Probability</span><span class="p">,</span>
     <span class="n">viable_strings</span><span class="p">:</span> <span class="n">ViableStringsHeap</span><span class="p">,</span>
@@ -197,10 +194,7 @@
     <span class="k">return</span> <span class="n">mps_symbols</span><span class="p">,</span> <span class="n">mps_prob</span><span class="p">,</span> <span class="n">viable_strings</span></div>
 
 
-
-<div class="viewcode-block" id="BMPS_search_step">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.mps.BMPS_search_step.html#specless.automaton.mps.BMPS_search_step">[docs]</a>
-<span class="k">def</span> <span class="nf">BMPS_search_step</span><span class="p">(</span>
+<div class="viewcode-block" id="BMPS_search_step"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.mps.BMPS_search_step.html#specless.automaton.mps.BMPS_search_step">[docs]</a><span class="k">def</span> <span class="nf">BMPS_search_step</span><span class="p">(</span>
     <span class="n">string</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
     <span class="n">symbol</span><span class="p">:</span> <span class="n">Symbol</span><span class="p">,</span>
     <span class="n">state_probabilities</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
@@ -311,10 +305,7 @@
     <span class="p">)</span></div>
 
 
-
-<div class="viewcode-block" id="BMPS_exact">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.mps.BMPS_exact.html#specless.automaton.mps.BMPS_exact">[docs]</a>
-<span class="k">def</span> <span class="nf">BMPS_exact</span><span class="p">(</span>
+<div class="viewcode-block" id="BMPS_exact"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.mps.BMPS_exact.html#specless.automaton.mps.BMPS_exact">[docs]</a><span class="k">def</span> <span class="nf">BMPS_exact</span><span class="p">(</span>
     <span class="n">symbols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
     <span class="n">M</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">S</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
@@ -475,10 +466,7 @@
         <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span></div>
 
 
-
-<div class="viewcode-block" id="SWDFA_MPS">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.mps.SWDFA_MPS.html#specless.automaton.mps.SWDFA_MPS">[docs]</a>
-<span class="k">def</span> <span class="nf">SWDFA_MPS</span><span class="p">(</span>
+<div class="viewcode-block" id="SWDFA_MPS"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.mps.SWDFA_MPS.html#specless.automaton.mps.SWDFA_MPS">[docs]</a><span class="k">def</span> <span class="nf">SWDFA_MPS</span><span class="p">(</span>
     <span class="n">states</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span>
     <span class="n">start_state</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
     <span class="n">F</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
@@ -572,7 +560,6 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># no viable string found</span>
         <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span></div>
-
 </pre></div>
 
            </div>

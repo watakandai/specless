@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>specless.automaton.base &mdash; specless 0.0.2 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=e3a6060d"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=c1dcd045"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -124,9 +126,7 @@
 <span class="n">DEFAULT_EMPTY_TRANS_SYMBOL</span> <span class="o">=</span> <span class="s2">&quot;lambda&quot;</span>
 
 
-<div class="viewcode-block" id="Automaton">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.base.Automaton.html#specless.automaton.base.Automaton">[docs]</a>
-<span class="k">class</span> <span class="nc">Automaton</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">MultiDiGraph</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+<div class="viewcode-block" id="Automaton"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.base.Automaton.html#specless.automaton.base.Automaton">[docs]</a><span class="k">class</span> <span class="nc">Automaton</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">MultiDiGraph</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This class describes a automaton with (possibly) stochastic transitions</span>
 
@@ -339,9 +339,7 @@
             <span class="n">merge_sinks</span><span class="o">=</span><span class="n">merge_sinks</span><span class="p">,</span>
         <span class="p">)</span>
 
-<div class="viewcode-block" id="Automaton.disp_edges">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.base.Automaton.html#specless.automaton.base.Automaton.disp_edges">[docs]</a>
-    <span class="k">def</span> <span class="nf">disp_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">:</span> <span class="p">{</span><span class="kc">None</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">MultiDiGraph</span><span class="p">}</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="Automaton.disp_edges"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.base.Automaton.html#specless.automaton.base.Automaton.disp_edges">[docs]</a>    <span class="k">def</span> <span class="nf">disp_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">:</span> <span class="p">{</span><span class="kc">None</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">MultiDiGraph</span><span class="p">}</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Prints each edge in the graph in an edge-list tuple format</span>
 
@@ -357,10 +355,7 @@
                 <span class="k">for</span> <span class="n">edge_number</span><span class="p">,</span> <span class="n">edge_data</span> <span class="ow">in</span> <span class="n">edges</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                     <span class="nb">print</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">neighbor</span><span class="p">,</span> <span class="n">edge_data</span><span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="Automaton.disp_nodes">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.base.Automaton.html#specless.automaton.base.Automaton.disp_nodes">[docs]</a>
-    <span class="k">def</span> <span class="nf">disp_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">:</span> <span class="p">{</span><span class="kc">None</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">MultiDiGraph</span><span class="p">}</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="Automaton.disp_nodes"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.base.Automaton.html#specless.automaton.base.Automaton.disp_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">disp_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">:</span> <span class="p">{</span><span class="kc">None</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">MultiDiGraph</span><span class="p">}</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Prints each node&#39;s data view</span>
 
@@ -374,10 +369,7 @@
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">node</span><span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="Automaton.draw">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.base.Automaton.html#specless.automaton.base.Automaton.draw">[docs]</a>
-    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span>
+<div class="viewcode-block" id="Automaton.draw"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.base.Automaton.html#specless.automaton.base.Automaton.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">filename</span><span class="p">:</span> <span class="p">{</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">}</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">should_display</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -405,10 +397,7 @@
             <span class="k">if</span> <span class="n">should_display</span><span class="p">:</span>
                 <span class="n">display</span><span class="p">(</span><span class="n">gv</span><span class="o">.</span><span class="n">Source</span><span class="p">(</span><span class="n">dot_string</span><span class="p">))</span></div>
 
-
-<div class="viewcode-block" id="Automaton.plot_node_trans_dist">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.base.Automaton.html#specless.automaton.base.Automaton.plot_node_trans_dist">[docs]</a>
-    <span class="k">def</span> <span class="nf">plot_node_trans_dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curr_state</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="Automaton.plot_node_trans_dist"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.base.Automaton.html#specless.automaton.base.Automaton.plot_node_trans_dist">[docs]</a>    <span class="k">def</span> <span class="nf">plot_node_trans_dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curr_state</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Plots the transition pmf at the given curr_state / node.</span>
 
@@ -424,10 +413,7 @@
         <span class="n">ax</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">symbols</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">trans_dist</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">trans_dist</span><span class="o">.</span><span class="n">xk</span><span class="p">),</span> <span class="n">colors</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
-
-<div class="viewcode-block" id="Automaton.write_traces_to_file">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.base.Automaton.html#specless.automaton.base.Automaton.write_traces_to_file">[docs]</a>
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Automaton.write_traces_to_file"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.base.Automaton.html#specless.automaton.base.Automaton.write_traces_to_file">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">write_traces_to_file</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">traces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Symbols</span><span class="p">],</span>
@@ -477,10 +463,7 @@
 
         <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="Automaton.generate_traces">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.base.Automaton.html#specless.automaton.base.Automaton.generate_traces">[docs]</a>
-    <span class="k">def</span> <span class="nf">generate_traces</span><span class="p">(</span>
+<div class="viewcode-block" id="Automaton.generate_traces"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.base.Automaton.html#specless.automaton.base.Automaton.generate_traces">[docs]</a>    <span class="k">def</span> <span class="nf">generate_traces</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">num_samples</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">N</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -575,10 +558,7 @@
 
         <span class="k">return</span> <span class="n">samples</span><span class="p">,</span> <span class="n">trace_lengths</span><span class="p">,</span> <span class="n">trace_probs</span></div>
 
-
-<div class="viewcode-block" id="Automaton.generate_trace">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.base.Automaton.html#specless.automaton.base.Automaton.generate_trace">[docs]</a>
-    <span class="k">def</span> <span class="nf">generate_trace</span><span class="p">(</span>
+<div class="viewcode-block" id="Automaton.generate_trace"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.base.Automaton.html#specless.automaton.base.Automaton.generate_trace">[docs]</a>    <span class="k">def</span> <span class="nf">generate_trace</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">start_state</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
         <span class="n">N</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -676,10 +656,7 @@
 
         <span class="k">return</span> <span class="n">sampled_trace</span><span class="p">,</span> <span class="n">length_of_trace</span><span class="p">,</span> <span class="n">trace_prob</span></div>
 
-
-<div class="viewcode-block" id="Automaton.observe">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.base.Automaton.html#specless.automaton.base.Automaton.observe">[docs]</a>
-    <span class="k">def</span> <span class="nf">observe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curr_state</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Observation</span><span class="p">:</span>
+<div class="viewcode-block" id="Automaton.observe"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.base.Automaton.html#specless.automaton.base.Automaton.observe">[docs]</a>    <span class="k">def</span> <span class="nf">observe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curr_state</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Observation</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the given state&#39;s observation symbol</span>
 
@@ -690,10 +667,7 @@
 
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-
-<div class="viewcode-block" id="Automaton.add_node">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.base.Automaton.html#specless.automaton.base.Automaton.add_node">[docs]</a>
-    <span class="k">def</span> <span class="nf">add_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_for_adding</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
+<div class="viewcode-block" id="Automaton.add_node"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.base.Automaton.html#specless.automaton.base.Automaton.add_node">[docs]</a>    <span class="k">def</span> <span class="nf">add_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_for_adding</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add a single node `node_for_adding` and update node attributes.</span>
 
@@ -738,10 +712,7 @@
 
         <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">MultiDiGraph</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">node_for_adding</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="Automaton.most_probable_string">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.base.Automaton.html#specless.automaton.base.Automaton.most_probable_string">[docs]</a>
-    <span class="k">def</span> <span class="nf">most_probable_string</span><span class="p">(</span>
+<div class="viewcode-block" id="Automaton.most_probable_string"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.base.Automaton.html#specless.automaton.base.Automaton.most_probable_string">[docs]</a>    <span class="k">def</span> <span class="nf">most_probable_string</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">min_string_probability</span><span class="p">:</span> <span class="p">{</span><span class="n">Probability</span><span class="p">,</span> <span class="kc">None</span><span class="p">}</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">max_string_length</span><span class="p">:</span> <span class="p">{</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">}</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -879,7 +850,6 @@
             <span class="n">allow_empty_symbol</span><span class="p">,</span>
             <span class="n">backwards_search</span><span class="p">,</span>
         <span class="p">)</span></div>
-
 
     <span class="k">def</span> <span class="nf">_get_BMPS_exact_params</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -2171,10 +2141,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">new_edges</span><span class="p">)</span></div>
 
 
-
-<div class="viewcode-block" id="node_obs_to_str">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.base.node_obs_to_str.html#specless.automaton.base.node_obs_to_str">[docs]</a>
-<span class="k">def</span> <span class="nf">node_obs_to_str</span><span class="p">(</span><span class="n">obs</span><span class="p">:</span> <span class="n">Observation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="node_obs_to_str"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.base.node_obs_to_str.html#specless.automaton.base.node_obs_to_str">[docs]</a><span class="k">def</span> <span class="nf">node_obs_to_str</span><span class="p">(</span><span class="n">obs</span><span class="p">:</span> <span class="n">Observation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    returns a node observation label as an appropriately formatted string</span>
 
@@ -2193,10 +2160,7 @@
     <span class="k">return</span> <span class="n">obs_str</span></div>
 
 
-
-<div class="viewcode-block" id="edge_weight_to_string">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.base.edge_weight_to_string.html#specless.automaton.base.edge_weight_to_string">[docs]</a>
-<span class="k">def</span> <span class="nf">edge_weight_to_string</span><span class="p">(</span><span class="n">weight</span><span class="p">:</span> <span class="p">{</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">})</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="edge_weight_to_string"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.base.edge_weight_to_string.html#specless.automaton.base.edge_weight_to_string">[docs]</a><span class="k">def</span> <span class="nf">edge_weight_to_string</span><span class="p">(</span><span class="n">weight</span><span class="p">:</span> <span class="p">{</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">})</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    returns a numeric edge weight as an appropriately formatted string</span>
 
@@ -2212,7 +2176,6 @@
         <span class="n">wt_str</span> <span class="o">=</span> <span class="s2">&quot;{weight:.</span><span class="si">{digits}</span><span class="s2">f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span> <span class="n">digits</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">wt_str</span></div>
-
 </pre></div>
 
            </div>

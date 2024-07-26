@@ -11,18 +11,6 @@ specless.wrapper.actionwrapper.EightOmniDirectionActions
 
    
    
-   .. rubric:: Methods
-
-   .. autosummary::
-      :nosignatures:
-   
-      ~EightOmniDirectionActions.conjugate
-      ~EightOmniDirectionActions.bit_length
-      ~EightOmniDirectionActions.bit_count
-      ~EightOmniDirectionActions.to_bytes
-      ~EightOmniDirectionActions.from_bytes
-      ~EightOmniDirectionActions.as_integer_ratio
-   
    
 
    
@@ -31,10 +19,6 @@ specless.wrapper.actionwrapper.EightOmniDirectionActions
 
    .. autosummary::
    
-      ~EightOmniDirectionActions.real
-      ~EightOmniDirectionActions.imag
-      ~EightOmniDirectionActions.numerator
-      ~EightOmniDirectionActions.denominator
       ~EightOmniDirectionActions.north
       ~EightOmniDirectionActions.south
       ~EightOmniDirectionActions.east

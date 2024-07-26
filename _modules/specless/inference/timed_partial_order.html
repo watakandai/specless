@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>specless.inference.timed_partial_order &mdash; specless 0.0.2 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=e3a6060d"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=c1dcd045"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -83,10 +85,8 @@
 <span class="sd">...     [[1, &quot;a&quot;], [2, &quot;b&quot;], [3, &quot;c&quot;]],</span>
 <span class="sd">...     [[4, &quot;d&quot;], [5, &quot;e&quot;], [6, &quot;f&quot;]],</span>
 <span class="sd">... ]</span>
-<span class="sd">&gt;&gt;&gt; columns: list = [&quot;timestamp&quot;, &quot;symbol&quot;]</span>
-<span class="sd">&gt;&gt;&gt; timedtrace_dataset = sl.ArrayDataset(demonstrations, columns)</span>
 <span class="sd">&gt;&gt;&gt; inference = sl.TPOInferenceAlgorithm()</span>
-<span class="sd">&gt;&gt;&gt; specification = inference.infer(timedtrace_dataset)</span>
+<span class="sd">&gt;&gt;&gt; specification = inference.infer(demonstrations)</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">copy</span>
@@ -118,9 +118,7 @@
 <span class="p">)</span>
 
 
-<div class="viewcode-block" id="TPOInferenceAlgorithm">
-<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TPOInferenceAlgorithm.html#specless.inference.timed_partial_order.TPOInferenceAlgorithm">[docs]</a>
-<span class="k">class</span> <span class="nc">TPOInferenceAlgorithm</span><span class="p">(</span><span class="n">InferenceAlgorithm</span><span class="p">):</span>
+<div class="viewcode-block" id="TPOInferenceAlgorithm"><a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TPOInferenceAlgorithm.html#specless.inference.timed_partial_order.TPOInferenceAlgorithm">[docs]</a><span class="k">class</span> <span class="nc">TPOInferenceAlgorithm</span><span class="p">(</span><span class="n">InferenceAlgorithm</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The inference algorithm for inferring a TPO from a list of TimedTraces.</span>
 
 <span class="sd">    Args:</span>
@@ -171,9 +169,7 @@
             <span class="n">timedtraces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">timedtrace</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">timedtraces</span>
 
-<div class="viewcode-block" id="TPOInferenceAlgorithm.load_abbadingofile_as_timetraces">
-<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TPOInferenceAlgorithm.html#specless.inference.timed_partial_order.TPOInferenceAlgorithm.load_abbadingofile_as_timetraces">[docs]</a>
-    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="TPOInferenceAlgorithm.load_abbadingofile_as_timetraces"><a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TPOInferenceAlgorithm.html#specless.inference.timed_partial_order.TPOInferenceAlgorithm.load_abbadingofile_as_timetraces">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">load_abbadingofile_as_timetraces</span><span class="p">():</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Load a abbadingo-style data file</span>
 <span class="sd">        Files start from (#dataset, #symbols)</span>
@@ -193,10 +189,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
-
-<div class="viewcode-block" id="TPOInferenceAlgorithm.infer">
-<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TPOInferenceAlgorithm.html#specless.inference.timed_partial_order.TPOInferenceAlgorithm.infer">[docs]</a>
-    <span class="k">def</span> <span class="nf">infer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">:</span> <span class="n">BaseDataset</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Specification</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">]:</span>
+<div class="viewcode-block" id="TPOInferenceAlgorithm.infer"><a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TPOInferenceAlgorithm.html#specless.inference.timed_partial_order.TPOInferenceAlgorithm.infer">[docs]</a>    <span class="k">def</span> <span class="nf">infer</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Specification</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Infer a Timed Partial Order (TPO) from a list of timed traces</span>
 
 <span class="sd">        Implementation in detail:</span>
@@ -223,17 +218,23 @@
 <span class="sd">        Specification:</span>
 <span class="sd">            Timed Partial Order</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">sorted_dataset</span><span class="p">:</span> <span class="n">BaseDataset</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
-        <span class="n">sorted_dataset</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="n">columns</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;symbol&quot;</span><span class="p">,</span> <span class="s2">&quot;timestamp&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">columns</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;symbol&quot;</span><span class="p">]</span>
+
+        <span class="n">timedtrace_dataset</span> <span class="o">=</span> <span class="n">ArrayDataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">columns</span><span class="p">)</span>
+
+        <span class="n">timedtrace_dataset</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
             <span class="k">lambda</span> <span class="n">data</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;timestamp&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="p">)</span>
-        <span class="n">traces</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">tolist</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s2">&quot;symbol&quot;</span><span class="p">)</span>
-        <span class="n">timedtraces</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">traces</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="n">timedtrace_dataset</span><span class="o">.</span><span class="n">tolist</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s2">&quot;symbol&quot;</span><span class="p">)</span>
+        <span class="n">timedtraces</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="n">timedtrace_dataset</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 
         <span class="c1"># Find a partial order</span>
         <span class="n">inference</span> <span class="o">=</span> <span class="n">POInferenceAlgorithm</span><span class="p">()</span>
         <span class="n">partial_order</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">get_partial_order</span><span class="p">(</span><span class="n">traces</span><span class="p">)</span>
-        <span class="n">po</span><span class="p">:</span> <span class="n">Specification</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">infer</span><span class="p">(</span><span class="n">sorted_dataset</span><span class="p">)</span>
+        <span class="n">po</span><span class="p">:</span> <span class="n">Specification</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">infer</span><span class="p">(</span><span class="n">traces</span><span class="p">)</span>
         <span class="c1"># Infer Timing Constraints</span>
         <span class="n">global_constraints</span><span class="p">,</span> <span class="n">local_constraints</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">infer_time_constraints</span><span class="p">(</span>
             <span class="n">timedtraces</span><span class="p">,</span> <span class="n">po</span><span class="p">,</span> <span class="n">partial_order</span>
@@ -241,10 +242,7 @@
 
         <span class="k">return</span> <span class="n">TimedPartialOrder</span><span class="o">.</span><span class="n">from_constraints</span><span class="p">(</span><span class="n">global_constraints</span><span class="p">,</span> <span class="n">local_constraints</span><span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="TPOInferenceAlgorithm.infer_time_constraints">
-<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TPOInferenceAlgorithm.html#specless.inference.timed_partial_order.TPOInferenceAlgorithm.infer_time_constraints">[docs]</a>
-    <span class="k">def</span> <span class="nf">infer_time_constraints</span><span class="p">(</span>
+<div class="viewcode-block" id="TPOInferenceAlgorithm.infer_time_constraints"><a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TPOInferenceAlgorithm.html#specless.inference.timed_partial_order.TPOInferenceAlgorithm.infer_time_constraints">[docs]</a>    <span class="k">def</span> <span class="nf">infer_time_constraints</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">traces</span><span class="p">:</span> <span class="n">TimedTraceList</span><span class="p">,</span>
         <span class="n">po</span><span class="p">:</span> <span class="n">PartialOrder</span><span class="p">,</span>
@@ -350,10 +348,7 @@
 
         <span class="k">return</span> <span class="n">lp</span><span class="o">.</span><span class="n">event_to_bound</span><span class="p">,</span> <span class="n">minimal_event_pair_to_bound</span></div>
 
-
-<div class="viewcode-block" id="TPOInferenceAlgorithm.select_next_edge_iterator">
-<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TPOInferenceAlgorithm.html#specless.inference.timed_partial_order.TPOInferenceAlgorithm.select_next_edge_iterator">[docs]</a>
-    <span class="k">def</span> <span class="nf">select_next_edge_iterator</span><span class="p">(</span>
+<div class="viewcode-block" id="TPOInferenceAlgorithm.select_next_edge_iterator"><a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TPOInferenceAlgorithm.html#specless.inference.timed_partial_order.TPOInferenceAlgorithm.select_next_edge_iterator">[docs]</a>    <span class="k">def</span> <span class="nf">select_next_edge_iterator</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">lp</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;TimeConstraintsLP&quot;</span><span class="p">],</span>
         <span class="n">po</span><span class="p">:</span> <span class="n">PartialOrder</span><span class="p">,</span>
@@ -407,10 +402,7 @@
 
         <span class="k">return</span> <span class="n">next_edge_iter</span></div>
 
-
-<div class="viewcode-block" id="TPOInferenceAlgorithm.select_post_processing_func">
-<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TPOInferenceAlgorithm.html#specless.inference.timed_partial_order.TPOInferenceAlgorithm.select_post_processing_func">[docs]</a>
-    <span class="k">def</span> <span class="nf">select_post_processing_func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TPOInferenceAlgorithm.select_post_processing_func"><a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TPOInferenceAlgorithm.html#specless.inference.timed_partial_order.TPOInferenceAlgorithm.select_post_processing_func">[docs]</a>    <span class="k">def</span> <span class="nf">select_post_processing_func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Select a Post Processing Function&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">heuristic</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;random&quot;</span><span class="p">,</span> <span class="s2">&quot;order&quot;</span><span class="p">,</span> <span class="s2">&quot;distant&quot;</span><span class="p">,</span> <span class="s2">&quot;near&quot;</span><span class="p">]:</span>
@@ -429,17 +421,14 @@
 
         <span class="k">return</span> <span class="n">func</span></div>
 
-
-<div class="viewcode-block" id="TPOInferenceAlgorithm.get_event_bounds">
-<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TPOInferenceAlgorithm.html#specless.inference.timed_partial_order.TPOInferenceAlgorithm.get_event_bounds">[docs]</a>
-    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="TPOInferenceAlgorithm.get_event_bounds"><a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TPOInferenceAlgorithm.html#specless.inference.timed_partial_order.TPOInferenceAlgorithm.get_event_bounds">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_event_bounds</span><span class="p">(</span>
         <span class="n">traces</span><span class="p">:</span> <span class="n">TimedTraceList</span><span class="p">,</span> <span class="n">partial_order</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NodeBoundDict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute min and max time boudn for each event&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">partial_order</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">inference</span> <span class="o">=</span> <span class="n">POInferenceAlgorithm</span><span class="p">()</span>
-            <span class="n">po</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">infer</span><span class="p">(</span><span class="n">ArrayDataset</span><span class="p">(</span><span class="n">traces</span><span class="p">))</span>
+            <span class="n">po</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">infer</span><span class="p">(</span><span class="n">traces</span><span class="p">)</span>
             <span class="n">partial_order</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="n">po</span><span class="o">.</span><span class="n">partial_order</span>
 
         <span class="n">events</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span>
@@ -464,10 +453,7 @@
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">event_to_bound</span></div>
 
-
-<div class="viewcode-block" id="TPOInferenceAlgorithm.get_event_pair_bounds">
-<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TPOInferenceAlgorithm.html#specless.inference.timed_partial_order.TPOInferenceAlgorithm.get_event_pair_bounds">[docs]</a>
-    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="TPOInferenceAlgorithm.get_event_pair_bounds"><a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TPOInferenceAlgorithm.html#specless.inference.timed_partial_order.TPOInferenceAlgorithm.get_event_pair_bounds">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_event_pair_bounds</span><span class="p">(</span>
         <span class="n">traces</span><span class="p">:</span> <span class="n">TimedTraceList</span><span class="p">,</span> <span class="n">partial_order</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EdgeBoundDict</span><span class="p">:</span>
@@ -504,10 +490,7 @@
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">event_pair_to_bound</span></div>
 
-
-<div class="viewcode-block" id="TPOInferenceAlgorithm.get_reachability_order">
-<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TPOInferenceAlgorithm.html#specless.inference.timed_partial_order.TPOInferenceAlgorithm.get_reachability_order">[docs]</a>
-    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="TPOInferenceAlgorithm.get_reachability_order"><a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TPOInferenceAlgorithm.html#specless.inference.timed_partial_order.TPOInferenceAlgorithm.get_reachability_order">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_reachability_order</span><span class="p">(</span>
         <span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">,</span> <span class="n">init_node</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">forward</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
@@ -538,7 +521,6 @@
                     <span class="n">order</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">next_node</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">order</span></div>
 
-
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">format_timed_trace</span><span class="p">(</span>
         <span class="n">timed_trace</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span>
@@ -561,10 +543,7 @@
         <span class="p">]</span></div>
 
 
-
-<div class="viewcode-block" id="TimeConstraintsLP">
-<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP">[docs]</a>
-<span class="k">class</span> <span class="nc">TimeConstraintsLP</span><span class="p">:</span>
+<div class="viewcode-block" id="TimeConstraintsLP"><a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP">[docs]</a><span class="k">class</span> <span class="nc">TimeConstraintsLP</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Handle Time Constraints Operation for Linear Programming</span>
 
@@ -630,9 +609,7 @@
         <span class="c1"># Constrcut the LP constraints when instantiating TimeConstraintSLP</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">construct_lp_constraints</span><span class="p">()</span>
 
-<div class="viewcode-block" id="TimeConstraintsLP.construct_lp_constraints">
-<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.construct_lp_constraints">[docs]</a>
-    <span class="k">def</span> <span class="nf">construct_lp_constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="TimeConstraintsLP.construct_lp_constraints"><a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.construct_lp_constraints">[docs]</a>    <span class="k">def</span> <span class="nf">construct_lp_constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct Linear Programming Constraints&quot;&quot;&quot;</span>
 
         <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">:</span>
@@ -645,10 +622,7 @@
             <span class="n">ub</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_pair_to_bound</span><span class="p">[(</span><span class="n">source_event</span><span class="p">,</span> <span class="n">target_event</span><span class="p">)][</span><span class="mi">1</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_pair_bound</span><span class="p">(</span><span class="n">source_event</span><span class="p">,</span> <span class="n">target_event</span><span class="p">,</span> <span class="n">lb</span><span class="p">,</span> <span class="n">ub</span><span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="TimeConstraintsLP.get_event_row_index">
-<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.get_event_row_index">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_event_row_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">get_lb</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<div class="viewcode-block" id="TimeConstraintsLP.get_event_row_index"><a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.get_event_row_index">[docs]</a>    <span class="k">def</span> <span class="nf">get_event_row_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">get_lb</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get an index for the given constraint (row index)&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">event</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_to_indices</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">event</span><span class="si">}</span><span class="s2"> not found in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">event_to_indices</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -659,10 +633,7 @@
             <span class="k">return</span> <span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">indices</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
 
-
-<div class="viewcode-block" id="TimeConstraintsLP.get_pair_row_index">
-<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.get_pair_row_index">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_pair_row_index</span><span class="p">(</span>
+<div class="viewcode-block" id="TimeConstraintsLP.get_pair_row_index"><a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.get_pair_row_index">[docs]</a>    <span class="k">def</span> <span class="nf">get_pair_row_index</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">source_event</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_event</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">get_lb</span><span class="p">:</span> <span class="nb">bool</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get Index of the constraint&quot;&quot;&quot;</span>
@@ -676,10 +647,7 @@
             <span class="k">return</span> <span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">indices</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
 
-
-<div class="viewcode-block" id="TimeConstraintsLP.set_event_bound">
-<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.set_event_bound">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_event_bound</span><span class="p">(</span>
+<div class="viewcode-block" id="TimeConstraintsLP.set_event_bound"><a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.set_event_bound">[docs]</a>    <span class="k">def</span> <span class="nf">set_event_bound</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lb</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ub</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set Event Lower/Upper Bound&quot;&quot;&quot;</span>
@@ -694,10 +662,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="p">[</span><span class="n">ub_row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">[</span><span class="n">ub_row</span><span class="p">]</span> <span class="o">=</span> <span class="n">ub</span></div>
 
-
-<div class="viewcode-block" id="TimeConstraintsLP.set_pair_bound">
-<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.set_pair_bound">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_pair_bound</span><span class="p">(</span>
+<div class="viewcode-block" id="TimeConstraintsLP.set_pair_bound"><a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.set_pair_bound">[docs]</a>    <span class="k">def</span> <span class="nf">set_pair_bound</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">source_event</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">target_event</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -719,10 +684,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="p">[</span><span class="n">ub_row</span><span class="p">,</span> <span class="n">target_col</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">[</span><span class="n">ub_row</span><span class="p">]</span> <span class="o">=</span> <span class="n">ub</span></div>
 
-
-<div class="viewcode-block" id="TimeConstraintsLP.get_pair_bound">
-<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.get_pair_bound">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_pair_bound</span><span class="p">(</span>
+<div class="viewcode-block" id="TimeConstraintsLP.get_pair_bound"><a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.get_pair_bound">[docs]</a>    <span class="k">def</span> <span class="nf">get_pair_bound</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">source_event</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_event</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">get_lb</span><span class="p">:</span> <span class="nb">bool</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get Lower/Upper bound for the event pair&quot;&quot;&quot;</span>
@@ -733,18 +695,12 @@
             <span class="k">return</span> <span class="o">-</span><span class="n">bound</span>
         <span class="k">return</span> <span class="n">bound</span></div>
 
-
-<div class="viewcode-block" id="TimeConstraintsLP.get_row">
-<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.get_row">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_event</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_event</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">get_lb</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<div class="viewcode-block" id="TimeConstraintsLP.get_row"><a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.get_row">[docs]</a>    <span class="k">def</span> <span class="nf">get_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_event</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_event</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">get_lb</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a row of the provided constraint&quot;&quot;&quot;</span>
         <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_pair_row_index</span><span class="p">(</span><span class="n">source_event</span><span class="p">,</span> <span class="n">target_event</span><span class="p">,</span> <span class="n">get_lb</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="p">:]</span></div>
 
-
-<div class="viewcode-block" id="TimeConstraintsLP.get_events_string">
-<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.get_events_string">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_events_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_event</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_event</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="TimeConstraintsLP.get_events_string"><a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.get_events_string">[docs]</a>    <span class="k">def</span> <span class="nf">get_events_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_event</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_event</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Translate a constraint to an strin&quot;&quot;&quot;</span>
         <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_row</span><span class="p">(</span><span class="n">source_event</span><span class="p">,</span> <span class="n">target_event</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
@@ -753,10 +709,7 @@
         <span class="n">signs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;+&quot;</span> <span class="k">if</span> <span class="n">s</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s2">&quot;-&quot;</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">signs</span><span class="p">]</span>
         <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">s</span><span class="si">}{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">events</span><span class="p">,</span> <span class="n">signs</span><span class="p">)])</span></div>
 
-
-<div class="viewcode-block" id="TimeConstraintsLP.get_constraint_string">
-<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.get_constraint_string">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_constraint_string</span><span class="p">(</span>
+<div class="viewcode-block" id="TimeConstraintsLP.get_constraint_string"><a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.get_constraint_string">[docs]</a>    <span class="k">def</span> <span class="nf">get_constraint_string</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">source_event</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_event</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">get_lb</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">decimals</span><span class="p">:</span> <span class="nb">int</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get Constraint String&quot;&quot;&quot;</span>
@@ -769,17 +722,11 @@
 
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">events_str</span><span class="si">}</span><span class="s2"> &lt;= </span><span class="si">{</span><span class="n">bound</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
-
-<div class="viewcode-block" id="TimeConstraintsLP.get_column_index">
-<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.get_column_index">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_column_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<div class="viewcode-block" id="TimeConstraintsLP.get_column_index"><a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.get_column_index">[docs]</a>    <span class="k">def</span> <span class="nf">get_column_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the event variable index (column index)&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">event</span><span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="TimeConstraintsLP.get_events">
-<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.get_events">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_events</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+<div class="viewcode-block" id="TimeConstraintsLP.get_events"><a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.get_events">[docs]</a>    <span class="k">def</span> <span class="nf">get_events</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Find which event the indices are refering to&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;The of the indices must be equal to that of No. of events&quot;</span><span class="p">)</span>
@@ -787,10 +734,7 @@
         <span class="n">events</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">nonzero_indices</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">events</span></div>
 
-
-<div class="viewcode-block" id="TimeConstraintsLP.get_signs">
-<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.get_signs">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_signs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">get_lb</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<div class="viewcode-block" id="TimeConstraintsLP.get_signs"><a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.get_signs">[docs]</a>    <span class="k">def</span> <span class="nf">get_signs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">get_lb</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get Sign&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;The of the indices must be equal to that of No. of events&quot;</span><span class="p">)</span>
@@ -799,10 +743,7 @@
             <span class="k">return</span> <span class="o">-</span><span class="n">row</span><span class="p">[</span><span class="n">nonzero_indices</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="n">nonzero_indices</span><span class="p">]</span></div>
 
-
-<div class="viewcode-block" id="TimeConstraintsLP.get_event_from_row_index">
-<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.get_event_from_row_index">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_event_from_row_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="TimeConstraintsLP.get_event_from_row_index"><a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.get_event_from_row_index">[docs]</a>    <span class="k">def</span> <span class="nf">get_event_from_row_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get Event from index&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;index must be less than </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -810,10 +751,7 @@
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2"> not in </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index_to_event</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">index_to_event</span><span class="p">[</span><span class="n">index</span><span class="p">]</span></div>
 
-
-<div class="viewcode-block" id="TimeConstraintsLP.get_pair_from_row_index">
-<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.get_pair_from_row_index">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_pair_from_row_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<div class="viewcode-block" id="TimeConstraintsLP.get_pair_from_row_index"><a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.get_pair_from_row_index">[docs]</a>    <span class="k">def</span> <span class="nf">get_pair_from_row_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get Pair From index&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;index must be less than </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -822,19 +760,13 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">index_to_pair</span><span class="p">[</span><span class="n">index</span><span class="p">]</span></div>
 
-
-<div class="viewcode-block" id="TimeConstraintsLP.remove_constraint">
-<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.remove_constraint">[docs]</a>
-    <span class="k">def</span> <span class="nf">remove_constraint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_event</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_event</span><span class="p">,</span> <span class="n">lb</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="TimeConstraintsLP.remove_constraint"><a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.remove_constraint">[docs]</a>    <span class="k">def</span> <span class="nf">remove_constraint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_event</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_event</span><span class="p">,</span> <span class="n">lb</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove the constraint&quot;&quot;&quot;</span>
         <span class="n">row_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_pair_row_index</span><span class="p">(</span><span class="n">source_event</span><span class="p">,</span> <span class="n">target_event</span><span class="p">,</span> <span class="n">lb</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="p">[</span><span class="n">row_index</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">[</span><span class="n">row_index</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span></div>
 
-
-<div class="viewcode-block" id="TimeConstraintsLP.get_constraints_without">
-<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.get_constraints_without">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_constraints_without</span><span class="p">(</span>
+<div class="viewcode-block" id="TimeConstraintsLP.get_constraints_without"><a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.get_constraints_without">[docs]</a>    <span class="k">def</span> <span class="nf">get_constraints_without</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">source_event</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_event</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">get_lb</span><span class="p">:</span> <span class="nb">bool</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get Constraints A and b without the specified constraint&quot;&quot;&quot;</span>
@@ -853,10 +785,7 @@
             <span class="n">b</span><span class="p">[</span><span class="n">row_index</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">return</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span></div>
 
-
-<div class="viewcode-block" id="TimeConstraintsLP.is_redundant">
-<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.is_redundant">[docs]</a>
-    <span class="k">def</span> <span class="nf">is_redundant</span><span class="p">(</span>
+<div class="viewcode-block" id="TimeConstraintsLP.is_redundant"><a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.is_redundant">[docs]</a>    <span class="k">def</span> <span class="nf">is_redundant</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">orig_bound</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">new_bound</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lb</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -875,10 +804,7 @@
             <span class="n">redundant</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="n">redundant</span></div>
 
-
-<div class="viewcode-block" id="TimeConstraintsLP.solvefor">
-<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.solvefor">[docs]</a>
-    <span class="k">def</span> <span class="nf">solvefor</span><span class="p">(</span>
+<div class="viewcode-block" id="TimeConstraintsLP.solvefor"><a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.TimeConstraintsLP.html#specless.inference.timed_partial_order.TimeConstraintsLP.solvefor">[docs]</a>    <span class="k">def</span> <span class="nf">solvefor</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">source_event</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">target_event</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -963,14 +889,10 @@
             <span class="s2">&quot;redundant&quot;</span><span class="p">:</span> <span class="n">redundant</span><span class="p">,</span>
             <span class="s2">&quot;orig_bound&quot;</span><span class="p">:</span> <span class="n">orig_bound</span><span class="p">,</span>
             <span class="s2">&quot;new_bound&quot;</span><span class="p">:</span> <span class="n">new_bound</span><span class="p">,</span>
-        <span class="p">}</span></div>
-</div>
+        <span class="p">}</span></div></div>
 
 
-
-<div class="viewcode-block" id="PostProcessingFunc">
-<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.PostProcessingFunc.html#specless.inference.timed_partial_order.PostProcessingFunc">[docs]</a>
-<span class="k">class</span> <span class="nc">PostProcessingFunc</span><span class="p">:</span>
+<div class="viewcode-block" id="PostProcessingFunc"><a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.PostProcessingFunc.html#specless.inference.timed_partial_order.PostProcessingFunc">[docs]</a><span class="k">class</span> <span class="nc">PostProcessingFunc</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Post Processing Function Class&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">partial_order</span><span class="p">):</span>
@@ -980,9 +902,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">edge_to_bound</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">partial_order</span> <span class="o">=</span> <span class="n">partial_order</span>
 
-<div class="viewcode-block" id="PostProcessingFunc.__call__">
-<a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.PostProcessingFunc.html#specless.inference.timed_partial_order.PostProcessingFunc.__call__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
+<div class="viewcode-block" id="PostProcessingFunc.__call__"><a class="viewcode-back" href="../../../_autosummary/specless.inference.timed_partial_order.PostProcessingFunc.html#specless.inference.timed_partial_order.PostProcessingFunc.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">lp</span><span class="p">,</span> <span class="n">source_event</span><span class="p">,</span> <span class="n">target_event</span><span class="p">,</span> <span class="n">redundant</span><span class="p">,</span> <span class="n">lb</span><span class="p">,</span> <span class="n">ub</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Post processing function call&quot;&quot;&quot;</span>
@@ -1003,9 +923,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">target_node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_nodes</span><span class="p">:</span>
                     <span class="n">lb</span><span class="p">,</span> <span class="n">ub</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_to_bound</span><span class="p">[(</span><span class="n">source_event</span><span class="p">,</span> <span class="n">target_node</span><span class="p">)]</span>
-                    <span class="n">lp</span><span class="o">.</span><span class="n">set_pair_bound</span><span class="p">(</span><span class="n">source_event</span><span class="p">,</span> <span class="n">target_node</span><span class="p">,</span> <span class="n">lb</span><span class="p">,</span> <span class="n">ub</span><span class="p">)</span></div>
-</div>
-
+                    <span class="n">lp</span><span class="o">.</span><span class="n">set_pair_bound</span><span class="p">(</span><span class="n">source_event</span><span class="p">,</span> <span class="n">target_node</span><span class="p">,</span> <span class="n">lb</span><span class="p">,</span> <span class="n">ub</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

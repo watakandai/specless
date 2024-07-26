@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>specless.automaton.utils &mdash; specless 0.0.2 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=e3a6060d"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=c1dcd045"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -82,9 +84,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
-<div class="viewcode-block" id="MaxHeapObj">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.utils.MaxHeapObj.html#specless.automaton.utils.MaxHeapObj">[docs]</a>
-<span class="k">class</span> <span class="nc">MaxHeapObj</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="MaxHeapObj"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.utils.MaxHeapObj.html#specless.automaton.utils.MaxHeapObj">[docs]</a><span class="k">class</span> <span class="nc">MaxHeapObj</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Overrides the comparison, so you can create a max heap easily.</span>
 
 <span class="sd">    Parameters</span>
@@ -111,37 +111,23 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="n">val</span>
 
-<div class="viewcode-block" id="MaxHeapObj.__lt__">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.utils.MaxHeapObj.html#specless.automaton.utils.MaxHeapObj.__lt__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<div class="viewcode-block" id="MaxHeapObj.__lt__"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.utils.MaxHeapObj.html#specless.automaton.utils.MaxHeapObj.__lt__">[docs]</a>    <span class="k">def</span> <span class="fm">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">&gt;</span> <span class="n">other</span><span class="o">.</span><span class="n">val</span></div>
 
-
-<div class="viewcode-block" id="MaxHeapObj.__eq__">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.utils.MaxHeapObj.html#specless.automaton.utils.MaxHeapObj.__eq__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<div class="viewcode-block" id="MaxHeapObj.__eq__"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.utils.MaxHeapObj.html#specless.automaton.utils.MaxHeapObj.__eq__">[docs]</a>    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">val</span></div>
 
-
-<div class="viewcode-block" id="MaxHeapObj.__str__">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.utils.MaxHeapObj.html#specless.automaton.utils.MaxHeapObj.__str__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">val</span><span class="p">)</span></div>
-</div>
+<div class="viewcode-block" id="MaxHeapObj.__str__"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.utils.MaxHeapObj.html#specless.automaton.utils.MaxHeapObj.__str__">[docs]</a>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">val</span><span class="p">)</span></div></div>
 
 
-
-<div class="viewcode-block" id="MinHeap">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.utils.MinHeap.html#specless.automaton.utils.MinHeap">[docs]</a>
-<span class="k">class</span> <span class="nc">MinHeap</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="MinHeap"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.utils.MinHeap.html#specless.automaton.utils.MinHeap">[docs]</a><span class="k">class</span> <span class="nc">MinHeap</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A nice class-based interface to the heapq library.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">=</span> <span class="p">[]</span>
 
-<div class="viewcode-block" id="MinHeap.heappush">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.utils.MinHeap.html#specless.automaton.utils.MinHeap.heappush">[docs]</a>
-    <span class="k">def</span> <span class="nf">heappush</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<div class="viewcode-block" id="MinHeap.heappush"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.utils.MinHeap.html#specless.automaton.utils.MinHeap.heappush">[docs]</a>    <span class="k">def</span> <span class="nf">heappush</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Pushes an element onto the heap.</span>
 
 <span class="sd">        Parameters</span>
@@ -152,10 +138,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">h</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="MinHeap.heappop">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.utils.MinHeap.html#specless.automaton.utils.MinHeap.heappop">[docs]</a>
-    <span class="k">def</span> <span class="nf">heappop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MinHeap.heappop"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.utils.MinHeap.html#specless.automaton.utils.MinHeap.heappop">[docs]</a>    <span class="k">def</span> <span class="nf">heappop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Pops the smallest element from the heap.</span>
 
 <span class="sd">        Returns</span>
@@ -165,7 +148,6 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">h</span><span class="p">)</span></div>
-
 
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the element at the given index.</span>
@@ -195,18 +177,13 @@
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">h</span><span class="p">)</span></div>
 
 
-
-<div class="viewcode-block" id="MaxHeap">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.utils.MaxHeap.html#specless.automaton.utils.MaxHeap">[docs]</a>
-<span class="k">class</span> <span class="nc">MaxHeap</span><span class="p">(</span><span class="n">MinHeap</span><span class="p">):</span>
+<div class="viewcode-block" id="MaxHeap"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.utils.MaxHeap.html#specless.automaton.utils.MaxHeap">[docs]</a><span class="k">class</span> <span class="nc">MaxHeap</span><span class="p">(</span><span class="n">MinHeap</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A nice class-based interface to create a max heap, using the heapq library.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="MaxHeap.heappush">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.utils.MaxHeap.html#specless.automaton.utils.MaxHeap.heappush">[docs]</a>
-    <span class="k">def</span> <span class="nf">heappush</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<div class="viewcode-block" id="MaxHeap.heappush"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.utils.MaxHeap.html#specless.automaton.utils.MaxHeap.heappush">[docs]</a>    <span class="k">def</span> <span class="nf">heappush</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Pushes an element onto the max heap.</span>
 
 <span class="sd">        Parameters</span>
@@ -217,10 +194,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">h</span><span class="p">,</span> <span class="n">MaxHeapObj</span><span class="p">(</span><span class="n">x</span><span class="p">))</span></div>
 
-
-<div class="viewcode-block" id="MaxHeap.heappop">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.utils.MaxHeap.html#specless.automaton.utils.MaxHeap.heappop">[docs]</a>
-    <span class="k">def</span> <span class="nf">heappop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MaxHeap.heappop"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.utils.MaxHeap.html#specless.automaton.utils.MaxHeap.heappop">[docs]</a>    <span class="k">def</span> <span class="nf">heappop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Pops the largest element from the max heap.</span>
 
 <span class="sd">        Returns</span>
@@ -230,7 +204,6 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">h</span><span class="p">)</span><span class="o">.</span><span class="n">val</span></div>
-
 
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the element at the given index.</span>
@@ -249,10 +222,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">val</span></div>
 
 
-
-<div class="viewcode-block" id="logx">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.utils.logx.html#specless.automaton.utils.logx">[docs]</a>
-<span class="k">def</span> <span class="nf">logx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+<div class="viewcode-block" id="logx"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.utils.logx.html#specless.automaton.utils.logx">[docs]</a><span class="k">def</span> <span class="nf">logx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates the logarithm of a number with a specified base.</span>
 
 <span class="sd">    Parameters</span>
@@ -271,10 +241,7 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asscalar</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">base</span><span class="p">))</span></div>
 
 
-
-<div class="viewcode-block" id="xlogx">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.utils.xlogx.html#specless.automaton.utils.xlogx">[docs]</a>
-<span class="k">def</span> <span class="nf">xlogx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="xlogx"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.utils.xlogx.html#specless.automaton.utils.xlogx">[docs]</a><span class="k">def</span> <span class="nf">xlogx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates the product of a number and its logarithm with a specified base.</span>
 
 <span class="sd">    Parameters</span>
@@ -293,10 +260,7 @@
     <span class="k">return</span> <span class="n">ylogx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
-
-<div class="viewcode-block" id="xlogy">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.utils.xlogy.html#specless.automaton.utils.xlogy">[docs]</a>
-<span class="k">def</span> <span class="nf">xlogy</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="xlogy"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.utils.xlogy.html#specless.automaton.utils.xlogy">[docs]</a><span class="k">def</span> <span class="nf">xlogy</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates the product of two numbers, one of which is multiplied by the logarithm of the other.</span>
 
 <span class="sd">    Parameters</span>
@@ -322,10 +286,7 @@
     <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">logx</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
-
-<div class="viewcode-block" id="ylogx">
-<a class="viewcode-back" href="../../../_autosummary/specless.automaton.utils.ylogx.html#specless.automaton.utils.ylogx">[docs]</a>
-<span class="k">def</span> <span class="nf">ylogx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="ylogx"><a class="viewcode-back" href="../../../_autosummary/specless.automaton.utils.ylogx.html#specless.automaton.utils.ylogx">[docs]</a><span class="k">def</span> <span class="nf">ylogx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates the product of two numbers, one of which is multiplied by the logarithm of the other.</span>
 
 <span class="sd">    Parameters</span>
@@ -347,7 +308,6 @@
         <span class="k">return</span> <span class="mf">0.0</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="mi">0</span></div>
-
 </pre></div>
 
            </div>

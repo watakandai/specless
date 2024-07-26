@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>specless.automaton.fdfa.FDFA &mdash; specless 0.0.2 documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=e3a6060d"></script>
-        <script src="../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=c1dcd045"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -110,15 +112,15 @@
            <div itemprop="articleBody">
              
   <section id="specless-automaton-fdfa-fdfa">
-<h1>specless.automaton.fdfa.FDFA<a class="headerlink" href="#specless-automaton-fdfa-fdfa" title="Link to this heading"></a></h1>
+<h1>specless.automaton.fdfa.FDFA<a class="headerlink" href="#specless-automaton-fdfa-fdfa" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">specless.automaton.fdfa.</span></span><span class="sig-name descname"><span class="pre">FDFA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Hashable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Hashable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Hashable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol_display_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bidict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphabet_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_states</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Hashable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">final_transition_sym</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">{typing.Hashable,</span> <span class="pre">None}</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_transition_sym</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">{typing.Hashable,</span> <span class="pre">None}</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specless/automaton/fdfa.html#FDFA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.automaton.fdfa.FDFA" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">specless.automaton.fdfa.</span></span><span class="sig-name descname"><span class="pre">FDFA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Hashable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Hashable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Hashable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol_display_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bidict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphabet_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_states</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Hashable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">final_transition_sym</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">{None,</span> <span class="pre">typing.Hashable}</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_transition_sym</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">{None,</span> <span class="pre">typing.Hashable}</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specless/automaton/fdfa.html#FDFA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.automaton.fdfa.FDFA" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="specless.automaton.base.Automaton.html#specless.automaton.base.Automaton" title="specless.automaton.base.Automaton"><code class="xref py py-class docutils literal notranslate"><span class="pre">Automaton</span></code></a></p>
 <p>This class describes a frequency deterministic finite automaton (fdfa).</p>
 <p>built on networkx, so inherits node and edge data structure definitions</p>
 <section id="node-attributes">
-<h2>Node Attributes<a class="headerlink" href="#node-attributes" title="Link to this heading"></a></h2>
+<h2>Node Attributes<a class="headerlink" href="#node-attributes" title="Permalink to this heading"></a></h2>
 <blockquote>
 <div><ul class="simple">
 <li><dl class="simple">
@@ -144,7 +146,7 @@ transitions.</p>
 </div></blockquote>
 </section>
 <section id="edge-properties">
-<h2>Edge Properties<a class="headerlink" href="#edge-properties" title="Link to this heading"></a></h2>
+<h2>Edge Properties<a class="headerlink" href="#edge-properties" title="Permalink to this heading"></a></h2>
 <blockquote>
 <div><ul class="simple">
 <li><p>symbol: the symbol value emitted when the edge is traversed</p></li>
@@ -435,7 +437,7 @@ default to base class default.</p>
 </table>
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.add_edge">
-<span class="sig-name descname"><span class="pre">add_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u_for_edge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_for_edge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.add_edge" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">add_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u_for_edge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_for_edge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.add_edge" title="Permalink to this definition"></a></dt>
 <dd><p>Add an edge between u and v.</p>
 <p>The nodes u and v will be automatically added if they are
 not already in the graph.</p>
@@ -501,7 +503,7 @@ providing a custom <cite>new_edge_key()</cite> method.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.add_edges_from">
-<span class="sig-name descname"><span class="pre">add_edges_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ebunch_to_add</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.add_edges_from" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">add_edges_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ebunch_to_add</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.add_edges_from" title="Permalink to this definition"></a></dt>
 <dd><p>Add all the edges in ebunch_to_add.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -574,7 +576,7 @@ object to <cite>G.add_edges_from</cite>.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.add_node">
-<span class="sig-name descname"><span class="pre">add_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_for_adding</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.add_node" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">add_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_for_adding</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.add_node" title="Permalink to this definition"></a></dt>
 <dd><p>Add a single node <cite>node_for_adding</cite> and update node attributes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -614,7 +616,7 @@ doesn’t change on mutables.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.add_nodes_from">
-<span class="sig-name descname"><span class="pre">add_nodes_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes_for_adding</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.add_nodes_from" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">add_nodes_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes_for_adding</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.add_nodes_from" title="Permalink to this definition"></a></dt>
 <dd><p>Add multiple nodes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -677,7 +679,7 @@ object to <cite>G.add_nodes_from</cite>.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.add_weighted_edges_from">
-<span class="sig-name descname"><span class="pre">add_weighted_edges_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ebunch_to_add</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'weight'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.add_weighted_edges_from" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">add_weighted_edges_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ebunch_to_add</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'weight'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.add_weighted_edges_from" title="Permalink to this definition"></a></dt>
 <dd><p>Add weighted edges in <cite>ebunch_to_add</cite> with specified weight attr</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -729,7 +731,7 @@ object to <cite>G.add_weighted_edges_from</cite>.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.adj">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">adj</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.adj" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">adj</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.adj" title="Permalink to this definition"></a></dt>
 <dd><p>Graph adjacency object holding the neighbors of each node.</p>
 <p>This object is a read-only dict-like structure with node keys
 and neighbor-dict values.  The neighbor-dict is keyed by neighbor
@@ -744,7 +746,7 @@ So <cite>for nbr, foovalue in G[node].data(‘foo’, default=1):</cite> works.<
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.adjacency">
-<span class="sig-name descname"><span class="pre">adjacency</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.adjacency" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">adjacency</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.adjacency" title="Permalink to this definition"></a></dt>
 <dd><p>Returns an iterator over (node, adjacency dict) tuples for all nodes.</p>
 <p>For directed graphs, only outgoing neighbors/adjacencies are included.</p>
 <dl class="field-list simple">
@@ -766,25 +768,25 @@ the graph.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.adjlist_inner_dict_factory">
-<span class="sig-name descname"><span class="pre">adjlist_inner_dict_factory</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.adjlist_inner_dict_factory" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">adjlist_inner_dict_factory</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.adjlist_inner_dict_factory" title="Permalink to this definition"></a></dt>
 <dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.adjlist_outer_dict_factory">
-<span class="sig-name descname"><span class="pre">adjlist_outer_dict_factory</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.adjlist_outer_dict_factory" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">adjlist_outer_dict_factory</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.adjlist_outer_dict_factory" title="Permalink to this definition"></a></dt>
 <dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.alphabet_size">
-<span class="sig-name descname"><span class="pre">alphabet_size</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.alphabet_size" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">alphabet_size</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.alphabet_size" title="Permalink to this definition"></a></dt>
 <dd><p>number of symbols in automaton alphabet</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.clear">
-<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.clear" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.clear" title="Permalink to this definition"></a></dt>
 <dd><p>Remove all nodes and edges from the graph.</p>
 <p>This also removes the name, and all graph, node, and edge attributes.</p>
 <p class="rubric">Examples</p>
@@ -800,7 +802,7 @@ the graph.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.clear_edges">
-<span class="sig-name descname"><span class="pre">clear_edges</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.clear_edges" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">clear_edges</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.clear_edges" title="Permalink to this definition"></a></dt>
 <dd><p>Remove all edges from the graph without altering nodes.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
@@ -815,7 +817,7 @@ the graph.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.convert_flexfringe_edges">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">convert_flexfringe_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">flexfringeEdges:</span> <span class="pre">~typing.List[~typing.Tuple[~typing.Hashable,</span> <span class="pre">~typing.Hashable,</span> <span class="pre">dict]],</span> <span class="pre">final_transition_sym:</span> <span class="pre">~typing.Hashable,</span> <span class="pre">empty_transition_sym:</span> <span class="pre">~typing.Hashable,</span> <span class="pre">node_ID_to_node_label:</span> <span class="pre">dict)</span> <span class="pre">-&gt;</span> <span class="pre">(&lt;class</span> <span class="pre">'bidict.bidict'&gt;,</span> <span class="pre">typing.List[typing.Tuple[typing.Hashable,</span> <span class="pre">typing.Hashable,</span> <span class="pre">dict]],</span> <span class="pre">&lt;class</span> <span class="pre">'set'&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specless/automaton/fdfa.html#FDFA.convert_flexfringe_edges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.automaton.fdfa.FDFA.convert_flexfringe_edges" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">convert_flexfringe_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">flexfringeEdges:</span> <span class="pre">~typing.List[~typing.Tuple[~typing.Hashable,</span> <span class="pre">~typing.Hashable,</span> <span class="pre">dict]],</span> <span class="pre">final_transition_sym:</span> <span class="pre">~typing.Hashable,</span> <span class="pre">empty_transition_sym:</span> <span class="pre">~typing.Hashable,</span> <span class="pre">node_ID_to_node_label:</span> <span class="pre">dict)</span> <span class="pre">-&gt;</span> <span class="pre">(&lt;class</span> <span class="pre">'bidict.bidict'&gt;,</span> <span class="pre">typing.List[typing.Tuple[typing.Hashable,</span> <span class="pre">typing.Hashable,</span> <span class="pre">dict]],</span> <span class="pre">&lt;class</span> <span class="pre">'set'&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specless/automaton/fdfa.html#FDFA.convert_flexfringe_edges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.automaton.fdfa.FDFA.convert_flexfringe_edges" title="Permalink to this definition"></a></dt>
 <dd><p>converts edges read in from flexfringe (FF) dot files into the internal
 edge format needed by networkx.add_edges_from()</p>
 <dl class="field-list simple">
@@ -842,7 +844,7 @@ set of observed symbols</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.convert_flexfringe_nodes">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">convert_flexfringe_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">flexfringe_nodes:</span> <span class="pre">dict,</span> <span class="pre">number_input_symbols:</span> <span class="pre">int,</span> <span class="pre">root_node_label:</span> <span class="pre">~typing.Hashable)</span> <span class="pre">-&gt;</span> <span class="pre">(typing.List[typing.Tuple[typing.Hashable,</span> <span class="pre">dict]],</span> <span class="pre">&lt;class</span> <span class="pre">'dict'&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specless/automaton/fdfa.html#FDFA.convert_flexfringe_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.automaton.fdfa.FDFA.convert_flexfringe_nodes" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">convert_flexfringe_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">flexfringe_nodes:</span> <span class="pre">dict,</span> <span class="pre">number_input_symbols:</span> <span class="pre">int,</span> <span class="pre">root_node_label:</span> <span class="pre">~typing.Hashable)</span> <span class="pre">-&gt;</span> <span class="pre">(typing.List[typing.Tuple[typing.Hashable,</span> <span class="pre">dict]],</span> <span class="pre">&lt;class</span> <span class="pre">'dict'&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specless/automaton/fdfa.html#FDFA.convert_flexfringe_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.automaton.fdfa.FDFA.convert_flexfringe_nodes" title="Permalink to this definition"></a></dt>
 <dd><p>converts node data from a flexfringe (FF) dot file into the internal
 node format needed by networkx.add_nodes_from()</p>
 <dl class="field-list simple">
@@ -871,7 +873,7 @@ undefined for this class right now</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.copy">
-<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">as_view</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.copy" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">as_view</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.copy" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a copy of the graph.</p>
 <p>The copy method by default returns an independent shallow copy
 of the graph and attributes. That is, if an attribute is a
@@ -946,7 +948,7 @@ of the original graph without actually copying any data.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.degree">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">degree</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.degree" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">degree</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.degree" title="Permalink to this definition"></a></dt>
 <dd><p>A DegreeView for the Graph as G.degree or G.degree().</p>
 <p>The node degree is the number of edges adjacent to the node.
 The weighted node degree is the sum of the edge weights for
@@ -982,9 +984,9 @@ If a single node is requested, returns the degree of the node as an integer.</p>
 <span class="go">1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">degree</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]))</span>
 <span class="go">[(0, 1), (1, 2), (2, 2)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># parallel edge</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># parallel edge</span>
 <span class="go">1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">degree</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]))</span>  <span class="c1"># parallel edges are counted</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">degree</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]))</span> <span class="c1"># parallel edges are counted</span>
 <span class="go">[(0, 2), (1, 3), (2, 2)]</span>
 </pre></div>
 </div>
@@ -992,7 +994,7 @@ If a single node is requested, returns the degree of the node as an integer.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.disp_edges">
-<span class="sig-name descname"><span class="pre">disp_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph:</span> <span class="pre">{None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">&lt;class</span> <span class="pre">'networkx.classes.multidigraph.MultiDiGraph'&gt;}</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.disp_edges" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">disp_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph:</span> <span class="pre">{None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">&lt;class</span> <span class="pre">'networkx.classes.multidigraph.MultiDiGraph'&gt;}</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.disp_edges" title="Permalink to this definition"></a></dt>
 <dd><p>Prints each edge in the graph in an edge-list tuple format</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1003,7 +1005,7 @@ If a single node is requested, returns the degree of the node as an integer.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.disp_nodes">
-<span class="sig-name descname"><span class="pre">disp_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph:</span> <span class="pre">{None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">&lt;class</span> <span class="pre">'networkx.classes.multidigraph.MultiDiGraph'&gt;}</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.disp_nodes" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">disp_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph:</span> <span class="pre">{None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">&lt;class</span> <span class="pre">'networkx.classes.multidigraph.MultiDiGraph'&gt;}</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.disp_nodes" title="Permalink to this definition"></a></dt>
 <dd><p>Prints each node’s data view</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1014,7 +1016,7 @@ If a single node is requested, returns the degree of the node as an integer.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.draw">
-<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename:</span> <span class="pre">{None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">&lt;class</span> <span class="pre">'str'&gt;}</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">should_display:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_format='png'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.draw" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename:</span> <span class="pre">{None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">&lt;class</span> <span class="pre">'str'&gt;}</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">should_display:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_format='png'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.draw" title="Permalink to this definition"></a></dt>
 <dd><p>Draws (can save) the automaton structure in a way compatible with a
 jupyter / IPython notebook</p>
 <dl class="field-list simple">
@@ -1026,19 +1028,19 @@ jupyter / IPython notebook</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.edge_attr_dict_factory">
-<span class="sig-name descname"><span class="pre">edge_attr_dict_factory</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.edge_attr_dict_factory" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">edge_attr_dict_factory</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.edge_attr_dict_factory" title="Permalink to this definition"></a></dt>
 <dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.edge_key_dict_factory">
-<span class="sig-name descname"><span class="pre">edge_key_dict_factory</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.edge_key_dict_factory" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">edge_key_dict_factory</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.edge_key_dict_factory" title="Permalink to this definition"></a></dt>
 <dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.edge_subgraph">
-<span class="sig-name descname"><span class="pre">edge_subgraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.edge_subgraph" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">edge_subgraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.edge_subgraph" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the subgraph induced by the specified edges.</p>
 <p>The induced subgraph contains each edge in <cite>edges</cite> and each
 node incident to any one of those edges.</p>
@@ -1076,7 +1078,7 @@ of the edge or node attributes, use:</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.edges">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">edges</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.edges" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">edges</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.edges" title="Permalink to this definition"></a></dt>
 <dd><p>An OutMultiEdgeView of the Graph as G.edges or G.edges().</p>
 <p>edges(self, nbunch=None, data=False, keys=False, default=None)</p>
 <p>The OutMultiEdgeView provides set-like operations on the edge-tuples
@@ -1123,7 +1125,7 @@ For directed graphs this returns the out-edges.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">MultiDiGraph</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">nx</span><span class="o">.</span><span class="n">add_path</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">key2</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># second edge between these nodes</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">key2</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1"># second edge between these nodes</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">()]</span>
 <span class="go">[(0, 1), (1, 2), (1, 2), (2, 3)]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>  <span class="c1"># default data is {} (empty dict)</span>
@@ -1152,19 +1154,19 @@ For directed graphs this returns the out-edges.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.empty_transition_sym">
-<span class="sig-name descname"><span class="pre">empty_transition_sym</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.empty_transition_sym" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">empty_transition_sym</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.empty_transition_sym" title="Permalink to this definition"></a></dt>
 <dd><p>symbol to use as the empty (a.k.a. lambda) symbol</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.final_transition_sym">
-<span class="sig-name descname"><span class="pre">final_transition_sym</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.final_transition_sym" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">final_transition_sym</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.final_transition_sym" title="Permalink to this definition"></a></dt>
 <dd><p>representation of the termination symbol</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.generate_trace">
-<span class="sig-name descname"><span class="pre">generate_trace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">start_state:</span> <span class="pre">~typing.Hashable,</span> <span class="pre">N:</span> <span class="pre">int,</span> <span class="pre">max_resamples:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">10,</span> <span class="pre">return_whatever_you_got:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">random_state:</span> <span class="pre">{None,</span> <span class="pre">&lt;class</span> <span class="pre">'int'&gt;,</span> <span class="pre">typing.Iterable}</span> <span class="pre">=</span> <span class="pre">None)</span> <span class="pre">-&gt;</span> <span class="pre">(typing.Iterable[typing.Hashable],</span> <span class="pre">&lt;class</span> <span class="pre">'int'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'float'&gt;</span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.generate_trace" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">generate_trace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">start_state:</span> <span class="pre">~typing.Hashable,</span> <span class="pre">N:</span> <span class="pre">int,</span> <span class="pre">max_resamples:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">10,</span> <span class="pre">return_whatever_you_got:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">random_state:</span> <span class="pre">{None,</span> <span class="pre">&lt;class</span> <span class="pre">'int'&gt;,</span> <span class="pre">typing.Iterable}</span> <span class="pre">=</span> <span class="pre">None)</span> <span class="pre">-&gt;</span> <span class="pre">(typing.Iterable[typing.Hashable],</span> <span class="pre">&lt;class</span> <span class="pre">'int'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'float'&gt;</span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.generate_trace" title="Permalink to this definition"></a></dt>
 <dd><p>Generates a trace w/ prob. &gt; 0 from the automaton from its start_state</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1202,7 +1204,7 @@ from a non-sampleable automaton</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.generate_traces">
-<span class="sig-name descname"><span class="pre">generate_traces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_resamples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_whatever_you_got</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_multicore</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">50</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.generate_traces" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">generate_traces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_resamples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_whatever_you_got</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_multicore</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">50</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.generate_traces" title="Permalink to this definition"></a></dt>
 <dd><p>generates num_samples random traces from the automaton</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1241,7 +1243,7 @@ lengths, list of the associated trace probabilities</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.get_edge_data">
-<span class="sig-name descname"><span class="pre">get_edge_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.get_edge_data" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_edge_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.get_edge_data" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the attribute dictionary associated with edge (u, v,
 key).</p>
 <p>If a key is not provided, returns a dictionary mapping edge keys
@@ -1251,8 +1253,8 @@ instead of an exception is the edge doesn’t exist.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>u</strong> (<em>nodes</em>)</p></li>
-<li><p><strong>v</strong> (<em>nodes</em>)</p></li>
+<li><p><strong>u</strong> (<em>nodes</em>) – </p></li>
+<li><p><strong>v</strong> (<em>nodes</em>) – </p></li>
 <li><p><strong>default</strong> (<em>any Python object</em><em> (</em><em>default=None</em><em>)</em>) – Value to return if the specific edge (u, v, key) is not
 found, OR if there are no edges between u and v and no key
 is specified.</p></li>
@@ -1313,13 +1315,13 @@ to assign to the edge data associated with an edge.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.graph_attr_dict_factory">
-<span class="sig-name descname"><span class="pre">graph_attr_dict_factory</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.graph_attr_dict_factory" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">graph_attr_dict_factory</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.graph_attr_dict_factory" title="Permalink to this definition"></a></dt>
 <dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.has_edge">
-<span class="sig-name descname"><span class="pre">has_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.has_edge" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">has_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.has_edge" title="Permalink to this definition"></a></dt>
 <dd><p>Returns True if the graph has an edge between nodes u and v.</p>
 <p>This is the same as <cite>v in G[u] or key in G[u][v]</cite>
 without KeyError exceptions.</p>
@@ -1373,12 +1375,12 @@ or an edge tuple (u, v, key).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.has_node">
-<span class="sig-name descname"><span class="pre">has_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.has_node" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">has_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.has_node" title="Permalink to this definition"></a></dt>
 <dd><p>Returns True if the graph contains the node n.</p>
 <p>Identical to <cite>n in G</cite></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>n</strong> (<em>node</em>)</p>
+<dd class="field-odd"><p><strong>n</strong> (<em>node</em>) – </p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -1396,23 +1398,23 @@ or an edge tuple (u, v, key).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.has_predecessor">
-<span class="sig-name descname"><span class="pre">has_predecessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.has_predecessor" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">has_predecessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.has_predecessor" title="Permalink to this definition"></a></dt>
 <dd><p>Returns True if node u has predecessor v.</p>
 <p>This is true if graph has the edge u&lt;-v.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.has_successor">
-<span class="sig-name descname"><span class="pre">has_successor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.has_successor" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">has_successor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.has_successor" title="Permalink to this definition"></a></dt>
 <dd><p>Returns True if node u has successor v.</p>
 <p>This is true if graph has the edge u-&gt;v.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.in_degree">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">in_degree</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.in_degree" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">in_degree</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.in_degree" title="Permalink to this definition"></a></dt>
 <dd><p>A DegreeView for (node, in_degree) or in_degree for single node.</p>
-<p>The node in-degree is the number of edges pointing into the node.
+<p>The node in-degree is the number of edges pointing in to the node.
 The weighted node degree is the sum of the edge weights for
 edges incident to that node.</p>
 <p>This object provides an iterator for (node, degree) as well as
@@ -1447,9 +1449,9 @@ The degree is the sum of the edge weights adjacent to the node.</p></li>
 <span class="go">0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">in_degree</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]))</span>
 <span class="go">[(0, 0), (1, 1), (2, 1)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># parallel edge</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># parallel edge</span>
 <span class="go">1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">in_degree</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]))</span>  <span class="c1"># parallel edges counted</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">in_degree</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]))</span> <span class="c1"># parallel edges counted</span>
 <span class="go">[(0, 0), (1, 2), (2, 1)]</span>
 </pre></div>
 </div>
@@ -1457,7 +1459,7 @@ The degree is the sum of the edge weights adjacent to the node.</p></li>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.in_edges">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">in_edges</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.in_edges" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">in_edges</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.in_edges" title="Permalink to this definition"></a></dt>
 <dd><p>A view of the in edges of the graph as G.in_edges or G.in_edges().</p>
 <p>in_edges(self, nbunch=None, data=False, keys=False, default=None)</p>
 <dl class="field-list simple">
@@ -1490,45 +1492,45 @@ used for attribute lookup as <cite>edges[u, v, k][‘foo’]</cite>.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.is_deterministic">
-<span class="sig-name descname"><span class="pre">is_deterministic</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.is_deterministic" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">is_deterministic</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.is_deterministic" title="Permalink to this definition"></a></dt>
 <dd><p>whether or not there is a unique state dest. under each symbol.
 Defaults to true and is falsified later during initialization.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.is_directed">
-<span class="sig-name descname"><span class="pre">is_directed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.is_directed" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">is_directed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.is_directed" title="Permalink to this definition"></a></dt>
 <dd><p>Returns True if graph is directed, False otherwise.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.is_multigraph">
-<span class="sig-name descname"><span class="pre">is_multigraph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.is_multigraph" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">is_multigraph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.is_multigraph" title="Permalink to this definition"></a></dt>
 <dd><p>Returns True if graph is a multigraph, False otherwise.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.is_normalized">
-<span class="sig-name descname"><span class="pre">is_normalized</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.is_normalized" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">is_normalized</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.is_normalized" title="Permalink to this definition"></a></dt>
 <dd><p>ill-defined transition distributions are normalized to be proper
 probability distributions over outgoing transitions</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.is_sampleable">
-<span class="sig-name descname"><span class="pre">is_sampleable</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.is_sampleable" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">is_sampleable</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.is_sampleable" title="Permalink to this definition"></a></dt>
 <dd><p>transitions will have pre-computed, well-formed distributions</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.is_stochastic">
-<span class="sig-name descname"><span class="pre">is_stochastic</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.is_stochastic" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">is_stochastic</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.is_stochastic" title="Permalink to this definition"></a></dt>
 <dd><p>whether symbol probabilities are given for string generation</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.load_flexfringe_data">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_flexfringe_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MultiDiGraph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_input_symbols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">final_transition_sym</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Hashable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_transition_sym</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Hashable</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/specless/automaton/fdfa.html#FDFA.load_flexfringe_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.automaton.fdfa.FDFA.load_flexfringe_data" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_flexfringe_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MultiDiGraph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_input_symbols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">final_transition_sym</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Hashable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_transition_sym</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Hashable</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/specless/automaton/fdfa.html#FDFA.load_flexfringe_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.automaton.fdfa.FDFA.load_flexfringe_data" title="Permalink to this definition"></a></dt>
 <dd><p>reads in graph configuration data from a flexfringe dot file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1557,7 +1559,7 @@ symbol (a.k.a. lambda)</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.most_probable_string">
-<span class="sig-name descname"><span class="pre">most_probable_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_string_probability:</span> <span class="pre">{None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">&lt;class</span> <span class="pre">'float'&gt;}</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_string_length:</span> <span class="pre">{None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">&lt;class</span> <span class="pre">'int'&gt;}</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_empty_symbol:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">try_to_use_greedy:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backwards_search:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_strings_to_find:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth_first:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_entropy:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disable_pbar:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Hashable</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Hashable</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.most_probable_string" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">most_probable_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_string_probability:</span> <span class="pre">{None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">&lt;class</span> <span class="pre">'float'&gt;}</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_string_length:</span> <span class="pre">{None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">&lt;class</span> <span class="pre">'int'&gt;}</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_empty_symbol:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">try_to_use_greedy:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backwards_search:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_strings_to_find:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth_first:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_entropy:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disable_pbar:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Hashable</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Hashable</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.most_probable_string" title="Permalink to this definition"></a></dt>
 <dd><p>Computes the bounded, most probable string in the probabilistic
 language of the automaton.</p>
 <dl class="field-list simple">
@@ -1630,7 +1632,7 @@ non-stochastic automaton</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.name" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.name" title="Permalink to this definition"></a></dt>
 <dd><p>String identifier of the graph.</p>
 <p>This graph attribute appears in the attribute dict G.graph
 keyed by the string <cite>“name”</cite>. as well as an attribute (technically
@@ -1639,7 +1641,7 @@ a property) <cite>G.name</cite>. This is entirely user controlled.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.nbunch_iter">
-<span class="sig-name descname"><span class="pre">nbunch_iter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nbunch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.nbunch_iter" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">nbunch_iter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nbunch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.nbunch_iter" title="Permalink to this definition"></a></dt>
 <dd><p>Returns an iterator over nodes contained in nbunch that are
 also in the graph.</p>
 <p>The nodes in nbunch are checked for membership in the graph
@@ -1676,7 +1678,7 @@ nbunch is not hashable, a <code class="xref py py-exc docutils literal notransla
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.neighbors">
-<span class="sig-name descname"><span class="pre">neighbors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.neighbors" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">neighbors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.neighbors" title="Permalink to this definition"></a></dt>
 <dd><p>Returns an iterator over successor nodes of n.</p>
 <p>A successor of n is a node m such that there exists a directed
 edge from n to m.</p>
@@ -1698,7 +1700,7 @@ edge from n to m.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.new_edge_key">
-<span class="sig-name descname"><span class="pre">new_edge_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.new_edge_key" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">new_edge_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.new_edge_key" title="Permalink to this definition"></a></dt>
 <dd><p>Returns an unused key for edges between nodes <cite>u</cite> and <cite>v</cite>.</p>
 <p>The nodes <cite>u</cite> and <cite>v</cite> do not need to be already in the graph.</p>
 <p class="rubric">Notes</p>
@@ -1709,8 +1711,8 @@ further new_edge_keys may not be in this order.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>u</strong> (<em>nodes</em>)</p></li>
-<li><p><strong>v</strong> (<em>nodes</em>)</p></li>
+<li><p><strong>u</strong> (<em>nodes</em>) – </p></li>
+<li><p><strong>v</strong> (<em>nodes</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1724,19 +1726,19 @@ further new_edge_keys may not be in this order.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.node_attr_dict_factory">
-<span class="sig-name descname"><span class="pre">node_attr_dict_factory</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.node_attr_dict_factory" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">node_attr_dict_factory</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.node_attr_dict_factory" title="Permalink to this definition"></a></dt>
 <dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.node_dict_factory">
-<span class="sig-name descname"><span class="pre">node_dict_factory</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.node_dict_factory" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">node_dict_factory</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.node_dict_factory" title="Permalink to this definition"></a></dt>
 <dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.nodes">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nodes</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.nodes" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nodes</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.nodes" title="Permalink to this definition"></a></dt>
 <dd><p>A NodeView of the Graph as G.nodes or G.nodes().</p>
 <p>Can be used as <cite>G.nodes</cite> for data lookup and for set-like operations.
 Can also be used as <cite>G.nodes(data=’color’, default=None)</cite> to return a
@@ -1828,26 +1830,26 @@ to guarantee the value is never None:</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.num_obs">
-<span class="sig-name descname"><span class="pre">num_obs</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.num_obs" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">num_obs</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.num_obs" title="Permalink to this definition"></a></dt>
 <dd><p>number of state observations in TS obs. space</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.num_states">
-<span class="sig-name descname"><span class="pre">num_states</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.num_states" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">num_states</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.num_states" title="Permalink to this definition"></a></dt>
 <dd><p>number of states in automaton state space</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.number_of_edges">
-<span class="sig-name descname"><span class="pre">number_of_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.number_of_edges" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">number_of_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.number_of_edges" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the number of edges between two nodes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>u</strong> (<em>nodes</em><em>, </em><em>optional</em><em> (</em><em>Default=all edges</em><em>)</em>) – If u and v are specified, return the number of edges between
+<li><p><strong>u</strong> (<em>nodes</em><em>, </em><em>optional</em><em> (</em><em>Gefault=all edges</em><em>)</em>) – If u and v are specified, return the number of edges between
 u and v. Otherwise return the total number of all edges.</p></li>
-<li><p><strong>v</strong> (<em>nodes</em><em>, </em><em>optional</em><em> (</em><em>Default=all edges</em><em>)</em>) – If u and v are specified, return the number of edges between
+<li><p><strong>v</strong> (<em>nodes</em><em>, </em><em>optional</em><em> (</em><em>Gefault=all edges</em><em>)</em>) – If u and v are specified, return the number of edges between
 u and v. Otherwise return the total number of all edges.</p></li>
 </ul>
 </dd>
@@ -1896,7 +1898,7 @@ of directed edges from <cite>u</cite> to <cite>v</cite>:</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.number_of_nodes">
-<span class="sig-name descname"><span class="pre">number_of_nodes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.number_of_nodes" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">number_of_nodes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.number_of_nodes" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the number of nodes in the graph.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -1925,13 +1927,13 @@ of directed edges from <cite>u</cite> to <cite>v</cite>:</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.observations">
-<span class="sig-name descname"><span class="pre">observations</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.observations" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">observations</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.observations" title="Permalink to this definition"></a></dt>
 <dd><p>the set of all possible state output symbols (observations)</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.observe">
-<span class="sig-name descname"><span class="pre">observe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">curr_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Hashable</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Hashable</span></span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.observe" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">observe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">curr_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Hashable</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Hashable</span></span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.observe" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the given state’s observation symbol</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1945,7 +1947,7 @@ of directed edges from <cite>u</cite> to <cite>v</cite>:</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.order">
-<span class="sig-name descname"><span class="pre">order</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.order" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">order</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.order" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the number of nodes in the graph.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -1974,7 +1976,7 @@ of directed edges from <cite>u</cite> to <cite>v</cite>:</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.out_degree">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">out_degree</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.out_degree" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">out_degree</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.out_degree" title="Permalink to this definition"></a></dt>
 <dd><p>Returns an iterator for (node, out-degree) or out-degree for single node.</p>
 <p>out_degree(self, nbunch=None, weight=None)</p>
 <p>The node out-degree is the number of edges pointing out of the node.
@@ -2010,9 +2012,9 @@ The degree is the sum of the edge weights.</p></li>
 <span class="go">1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">out_degree</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]))</span>
 <span class="go">[(0, 1), (1, 1), (2, 1)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># parallel edge</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># parallel edge</span>
 <span class="go">1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">out_degree</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]))</span>  <span class="c1"># counts parallel edges</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">out_degree</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]))</span> <span class="c1"># counts parallel edges</span>
 <span class="go">[(0, 2), (1, 1), (2, 1)]</span>
 </pre></div>
 </div>
@@ -2020,7 +2022,7 @@ The degree is the sum of the edge weights.</p></li>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.out_edges">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">out_edges</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.out_edges" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">out_edges</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.out_edges" title="Permalink to this definition"></a></dt>
 <dd><p>An OutMultiEdgeView of the Graph as G.edges or G.edges().</p>
 <p>edges(self, nbunch=None, data=False, keys=False, default=None)</p>
 <p>The OutMultiEdgeView provides set-like operations on the edge-tuples
@@ -2067,7 +2069,7 @@ For directed graphs this returns the out-edges.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">MultiDiGraph</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">nx</span><span class="o">.</span><span class="n">add_path</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">key2</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># second edge between these nodes</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">key2</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1"># second edge between these nodes</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">()]</span>
 <span class="go">[(0, 1), (1, 2), (1, 2), (2, 3)]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>  <span class="c1"># default data is {} (empty dict)</span>
@@ -2096,7 +2098,7 @@ For directed graphs this returns the out-edges.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.plot_node_trans_dist">
-<span class="sig-name descname"><span class="pre">plot_node_trans_dist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">curr_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Hashable</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.plot_node_trans_dist" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">plot_node_trans_dist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">curr_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Hashable</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.plot_node_trans_dist" title="Permalink to this definition"></a></dt>
 <dd><p>Plots the transition pmf at the given curr_state / node.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2107,7 +2109,7 @@ For directed graphs this returns the out-edges.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.pred">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pred</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.pred" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pred</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.pred" title="Permalink to this definition"></a></dt>
 <dd><p>Graph adjacency object holding the predecessors of each node.</p>
 <p>This object is a read-only dict-like structure with node keys
 and neighbor-dict values.  The neighbor-dict is keyed by neighbor
@@ -2119,7 +2121,7 @@ the color of the edge <cite>(3, 2, 0)</cite> to <cite>“blue”</cite>.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.predecessors">
-<span class="sig-name descname"><span class="pre">predecessors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.predecessors" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">predecessors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.predecessors" title="Permalink to this definition"></a></dt>
 <dd><p>Returns an iterator over predecessor nodes of n.</p>
 <p>A predecessor of n is a node m such that there exists a directed
 edge from m to n.</p>
@@ -2139,7 +2141,7 @@ edge from m to n.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.remove_edge">
-<span class="sig-name descname"><span class="pre">remove_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.remove_edge" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">remove_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.remove_edge" title="Permalink to this definition"></a></dt>
 <dd><p>Remove an edge between u and v.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2200,7 +2202,7 @@ order that they were added:</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.remove_edges_from">
-<span class="sig-name descname"><span class="pre">remove_edges_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ebunch</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.remove_edges_from" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">remove_edges_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ebunch</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.remove_edges_from" title="Permalink to this definition"></a></dt>
 <dd><p>Remove all edges specified in ebunch.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2259,10 +2261,10 @@ order) is removed.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.remove_node">
-<span class="sig-name descname"><span class="pre">remove_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.remove_node" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">remove_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.remove_node" title="Permalink to this definition"></a></dt>
 <dd><p>Remove node n.</p>
 <p>Removes the node n and all adjacent edges.
-Attempting to remove a nonexistent node will raise an exception.</p>
+Attempting to remove a non-existent node will raise an exception.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>n</strong> (<em>node</em>) – A node in the graph</p>
@@ -2288,7 +2290,7 @@ Attempting to remove a nonexistent node will raise an exception.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.remove_nodes_from">
-<span class="sig-name descname"><span class="pre">remove_nodes_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.remove_nodes_from" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">remove_nodes_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.remove_nodes_from" title="Permalink to this definition"></a></dt>
 <dd><p>Remove multiple nodes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2330,7 +2332,7 @@ object to <cite>G.remove_nodes_from</cite>.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.reverse">
-<span class="sig-name descname"><span class="pre">reverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.reverse" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">reverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.reverse" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the reverse of the graph.</p>
 <p>The reverse is a graph with the same nodes and edges
 but with the directions of the edges reversed.</p>
@@ -2345,7 +2347,7 @@ the original graph.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.size">
-<span class="sig-name descname"><span class="pre">size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.size" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.size" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the number of edges or total of all edge weights.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2386,19 +2388,19 @@ as a weight. If None, then each edge has weight 1.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.start_state">
-<span class="sig-name descname"><span class="pre">start_state</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.start_state" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">start_state</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.start_state" title="Permalink to this definition"></a></dt>
 <dd><p>unique start state string label of automaton</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.state_labels">
-<span class="sig-name descname"><span class="pre">state_labels</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.state_labels" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">state_labels</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.state_labels" title="Permalink to this definition"></a></dt>
 <dd><p>set of all states in the automaton</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.subgraph">
-<span class="sig-name descname"><span class="pre">subgraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.subgraph" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">subgraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.subgraph" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a SubGraph view of the subgraph induced on <cite>nodes</cite>.</p>
 <p>The induced subgraph of the graph contains the nodes in <cite>nodes</cite>
 and the edges between those nodes.</p>
@@ -2430,22 +2432,14 @@ more sense to just create the subgraph as its own graph with code like:</p>
 <span class="n">SG</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="vm">__class__</span><span class="p">()</span>
 <span class="n">SG</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">n</span><span class="p">])</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">largest_wcc</span><span class="p">)</span>
 <span class="k">if</span> <span class="n">SG</span><span class="o">.</span><span class="n">is_multigraph</span><span class="p">():</span>
-    <span class="n">SG</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span>
-        <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">nbr</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">nbrs</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">adj</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">largest_wcc</span>
-        <span class="k">for</span> <span class="n">nbr</span><span class="p">,</span> <span class="n">keydict</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">largest_wcc</span>
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">keydict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-    <span class="p">)</span>
+    <span class="n">SG</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">nbr</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">nbrs</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">adj</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">largest_wcc</span>
+        <span class="k">for</span> <span class="n">nbr</span><span class="p">,</span> <span class="n">keydict</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">largest_wcc</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">keydict</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
 <span class="k">else</span><span class="p">:</span>
-    <span class="n">SG</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span>
-        <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">nbr</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">nbrs</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">adj</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">largest_wcc</span>
-        <span class="k">for</span> <span class="n">nbr</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">largest_wcc</span>
-    <span class="p">)</span>
+    <span class="n">SG</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">nbr</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">nbrs</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">adj</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">largest_wcc</span>
+        <span class="k">for</span> <span class="n">nbr</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">largest_wcc</span><span class="p">)</span>
 <span class="n">SG</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -2460,7 +2454,7 @@ more sense to just create the subgraph as its own graph with code like:</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.succ">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">succ</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.succ" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">succ</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.succ" title="Permalink to this definition"></a></dt>
 <dd><p>Graph adjacency object holding the successors of each node.</p>
 <p>This object is a read-only dict-like structure with node keys
 and neighbor-dict values.  The neighbor-dict is keyed by neighbor
@@ -2475,7 +2469,7 @@ So <cite>for nbr, foovalue in G[node].data(‘foo’, default=1):</cite> works.<
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.successors">
-<span class="sig-name descname"><span class="pre">successors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.successors" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">successors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.successors" title="Permalink to this definition"></a></dt>
 <dd><p>Returns an iterator over successor nodes of n.</p>
 <p>A successor of n is a node m such that there exists a directed
 edge from n to m.</p>
@@ -2497,13 +2491,13 @@ edge from n to m.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.symbols">
-<span class="sig-name descname"><span class="pre">symbols</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.symbols" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">symbols</span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.symbols" title="Permalink to this definition"></a></dt>
 <dd><p>set of all symbols used by the automaton</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.to_directed">
-<span class="sig-name descname"><span class="pre">to_directed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">as_view</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.to_directed" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">to_directed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">as_view</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.to_directed" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a directed representation of the graph.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -2550,7 +2544,7 @@ MultiDiGraph created by this method.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.to_directed_class">
-<span class="sig-name descname"><span class="pre">to_directed_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.to_directed_class" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">to_directed_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.to_directed_class" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the class to use for empty directed copies.</p>
 <p>If you subclass the base classes, use this to designate
 what directed class to use for <cite>to_directed()</cite> copies.</p>
@@ -2558,7 +2552,7 @@ what directed class to use for <cite>to_directed()</cite> copies.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.to_pdfa_data">
-<span class="sig-name descname"><span class="pre">to_pdfa_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Hashable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Hashable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Hashable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/specless/automaton/fdfa.html#FDFA.to_pdfa_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.automaton.fdfa.FDFA.to_pdfa_data" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">to_pdfa_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Hashable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Hashable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Hashable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/specless/automaton/fdfa.html#FDFA.to_pdfa_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specless.automaton.fdfa.FDFA.to_pdfa_data" title="Permalink to this definition"></a></dt>
 <dd><p>convert self nodes and edges to pdfa nodes and edges</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -2575,7 +2569,7 @@ list of tuples: (src node label, dest node label, edge attribute dict)</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.to_undirected">
-<span class="sig-name descname"><span class="pre">to_undirected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reciprocal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">as_view</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.to_undirected" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">to_undirected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reciprocal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">as_view</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.to_undirected" title="Permalink to this definition"></a></dt>
 <dd><p>Returns an undirected representation of the digraph.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2626,7 +2620,7 @@ to the MultiGraph created by this method.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.to_undirected_class">
-<span class="sig-name descname"><span class="pre">to_undirected_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.to_undirected_class" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">to_undirected_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.to_undirected_class" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the class to use for empty undirected copies.</p>
 <p>If you subclass the base classes, use this to designate
 what directed class to use for <cite>to_directed()</cite> copies.</p>
@@ -2634,7 +2628,7 @@ what directed class to use for <cite>to_directed()</cite> copies.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.update">
-<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.update" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.update" title="Permalink to this definition"></a></dt>
 <dd><p>Update the graph using nodes/edges/graphs as input.</p>
 <p>Like dict.update, this method takes a graph as input, adding the
 graph’s nodes and edges to this graph. It can also take two inputs:
@@ -2687,13 +2681,21 @@ be slightly different and require tweaks of these examples:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">DG</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># dict-of-dict-of-attribute</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adj</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="p">{</span><span class="mi">2</span><span class="p">:</span> <span class="mf">1.3</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">},</span> <span class="mi">2</span><span class="p">:</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="mf">1.4</span><span class="p">},</span> <span class="mi">3</span><span class="p">:</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">}}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="n">d</span><span class="p">})</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">nbrs</span> <span class="ow">in</span> <span class="n">adj</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="n">d</span><span class="p">})</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">nbrs</span> <span class="ow">in</span> <span class="n">adj</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="gp">... </span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">DG</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">edges</span><span class="o">=</span><span class="n">e</span><span class="p">,</span> <span class="n">nodes</span><span class="o">=</span><span class="n">adj</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># dict-of-dict-of-dict</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">adj</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="p">{</span><span class="mi">2</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mf">1.3</span><span class="p">},</span> <span class="mi">3</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mf">1.2</span><span class="p">}}}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="n">d</span><span class="p">})</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">nbrs</span> <span class="ow">in</span> <span class="n">adj</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="n">d</span><span class="p">})</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">nbrs</span> <span class="ow">in</span> <span class="n">adj</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="gp">... </span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">DG</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">edges</span><span class="o">=</span><span class="n">e</span><span class="p">,</span> <span class="n">nodes</span><span class="o">=</span><span class="n">adj</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -2730,7 +2732,7 @@ be slightly different and require tweaks of these examples:</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="specless.automaton.fdfa.FDFA.write_traces_to_file">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">write_traces_to_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">traces:</span> <span class="pre">~typing.List[~typing.Iterable[~typing.Hashable]],</span> <span class="pre">file:</span> <span class="pre">str,</span> <span class="pre">alphabet_size:</span> <span class="pre">int,</span> <span class="pre">base_file_dir:</span> <span class="pre">{None,</span> <span class="pre">&lt;class</span> <span class="pre">'str'&gt;}</span> <span class="pre">=</span> <span class="pre">None</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.write_traces_to_file" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">write_traces_to_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">traces:</span> <span class="pre">~typing.List[~typing.Iterable[~typing.Hashable]],</span> <span class="pre">file:</span> <span class="pre">str,</span> <span class="pre">alphabet_size:</span> <span class="pre">int,</span> <span class="pre">base_file_dir:</span> <span class="pre">{None,</span> <span class="pre">&lt;class</span> <span class="pre">'str'&gt;}</span> <span class="pre">=</span> <span class="pre">None</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#specless.automaton.fdfa.FDFA.write_traces_to_file" title="Permalink to this definition"></a></dt>
 <dd><p>Writes trace samples to a file in the abbadingo format for use in
 grammatical inference tools like flexfringe</p>
 <dl class="field-list simple">

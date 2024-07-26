@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>specless.strategy &mdash; specless 0.0.2 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=e3a6060d"></script>
-        <script src="../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=c1dcd045"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -120,18 +122,14 @@
 <span class="kn">from</span> <span class="nn">gymnasium.core</span> <span class="kn">import</span> <span class="n">ActType</span><span class="p">,</span> <span class="n">ObsType</span>
 
 
-<div class="viewcode-block" id="Strategy">
-<a class="viewcode-back" href="../../_autosummary/specless.strategy.Strategy.html#specless.strategy.Strategy">[docs]</a>
-<span class="k">class</span> <span class="nc">Strategy</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+<div class="viewcode-block" id="Strategy"><a class="viewcode-back" href="../../_autosummary/specless.strategy.Strategy.html#specless.strategy.Strategy">[docs]</a><span class="k">class</span> <span class="nc">Strategy</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for all strategy classes&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the Strategy.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 
-<div class="viewcode-block" id="Strategy.reset">
-<a class="viewcode-back" href="../../_autosummary/specless.strategy.Strategy.html#specless.strategy.Strategy.reset">[docs]</a>
-    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="Strategy.reset"><a class="viewcode-back" href="../../_autosummary/specless.strategy.Strategy.html#specless.strategy.Strategy.reset">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset the strategy.</span>
 
@@ -142,10 +140,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Must reset&quot;</span><span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="Strategy.action">
-<a class="viewcode-back" href="../../_autosummary/specless.strategy.Strategy.html#specless.strategy.Strategy.action">[docs]</a>
-    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="Strategy.action"><a class="viewcode-back" href="../../_autosummary/specless.strategy.Strategy.html#specless.strategy.Strategy.action">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">ObsType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ActType</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the action for the strategy.</span>
 
@@ -159,22 +154,16 @@
 <span class="sd">        NotImplementedError</span>
 <span class="sd">            If the method is not implemented in a subclass.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
-</div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div></div>
 
 
-
-<div class="viewcode-block" id="FeedbackStrategy">
-<a class="viewcode-back" href="../../_autosummary/specless.strategy.FeedbackStrategy.html#specless.strategy.FeedbackStrategy">[docs]</a>
-<span class="k">class</span> <span class="nc">FeedbackStrategy</span><span class="p">(</span><span class="n">Strategy</span><span class="p">):</span>
+<div class="viewcode-block" id="FeedbackStrategy"><a class="viewcode-back" href="../../_autosummary/specless.strategy.FeedbackStrategy.html#specless.strategy.FeedbackStrategy">[docs]</a><span class="k">class</span> <span class="nc">FeedbackStrategy</span><span class="p">(</span><span class="n">Strategy</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for all feedback strategy classes&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
-<div class="viewcode-block" id="FeedbackStrategy.reset">
-<a class="viewcode-back" href="../../_autosummary/specless.strategy.FeedbackStrategy.html#specless.strategy.FeedbackStrategy.reset">[docs]</a>
-    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="FeedbackStrategy.reset"><a class="viewcode-back" href="../../_autosummary/specless.strategy.FeedbackStrategy.html#specless.strategy.FeedbackStrategy.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Reset the feedback strategy.</span>
 
@@ -185,10 +174,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
-
-<div class="viewcode-block" id="FeedbackStrategy.action">
-<a class="viewcode-back" href="../../_autosummary/specless.strategy.FeedbackStrategy.html#specless.strategy.FeedbackStrategy.action">[docs]</a>
-    <span class="k">def</span> <span class="nf">action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">ObsType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ActType</span><span class="p">:</span>
+<div class="viewcode-block" id="FeedbackStrategy.action"><a class="viewcode-back" href="../../_autosummary/specless.strategy.FeedbackStrategy.html#specless.strategy.FeedbackStrategy.action">[docs]</a>    <span class="k">def</span> <span class="nf">action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">ObsType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ActType</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the action for the feedback strategy given the state.</span>
 
@@ -207,14 +193,10 @@
 <span class="sd">        NotImplementedError</span>
 <span class="sd">            If the method is not implemented in a subclass.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
-</div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div></div>
 
 
-
-<div class="viewcode-block" id="FeedforwardStrategy">
-<a class="viewcode-back" href="../../_autosummary/specless.strategy.FeedforwardStrategy.html#specless.strategy.FeedforwardStrategy">[docs]</a>
-<span class="k">class</span> <span class="nc">FeedforwardStrategy</span><span class="p">(</span><span class="n">Strategy</span><span class="p">):</span>
+<div class="viewcode-block" id="FeedforwardStrategy"><a class="viewcode-back" href="../../_autosummary/specless.strategy.FeedforwardStrategy.html#specless.strategy.FeedforwardStrategy">[docs]</a><span class="k">class</span> <span class="nc">FeedforwardStrategy</span><span class="p">(</span><span class="n">Strategy</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for all feedforward strategy classes.</span>
 
 <span class="sd">    Attributes</span>
@@ -237,16 +219,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="n">plan</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 
-<div class="viewcode-block" id="FeedforwardStrategy.reset">
-<a class="viewcode-back" href="../../_autosummary/specless.strategy.FeedforwardStrategy.html#specless.strategy.FeedforwardStrategy.reset">[docs]</a>
-    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="FeedforwardStrategy.reset"><a class="viewcode-back" href="../../_autosummary/specless.strategy.FeedforwardStrategy.html#specless.strategy.FeedforwardStrategy.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset the feedforward strategy by setting the current step to 0.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span></div>
 
-
-<div class="viewcode-block" id="FeedforwardStrategy.action">
-<a class="viewcode-back" href="../../_autosummary/specless.strategy.FeedforwardStrategy.html#specless.strategy.FeedforwardStrategy.action">[docs]</a>
-    <span class="k">def</span> <span class="nf">action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">ObsType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ActType</span><span class="p">:</span>
+<div class="viewcode-block" id="FeedforwardStrategy.action"><a class="viewcode-back" href="../../_autosummary/specless.strategy.FeedforwardStrategy.html#specless.strategy.FeedforwardStrategy.action">[docs]</a>    <span class="k">def</span> <span class="nf">action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">ObsType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ActType</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the action for the feedforward strategy given the state.</span>
 
 <span class="sd">        Parameters</span>
@@ -263,23 +240,17 @@
             <span class="k">return</span> <span class="kc">None</span>
         <span class="n">action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plan</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">return</span> <span class="n">action</span></div>
-</div>
+        <span class="k">return</span> <span class="n">action</span></div></div>
 
 
-
-<div class="viewcode-block" id="MemorylessStrategy">
-<a class="viewcode-back" href="../../_autosummary/specless.strategy.MemorylessStrategy.html#specless.strategy.MemorylessStrategy">[docs]</a>
-<span class="k">class</span> <span class="nc">MemorylessStrategy</span><span class="p">(</span><span class="n">FeedbackStrategy</span><span class="p">):</span>
+<div class="viewcode-block" id="MemorylessStrategy"><a class="viewcode-back" href="../../_autosummary/specless.strategy.MemorylessStrategy.html#specless.strategy.MemorylessStrategy">[docs]</a><span class="k">class</span> <span class="nc">MemorylessStrategy</span><span class="p">(</span><span class="n">FeedbackStrategy</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for all memoryless strategy classes.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the MemorylessStrategy.&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
-<div class="viewcode-block" id="MemorylessStrategy.action">
-<a class="viewcode-back" href="../../_autosummary/specless.strategy.MemorylessStrategy.html#specless.strategy.MemorylessStrategy.action">[docs]</a>
-    <span class="k">def</span> <span class="nf">action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">ObsType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ActType</span><span class="p">:</span>
+<div class="viewcode-block" id="MemorylessStrategy.action"><a class="viewcode-back" href="../../_autosummary/specless.strategy.MemorylessStrategy.html#specless.strategy.MemorylessStrategy.action">[docs]</a>    <span class="k">def</span> <span class="nf">action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">ObsType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ActType</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the action for the memoryless strategy given the state.</span>
 
 <span class="sd">        Parameters</span>
@@ -297,23 +268,17 @@
 <span class="sd">        NotImplementedError</span>
 <span class="sd">            If the method is not implemented in a subclass.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
-</div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div></div>
 
 
-
-<div class="viewcode-block" id="HistoryDependentStrategy">
-<a class="viewcode-back" href="../../_autosummary/specless.strategy.HistoryDependentStrategy.html#specless.strategy.HistoryDependentStrategy">[docs]</a>
-<span class="k">class</span> <span class="nc">HistoryDependentStrategy</span><span class="p">(</span><span class="n">FeedbackStrategy</span><span class="p">):</span>
+<div class="viewcode-block" id="HistoryDependentStrategy"><a class="viewcode-back" href="../../_autosummary/specless.strategy.HistoryDependentStrategy.html#specless.strategy.HistoryDependentStrategy">[docs]</a><span class="k">class</span> <span class="nc">HistoryDependentStrategy</span><span class="p">(</span><span class="n">FeedbackStrategy</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for all history-dependent strategy classes.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the HistoryDependentStrategy.&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
-<div class="viewcode-block" id="HistoryDependentStrategy.action">
-<a class="viewcode-back" href="../../_autosummary/specless.strategy.HistoryDependentStrategy.html#specless.strategy.HistoryDependentStrategy.action">[docs]</a>
-    <span class="k">def</span> <span class="nf">action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">ObsType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ActType</span><span class="p">:</span>
+<div class="viewcode-block" id="HistoryDependentStrategy.action"><a class="viewcode-back" href="../../_autosummary/specless.strategy.HistoryDependentStrategy.html#specless.strategy.HistoryDependentStrategy.action">[docs]</a>    <span class="k">def</span> <span class="nf">action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">ObsType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ActType</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the action for the history-dependent strategy given the state.</span>
 
 <span class="sd">        Parameters</span>
@@ -331,14 +296,10 @@
 <span class="sd">        NotImplementedError</span>
 <span class="sd">            If the method is not implemented in a subclass.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
-</div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div></div>
 
 
-
-<div class="viewcode-block" id="PlanStrategy">
-<a class="viewcode-back" href="../../_autosummary/specless.strategy.PlanStrategy.html#specless.strategy.PlanStrategy">[docs]</a>
-<span class="k">class</span> <span class="nc">PlanStrategy</span><span class="p">(</span><span class="n">FeedforwardStrategy</span><span class="p">):</span>
+<div class="viewcode-block" id="PlanStrategy"><a class="viewcode-back" href="../../_autosummary/specless.strategy.PlanStrategy.html#specless.strategy.PlanStrategy">[docs]</a><span class="k">class</span> <span class="nc">PlanStrategy</span><span class="p">(</span><span class="n">FeedforwardStrategy</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Plan strategy class.</span>
 <span class="sd">    It ignores all observed states and simply rolls out the pre-computed plan.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -354,10 +315,7 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">plan</span><span class="p">)</span></div>
 
 
-
-<div class="viewcode-block" id="PolicyStrategy">
-<a class="viewcode-back" href="../../_autosummary/specless.strategy.PolicyStrategy.html#specless.strategy.PolicyStrategy">[docs]</a>
-<span class="k">class</span> <span class="nc">PolicyStrategy</span><span class="p">(</span><span class="n">MemorylessStrategy</span><span class="p">):</span>
+<div class="viewcode-block" id="PolicyStrategy"><a class="viewcode-back" href="../../_autosummary/specless.strategy.PolicyStrategy.html#specless.strategy.PolicyStrategy">[docs]</a><span class="k">class</span> <span class="nc">PolicyStrategy</span><span class="p">(</span><span class="n">MemorylessStrategy</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Policy strategy class.</span>
 <span class="sd">    It takes an action given an observed state.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -366,9 +324,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the PolicyStrategy.&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
-<div class="viewcode-block" id="PolicyStrategy.action">
-<a class="viewcode-back" href="../../_autosummary/specless.strategy.PolicyStrategy.html#specless.strategy.PolicyStrategy.action">[docs]</a>
-    <span class="k">def</span> <span class="nf">action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">ObsType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ActType</span><span class="p">:</span>
+<div class="viewcode-block" id="PolicyStrategy.action"><a class="viewcode-back" href="../../_autosummary/specless.strategy.PolicyStrategy.html#specless.strategy.PolicyStrategy.action">[docs]</a>    <span class="k">def</span> <span class="nf">action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">ObsType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ActType</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the action for the policy strategy given the state.</span>
 
 <span class="sd">        Parameters</span>
@@ -386,14 +342,10 @@
 <span class="sd">        NotImplementedError</span>
 <span class="sd">            If the method is not implemented in a subclass.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
-</div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div></div>
 
 
-
-<div class="viewcode-block" id="CombinedStrategy">
-<a class="viewcode-back" href="../../_autosummary/specless.strategy.CombinedStrategy.html#specless.strategy.CombinedStrategy">[docs]</a>
-<span class="k">class</span> <span class="nc">CombinedStrategy</span><span class="p">(</span><span class="n">Strategy</span><span class="p">):</span>
+<div class="viewcode-block" id="CombinedStrategy"><a class="viewcode-back" href="../../_autosummary/specless.strategy.CombinedStrategy.html#specless.strategy.CombinedStrategy">[docs]</a><span class="k">class</span> <span class="nc">CombinedStrategy</span><span class="p">(</span><span class="n">Strategy</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Combined strategy class.</span>
 <span class="sd">    It takes an action for each strategy given an observed state.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -409,18 +361,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">strategies</span> <span class="o">=</span> <span class="n">strategies</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
-<div class="viewcode-block" id="CombinedStrategy.reset">
-<a class="viewcode-back" href="../../_autosummary/specless.strategy.CombinedStrategy.html#specless.strategy.CombinedStrategy.reset">[docs]</a>
-    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="CombinedStrategy.reset"><a class="viewcode-back" href="../../_autosummary/specless.strategy.CombinedStrategy.html#specless.strategy.CombinedStrategy.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Reset the combined strategy by resetting each strategy in the list.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">reset</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">strategies</span><span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="CombinedStrategy.action">
-<a class="viewcode-back" href="../../_autosummary/specless.strategy.CombinedStrategy.html#specless.strategy.CombinedStrategy.action">[docs]</a>
-    <span class="k">def</span> <span class="nf">action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">ObsType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ActType</span><span class="p">:</span>
+<div class="viewcode-block" id="CombinedStrategy.action"><a class="viewcode-back" href="../../_autosummary/specless.strategy.CombinedStrategy.html#specless.strategy.CombinedStrategy.action">[docs]</a>    <span class="k">def</span> <span class="nf">action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">ObsType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ActType</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the action for each strategy in the combined strategy given the state.</span>
 
 <span class="sd">        Parameters</span>
@@ -433,9 +380,7 @@
 <span class="sd">        ActType</span>
 <span class="sd">            The list of actions for the combined strategy.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">strategy</span><span class="o">.</span><span class="n">action</span><span class="p">(</span><span class="n">state</span><span class="p">)</span> <span class="k">for</span> <span class="n">strategy</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">strategies</span><span class="p">]</span></div>
-</div>
-
+        <span class="k">return</span> <span class="p">[</span><span class="n">strategy</span><span class="o">.</span><span class="n">action</span><span class="p">(</span><span class="n">state</span><span class="p">)</span> <span class="k">for</span> <span class="n">strategy</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">strategies</span><span class="p">]</span></div></div>
 </pre></div>
 
            </div>

@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>specless.factory.tspbuilder &mdash; specless 0.0.2 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=e3a6060d"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=c1dcd045"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -109,9 +111,7 @@
 <span class="kn">from</span> <span class="nn">specless.tsp.tsp</span> <span class="kn">import</span> <span class="n">GTSP</span><span class="p">,</span> <span class="n">TSP</span><span class="p">,</span> <span class="n">TSPWithTPO</span>
 
 
-<div class="viewcode-block" id="TSPBuilder">
-<a class="viewcode-back" href="../../../_autosummary/specless.factory.tspbuilder.TSPBuilder.html#specless.factory.tspbuilder.TSPBuilder">[docs]</a>
-<span class="k">class</span> <span class="nc">TSPBuilder</span><span class="p">(</span><span class="n">Builder</span><span class="p">):</span>
+<div class="viewcode-block" id="TSPBuilder"><a class="viewcode-back" href="../../../_autosummary/specless.factory.tspbuilder.TSPBuilder.html#specless.factory.tspbuilder.TSPBuilder">[docs]</a><span class="k">class</span> <span class="nc">TSPBuilder</span><span class="p">(</span><span class="n">Builder</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Converts Transition System To a TSP Problem&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -142,9 +142,7 @@
             <span class="k">lambda</span><span class="p">:</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[])</span>
         <span class="p">)</span>
 
-<div class="viewcode-block" id="TSPBuilder.__call__">
-<a class="viewcode-back" href="../../../_autosummary/specless.factory.tspbuilder.TSPBuilder.html#specless.factory.tspbuilder.TSPBuilder.__call__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
+<div class="viewcode-block" id="TSPBuilder.__call__"><a class="viewcode-back" href="../../../_autosummary/specless.factory.tspbuilder.TSPBuilder.html#specless.factory.tspbuilder.TSPBuilder.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">T</span><span class="p">:</span> <span class="n">MinigridTransitionSystem</span><span class="p">,</span>
         <span class="n">specification</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Specification</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -198,7 +196,6 @@
         <span class="k">if</span> <span class="n">uniquelabel</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">GTSP</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">costs</span><span class="p">,</span> <span class="n">nodesets</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obs_to_nodes</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
         <span class="k">return</span> <span class="n">GTSP</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">costs</span><span class="p">)</span></div>
-
 
     <span class="k">def</span> <span class="nf">get_all_pair_shortest_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;weight&quot;</span><span class="p">):</span>
         <span class="n">G</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
@@ -344,15 +341,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">obs_to_nodes</span><span class="p">[</span><span class="n">obs</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node_id</span><span class="p">)</span></div>
 
 
-
-<div class="viewcode-block" id="TSPWithTPOBuilder">
-<a class="viewcode-back" href="../../../_autosummary/specless.factory.tspbuilder.TSPWithTPOBuilder.html#specless.factory.tspbuilder.TSPWithTPOBuilder">[docs]</a>
-<span class="k">class</span> <span class="nc">TSPWithTPOBuilder</span><span class="p">(</span><span class="n">TSPBuilder</span><span class="p">):</span>
+<div class="viewcode-block" id="TSPWithTPOBuilder"><a class="viewcode-back" href="../../../_autosummary/specless.factory.tspbuilder.TSPWithTPOBuilder.html#specless.factory.tspbuilder.TSPWithTPOBuilder">[docs]</a><span class="k">class</span> <span class="nc">TSPWithTPOBuilder</span><span class="p">(</span><span class="n">TSPBuilder</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Converts Transition System To a TSP Problem&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="TSPWithTPOBuilder.__call__">
-<a class="viewcode-back" href="../../../_autosummary/specless.factory.tspbuilder.TSPWithTPOBuilder.html#specless.factory.tspbuilder.TSPWithTPOBuilder.__call__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
+<div class="viewcode-block" id="TSPWithTPOBuilder.__call__"><a class="viewcode-back" href="../../../_autosummary/specless.factory.tspbuilder.TSPWithTPOBuilder.html#specless.factory.tspbuilder.TSPWithTPOBuilder.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">:</span> <span class="n">MinigridTransitionSystem</span><span class="p">,</span> <span class="n">specification</span><span class="p">:</span> <span class="n">TimedPartialOrder</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TSPWithTPO</span><span class="p">:</span>  <span class="c1"># type: ignore[override]</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Translate a MiniGrid Transition System to a TSP with</span>
@@ -367,10 +359,7 @@
 
         <span class="k">return</span> <span class="n">TSPWithTPO</span><span class="o">.</span><span class="n">from_tsp</span><span class="p">(</span><span class="n">tsp</span><span class="p">,</span> <span class="n">numbered_tpo</span><span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="TSPWithTPOBuilder.convert_tpo">
-<a class="viewcode-back" href="../../../_autosummary/specless.factory.tspbuilder.TSPWithTPOBuilder.html#specless.factory.tspbuilder.TSPWithTPOBuilder.convert_tpo">[docs]</a>
-    <span class="k">def</span> <span class="nf">convert_tpo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tpo</span><span class="p">:</span> <span class="n">TimedPartialOrder</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TimedPartialOrder</span><span class="p">:</span>
+<div class="viewcode-block" id="TSPWithTPOBuilder.convert_tpo"><a class="viewcode-back" href="../../../_autosummary/specless.factory.tspbuilder.TSPWithTPOBuilder.html#specless.factory.tspbuilder.TSPWithTPOBuilder.convert_tpo">[docs]</a>    <span class="k">def</span> <span class="nf">convert_tpo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tpo</span><span class="p">:</span> <span class="n">TimedPartialOrder</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TimedPartialOrder</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the original TPO whose nodes are labeled with the observation names</span>
 <span class="sd">        to a TPO with numbered nodes that correspond to the TSP problem.</span>
 
@@ -389,7 +378,6 @@
         <span class="p">)</span>
         <span class="n">tpo</span> <span class="o">=</span> <span class="n">TimedPartialOrder</span><span class="o">.</span><span class="n">from_constraints</span><span class="p">(</span><span class="n">global_constraints</span><span class="p">,</span> <span class="n">local_constraints</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">tpo</span></div>
-
 
     <span class="k">def</span> <span class="nf">convert_global_constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tpo</span><span class="p">:</span> <span class="n">TimedPartialOrder</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
         <span class="n">global_constraints</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -417,10 +405,7 @@
         <span class="k">return</span> <span class="n">local_constraints</span></div>
 
 
-
-<div class="viewcode-block" id="AircraftTurnaroundTSPBuilder">
-<a class="viewcode-back" href="../../../_autosummary/specless.factory.tspbuilder.AircraftTurnaroundTSPBuilder.html#specless.factory.tspbuilder.AircraftTurnaroundTSPBuilder">[docs]</a>
-<span class="k">class</span> <span class="nc">AircraftTurnaroundTSPBuilder</span><span class="p">(</span><span class="n">Builder</span><span class="p">):</span>
+<div class="viewcode-block" id="AircraftTurnaroundTSPBuilder"><a class="viewcode-back" href="../../../_autosummary/specless.factory.tspbuilder.AircraftTurnaroundTSPBuilder.html#specless.factory.tspbuilder.AircraftTurnaroundTSPBuilder">[docs]</a><span class="k">class</span> <span class="nc">AircraftTurnaroundTSPBuilder</span><span class="p">(</span><span class="n">Builder</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Build a TSP Problem from Aircraft Turnaround Minigrid&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -472,9 +457,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;For convenience&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name_to_service</span> <span class="o">=</span> <span class="p">{</span><span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">services</span><span class="p">}</span>
 
-<div class="viewcode-block" id="AircraftTurnaroundTSPBuilder.__call__">
-<a class="viewcode-back" href="../../../_autosummary/specless.factory.tspbuilder.AircraftTurnaroundTSPBuilder.html#specless.factory.tspbuilder.AircraftTurnaroundTSPBuilder.__call__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
+<div class="viewcode-block" id="AircraftTurnaroundTSPBuilder.__call__"><a class="viewcode-back" href="../../../_autosummary/specless.factory.tspbuilder.AircraftTurnaroundTSPBuilder.html#specless.factory.tspbuilder.AircraftTurnaroundTSPBuilder.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">T</span><span class="p">:</span> <span class="n">MinigridTransitionSystem</span><span class="p">,</span>
         <span class="n">specification</span><span class="p">:</span> <span class="n">TimedPartialOrder</span><span class="p">,</span>
@@ -502,7 +485,6 @@
         <span class="n">numbered_tpo</span><span class="p">:</span> <span class="n">TimedPartialOrder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_tpo</span><span class="p">(</span><span class="n">specification</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">TSPWithTPO</span><span class="o">.</span><span class="n">from_tsp</span><span class="p">(</span><span class="n">tsp</span><span class="p">,</span> <span class="n">numbered_tpo</span><span class="p">)</span></div>
-
 
     <span class="k">def</span> <span class="nf">location_to_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">location</span><span class="p">),</span> <span class="s2">&quot;right&quot;</span><span class="p">])</span>
@@ -574,9 +556,7 @@
                         <span class="nb">print</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">tgt</span><span class="p">)</span>
                         <span class="k">raise</span> <span class="n">e</span>
 
-<div class="viewcode-block" id="AircraftTurnaroundTSPBuilder.get_all_pair_shortest_paths">
-<a class="viewcode-back" href="../../../_autosummary/specless.factory.tspbuilder.AircraftTurnaroundTSPBuilder.html#specless.factory.tspbuilder.AircraftTurnaroundTSPBuilder.get_all_pair_shortest_paths">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_all_pair_shortest_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;weight&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="AircraftTurnaroundTSPBuilder.get_all_pair_shortest_paths"><a class="viewcode-back" href="../../../_autosummary/specless.factory.tspbuilder.AircraftTurnaroundTSPBuilder.html#specless.factory.tspbuilder.AircraftTurnaroundTSPBuilder.get_all_pair_shortest_paths">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_pair_shortest_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;weight&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Must Compute the Cost Between Services &amp; Service Cost.</span>
 
 <span class="sd">        Args:</span>
@@ -631,7 +611,6 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">all_pair_shortest_paths</span><span class="p">[</span><span class="n">src_node</span><span class="p">][</span><span class="n">tgt_node</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">distance</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">costs</span><span class="p">,</span> <span class="n">service_costs</span></div>
-
 
     <span class="k">def</span> <span class="nf">service_position_label_to_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position_label</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">location_to_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">position_label_to_location</span><span class="p">[</span><span class="n">position_label</span><span class="p">])</span>
@@ -714,7 +693,6 @@
 
     <span class="k">def</span> <span class="nf">tour_to_services</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tour</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">service_to_node</span><span class="o">.</span><span class="n">inverse</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">tour</span><span class="p">]</span></div>
-
 </pre></div>
 
            </div>

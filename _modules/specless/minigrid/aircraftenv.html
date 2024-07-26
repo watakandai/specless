@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>specless.minigrid.aircraftenv &mdash; specless 0.0.2 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=e3a6060d"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=c1dcd045"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -82,9 +84,7 @@
 <span class="p">)</span>
 
 
-<div class="viewcode-block" id="MyBox">
-<a class="viewcode-back" href="../../../_autosummary/specless.minigrid.aircraftenv.MyBox.html#specless.minigrid.aircraftenv.MyBox">[docs]</a>
-<span class="k">class</span> <span class="nc">MyBox</span><span class="p">(</span><span class="n">Box</span><span class="p">):</span>
+<div class="viewcode-block" id="MyBox"><a class="viewcode-back" href="../../../_autosummary/specless.minigrid.aircraftenv.MyBox.html#specless.minigrid.aircraftenv.MyBox">[docs]</a><span class="k">class</span> <span class="nc">MyBox</span><span class="p">(</span><span class="n">Box</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">color</span><span class="p">,</span>
@@ -92,27 +92,18 @@
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">contains</span><span class="p">)</span>
 
-<div class="viewcode-block" id="MyBox.can_overlap">
-<a class="viewcode-back" href="../../../_autosummary/specless.minigrid.aircraftenv.MyBox.html#specless.minigrid.aircraftenv.MyBox.can_overlap">[docs]</a>
-    <span class="k">def</span> <span class="nf">can_overlap</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MyBox.can_overlap"><a class="viewcode-back" href="../../../_autosummary/specless.minigrid.aircraftenv.MyBox.html#specless.minigrid.aircraftenv.MyBox.can_overlap">[docs]</a>    <span class="k">def</span> <span class="nf">can_overlap</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">True</span></div>
 
-
-<div class="viewcode-block" id="MyBox.render">
-<a class="viewcode-back" href="../../../_autosummary/specless.minigrid.aircraftenv.MyBox.html#specless.minigrid.aircraftenv.MyBox.render">[docs]</a>
-    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+<div class="viewcode-block" id="MyBox.render"><a class="viewcode-back" href="../../../_autosummary/specless.minigrid.aircraftenv.MyBox.html#specless.minigrid.aircraftenv.MyBox.render">[docs]</a>    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
         <span class="n">c</span> <span class="o">=</span> <span class="n">COLORS</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">]</span>
 
         <span class="c1"># Outline</span>
         <span class="n">fill_coords</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">point_in_rect</span><span class="p">(</span><span class="mf">0.12</span><span class="p">,</span> <span class="mf">0.88</span><span class="p">,</span> <span class="mf">0.12</span><span class="p">,</span> <span class="mf">0.88</span><span class="p">),</span> <span class="n">c</span><span class="p">)</span>
-        <span class="n">fill_coords</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">point_in_rect</span><span class="p">(</span><span class="mf">0.18</span><span class="p">,</span> <span class="mf">0.82</span><span class="p">,</span> <span class="mf">0.18</span><span class="p">,</span> <span class="mf">0.82</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span></div>
-</div>
+        <span class="n">fill_coords</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">point_in_rect</span><span class="p">(</span><span class="mf">0.18</span><span class="p">,</span> <span class="mf">0.82</span><span class="p">,</span> <span class="mf">0.18</span><span class="p">,</span> <span class="mf">0.82</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span></div></div>
 
 
-
-<div class="viewcode-block" id="AircraftTurnaroundEnv">
-<a class="viewcode-back" href="../../../_autosummary/specless.minigrid.aircraftenv.AircraftTurnaroundEnv.html#specless.minigrid.aircraftenv.AircraftTurnaroundEnv">[docs]</a>
-<span class="k">class</span> <span class="nc">AircraftTurnaroundEnv</span><span class="p">(</span><span class="n">MiniGridEnv</span><span class="p">):</span>
+<div class="viewcode-block" id="AircraftTurnaroundEnv"><a class="viewcode-back" href="../../../_autosummary/specless.minigrid.aircraftenv.AircraftTurnaroundEnv.html#specless.minigrid.aircraftenv.AircraftTurnaroundEnv">[docs]</a><span class="k">class</span> <span class="nc">AircraftTurnaroundEnv</span><span class="p">(</span><span class="n">MiniGridEnv</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Aircraft Turnaround Environment</span>
 <span class="sd">    where multiple agents must plan to complete tasks</span>
 <span class="sd">    in coorperation.</span>
@@ -215,7 +206,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">place_agent</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">mission</span> <span class="o">=</span> <span class="s2">&quot;Visit All Areas&quot;</span></div>
-
 
 
 <span class="n">gym</span><span class="o">.</span><span class="n">register</span><span class="p">(</span>
