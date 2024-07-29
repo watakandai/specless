@@ -97,7 +97,7 @@ class MILPTSPSolver(TSPSolver):
 
         if self.come_back_home:
             return tours
-        return tours
+        return list(map(lambda x: x[0:-1], tours))
 
     def get_cost(self, m):
         return float(m.objVal)
@@ -242,7 +242,7 @@ class MILPTSPWithTPOSolver(TSPWithTPOSolver):
         # TODO:
         if self.come_back_home:
             return tours
-        return tours
+        return list(map(lambda x: x[0:-1], tours))
 
     def get_timestamps(self, m, variables, tour):
         if len(tour) < 2:
