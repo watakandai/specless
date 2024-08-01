@@ -80,11 +80,49 @@ def get_distance_matrix(locations):
 
 def create_data_model():
 
-    locations = [(10, 10), (10, 0), (20, 10), (10, 0), (20, 20), (10, -10), (0, 0)]
+    #####################
+    #       Given       #
+    #####################
+    # A floormap
+    floormap = {
+        "Room A": (0, 5),
+        "Room B": (0, 15),
+        "Room C": (3, 0),
+        "Room D": (4, 5),
+        "Room E": (4, 10),
+        "Room F": (6, 5),
+        "Room G": (6, 10),
+        "Room H": (7, 0),
+        "Room I": (10, 5),
+        "Room J": (10, 15),
+        "Hallway 1": (3, 8),
+        "Hallway 2": (5, 2),
+        "Hallway 3": (5, 15),
+        "Hallway 4": (7, 8),
+    }
+
+    #####################
+    #       Define      #
+    #####################
+    rooms_to_visit: list[str] = [
+        "Room B",
+        "Room C",
+        "Room J",
+        "Room I",
+        "Hallway 1",
+        "Hallway 1",
+        "Hallway 2",
+        "Hallway 2",
+        "Hallway 3",
+        "Hallway 3",
+        "Hallway 4",
+        "Hallway 4",
+    ]
+    locations = [floormap[r] for r in rooms_to_visit]
     data = {}
     data["num_locations"] = len(locations)
     data["distance_matrix"] = get_distance_matrix(locations)
-    data["demands"] = [5, 10, 4, 2, 3, 2, 1]
+    data["demands"] = [5, 10, 4, 2, 3, 2, 1, 0, 0, 0, 0, 0, 0]
     data["vehicle_capacities"] = [20, 10]
     data["num_vehicles"] = len(data["vehicle_capacities"])
     data["depot"] = 0

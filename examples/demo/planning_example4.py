@@ -85,6 +85,7 @@ def main():
     robot_initial_locations = ["Room A", "Room D"]
     rooms_of_interest = rooms_to_visit + robot_initial_locations
 
+    #! NOTE: Adding Local Constraints
     local_constraints = {
         ("Room B", "Room C"): (0, 15),
         ("Room J", "Room I"): (20, 30),
@@ -94,8 +95,10 @@ def main():
     #####################
     # Recreate the cost matrix
     rooms = list(floormap.keys())
-    room_indices = [rooms.index(r) for r in rooms_of_interest]
-    costs = [[costs[i1][i2] for i2 in room_indices] for i1 in room_indices]
+    costs = [
+        [costs[rooms.index(r1)][rooms.index(r2)] for r2 in rooms_of_interest]
+        for r1 in rooms_of_interest
+    ]
 
     tours, cost, timestamps = get_location_assignments(
         rooms_of_interest,

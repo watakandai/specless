@@ -82,7 +82,7 @@ def main():
         for v2 in floormap.values():
             # NOTE: Set a big number
             if v1 == (4, 5) and v2 == (4, 10):
-                # NOTE: For example
+                #! NOTE: For example
                 cost_dict[v1][v2] = 1000
             else:
                 cost_dict[v1][v2] = dist(v1, v2)

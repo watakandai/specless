@@ -92,7 +92,7 @@ def main():
     #        Main       #
     #####################
     # Update the Floormap
-    n = len(robot_curr_coords)
+    n: int = len(robot_curr_coords)
     robot_locations = [f"Robot{i}" for i in range(n)]
     for l, coord in zip(robot_locations, robot_curr_coords):
         floormap[l] = coord

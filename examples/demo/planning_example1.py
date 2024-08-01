@@ -9,15 +9,16 @@ Examples
     2. Multiple Agent
     3. Global Time Constraints
     4. Local Time Constraints
+    #! Note: Add an example with TPOs & Add a flag to export MILP formulation to a file
     5. What if we don't need to come back to its home depot?
     6. What if robots are in a new location (not in the designated area)
         -> Run A* to get the cost matrix
     7. What if a path between two locations are blocked?
         -> Set the cost to a big number (not infinity)
-    8. Can we visit the same place multiple times?'
+    8. Can we visit the same place multiple times?
         -> There are multiple ways: (1) Reformulate MILP, (2) Use OR-Tools
         -> https://developers.google.com/optimization/routing/penalties
-    9. Pick and Delivery constraints?
+    9. Pick and Delivery constraints
         -> Not Possible. Use OR-Tools
         -> https://developers.google.com/optimization/routing/pickup_delivery
     10. Resource constraints, etc. Battery
@@ -70,10 +71,11 @@ def main():
         "Room I": (10, 5),
         "Room J": (10, 15),
     }
-    # Distance cost between two locations
-    # We can similarly use A* to compute the "actual" distance
-    dist = lambda v1, v2: ((v1[0] - v2[0]) ** 2 + (v1[1] - v2[1]) ** 2) ** 0.5
+
+    # Compute the distance cost between two locations
     # For now, let's just use the euclidean distance
+    # (In a continuous environment, we can similarly use A* to compute the distance)
+    dist = lambda v1, v2: ((v1[0] - v2[0]) ** 2 + (v1[1] - v2[1]) ** 2) ** 0.5
     costs = [[dist(v1, v2) for v2 in floormap.values()] for v1 in floormap.values()]
 
     #####################
@@ -83,15 +85,17 @@ def main():
     rooms_to_visit = ["Room B", "Room C", "Room J", "Room I"]
     # Define initial locations of the robot
     robot_initial_locations = ["Room A"]
-    rooms_of_interest = rooms_to_visit + robot_initial_locations
+    rooms_of_interest: list[str] = rooms_to_visit + robot_initial_locations
 
     #####################
     #        Main       #
     #####################
     # Recreate the cost matrix
     rooms = list(floormap.keys())
-    room_indices = [rooms.index(r) for r in rooms_of_interest]
-    costs = [[costs[i1][i2] for i2 in room_indices] for i1 in room_indices]
+    costs = [
+        [costs[rooms.index(r1)][rooms.index(r2)] for r2 in rooms_of_interest]
+        for r1 in rooms_of_interest
+    ]
 
     tours, cost, timestamps = get_location_assignments(
         rooms_of_interest,

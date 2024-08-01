@@ -81,7 +81,7 @@ def main():
     #####################
     # Define a task (rooms to visit)
     rooms_to_visit = ["Room B", "Room C", "Room J", "Room I"]
-    # Define initial locations of the robot
+    # NOTE: Define initial locations of the robot
     robot_initial_locations = ["Room A", "Room D"]
     rooms_of_interest = rooms_to_visit + robot_initial_locations
 
@@ -90,8 +90,10 @@ def main():
     #####################
     # Recreate the cost matrix
     rooms = list(floormap.keys())
-    room_indices = [rooms.index(r) for r in rooms_of_interest]
-    costs = [[costs[i1][i2] for i2 in room_indices] for i1 in room_indices]
+    costs = [
+        [costs[rooms.index(r1)][rooms.index(r2)] for r2 in rooms_of_interest]
+        for r1 in rooms_of_interest
+    ]
 
     tours, cost, timestamps = get_location_assignments(
         rooms_of_interest,
