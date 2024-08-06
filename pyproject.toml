@@ -15,10 +15,11 @@ python = ">=3.8,<3.13"
 bidict = "^0.23.1"
 click = "^8.1.7"
 # For Linux and Windows. TESTS FAIL ON MAC FOR python3.8!!!
-# cvxopt = [
-#   {version="^1.3.2", platform="linux"},
-#   {version="^1.3.2", platform="win32"},
-# ]
+cvxopt = [
+  {platform="linux", version="^1.3.2"},
+  {platform="win32", version="^1.3.2"},
+  # {platform="darwin", url="https://github.com/sanurielf/kvxopt/archive/refs/tags/1.3.2.0.tar.gz"}
+]
 # For MacOS M1
 # kvxopt={version="1.3.2.0", markers='sys_platform == "Darwin" and platform_machine == "arm"'}
 distinctipy = "^1.3.4"
