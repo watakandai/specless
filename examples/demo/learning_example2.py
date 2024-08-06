@@ -1,21 +1,16 @@
 import os
-from pathlib import Path
-
-from prepare_aircraft_turnaround_data import load_aircraft_turnaround_data
+import sys
 
 import specless as sl
 
-CURRENT_DIR = Path(os.getcwd())
-EXAMPLE_DIR = CURRENT_DIR.parent
-HOME_DIR = EXAMPLE_DIR.parent
-os.chdir(HOME_DIR)
 
-CURRENT_DATA_DIR = os.path.join(CURRENT_DIR, "data")
-CURRENT_OUTPUT_DIR = os.path.join(CURRENT_DIR, "output")
-CURRENT_CONFIG_FILENAME = os.path.join(CURRENT_DIR, "config.json")
-
-LOG_DIR: Path = Path.cwd().joinpath(".log")
-print(str(LOG_DIR))
+# Add the AicraftTurnaroundA directory to sys.path for importing the data preparation script
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+EXAMPLE_DIR = os.path.dirname(CURRENT_DIR)
+AIRCRAFT_TURNAROUND_DIR = os.path.join(EXAMPLE_DIR, "AircraftTurnaround")
+print(CURRENT_DIR, EXAMPLE_DIR, AIRCRAFT_TURNAROUND_DIR)
+sys.path.append(AIRCRAFT_TURNAROUND_DIR)
+from prepare_aircraft_turnaround_data import load_aircraft_turnaround_data
 
 
 def main():
@@ -25,8 +20,7 @@ def main():
     inference = sl.TPOInferenceAlgorithm()
     specification: sl.Specification = inference.infer(demonstrations)
 
-    filepath = os.path.join(LOG_DIR, "tpo.png")
-    sl.draw_graph(specification, filepath)
+    sl.draw_graph(specification, filepath=os.path.join(CURRENT_DIR, "tpo"))
     print(specification)
 
 

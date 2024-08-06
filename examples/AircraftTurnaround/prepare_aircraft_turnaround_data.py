@@ -1,11 +1,6 @@
 import os
 from pathlib import Path
 
-CURRENT_DIR = Path(os.getcwd())
-EXAMPLE_DIR = CURRENT_DIR.parent
-HOME_DIR = EXAMPLE_DIR.parent
-os.chdir(HOME_DIR)
-
 # additional imports
 import queue
 import random
@@ -18,8 +13,10 @@ import networkx as nx
 import numpy as np
 import pandas as pd
 
-# from tpossp import utils  # TODO: COPY-PASTED from TPO. MUST DELETE OR MERGE INTO TPOSSP
-
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+EXAMPLE_DIR = os.path.dirname(CURRENT_DIR)
+HOME_DIR = os.path.dirname(EXAMPLE_DIR)
+os.chdir(HOME_DIR)
 CURRENT_DATA_DIR = os.path.join(CURRENT_DIR, "data")
 CURRENT_OUTPUT_DIR = os.path.join(CURRENT_DIR, "output")
 CURRENT_CONFIG_FILENAME = os.path.join(CURRENT_DIR, "config.json")
@@ -64,11 +61,12 @@ def graph_from_df(
     return g
 
 
-def listolist_to_list(list_of_list):
+def __listoflist_to_list(list_of_list):
     return reduce(lambda a, b: a + b, list_of_list)
 
 
-def merge_nodes(g, df, op_str: str = "Operation", num_str: str = "No."):
+def merge_nodes_by_column_type(g, df, op_str: str = "Operation", num_str: str = "No."):
+
     # Select a color for an operation
     operations = df[op_str].unique()
     colors = list(mcolors.CSS4_COLORS.keys())
@@ -80,11 +78,15 @@ def merge_nodes(g, df, op_str: str = "Operation", num_str: str = "No."):
     selected_colors = {operations[i]: colors[idx] for i, idx in enumerate(indices)}
 
     G = nx.DiGraph()
+    operation_nodes = {}
+    incomings = {}
+    outgoings = {}
+
     for operation in df[op_str].unique():
         nodes = df[df[op_str] == operation][num_str]
         operation_nodes[operation] = nodes
-        innodes = listolist_to_list([list(g.predecessors(n)) for n in nodes])
-        outnodes = listolist_to_list([list(g.successors(n)) for n in nodes])
+        innodes = __listoflist_to_list([list(g.predecessors(n)) for n in nodes])
+        outnodes = __listoflist_to_list([list(g.successors(n)) for n in nodes])
         incomings[operation] = set([g.nodes[n][op_str] for n in innodes])
         outgoings[operation] = set([g.nodes[n][op_str] for n in outnodes])
 
@@ -167,12 +169,7 @@ def sample_traces(ntrace: int, G, means, stds, max_thresholds, set_bound):
     return traces
 
 
-def load_aircraft_turnaround_data():
-    filename = os.path.join(CURRENT_DATA_DIR, "ground_services_by_operations.csv")
-    df = pd.read_csv(filename)
-    filename = os.path.join(CURRENT_DATA_DIR, "duration.csv")
-    duration_df = pd.read_csv(filename)
-
+def connect_sink_states(df):
     # Add 6 to 7
     index = df[df["No."] == 7].index
     df.loc[index, "Precedence"] = df.loc[index, "Precedence"] + ",6"
@@ -190,16 +187,14 @@ def load_aircraft_turnaround_data():
     df.loc[index, "Precedence"] = df.loc[index, "Precedence"] + ",7,15,18,20,41"
     pd.set_option("display.max_rows", df.shape[0] + 1)
 
-    operation_nodes = {}
-    incomings = {}
-    outgoings = {}
+    return df
 
-    g = graph_from_df(df)
 
+def get_distributions(df):
     means = {}
     stds = {}
     max_thresholds = {}
-    for i, row in duration_df.iterrows():
+    for i, row in df.iterrows():
         if i == 0:
             continue
         operation = row.index[1]
@@ -209,10 +204,27 @@ def load_aircraft_turnaround_data():
         means[row[operation]] = int(row[mean])
         stds[row[operation]] = int(row[std])
         max_thresholds[row[operation]] = int(row[delay])
-    print(means)
-    print(stds)
+    return means, stds, max_thresholds
 
-    G = merge_nodes(g, df)
+
+def load_aircraft_turnaround_data():
+    filename = os.path.join(CURRENT_DATA_DIR, "ground_services_by_operations.csv")
+    df = pd.read_csv(filename)
+    filename = os.path.join(CURRENT_DATA_DIR, "duration.csv")
+    duration_df = pd.read_csv(filename)
+
+    # TODO: this should apply to graph G and not df
+    df = connect_sink_states(df)
+
+    # Get the distributions
+    means, stds, max_thresholds = get_distributions(duration_df)
+    # Create a graph
+    g = graph_from_df(df)
+
+    # Merge nodes by column type
+    G = merge_nodes_by_column_type(g, df, op_str="Operation")
+
+    # Sample traces
     traces = sample_traces(10000, G, means, stds, max_thresholds, set_bound=True)
 
     return traces
