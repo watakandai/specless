@@ -51,6 +51,7 @@ Consider the following environment:
 """
 
 from examples.demo.planning_utils import get_location_assignments
+import specless as sl
 
 
 def main():
@@ -90,6 +91,11 @@ def main():
         "Room B": (0, 15),
         "Room J": (21, 30),
     }
+    # OR
+    # timed_partial_order: sl.TimedPartialOrder = (
+    #     sl.TimedPartialOrder.from_constraints(global_constraints, {})
+    # )
+
     #####################
     #        Main       #
     #####################
@@ -105,6 +111,7 @@ def main():
         robot_initial_locations,
         costs,
         global_constraints=global_constraints,
+        # timed_partial_order=timed_partial_order,
     )
 
     print(tours)

@@ -80,10 +80,20 @@ def main():
     #       Define      #
     #####################
     # Define a task (rooms to visit)
-    rooms_to_visit = ["Room B", "Room C", "Room J", "Room I1", "Room I2"]
-    # NOTE: Define initial locations of the robot
+    rooms_to_visit = ["Room B", "Room C", "Room J", "Room I"]
+    # Define initial locations of the robot
     robot_initial_locations = ["Room A", "Room D"]
     rooms_of_interest = rooms_to_visit + robot_initial_locations
+
+    #! NOTE: Adding Local Constraints
+    local_constraints = {
+        ("Room B", "Room C"): (0, 15),
+        ("Room J", "Room I"): (20, 30),
+    }
+    # OR
+    # timed_partial_order: sl.TimedPartialOrder = (
+    #     sl.TimedPartialOrder.from_constraints({}, local_constraints)
+    # )
 
     #####################
     #        Main       #
@@ -99,6 +109,9 @@ def main():
         rooms_of_interest,
         robot_initial_locations,
         costs,
+        local_constraints=local_constraints,
+        # timed_partial_order=timed_partial_order,
+        export_filename="examples/demo/planning_example4_5.lp",
     )
 
     print(tours)

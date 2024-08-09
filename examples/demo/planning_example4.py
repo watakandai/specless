@@ -90,6 +90,11 @@ def main():
         ("Room B", "Room C"): (0, 15),
         ("Room J", "Room I"): (20, 30),
     }
+    # OR
+    # timed_partial_order: sl.TimedPartialOrder = (
+    #     sl.TimedPartialOrder.from_constraints({}, local_constraints)
+    # )
+
     #####################
     #        Main       #
     #####################
@@ -105,6 +110,7 @@ def main():
         robot_initial_locations,
         costs,
         local_constraints=local_constraints,
+        # timed_partial_order=timed_partial_order,
     )
 
     print(tours)
