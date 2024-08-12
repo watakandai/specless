@@ -108,6 +108,7 @@ class MILPTSPSolver(TSPSolver):
         num_agent: int = 1,
         init_nodes: Optional[List[Node]] = None,
         come_back_home: bool = True,
+        export_filename: Optional[str] = None,
     ) -> Tuple[List, float]:
         tsp = copy.deepcopy(tsp)
 
@@ -173,6 +174,8 @@ class MILPTSPSolver(TSPSolver):
         # Users can add a new objective by replacing get_edge_cost_objective
         m.addGenConstrMax(tf, tT)
         self.optimize(m, variables, tf)
+        if export_filename:
+            m.write(export_filename)
 
         if m.status != GRB.OPTIMAL:
             print("Tour: [], Cost: n/a")
@@ -267,6 +270,7 @@ class MILPTSPWithTPOSolver(TSPWithTPOSolver):
         num_agent: int = 1,
         init_nodes: Optional[List[Node]] = None,
         come_back_home: bool = True,
+        export_filename: Optional[str] = None,
     ) -> Tuple[List, float]:
         tsp = copy.deepcopy(tsp)
         if len(tsp.nodes) < num_agent:
@@ -373,6 +377,8 @@ class MILPTSPWithTPOSolver(TSPWithTPOSolver):
         # tf = max([tT1, tT2, ..., tT_|init_nodes|])
         m.addGenConstrMax(tf, tT)
         self.optimize(m, variables, tf)
+        if export_filename:
+            m.write(export_filename)
 
         if m.status != GRB.OPTIMAL:
             print("Tour: [], Cost: n/a")
